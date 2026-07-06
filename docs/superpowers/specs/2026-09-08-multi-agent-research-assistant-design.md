@@ -1,7 +1,7 @@
 # Multi-Agent Research Assistant 设计规格
 
 > 日期：2026-09-08  
-> 状态：待用户最终审阅  
+> 状态：已确认
 > 用途：个人学习成果与非商业作品展示  
 > Upstream：[`NirDiamant/GenAI_Agents`](https://github.com/NirDiamant/GenAI_Agents)，审计基准 `4c95ae14cc2462c442b5c064cccd74430d02bc46`
 
