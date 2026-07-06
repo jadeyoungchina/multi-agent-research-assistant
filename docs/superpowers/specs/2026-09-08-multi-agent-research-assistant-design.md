@@ -1,7 +1,7 @@
 # Multi-Agent Research Assistant 设计规格
 
 > 日期：2026-09-08  
-> 状态：待用户最终审阅  
+> 状态：已确认
 > 用途：个人学习成果与非商业作品展示  
 > Upstream：[`NirDiamant/GenAI_Agents`](https://github.com/NirDiamant/GenAI_Agents)，审计基准 `4c95ae14cc2462c442b5c064cccd74430d02bc46`
 
@@ -299,7 +299,7 @@ Critic 最多触发两轮补检索，工作流另有总步数上限。
 
 ## 13. Git 重建与发布
 
-现有 `main` 只有一个已推送环境初始化提交。用户已明确授权重写该历史。
+现有 `main` 包含已推送的环境初始化和设计规格提交。用户已明确授权在完整备份与远端租约保护下重写该历史。
 
 ### 13.1 安全措施
 
@@ -343,4 +343,3 @@ README 和 CHANGELOG 必须说明：项目因误删而重建，提交日期是�
 - README、架构文档、upstream 分析、实验文档、技术报告、CHANGELOG。
 - 许可证、第三方通知和逐文件来源记录。
 - 重建后的 Git 历史、GitHub 推送和 `v1.0.0` 标签。
-
