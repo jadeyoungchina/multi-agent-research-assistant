@@ -14,6 +14,9 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 
+# 本地 Git 工作树
+.worktrees/
+
 # 系统文件
 .DS_Store
 Thumbs.db
