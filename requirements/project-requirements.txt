@@ -1,0 +1,5 @@
+# 项目层依赖（upstream 未包含，但 Multi-Agent Research Assistant 目标项目需要）
+# 版本与 upstream 锁定栈（2024-09 时期）保持同期兼容，避免触发依赖替换
+fastapi==0.112.2
+uvicorn[standard]==0.30.6
+pytest==8.3.2
