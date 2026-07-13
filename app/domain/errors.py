@@ -1,22 +1,28 @@
-class ConfigurationError(Exception):
-    code = "configuration_error"
+class DomainError(Exception):
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.code = code
 
 
-class ProviderError(Exception):
-    code = "provider_error"
+class ConfigurationError(DomainError):
+    pass
 
 
-class DocumentError(Exception):
-    code = "document_error"
+class ProviderError(DomainError):
+    pass
 
 
-class RetrievalError(Exception):
-    code = "retrieval_error"
+class DocumentError(DomainError):
+    pass
 
 
-class WorkflowError(Exception):
-    code = "workflow_error"
+class RetrievalError(DomainError):
+    pass
 
 
-class CitationError(Exception):
-    code = "citation_error"
+class WorkflowError(DomainError):
+    pass
+
+
+class CitationError(DomainError):
+    pass
