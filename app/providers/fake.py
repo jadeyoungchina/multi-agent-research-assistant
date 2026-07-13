@@ -58,7 +58,7 @@ class DeterministicEmbeddingProvider:
     def _embed(self, text: str) -> list[float]:
         vector = [0.0] * self._dimensions
         encoded = text.casefold().encode("utf-8")
-        for offset in range(0, len(encoded), 4):
+        for offset in range(0, len(encoded) or 1, 4):
             digest = sha256(encoded[offset : offset + 4]).digest()
             index = int.from_bytes(digest[:2], "big") % self._dimensions
             vector[index] += -1.0 if digest[2] & 1 else 1.0

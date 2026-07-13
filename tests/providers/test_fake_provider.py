@@ -25,3 +25,11 @@ def test_fake_embedding_is_stable_and_normalized() -> None:
     assert first == second
     assert round(sum(value * value for value in first), 7) == 1.0
     assert first_metadata.model == second_metadata.model == "fake-hash-16"
+
+
+def test_fake_embedding_empty_input_is_stable_and_normalized() -> None:
+    provider = DeterministicEmbeddingProvider(dimensions=16)
+    first, _ = provider.embed_query("")
+    second, _ = provider.embed_query("")
+    assert first == second
+    assert round(sum(value * value for value in first), 7) == 1.0
