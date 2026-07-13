@@ -18,10 +18,12 @@ __pycache__/
 .worktrees/
 
 # Generated and local data
-data/
-logs/
+data/*
+!data/.gitkeep
+logs/*
+!logs/.gitkeep
 evaluation/results/*
-!.gitkeep
+!evaluation/results/.gitkeep
 
 # 系统文件
 .DS_Store
