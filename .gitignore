@@ -17,6 +17,12 @@ __pycache__/
 # 本地 Git 工作树
 .worktrees/
 
+# Generated and local data
+data/
+logs/
+evaluation/results/*
+!.gitkeep
+
 # 系统文件
 .DS_Store
 Thumbs.db
