@@ -9,7 +9,10 @@ from app.domain.research import Citation, Critique, DraftReport, ResearchReport
 from app.workflow.state import WorkflowState
 
 
-_CITATION_TOKEN = re.compile(r"\[\[cite:([A-Za-z0-9_-]+)\]\]")
+_CITATION_TOKEN = re.compile(
+    r"(?<!\[)\[\[cite:([A-Za-z0-9_-]+)\]\](?!\])"
+)
+_CITATION_FRAGMENT = re.compile(r"\[\[+\s*cite\b", re.IGNORECASE)
 _MARKDOWN_SPECIAL = re.compile(r"([\\`*_\[\]{}()#+\-!|])")
 _PAGELESS_SUFFIXES = {".md", ".markdown", ".txt"}
 
@@ -18,7 +21,7 @@ def validate_draft_citations(
     draft: DraftReport, evidence: list[EvidenceChunk]
 ) -> list[str]:
     token_ids = _CITATION_TOKEN.findall(draft.markdown)
-    if "[[cite:" in _CITATION_TOKEN.sub("", draft.markdown):
+    if _CITATION_FRAGMENT.search(_CITATION_TOKEN.sub("", draft.markdown)):
         raise CitationError(
             "malformed_citation_token",
             "malformed_citation_token: citation tokens must use [[cite:evidence_id]]",
