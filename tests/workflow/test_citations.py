@@ -91,6 +91,29 @@ def test_validator_rejects_malformed_citation_tokens(malformed: str) -> None:
         )
 
 
+def test_validator_rejects_uppercase_citation_fragment_beside_valid_token() -> None:
+    with pytest.raises(CitationError, match="malformed_citation_token"):
+        validate_and_render_report(
+            "run1",
+            draft_with(
+                "ev",
+                markdown="Valid [[cite:ev]] unsupported [[CITE:ev_unknown]]",
+            ),
+            [chunk("ev")],
+            critique(sufficient=True),
+        )
+
+
+def test_validator_rejects_valid_token_with_extra_closing_bracket() -> None:
+    with pytest.raises(CitationError, match="malformed_citation_token"):
+        validate_and_render_report(
+            "run1",
+            draft_with("ev", markdown="Malformed [[cite:ev]]]"),
+            [chunk("ev")],
+            critique(sufficient=True),
+        )
+
+
 def test_validator_requires_tokens_for_all_declared_finding_evidence() -> None:
     with pytest.raises(CitationError, match="missing_citation_token"):
         validate_and_render_report(
