@@ -63,6 +63,8 @@ def _logging_handlers() -> list[logging.Handler]:
     for logger in logging.Logger.manager.loggerDict.values():
         if isinstance(logger, logging.Logger):
             handlers.extend(logger.handlers)
+    if logging.lastResort is not None:
+        handlers.append(logging.lastResort)
     return list(dict.fromkeys(handlers))
 
 
