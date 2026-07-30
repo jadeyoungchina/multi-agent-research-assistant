@@ -1,4 +1,5 @@
 import logging
+import threading
 
 import pytest
 
@@ -61,6 +62,139 @@ def test_pdf_loader_does_not_log_uploaded_bytes_on_parse_failure(
     assert marker not in "\n".join(record.getMessage() for record in caplog.records)
     assert marker not in captured.err
     assert unrelated_marker in "\n".join(record.getMessage() for record in caplog.records)
+
+
+def test_pdf_loader_does_not_log_uploaded_bytes_during_page_traversal(
+    monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    marker = "P4G3M"
+
+    class FakePage:
+        def extract_text(self) -> str:
+            logging.getLogger("pypdf.generic._data_structures").warning(marker)
+            return "page text"
+
+    class FakeReader:
+        def __init__(self, stream: object) -> None:
+            self.pages = [FakePage()]
+
+    monkeypatch.setattr("app.retrieval.loaders.PdfReader", FakeReader)
+    caplog.set_level(logging.WARNING)
+
+    pages = load_document(b"PDF", "paper.pdf", "application/pdf")
+
+    captured = capsys.readouterr()
+    assert pages[0].text == "page text"
+    assert marker not in "\n".join(record.getMessage() for record in caplog.records)
+    assert marker not in captured.err
+
+
+def test_pdf_loader_restores_pypdf_logging_after_page_extraction_failure(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    post_failure_marker = "pypdf logging restored"
+    reader_logger = logging.getLogger("pypdf._reader")
+    original_disabled = reader_logger.disabled
+
+    class FailingPage:
+        def extract_text(self) -> str:
+            raise RuntimeError("page extraction failed")
+
+    class FakeReader:
+        def __init__(self, stream: object) -> None:
+            self.pages = [FailingPage()]
+
+    monkeypatch.setattr("app.retrieval.loaders.PdfReader", FakeReader)
+    caplog.set_level(logging.WARNING)
+    reader_logger.disabled = False
+    try:
+        with pytest.raises(DocumentError) as raised:
+            load_document(b"PDF", "paper.pdf", "application/pdf")
+        reader_logger.warning(post_failure_marker)
+    finally:
+        reader_logger.disabled = original_disabled
+
+    assert raised.value.code == "document_parse_failed"
+    assert post_failure_marker in "\n".join(record.getMessage() for record in caplog.records)
+
+
+def test_pdf_loader_keeps_unrelated_application_logging_during_parse(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    marker = "unrelated application log during PDF parse"
+
+    class FakeReader:
+        def __init__(self, stream: object) -> None:
+            logging.getLogger("app.test").warning(marker)
+            self.pages = []
+
+    monkeypatch.setattr("app.retrieval.loaders.PdfReader", FakeReader)
+    caplog.set_level(logging.WARNING)
+
+    with pytest.raises(DocumentError) as raised:
+        load_document(b"PDF", "paper.pdf", "application/pdf")
+
+    assert raised.value.code == "empty_document"
+    assert marker in "\n".join(record.getMessage() for record in caplog.records)
+
+
+def test_overlapping_pdf_loads_restore_logging_state(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    entered = [threading.Event(), threading.Event()]
+    release = [threading.Event(), threading.Event()]
+    finished = [threading.Event(), threading.Event()]
+    counter_lock = threading.Lock()
+    reader_logger = logging.getLogger("pypdf._reader")
+    original_disabled = reader_logger.disabled
+    call_count = 0
+    restored_disabled = True
+
+    class BlockingReader:
+        def __init__(self, stream: object) -> None:
+            nonlocal call_count
+            with counter_lock:
+                index = call_count
+                call_count += 1
+            entered[index].set()
+            assert release[index].wait(timeout=5)
+            self.pages = []
+
+    def load_in_thread(index: int) -> None:
+        try:
+            with pytest.raises(DocumentError):
+                load_document(b"PDF", "paper.pdf", "application/pdf")
+        finally:
+            finished[index].set()
+
+    monkeypatch.setattr("app.retrieval.loaders.PdfReader", BlockingReader)
+    caplog.set_level(logging.WARNING)
+    reader_logger.disabled = False
+    first = threading.Thread(target=load_in_thread, args=(0,))
+    second = threading.Thread(target=load_in_thread, args=(1,))
+    first.start()
+    try:
+        assert entered[0].wait(timeout=5)
+        second.start()
+        release[0].set()
+        assert finished[0].wait(timeout=5)
+        assert entered[1].wait(timeout=5)
+        logging.getLogger("pypdf._reader").warning("concurrent pypdf log")
+        release[1].set()
+        assert finished[1].wait(timeout=5)
+    finally:
+        restored_disabled = reader_logger.disabled
+        release[0].set()
+        release[1].set()
+        first.join(timeout=5)
+        second.join(timeout=5)
+        reader_logger.disabled = original_disabled
+
+    messages = "\n".join(record.getMessage() for record in caplog.records)
+    assert "concurrent pypdf log" in messages
+    assert restored_disabled is False
 
 
 def test_pdf_loader_preserves_one_based_page_numbers(

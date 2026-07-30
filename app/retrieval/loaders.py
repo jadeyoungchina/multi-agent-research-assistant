@@ -10,6 +10,7 @@ from io import BytesIO
 import logging
 from pathlib import Path
 import re
+from threading import RLock, local
 from typing import Iterator
 
 from pypdf import PdfReader
@@ -23,6 +24,18 @@ SUPPORTED = {
     ".markdown": ("text/markdown", "markdown"),
     ".txt": ("text/plain", "text"),
 }
+
+_PYPDF_LOG_LOCK = RLock()
+_PYPDF_LOG_STATE = local()
+
+
+class _PypdfLogFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        is_pypdf = record.name == "pypdf" or record.name.startswith("pypdf.")
+        return not (is_pypdf and getattr(_PYPDF_LOG_STATE, "depth", 0))
+
+
+_PYPDF_LOG_FILTER = _PypdfLogFilter()
 
 
 def validate_document_type(filename: str, media_type: str) -> str:
@@ -45,28 +58,50 @@ def _normalize(text: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", text).strip()
 
 
+def _logging_handlers() -> list[logging.Handler]:
+    handlers = list(logging.getLogger().handlers)
+    for logger in logging.Logger.manager.loggerDict.values():
+        if isinstance(logger, logging.Logger):
+            handlers.extend(logger.handlers)
+    return list(dict.fromkeys(handlers))
+
+
 @contextmanager
-def _suppress_pypdf_reader_logging() -> Iterator[None]:
-    """Prevent PyPDF from emitting uploaded byte fragments while parsing."""
-    logger = logging.getLogger("pypdf._reader")
-    was_disabled = logger.disabled
-    logger.disabled = True
-    try:
-        yield
-    finally:
-        logger.disabled = was_disabled
+def _suppress_pypdf_logging() -> Iterator[None]:
+    """Filter PyPDF records from this parsing thread without muting other logs."""
+    if getattr(_PYPDF_LOG_STATE, "depth", 0):
+        _PYPDF_LOG_STATE.depth += 1
+        try:
+            yield
+        finally:
+            _PYPDF_LOG_STATE.depth -= 1
+        return
+
+    with _PYPDF_LOG_LOCK:
+        added_to: list[logging.Handler] = []
+        try:
+            for handler in _logging_handlers():
+                if _PYPDF_LOG_FILTER not in handler.filters:
+                    handler.addFilter(_PYPDF_LOG_FILTER)
+                    added_to.append(handler)
+            _PYPDF_LOG_STATE.depth = 1
+            yield
+        finally:
+            _PYPDF_LOG_STATE.depth = 0
+            for handler in added_to:
+                handler.removeFilter(_PYPDF_LOG_FILTER)
 
 
 def load_document(content: bytes, filename: str, media_type: str) -> list[LoadedPage]:
     kind = validate_document_type(filename, media_type)
     if kind == "pdf":
         try:
-            with _suppress_pypdf_reader_logging():
+            with _suppress_pypdf_logging():
                 reader = PdfReader(BytesIO(content))
-            pages = [
-                LoadedPage(page_number=index, text=_normalize(page.extract_text() or ""))
-                for index, page in enumerate(reader.pages, start=1)
-            ]
+                pages = [
+                    LoadedPage(page_number=index, text=_normalize(page.extract_text() or ""))
+                    for index, page in enumerate(reader.pages, start=1)
+                ]
         except Exception as exc:
             raise DocumentError("document_parse_failed", "PDF could not be parsed") from exc
     else:
