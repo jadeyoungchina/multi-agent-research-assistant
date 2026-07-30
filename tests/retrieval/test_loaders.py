@@ -64,6 +64,55 @@ def test_pdf_loader_does_not_log_uploaded_bytes_on_parse_failure(
     assert unrelated_marker in "\n".join(record.getMessage() for record in caplog.records)
 
 
+def test_pdf_loader_filters_last_resort_without_configured_handlers(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    marker = "L4STR"
+    root_logger = logging.getLogger()
+    pypdf_loggers = [
+        logger
+        for name, logger in logging.Logger.manager.loggerDict.items()
+        if (name == "pypdf" or name.startswith("pypdf."))
+        and isinstance(logger, logging.Logger)
+    ]
+    handler_state = [(root_logger, list(root_logger.handlers))] + [
+        (logger, list(logger.handlers)) for logger in pypdf_loggers
+    ]
+    reader_logger = logging.getLogger("pypdf._reader")
+    original_disabled = reader_logger.disabled
+    original_last_resort = logging.lastResort
+
+    class CapturingLastResort(logging.StreamHandler):
+        def __init__(self) -> None:
+            super().__init__()
+            self.records: list[logging.LogRecord] = []
+
+        def emit(self, record: logging.LogRecord) -> None:
+            self.records.append(record)
+            super().emit(record)
+
+    fallback = CapturingLastResort()
+    try:
+        for logger, _ in handler_state:
+            logger.handlers.clear()
+        reader_logger.disabled = False
+        logging.lastResort = fallback
+
+        with pytest.raises(DocumentError) as raised:
+            load_document(marker.encode("utf-8"), "paper.pdf", "application/pdf")
+
+        captured = capsys.readouterr()
+        assert raised.value.code == "document_parse_failed"
+        assert marker not in "\n".join(record.getMessage() for record in fallback.records)
+        assert marker not in captured.err
+        assert fallback.filters == []
+    finally:
+        logging.lastResort = original_last_resort
+        reader_logger.disabled = original_disabled
+        for logger, handlers in handler_state:
+            logger.handlers[:] = handlers
+
+
 def test_pdf_loader_does_not_log_uploaded_bytes_during_page_traversal(
     monkeypatch: pytest.MonkeyPatch,
     caplog: pytest.LogCaptureFixture,
