@@ -1,7 +1,7 @@
 import pytest
 
 from app.domain.documents import LoadedPage
-from app.retrieval.chunking import chunk_pages
+from app.retrieval.chunking import chunk_pages, make_evidence_id
 
 
 def test_chunks_do_not_cross_page_boundaries() -> None:
@@ -49,6 +49,14 @@ def test_changed_content_produces_changed_evidence_id() -> None:
     )
 
     assert original[0].id != changed[0].id
+
+
+def test_evidence_ids_distinguish_missing_and_zero_page_numbers() -> None:
+    """A page number of zero must not collide with an unspecified page."""
+    unspecified_page = make_evidence_id("doc1", None, 0, "digest")
+    zero_page = make_evidence_id("doc1", 0, 0, "digest")
+
+    assert unspecified_page != zero_page
 
 
 @pytest.mark.parametrize("overlap", [-1, 100])

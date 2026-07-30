@@ -13,7 +13,8 @@ def make_evidence_id(
     digest: str,
 ) -> str:
     """Build a deterministic identifier for a specific piece of document evidence."""
-    raw = f"{document_id}:{page_number or 0}:{chunk_index}:{digest}".encode("utf-8")
+    page_component = "none" if page_number is None else str(page_number)
+    raw = f"{document_id}:{page_component}:{chunk_index}:{digest}".encode("utf-8")
     return "ev_" + sha256(raw).hexdigest()
 
 
