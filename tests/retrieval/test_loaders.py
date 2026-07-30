@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 
 from app.domain.errors import DocumentError
@@ -41,6 +43,24 @@ def test_text_loader_rejects_invalid_utf8() -> None:
     with pytest.raises(DocumentError) as raised:
         load_document(b"\xff\xfe", "notes.txt", "text/plain")
     assert raised.value.code == "document_decode_failed"
+
+
+def test_pdf_loader_does_not_log_uploaded_bytes_on_parse_failure(
+    caplog: pytest.LogCaptureFixture, capsys: pytest.CaptureFixture[str]
+) -> None:
+    marker = "M4RKR"
+    unrelated_marker = "unrelated application warning"
+    caplog.set_level(logging.WARNING, logger="pypdf")
+    logging.getLogger("app.test").warning(unrelated_marker)
+
+    with pytest.raises(DocumentError) as raised:
+        load_document(marker.encode("utf-8"), "paper.pdf", "application/pdf")
+
+    captured = capsys.readouterr()
+    assert raised.value.code == "document_parse_failed"
+    assert marker not in "\n".join(record.getMessage() for record in caplog.records)
+    assert marker not in captured.err
+    assert unrelated_marker in "\n".join(record.getMessage() for record in caplog.records)
 
 
 def test_pdf_loader_preserves_one_based_page_numbers(
