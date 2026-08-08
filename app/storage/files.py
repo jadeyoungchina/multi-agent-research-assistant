@@ -14,12 +14,12 @@ class LocalDocumentStore:
             raise DocumentError(
                 "unsupported_document_type", f"unsupported extension: {suffix or '<none>'}"
             )
+        self.root.mkdir(parents=True, exist_ok=True)
         safe_document_id = Path(document_id).name
         target = self.root / f"{safe_document_id}{suffix}"
         resolved_target = target.resolve()
         if not resolved_target.is_relative_to(self.root):
             raise DocumentError("unsafe_storage_path", "storage path escapes upload root")
-        self.root.mkdir(parents=True, exist_ok=True)
         target.write_bytes(content)
         return resolved_target
 

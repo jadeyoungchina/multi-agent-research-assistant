@@ -1,5 +1,7 @@
+from concurrent.futures import ThreadPoolExecutor
 from hashlib import sha256
 from pathlib import Path
+from threading import Barrier
 from typing import Sequence
 
 import pytest
@@ -34,6 +36,18 @@ class FailingEmbeddingProvider:
         self, texts: Sequence[str]
     ) -> tuple[list[list[float]], ProviderMetadata]:
         raise RetrievalError("provider_failure", "embedding failed")
+
+
+class RacingDocumentRepository(DocumentRepository):
+    def __init__(self, database: Database, lookup_barrier: Barrier) -> None:
+        super().__init__(database)
+        self.lookup_barrier = lookup_barrier
+
+    def get_document_by_sha256(self, sha256: str) -> DocumentRecord | None:
+        document = super().get_document_by_sha256(sha256)
+        if document is None:
+            self.lookup_barrier.wait(timeout=5)
+        return document
 
 
 @pytest.fixture
@@ -138,6 +152,64 @@ def test_identical_failed_content_retries_same_document(
     assert ready.status == "ready"
     assert len(repository.list_documents()) == 1
     assert embedding_provider.document_calls == 1
+
+
+def test_failed_retry_with_new_extension_removes_superseded_upload(
+    service: DocumentService, repository: DocumentRepository
+) -> None:
+    content = b"retry me"
+    service.embedding_provider = FailingEmbeddingProvider()
+    with pytest.raises(RetrievalError):
+        service.ingest("first.txt", "text/plain", content)
+    failed = repository.list_documents()[0]
+    failed_path = Path(failed.storage_path)
+
+    service.embedding_provider = CountingEmbeddingProvider()
+    ready = service.ingest("second.md", "text/markdown", content)
+
+    ready_path = Path(ready.storage_path)
+    assert ready_path != failed_path
+    assert ready_path.read_bytes() == content
+    assert not failed_path.exists()
+
+    service.delete_document(ready.id)
+    assert not ready_path.exists()
+
+
+def test_concurrent_identical_uploads_do_not_leak_files_or_sqlite_errors(
+    tmp_path: Path, settings: Settings
+) -> None:
+    database = Database(tmp_path / "race.db")
+    database.initialize()
+    repository = RacingDocumentRepository(database, Barrier(2))
+    file_store = LocalDocumentStore(tmp_path / "race-uploads")
+    service = DocumentService(
+        repository, file_store, CountingEmbeddingProvider(), settings
+    )
+
+    def ingest() -> DocumentRecord:
+        return service.ingest("notes.txt", "text/plain", b"same content")
+
+    results: list[DocumentRecord] = []
+    errors: list[Exception] = []
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        futures = [executor.submit(ingest) for _ in range(2)]
+        for future in futures:
+            try:
+                results.append(future.result(timeout=10))
+            except Exception as exc:
+                errors.append(exc)
+
+    documents = repository.list_documents()
+    assert len(documents) == 1
+    assert results
+    assert all(result.id == documents[0].id for result in results)
+    assert all(
+        isinstance(error, DocumentError)
+        and error.code == "document_ingestion_in_progress"
+        for error in errors
+    ), errors
+    assert len(list(file_store.root.iterdir())) == 1
 
 
 def test_provider_failure_marks_document_failed_without_chunks_and_retains_file(
