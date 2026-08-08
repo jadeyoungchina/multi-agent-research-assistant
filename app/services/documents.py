@@ -42,6 +42,11 @@ class DocumentService:
                 "identical document is already being processed",
             )
 
+        previous_path = (
+            Path(existing.storage_path)
+            if existing is not None and existing.storage_path
+            else None
+        )
         if existing is None:
             document = DocumentRecord.new(filename, media_type, digest)
         else:
@@ -58,9 +63,24 @@ class DocumentService:
         stored_path = self.file_store.save(document.id, filename, content)
         document = document.model_copy(update={"storage_path": str(stored_path)})
         if existing is None:
-            self.repository.add_document(document)
+            claimed_document, inserted = self.repository.add_document_if_absent(document)
+            if not inserted:
+                self.file_store.delete(stored_path)
+                if claimed_document.status == "ready":
+                    return claimed_document
+                if claimed_document.status == "processing":
+                    raise DocumentError(
+                        "document_ingestion_in_progress",
+                        "identical document is already being processed",
+                    )
+                return self.ingest(filename, media_type, content)
         else:
             self.repository.update_document(document)
+            if (
+                previous_path is not None
+                and previous_path.resolve() != stored_path.resolve()
+            ):
+                self.file_store.delete(previous_path)
 
         try:
             pages = load_document(content, filename, media_type)

@@ -41,6 +41,26 @@ class DocumentRepository:
                 self._document_values(document),
             )
 
+    def add_document_if_absent(
+        self, document: DocumentRecord
+    ) -> tuple[DocumentRecord, bool]:
+        with self._database.transaction() as connection:
+            cursor = connection.execute(
+                "INSERT INTO documents "
+                "(id, filename, media_type, sha256, storage_path, status, page_count, "
+                "error_message, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) "
+                "ON CONFLICT(sha256) DO NOTHING",
+                self._document_values(document),
+            )
+            if cursor.rowcount == 1:
+                return document, True
+            row = connection.execute(
+                "SELECT * FROM documents WHERE sha256 = ?", (document.sha256,)
+            ).fetchone()
+        if row is None:
+            raise RuntimeError("document insert conflict did not retain a record")
+        return self._document_from_row(row), False
+
     def get_document(self, document_id: str) -> DocumentRecord | None:
         with closing(self._database.connect()) as connection:
             row = connection.execute(
