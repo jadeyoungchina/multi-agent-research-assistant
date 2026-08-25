@@ -318,6 +318,97 @@ def test_embedding_response_must_match_requested_vector_count_and_indexes(
     assert raised.value.code == "provider_embedding_failed"
 
 
+@pytest.mark.parametrize("invalid_value", ["secret-vector", None, True, [0.2]])
+def test_embedding_rejects_malformed_element_types(invalid_value: Any) -> None:
+    provider = OpenAICompatibleEmbeddingProvider(
+        client=SimpleNamespace(
+            embeddings=SequencedEmbeddings(
+                [
+                    embedding_response(
+                        data=[SimpleNamespace(index=0, embedding=[0.1, invalid_value])]
+                    )
+                ]
+            )
+        ),
+        provider_name="dashscope",
+        model="text-embedding-v4",
+        max_retries=0,
+    )
+
+    with pytest.raises(ProviderError) as raised:
+        provider.embed_documents(["first"])
+
+    assert raised.value.code == "provider_embedding_failed"
+    assert "secret-vector" not in str(raised.value)
+    assert raised.value.__cause__ is None
+
+
+@pytest.mark.parametrize("non_finite", [float("nan"), float("inf"), float("-inf")])
+def test_embedding_rejects_non_finite_values(non_finite: float) -> None:
+    provider = OpenAICompatibleEmbeddingProvider(
+        client=SimpleNamespace(
+            embeddings=SequencedEmbeddings(
+                [
+                    embedding_response(
+                        data=[SimpleNamespace(index=0, embedding=[0.1, non_finite])]
+                    )
+                ]
+            )
+        ),
+        provider_name="dashscope",
+        model="text-embedding-v4",
+        max_retries=0,
+    )
+
+    with pytest.raises(ProviderError) as raised:
+        provider.embed_documents(["first"])
+
+    assert raised.value.code == "provider_embedding_failed"
+
+
+def test_embedding_rejects_empty_vectors() -> None:
+    provider = OpenAICompatibleEmbeddingProvider(
+        client=SimpleNamespace(
+            embeddings=SequencedEmbeddings(
+                [embedding_response(data=[SimpleNamespace(index=0, embedding=[])])]
+            )
+        ),
+        provider_name="dashscope",
+        model="text-embedding-v4",
+        max_retries=0,
+    )
+
+    with pytest.raises(ProviderError) as raised:
+        provider.embed_documents(["first"])
+
+    assert raised.value.code == "provider_embedding_failed"
+
+
+def test_embedding_rejects_ragged_vectors() -> None:
+    provider = OpenAICompatibleEmbeddingProvider(
+        client=SimpleNamespace(
+            embeddings=SequencedEmbeddings(
+                [
+                    embedding_response(
+                        data=[
+                            SimpleNamespace(index=0, embedding=[0.1, 0.2]),
+                            SimpleNamespace(index=1, embedding=[0.3]),
+                        ]
+                    )
+                ]
+            )
+        ),
+        provider_name="dashscope",
+        model="text-embedding-v4",
+        max_retries=0,
+    )
+
+    with pytest.raises(ProviderError) as raised:
+        provider.embed_documents(["first", "second"])
+
+    assert raised.value.code == "provider_embedding_failed"
+
+
 def test_embedding_failure_is_normalized_without_leaking_details() -> None:
     secret = "sk-sensitive-value"
     provider = OpenAICompatibleEmbeddingProvider(
