@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field
@@ -19,3 +20,17 @@ class HealthResponse(BaseModel):
     version: str
     database_ready: bool
     providers: dict[str, bool]
+
+
+class DocumentResponse(BaseModel):
+    id: str
+    filename: str
+    media_type: str
+    sha256: str
+    status: str
+    page_count: int
+    created_at: datetime
+
+
+class DocumentUploadResponse(BaseModel):
+    documents: list[DocumentResponse]
