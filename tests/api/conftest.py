@@ -38,7 +38,7 @@ def application_container(tmp_path) -> ApplicationContainer:
         embedding_provider=CloseableProvider(),
         services=ApplicationServices(
             documents=SimpleNamespace(),
-            research=SimpleNamespace(),
+            research=SimpleNamespace(list_incomplete_ids=lambda: []),
         ),
     )
 
