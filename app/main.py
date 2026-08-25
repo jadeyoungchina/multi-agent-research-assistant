@@ -8,6 +8,7 @@ from app.api.errors import register_error_handlers
 from app.api.middleware import RequestContextMiddleware
 from app.api.routes import api_router
 from app.bootstrap import ApplicationContainer, build_container
+from app.observability import configure_json_logging
 
 
 def create_app(
@@ -16,6 +17,7 @@ def create_app(
 ) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        configure_json_logging()
         active_container = container
         if active_container is None and services is None:
             active_container = build_container()

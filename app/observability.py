@@ -44,8 +44,8 @@ def redact(value: Any) -> Any:
 
 class RedactionFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
-        if isinstance(record.args, Mapping):
-            record.args = redact(record.args)
+        record.msg = redact(record.msg)
+        record.args = redact(record.args)
         for key, value in list(record.__dict__.items()):
             if key in _STANDARD_RECORD_FIELDS:
                 continue
@@ -76,11 +76,15 @@ def install_redaction_filter(logger: logging.Logger) -> None:
 
 def configure_json_logging(logger: logging.Logger | None = None) -> logging.Logger:
     target = logger or logging.getLogger()
+    target.setLevel(logging.INFO)
     install_redaction_filter(target)
     if not target.handlers:
-        handler = logging.StreamHandler()
+        target.addHandler(logging.StreamHandler())
+    for handler in target.handlers:
+        handler.setLevel(logging.NOTSET)
         handler.setFormatter(JsonFormatter())
-        target.addHandler(handler)
+        if not any(isinstance(item, RedactionFilter) for item in handler.filters):
+            handler.addFilter(RedactionFilter())
     return target
 
 
