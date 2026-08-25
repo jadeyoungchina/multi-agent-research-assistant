@@ -113,7 +113,8 @@ def test_build_container_wraps_every_graph_node_and_records_chat_identity(
 
 def test_lifespan_uses_injected_services_without_building_container(monkeypatch) -> None:
     services = ApplicationServices(
-        documents=SimpleNamespace(), research=SimpleNamespace()
+        documents=SimpleNamespace(),
+        research=SimpleNamespace(list_incomplete_ids=lambda: []),
     )
 
     def fail_build():

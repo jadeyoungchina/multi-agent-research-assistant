@@ -11,3 +11,7 @@ class ApplicationServices:
 
 def get_services(request: Request) -> ApplicationServices:
     return request.app.state.services
+
+
+def get_task_manager(request: Request):
+    return request.app.state.run_tasks
