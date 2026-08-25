@@ -1,3 +1,6 @@
+from collections.abc import Sequence as RuntimeSequence
+from math import isfinite
+from numbers import Real
 from time import perf_counter, sleep
 from typing import Any, Sequence, TypeVar
 
@@ -189,4 +192,32 @@ class OpenAICompatibleEmbeddingProvider:
         indexes = [item.index for item in data]
         if len(data) != expected_count or sorted(indexes) != list(range(expected_count)):
             raise ValueError("embedding response indexes do not match inputs")
-        return [item.embedding for item in sorted(data, key=lambda item: item.index)]
+
+        vectors: list[list[float]] = []
+        dimensions: int | None = None
+        for item in sorted(data, key=lambda item: item.index):
+            raw_vector = item.embedding
+            if (
+                not isinstance(raw_vector, RuntimeSequence)
+                or isinstance(raw_vector, (str, bytes))
+                or not raw_vector
+            ):
+                raise ValueError("embedding must be a non-empty sequence")
+
+            vector: list[float] = []
+            for value in raw_vector:
+                if (
+                    isinstance(value, bool)
+                    or not isinstance(value, Real)
+                    or not isfinite(float(value))
+                ):
+                    raise ValueError("embedding values must be finite real numbers")
+                vector.append(float(value))
+
+            if dimensions is None:
+                dimensions = len(vector)
+            elif len(vector) != dimensions:
+                raise ValueError("embedding dimensions must be consistent")
+            vectors.append(vector)
+
+        return vectors
