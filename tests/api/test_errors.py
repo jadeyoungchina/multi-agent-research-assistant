@@ -3,6 +3,7 @@ from typing import Annotated
 import pytest
 from fastapi import Query
 from pydantic import BaseModel, field_validator
+from pydantic_core import PydanticCustomError
 
 from app.domain.errors import DocumentError, ProviderError, RetrievalError, WorkflowError
 
@@ -109,6 +110,32 @@ def test_validation_location_cannot_echo_submitted_mapping_key(client) -> None:
 
     assert response.status_code == 422
     assert "sentinel-mapping-key" not in response.text
+
+
+def test_custom_validation_type_cannot_echo_submitted_value(client) -> None:
+    class Payload(BaseModel):
+        value: str
+
+        @field_validator("value")
+        @classmethod
+        def reject_value(cls, value: str) -> str:
+            raise PydanticCustomError(value, "Rejected")
+
+    async def validated(payload: Payload) -> None:
+        return None
+
+    client.app.add_api_route("/custom-validation-type", validated, methods=["POST"])
+
+    response = client.post(
+        "/custom-validation-type",
+        json={"value": "sentinel-submitted-secret"},
+    )
+
+    assert response.status_code == 422
+    error = response.json()["error"]["details"]["errors"][0]
+    assert error["type"] == "validation_error"
+    assert error["message"] == "Invalid value"
+    assert "sentinel-submitted-secret" not in response.text
 
 
 def test_unexpected_error_does_not_leak_exception_text(client) -> None:

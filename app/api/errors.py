@@ -1,5 +1,4 @@
 import logging
-import re
 from typing import Any
 
 from fastapi import FastAPI, Request
@@ -20,7 +19,6 @@ from app.observability import install_redaction_filter, log_event
 
 logger = logging.getLogger(__name__)
 install_redaction_filter(logger)
-_VALIDATION_TYPE_PATTERN = re.compile(r"[a-z0-9_.-]{1,64}\Z")
 _VALIDATION_MESSAGES = {
     "missing": "Field required",
     "int_parsing": "Invalid integer",
@@ -34,6 +32,7 @@ _VALIDATION_MESSAGES = {
     "less_than": "Value is too large",
     "less_than_equal": "Value is too large",
 }
+_SAFE_VALIDATION_TYPES = frozenset({*_VALIDATION_MESSAGES, "value_error"})
 _VALIDATION_LOCATION_ROOTS = frozenset({"body", "query", "path", "header", "cookie"})
 
 
@@ -73,9 +72,9 @@ def _domain_status(exception: DomainError) -> int:
 
 def _safe_validation_type(value: object) -> str:
     candidate = str(value).casefold()
-    if _VALIDATION_TYPE_PATTERN.fullmatch(candidate):
+    if candidate in _SAFE_VALIDATION_TYPES:
         return candidate
-    return "value_error"
+    return "validation_error"
 
 
 def _safe_validation_message(error_type: str) -> str:
