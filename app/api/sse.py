@@ -25,13 +25,15 @@ async def stream_run_events(
     last_sent = monotonic()
     while not await request.is_disconnected():
         events = await run_in_threadpool(service.list_events, run_id, cursor)
+        run = await run_in_threadpool(service.get_run, run_id)
+        if run.status in {"completed", "failed"} and not events:
+            events = await run_in_threadpool(service.list_events, run_id, cursor)
+            if not events:
+                break
         for event in events:
             cursor = event.sequence
             last_sent = monotonic()
             yield encode_sse(event)
-        run = await run_in_threadpool(service.get_run, run_id)
-        if run.status in {"completed", "failed"} and not events:
-            break
         if monotonic() - last_sent >= heartbeat_interval:
             last_sent = monotonic()
             yield b": keep-alive\n\n"

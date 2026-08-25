@@ -154,3 +154,39 @@ def test_event_generator_stops_without_querying_after_disconnect() -> None:
 
     assert asyncio.run(read_events()) == []
     assert calls == ["disconnect"]
+
+
+def test_event_generator_rechecks_events_committed_during_terminal_transition() -> None:
+    class CompletionRaceService(FakeResearchService):
+        def __init__(self) -> None:
+            super().__init__()
+            self.events = []
+            self.run = _run(status="running")
+            self.list_calls = 0
+
+        def list_events(
+            self, run_id: str, after_sequence: int = 0
+        ) -> list[RunEvent]:
+            self.list_calls += 1
+            return [event for event in self.events if event.sequence > after_sequence]
+
+        def get_run(self, run_id: str) -> ResearchRun:
+            if self.list_calls == 1:
+                self.events.append(_event(1))
+                self.run = _run(status="completed")
+            return super().get_run(run_id)
+
+    async def read_events() -> list[bytes]:
+        return [
+            event
+            async for event in stream_run_events(
+                RequestThatStaysConnected(), "run1", CompletionRaceService(), 0, 0, 60
+            )
+        ]
+
+    assert asyncio.run(read_events()) == [encode_sse(_event(1))]
+
+
+class RequestThatStaysConnected:
+    async def is_disconnected(self) -> bool:
+        return False
