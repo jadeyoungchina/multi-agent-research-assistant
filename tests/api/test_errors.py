@@ -2,6 +2,7 @@ from typing import Annotated
 
 import pytest
 from fastapi import Query
+from pydantic import BaseModel, field_validator
 
 from app.domain.errors import DocumentError, ProviderError, RetrievalError, WorkflowError
 
@@ -65,6 +66,49 @@ def test_request_validation_omits_raw_input(client) -> None:
     assert response.json()["error"]["code"] == "validation_error"
     assert response.json()["error"]["message"] == "Request validation failed"
     assert "not-a-number" not in response.text
+
+
+def test_custom_validation_message_cannot_echo_submitted_value(client) -> None:
+    class Payload(BaseModel):
+        value: str
+
+        @field_validator("value")
+        @classmethod
+        def reject_value(cls, value: str) -> str:
+            raise ValueError(f"rejected submitted value: {value}")
+
+    async def validated(payload: Payload) -> None:
+        return None
+
+    client.app.add_api_route("/custom-validation", validated, methods=["POST"])
+
+    response = client.post(
+        "/custom-validation", json={"value": "sentinel-custom-value"}
+    )
+
+    assert response.status_code == 422
+    assert "sentinel-custom-value" not in response.text
+    assert response.json()["error"]["details"]["errors"][0]["message"] == (
+        "Invalid value"
+    )
+
+
+def test_validation_location_cannot_echo_submitted_mapping_key(client) -> None:
+    class Payload(BaseModel):
+        values: dict[int, str]
+
+    async def validated(payload: Payload) -> None:
+        return None
+
+    client.app.add_api_route("/mapping-validation", validated, methods=["POST"])
+
+    response = client.post(
+        "/mapping-validation",
+        json={"values": {"sentinel-mapping-key": "value"}},
+    )
+
+    assert response.status_code == 422
+    assert "sentinel-mapping-key" not in response.text
 
 
 def test_unexpected_error_does_not_leak_exception_text(client) -> None:
