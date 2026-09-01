@@ -67,7 +67,7 @@ def test_missing_corpus_returns_invalid_dataset(tmp_path):
 
 @pytest.mark.parametrize("kind", [
     "absolute_inside_root", "unsupported_suffix", "same_content_alias",
-    "normalized_path_alias", "malformed_pdf",
+    "normalized_path_alias", "malformed_pdf", "oversized",
 ])
 def test_invalid_sources_return_two_before_provider_setup(tmp_path, capsys, monkeypatch, kind):
     from app.evaluation import cli
@@ -76,6 +76,8 @@ def test_invalid_sources_return_two_before_provider_setup(tmp_path, capsys, monk
     corpus.mkdir()
     source = corpus / ("source.exe" if kind == "unsupported_suffix" else "source.pdf" if kind == "malformed_pdf" else "source.md")
     source.write_text("expected phrase", encoding="utf-8")
+    if kind == "oversized":
+        monkeypatch.setenv("MAX_UPLOAD_FILE_BYTES", "14")
     source_files = [str(source.resolve()) if kind == "absolute_inside_root" else source.name]
     if kind == "same_content_alias":
         (corpus / "alias.md").write_bytes(source.read_bytes())
@@ -105,6 +107,27 @@ def test_invalid_sources_return_two_before_provider_setup(tmp_path, capsys, monk
     assert provider_setup_calls == []
     assert not output.exists()
     assert "invalid dataset" in capsys.readouterr().err.casefold()
+
+
+def test_source_exactly_at_configured_size_limit_is_accepted(tmp_path, monkeypatch):
+    from app.evaluation import cli
+
+    monkeypatch.setenv("MAX_UPLOAD_FILE_BYTES", "15")
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    (corpus / "source.md").write_bytes(b"expected phrase")
+    dataset = tmp_path / "cases.jsonl"
+    dataset.write_text(json.dumps({
+        "id": "BENCH-001", "question": "What does the source say?", "source_files": ["source.md"],
+        "expected_evidence": [{"source_file": "source.md", "contains": "expected phrase"}],
+        "answer_key_points": ["Expected phrase."],
+    }), encoding="utf-8")
+    output = tmp_path / "results"
+    assert cli.main([
+        "--dataset", str(dataset), "--corpus", str(corpus), "--provider", "fake",
+        "--variants", "baseline_llm", "--output-dir", str(output),
+    ]) == 0
+    assert len(json.loads((output / "results.json").read_text("utf-8"))["traces"]) == 1
 
 
 def test_provider_setup_value_error_remains_execution_error(tmp_path, monkeypatch, capsys):

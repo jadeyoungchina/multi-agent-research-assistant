@@ -44,7 +44,9 @@ def prepare_benchmark_documents(
     Ingestion costs are shared setup costs, excluded from per-workflow traces.
     Distinct benchmark filenames sharing a document ID are ambiguous and rejected.
     """
-    sources = preflight_benchmark_sources(cases, corpus_dir)
+    sources = preflight_benchmark_sources(
+        cases, corpus_dir, max_upload_file_bytes=document_service.settings.max_upload_file_bytes,
+    )
     sources_by_document: dict[str, str] = {}
     mapping: dict[str, str] = {}
     for filename, source in sources.items():

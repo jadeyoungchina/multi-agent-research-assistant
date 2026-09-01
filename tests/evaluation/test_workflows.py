@@ -225,6 +225,13 @@ def test_prepare_rejects_absolute_source(environment, case):
     assert environment.document_service.ingestions == []
 
 
+def test_prepare_rejects_oversized_source_before_ingestion(environment, case):
+    environment.document_service.settings.max_upload_file_bytes = 8
+    with pytest.raises(ValueError, match="size limit"):
+        prepare_benchmark_documents([case], environment.corpus, environment.document_service)
+    assert environment.document_service.ingestions == []
+
+
 def test_llm_rag_retrieves_only_original_question_and_counts_embedding_metadata(workflow_factory, case, environment):
     workflow, provider, retriever = workflow_factory(WorkflowVariant.LLM_RAG)
     trace = workflow.run(case.id, case.question, case.source_files)
