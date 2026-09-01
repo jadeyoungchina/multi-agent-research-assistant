@@ -1,3 +1,4 @@
+import json
 from types import SimpleNamespace
 from typing import Any
 
@@ -80,6 +81,10 @@ def test_structured_completion_requests_json_schema_without_mutating_messages() 
     assert len(request_messages) == 2
     assert "json" in request_messages[1]["content"].lower()
     assert "evidence_gaps" in request_messages[1]["content"]
+    embedded_schema = request_messages[1]["content"].split(
+        "Pydantic JSON schema: ", maxsplit=1
+    )[1].removesuffix(".")
+    assert json.loads(embedded_schema)["properties"]["sufficient"]["type"] == "boolean"
 
 
 def test_structured_completion_is_validated() -> None:
@@ -154,6 +159,7 @@ def test_structured_retry_appends_schema_repair_without_mutating_messages(
     retry_messages = completions.calls[1]["messages"]
     initial_messages = completions.calls[0]["messages"]
     assert len(initial_messages) == 3
+    assert len(retry_messages) == 3
     assert initial_messages[2] == retry_messages[2]
     assert retry_messages[:2] == [
         {"role": "system", "content": "be exact"},
@@ -162,6 +168,46 @@ def test_structured_retry_appends_schema_repair_without_mutating_messages(
     assert retry_messages[2]["role"] == "user"
     assert "Critique" in retry_messages[2]["content"]
     assert "evidence_gaps" in retry_messages[2]["content"]
+
+
+def test_structured_api_error_retry_reuses_one_json_schema_instruction(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr("app.providers.openai_compatible.sleep", lambda _: None)
+    completions = SequencedCompletions(
+        [
+            APIError("upstream rejected request", request=SimpleNamespace(), body=None),
+            chat_response(VALID_CRITIQUE),
+        ]
+    )
+    provider = OpenAICompatibleChatProvider(
+        client=chat_client(completions),
+        provider_name="dashscope",
+        model="qwen3.7-flash",
+        max_retries=1,
+    )
+    messages = [
+        ChatMessage(role="system", content="be exact"),
+        ChatMessage(role="user", content="review"),
+    ]
+
+    result, metadata = provider.generate_structured(messages, Critique)
+
+    assert result.sufficient is True
+    assert metadata.retries == 1
+    assert messages == [
+        ChatMessage(role="system", content="be exact"),
+        ChatMessage(role="user", content="review"),
+    ]
+    first_attempt, second_attempt = [call["messages"] for call in completions.calls]
+    assert len(first_attempt) == len(second_attempt) == 3
+    assert first_attempt[:2] == second_attempt[:2] == [
+        {"role": "system", "content": "be exact"},
+        {"role": "user", "content": "review"},
+    ]
+    assert first_attempt[2] == second_attempt[2]
+    assert "json" in first_attempt[2]["content"].lower()
+    assert "evidence_gaps" in first_attempt[2]["content"]
 
 
 def test_invalid_structured_response_has_safe_stable_error(
