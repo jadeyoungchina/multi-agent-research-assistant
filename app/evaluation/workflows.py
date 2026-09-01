@@ -42,6 +42,7 @@ def prepare_benchmark_documents(
 
     This setup step reads source_files only. Gold expectations are evaluator-owned.
     Ingestion costs are shared setup costs, excluded from per-workflow traces.
+    Distinct benchmark filenames sharing a document ID are ambiguous and rejected.
     """
     root = corpus_dir.resolve()
     sources: dict[str, tuple[Path, str]] = {}
@@ -65,6 +66,7 @@ def prepare_benchmark_documents(
             sources[filename] = (path, supported[0])
 
     documents_by_path: dict[Path, str] = {}
+    sources_by_document: dict[str, str] = {}
     mapping: dict[str, str] = {}
     for filename, (path, media_type) in sources.items():
         if path not in documents_by_path:
@@ -72,7 +74,11 @@ def prepare_benchmark_documents(
             if document.status != "ready":
                 raise WorkflowError("document_not_ready", "benchmark document is not ready")
             documents_by_path[path] = document.id
-        mapping[filename] = documents_by_path[path]
+        document_id = documents_by_path[path]
+        if document_id in sources_by_document:
+            raise ValueError("ambiguous benchmark source filenames share one document ID")
+        sources_by_document[document_id] = filename
+        mapping[filename] = document_id
     return mapping
 
 
@@ -114,12 +120,14 @@ def _add_metadata(trace: EvaluationTrace, metadata: ProviderMetadata) -> None:
     trace.model = _safe_identifier(metadata.model)
 
 
-def _snapshots(evidence: list[EvidenceChunk]) -> list[EvidenceSnapshot]:
+def _snapshots(
+    evidence: list[EvidenceChunk], sources_by_document: Mapping[str, str],
+) -> list[EvidenceSnapshot]:
     snapshots: dict[str, EvidenceSnapshot] = {}
     for item in evidence:
         if item.id not in snapshots:
             snapshots[item.id] = EvidenceSnapshot(
-                id=item.id, source_file=item.filename, page_number=item.page_number,
+                id=item.id, source_file=sources_by_document[item.document_id], page_number=item.page_number,
                 chunk_index=item.chunk_index, text=item.content,
             )
     return list(snapshots.values())
@@ -133,8 +141,9 @@ def _validate_citations(trace: EvaluationTrace) -> None:
 def _grounded_messages(question: str, evidence: list[EvidenceChunk]) -> list[ChatMessage]:
     return [
         ChatMessage(role="system", content=(
-            "Answer using only the supplied evidence. Return answer_markdown and "
-            "cited_evidence_ids containing only supplied Evidence IDs. State limitations "
+            "Answer using only the supplied evidence. Return a JSON object with "
+            "answer_markdown (string) and cited_evidence_ids (array of strings) "
+            "containing only supplied Evidence IDs. State limitations "
             "when evidence is absent or conflicting. Never invent source details."
         )),
         ChatMessage(role="user", content=(
@@ -181,6 +190,9 @@ class BaselineLlmWorkflow(_Workflow):
 class _DocumentWorkflow(_Workflow):
     def __init__(self, document_mapping: Mapping[str, str]) -> None:
         self._document_mapping = dict(document_mapping)
+        self._sources_by_document = {
+            document_id: filename for filename, document_id in self._document_mapping.items()
+        }
 
     def _document_ids(self, source_files: list[str]) -> list[str]:
         try:
@@ -213,7 +225,7 @@ class LlmRagWorkflow(_DocumentWorkflow):
         batch = self.retriever.retrieve(question, expansions, document_ids, self.top_k)
         for metadata in batch.provider_metrics:
             _add_metadata(trace, metadata)
-        trace.retrieved_evidence = _snapshots(batch.evidence)
+        trace.retrieved_evidence = _snapshots(batch.evidence, self._sources_by_document)
         answer, metadata = self.provider.generate_structured(
             _grounded_messages(question, batch.evidence), GroundedAnswer,
         )
@@ -230,7 +242,7 @@ class SingleAgentRagWorkflow(LlmRagWorkflow):
         plan, metadata = self.provider.generate_structured([
             ChatMessage(role="system", content=(
                 "Expand the question into one to five focused search queries. "
-                "Return a queries list."
+                "Return a JSON object with a queries array containing one to five strings."
             )),
             ChatMessage(role="user", content=question),
         ], QueryPlan)
@@ -266,9 +278,10 @@ class MultiAgentRagWorkflow(_DocumentWorkflow):
             stored = service.get_run(run.id)
             _copy_run_metadata(trace, stored)
             state = service.runs.get_state(run.id)
-            trace.retrieved_evidence = _snapshots([
-                EvidenceChunk.model_validate(item) for item in state.get("evidence", [])
-            ])
+            trace.retrieved_evidence = _snapshots(
+                [EvidenceChunk.model_validate(item) for item in state.get("evidence", [])],
+                self._sources_by_document,
+            )
         report = service.get_report(run.id)
         if report is None:
             raise WorkflowError("report_not_persisted", "research report was not persisted")
