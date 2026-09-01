@@ -46,8 +46,11 @@ class EvaluationTrace(BaseModel):
     latency_ms: int = Field(ge=0)
     prompt_tokens: int = Field(ge=0)
     completion_tokens: int = Field(ge=0)
+    total_tokens: int = Field(default=0, ge=0)
     model_calls: int = Field(ge=0)
+    retry_count: int = Field(default=0, ge=0)
     critic_loops: int = Field(ge=0)
+    evidence_sufficient: bool | None = None
     provider: str
     model: str
     error_code: str | None = None
