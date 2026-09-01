@@ -55,6 +55,17 @@ class OpenAICompatibleChatProvider:
     ) -> tuple[str, ProviderMetadata]:
         started = perf_counter()
         request_messages = list(messages)
+        schema_instruction: ChatMessage | None = None
+        if schema is not None:
+            schema_instruction = ChatMessage(
+                role="user",
+                content=(
+                    "Return only a JSON object matching the "
+                    f"{schema.__name__} Pydantic JSON schema: "
+                    f"{schema.model_json_schema()}."
+                ),
+            )
+            request_messages.append(schema_instruction)
         failure_code = "provider_request_failed"
         last_error: Exception | None = None
 
@@ -69,18 +80,8 @@ class OpenAICompatibleChatProvider:
                 last_error = exc
                 failure_code = "provider_invalid_response"
                 if attempt < self.max_retries:
-                    if schema is not None:
-                        request_messages = [
-                            *messages,
-                            ChatMessage(
-                                role="user",
-                                content=(
-                                    "Return valid JSON matching the "
-                                    f"{schema.__name__} schema: "
-                                    f"{schema.model_json_schema()}."
-                                ),
-                            ),
-                        ]
+                    if schema_instruction is not None:
+                        request_messages = [*messages, schema_instruction]
                     sleep(0.25 * (2**attempt))
             except (APITimeoutError, TimeoutError) as exc:
                 last_error = exc

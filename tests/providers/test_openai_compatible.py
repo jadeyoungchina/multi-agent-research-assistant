@@ -43,6 +43,45 @@ def chat_client(completions: SequencedCompletions) -> SimpleNamespace:
     return SimpleNamespace(chat=SimpleNamespace(completions=completions))
 
 
+class JsonRequiredCompletions:
+    """Fake JSON-mode API that enforces its request-content contract."""
+
+    def __init__(self, response: SimpleNamespace) -> None:
+        self.response = response
+        self.calls: list[dict[str, Any]] = []
+
+    def create(self, **kwargs: Any) -> SimpleNamespace:
+        self.calls.append(kwargs)
+        prompt = "\n".join(message["content"] for message in kwargs["messages"])
+        if (
+            kwargs.get("response_format") == {"type": "json_object"}
+            and "json" not in prompt.lower()
+        ):
+            raise APIError("JSON mode requires an explicit JSON instruction", request=SimpleNamespace(), body=None)
+        return self.response
+
+
+def test_structured_completion_requests_json_schema_without_mutating_messages() -> None:
+    completions = JsonRequiredCompletions(chat_response(VALID_CRITIQUE))
+    provider = OpenAICompatibleChatProvider(
+        client=chat_client(completions),
+        provider_name="dashscope",
+        model="qwen3.7-flash",
+        max_retries=0,
+    )
+    messages = [ChatMessage(role="user", content="review")]
+
+    result, _ = provider.generate_structured(messages, Critique)
+
+    assert result.sufficient is True
+    assert messages == [ChatMessage(role="user", content="review")]
+    request_messages = completions.calls[0]["messages"]
+    assert request_messages[:1] == [{"role": "user", "content": "review"}]
+    assert len(request_messages) == 2
+    assert "json" in request_messages[1]["content"].lower()
+    assert "evidence_gaps" in request_messages[1]["content"]
+
+
 def test_structured_completion_is_validated() -> None:
     completions = SequencedCompletions([chat_response(VALID_CRITIQUE)])
     provider = OpenAICompatibleChatProvider(
@@ -60,14 +99,13 @@ def test_structured_completion_is_validated() -> None:
     assert metadata.provider == "dashscope"
     assert metadata.model == "qwen3.7-flash"
     assert metadata.usage.total_tokens == 15
-    assert completions.calls == [
-        {
-            "model": "qwen3.7-flash",
-            "messages": [{"role": "user", "content": "review"}],
-            "temperature": 0,
-            "response_format": {"type": "json_object"},
-        }
-    ]
+    request = completions.calls[0]
+    assert request["model"] == "qwen3.7-flash"
+    assert request["messages"][:1] == [{"role": "user", "content": "review"}]
+    assert len(request["messages"]) == 2
+    assert "json" in request["messages"][1]["content"].lower()
+    assert request["temperature"] == 0
+    assert request["response_format"] == {"type": "json_object"}
 
 
 def test_chat_retries_twice_before_success(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -114,6 +152,9 @@ def test_structured_retry_appends_schema_repair_without_mutating_messages(
         ChatMessage(role="user", content="review"),
     ]
     retry_messages = completions.calls[1]["messages"]
+    initial_messages = completions.calls[0]["messages"]
+    assert len(initial_messages) == 3
+    assert initial_messages[2] == retry_messages[2]
     assert retry_messages[:2] == [
         {"role": "system", "content": "be exact"},
         {"role": "user", "content": "review"},
