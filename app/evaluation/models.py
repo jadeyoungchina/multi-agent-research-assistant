@@ -2,7 +2,7 @@
 
 from enum import StrEnum
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class WorkflowVariant(StrEnum):
@@ -13,11 +13,15 @@ class WorkflowVariant(StrEnum):
 
 
 class EvidenceExpectation(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+
     source_file: str
     contains: str = Field(min_length=1)
 
 
 class BenchmarkCase(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+
     id: str = Field(pattern=r"^BENCH-\d{3}$")
     question: str = Field(min_length=3)
     source_files: list[str] = Field(min_length=1)

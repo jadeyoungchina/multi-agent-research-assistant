@@ -38,6 +38,8 @@ def validate_benchmark_corpus(cases: list[BenchmarkCase], corpus_dir: Path) -> N
     contents: dict[str, str] = {}
 
     def read_source(source_file: str) -> str:
+        if ".." in Path(source_file).parts:
+            raise ValueError(f"benchmark source path contains parent component: {source_file}")
         source_path = (corpus_root / source_file).resolve()
         try:
             source_path.relative_to(corpus_root)

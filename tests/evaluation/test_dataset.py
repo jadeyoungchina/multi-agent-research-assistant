@@ -70,8 +70,32 @@ def test_corpus_validation_rejects_path_escape(tmp_path: Path) -> None:
     )
     cases = load_benchmark_cases(case_path)
 
-    with pytest.raises(ValueError, match="escapes"):
+    with pytest.raises(ValueError, match="parent|escapes"):
         validate_benchmark_corpus(cases, tmp_path / "corpus")
+
+
+def test_corpus_validation_rejects_parent_component_inside_corpus(tmp_path: Path) -> None:
+    """Parent path components are invalid even when normalization stays in the corpus."""
+    corpus_dir = tmp_path / "corpus"
+    corpus_dir.mkdir()
+    (corpus_dir / "solar-storage.md").write_text("expected phrase", encoding="utf-8")
+    source_file = "subdir/../solar-storage.md"
+    case_path = tmp_path / "case.jsonl"
+    case_path.write_text(
+        json.dumps(
+            {
+                "id": "BENCH-001",
+                **_VALID_CASE_FIELDS,
+                "source_files": [source_file],
+                "expected_evidence": [{"source_file": source_file, "contains": "expected phrase"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    cases = load_benchmark_cases(case_path)
+
+    with pytest.raises(ValueError, match="parent"):
+        validate_benchmark_corpus(cases, corpus_dir)
 
 
 def test_corpus_validation_rejects_missing_source(tmp_path: Path) -> None:
@@ -84,15 +108,46 @@ def test_corpus_validation_rejects_missing_source(tmp_path: Path) -> None:
         validate_benchmark_corpus(cases, tmp_path / "corpus")
 
 
-def test_loader_rejects_blank_answer_key_points_and_excess_critic_loops(tmp_path: Path) -> None:
-    """Evaluation scoring data must be meaningful and use bounded critic settings."""
+def test_loader_rejects_blank_answer_key_points(tmp_path: Path) -> None:
+    """Evaluation scoring data must not use blank answer points."""
     dataset_path = tmp_path / "cases.jsonl"
-    records = [
-        {"id": "BENCH-001", **_VALID_CASE_FIELDS, "answer_key_points": [""]},
-        {"id": "BENCH-002", **_VALID_CASE_FIELDS, "max_critic_loops": 3},
-    ]
-    dataset_path.write_text("\n".join(json.dumps(record) for record in records), encoding="utf-8")
+    dataset_path.write_text(
+        json.dumps({"id": "BENCH-001", **_VALID_CASE_FIELDS, "answer_key_points": [""]}),
+        encoding="utf-8",
+    )
 
-    with pytest.raises(ValueError, match="answer_key_points|max_critic_loops"):
+    with pytest.raises(ValueError, match="answer_key_points"):
         load_benchmark_cases(dataset_path)
 
+
+def test_loader_rejects_excess_critic_loops(tmp_path: Path) -> None:
+    """Evaluation cases must not permit more than two Critic loops."""
+    dataset_path = tmp_path / "cases.jsonl"
+    dataset_path.write_text(
+        json.dumps({"id": "BENCH-001", **_VALID_CASE_FIELDS, "max_critic_loops": 3}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="max_critic_loops"):
+        load_benchmark_cases(dataset_path)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "value", "message"),
+    [
+        ("unexpected_evaluator_field", True, "extra_forbidden"),
+        ("max_critic_loops", "2", "int_type"),
+    ],
+)
+def test_loader_rejects_unknown_fields_and_coerced_types(
+    tmp_path: Path, field_name: str, value: object, message: str
+) -> None:
+    """Strict evaluator records reject undeclared fields and type coercion."""
+    dataset_path = tmp_path / "cases.jsonl"
+    dataset_path.write_text(
+        json.dumps({"id": "BENCH-001", **_VALID_CASE_FIELDS, field_name: value}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match=message):
+        load_benchmark_cases(dataset_path)
