@@ -1,3 +1,4 @@
+import json
 from collections.abc import Sequence as RuntimeSequence
 from math import isfinite
 from numbers import Real
@@ -62,7 +63,7 @@ class OpenAICompatibleChatProvider:
                 content=(
                     "Return only a JSON object matching the "
                     f"{schema.__name__} Pydantic JSON schema: "
-                    f"{schema.model_json_schema()}."
+                    f"{json.dumps(schema.model_json_schema())}."
                 ),
             )
             request_messages.append(schema_instruction)
