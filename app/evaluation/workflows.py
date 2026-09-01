@@ -1,7 +1,7 @@
 """Comparable workflow adapters; benchmark gold targets never enter a run."""
 
 from collections.abc import Mapping, Sequence
-from pathlib import Path, PureWindowsPath
+from pathlib import Path
 import re
 from time import perf_counter
 from typing import Protocol
@@ -14,10 +14,10 @@ from app.domain.errors import CitationError, DomainError, WorkflowError
 from app.domain.providers import ChatMessage, ChatProvider, ProviderMetadata
 from app.domain.runs import ResearchRun
 from app.retrieval.contracts import EvidenceRetrieverProtocol
-from app.retrieval.loaders import SUPPORTED
 from app.services.documents import DocumentService
 from app.services.research import ResearchService
 
+from .dataset import preflight_benchmark_sources
 from .models import BenchmarkCase, WorkflowVariant
 from .trace import EvaluationTrace, EvidenceSnapshot
 
@@ -44,37 +44,14 @@ def prepare_benchmark_documents(
     Ingestion costs are shared setup costs, excluded from per-workflow traces.
     Distinct benchmark filenames sharing a document ID are ambiguous and rejected.
     """
-    root = corpus_dir.resolve()
-    sources: dict[str, tuple[Path, str]] = {}
-    for case in cases:
-        for filename in case.source_files:
-            if filename in sources:
-                continue
-            relative = Path(filename)
-            windows_path = PureWindowsPath(filename)
-            if (
-                relative.is_absolute() or windows_path.drive or windows_path.root
-                or ".." in relative.parts or ".." in windows_path.parts
-            ):
-                raise ValueError("benchmark source must be a confined relative path")
-            path = (root / relative).resolve()
-            if not path.is_relative_to(root) or not path.is_file():
-                raise ValueError("benchmark source must be an existing file under corpus root")
-            supported = SUPPORTED.get(path.suffix.casefold())
-            if supported is None:
-                raise ValueError("unsupported benchmark document type")
-            sources[filename] = (path, supported[0])
-
-    documents_by_path: dict[Path, str] = {}
+    sources = preflight_benchmark_sources(cases, corpus_dir)
     sources_by_document: dict[str, str] = {}
     mapping: dict[str, str] = {}
-    for filename, (path, media_type) in sources.items():
-        if path not in documents_by_path:
-            document = document_service.ingest(filename, media_type, path.read_bytes())
-            if document.status != "ready":
-                raise WorkflowError("document_not_ready", "benchmark document is not ready")
-            documents_by_path[path] = document.id
-        document_id = documents_by_path[path]
+    for filename, source in sources.items():
+        document = document_service.ingest(filename, source.media_type, source.content)
+        if document.status != "ready":
+            raise WorkflowError("document_not_ready", "benchmark document is not ready")
+        document_id = document.id
         if document_id in sources_by_document:
             raise ValueError("ambiguous benchmark source filenames share one document ID")
         sources_by_document[document_id] = filename
