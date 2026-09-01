@@ -1,12 +1,14 @@
 """Normalized, evaluator-owned workflow traces."""
 
 # Adapted from trace_based_agent_evaluation.ipynb cells 5, 9, 13, 15, 19.
+# Source commit: 4c95ae14cc2462c442b5c064cccd74430d02bc46.
 # Changes: gold expectations stay evaluator-only; latency is measured externally;
 # retrieval, citation, answer coverage, token, loop, and error metrics are added.
+# License: THIRD_PARTY_LICENSES/GenAI_Agents-LICENSE.txt.
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .models import WorkflowVariant
 
@@ -16,11 +18,18 @@ class EvidenceSnapshot(BaseModel):
 
     model_config = ConfigDict(extra="forbid", strict=True)
 
-    id: str
+    id: str = Field(min_length=1)
     source_file: str
-    page_number: int | None
-    chunk_index: int
+    page_number: int | None = Field(ge=1)
+    chunk_index: int = Field(ge=0)
     text: str
+
+    @field_validator("id")
+    @classmethod
+    def id_must_not_be_blank(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("evidence id must not be blank")
+        return value
 
 
 class EvaluationTrace(BaseModel):
@@ -42,6 +51,16 @@ class EvaluationTrace(BaseModel):
     provider: str
     model: str
     error_code: str | None = None
+
+    @field_validator("retrieved_evidence")
+    @classmethod
+    def retrieved_evidence_ids_must_be_unique(
+        cls, evidence: list[EvidenceSnapshot]
+    ) -> list[EvidenceSnapshot]:
+        ids = [snapshot.id for snapshot in evidence]
+        if len(ids) != len(set(ids)):
+            raise ValueError("retrieved evidence IDs must be unique")
+        return evidence
 
     @classmethod
     def failed(cls, case_id: str, variant: WorkflowVariant, error_code: str) -> "EvaluationTrace":
