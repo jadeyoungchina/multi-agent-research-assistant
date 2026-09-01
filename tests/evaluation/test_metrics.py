@@ -1,3 +1,8 @@
+from pathlib import Path
+
+import pytest
+
+from app.evaluation.dataset import load_benchmark_cases
 from app.evaluation.metrics import aggregate_scores, score_case
 from app.evaluation.models import BenchmarkCase, WorkflowVariant
 from app.evaluation.trace import EvaluationTrace, EvidenceSnapshot
@@ -124,6 +129,39 @@ def test_cjk_characters_contribute_individually_to_token_f1() -> None:
 
     assert score.answer_key_point_f1 == 0.8
     assert score.answer_key_point_coverage == 1.0
+
+
+@pytest.mark.parametrize("case_id", ["BENCH-007", "BENCH-030"])
+def test_exact_decimal_benchmark_answers_score_full_f1(case_id: str) -> None:
+    """A decimal point inside a number must not split an otherwise exact answer sentence."""
+    cases = {case.id: case for case in load_benchmark_cases(Path("benchmarks/cases.jsonl"))}
+    case = cases[case_id]
+    trace = EvaluationTrace(
+        case_id=case.id,
+        variant=WorkflowVariant.BASELINE_LLM,
+        status="success",
+        answer=" ".join(case.answer_key_points),
+        latency_ms=0,
+        prompt_tokens=0,
+        completion_tokens=0,
+        model_calls=0,
+        critic_loops=0,
+        provider="fake",
+        model="fake-1",
+    )
+
+    score = score_case(case, trace)
+
+    assert score.answer_key_point_f1 == 1.0
+    assert score.answer_key_point_coverage == 1.0
+
+
+def test_score_case_rejects_trace_for_a_different_benchmark_case() -> None:
+    """Relabeling a trace with another case ID would corrupt per-case aggregates."""
+    trace = _trace().model_copy(update={"case_id": "BENCH-002"})
+
+    with pytest.raises(ValueError, match="case_id"):
+        score_case(_case(), trace)
 
 
 def test_aggregate_scores_keeps_failed_traces_and_uses_nearest_rank_latency() -> None:

@@ -1,8 +1,10 @@
 """Deterministic evaluator metrics for normalized workflow traces."""
 
 # Adapted from trace_based_agent_evaluation.ipynb cells 5, 9, 13, 15, 19.
+# Source commit: 4c95ae14cc2462c442b5c064cccd74430d02bc46.
 # Changes: project metrics use evaluator-owned evidence and answer targets,
 # CJK-aware token F1, and workflow-normalized cost fields.
+# License: THIRD_PARTY_LICENSES/GenAI_Agents-LICENSE.txt.
 
 from collections import Counter
 from math import ceil
@@ -15,7 +17,7 @@ from .trace import EvaluationTrace, EvidenceSnapshot
 
 
 _TOKEN_PATTERN = re.compile(r"[\u3400-\u9fff\uf900-\ufaff]|[a-z0-9]+")
-_SENTENCE_BOUNDARY_PATTERN = re.compile(r"[.!?\u3002\uff01\uff1f]+")
+_SENTENCE_BOUNDARY_PATTERN = re.compile(r"(?<!\d)\.|\.(?!\d)|[!?\u3002\uff01\uff1f]+")
 
 
 class CaseScore(BaseModel):
@@ -67,6 +69,8 @@ class AggregateMetrics(BaseModel):
 
 def score_case(case: BenchmarkCase, trace: EvaluationTrace) -> CaseScore:
     """Score one normalized trace without ever handing benchmark targets to a workflow."""
+    if trace.case_id != case.id:
+        raise ValueError(f"trace case_id {trace.case_id!r} does not match benchmark case {case.id!r}")
     success = trace.status == "success"
     if success:
         retrieval_recall_at_5 = _retrieval_recall_at_5(case.expected_evidence, trace.retrieved_evidence)
