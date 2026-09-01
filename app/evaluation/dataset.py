@@ -46,7 +46,7 @@ class BenchmarkSource:
 
 
 def preflight_benchmark_sources(
-    cases: Sequence[BenchmarkCase], corpus_dir: Path,
+    cases: Sequence[BenchmarkCase], corpus_dir: Path, *, max_upload_file_bytes: int | None,
 ) -> dict[str, BenchmarkSource]:
     """Validate source-only inputs before any provider setup or ingestion.
 
@@ -75,7 +75,10 @@ def preflight_benchmark_sources(
             supported = SUPPORTED.get(path.suffix.casefold())
             if supported is None:
                 raise ValueError("unsupported benchmark document type")
-            content = path.read_bytes()
+            with path.open("rb") as source:
+                content = source.read(max_upload_file_bytes + 1 if max_upload_file_bytes is not None else -1)
+            if max_upload_file_bytes is not None and len(content) > max_upload_file_bytes:
+                raise ValueError("benchmark source exceeds configured size limit")
             digest = sha256(content).hexdigest()
             if digest in filenames_by_digest:
                 raise ValueError("ambiguous benchmark source filenames share identical content")
@@ -88,9 +91,11 @@ def preflight_benchmark_sources(
     return sources
 
 
-def validate_benchmark_corpus(cases: list[BenchmarkCase], corpus_dir: Path) -> None:
+def validate_benchmark_corpus(
+    cases: list[BenchmarkCase], corpus_dir: Path, *, max_upload_file_bytes: int | None = None,
+) -> None:
     """Preflight all sources, then validate evaluator-owned evidence expectations."""
-    sources = preflight_benchmark_sources(cases, corpus_dir)
+    sources = preflight_benchmark_sources(cases, corpus_dir, max_upload_file_bytes=max_upload_file_bytes)
 
     for case in cases:
         declared_sources = set(case.source_files)

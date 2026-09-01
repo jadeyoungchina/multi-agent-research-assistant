@@ -103,24 +103,26 @@ def _build_workflows(
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
-        cases = load_benchmark_cases(args.dataset)
-        if not cases:
-            raise ValueError("benchmark dataset is empty")
-        validate_benchmark_corpus(cases, args.corpus)
-    except (OSError, ValueError):
-        print("Invalid dataset: check JSONL cases and corpus evidence files.", file=sys.stderr)
-        return 2
-    try:
+        settings = Settings(
+            _env_file=None if args.provider == "fake" else ".env",
+            chat_provider=args.provider, embedding_provider=args.provider,
+            retrieval_top_k=5, max_revision_iterations=2,
+            **({"retrieval_min_similarity": -1.0} if args.provider == "fake" else {}),
+        )
+        try:
+            cases = load_benchmark_cases(args.dataset)
+            if not cases:
+                raise ValueError("benchmark dataset is empty")
+            validate_benchmark_corpus(cases, args.corpus, max_upload_file_bytes=settings.max_upload_file_bytes)
+        except (OSError, ValueError):
+            print("Invalid dataset: check JSONL cases and corpus evidence files.", file=sys.stderr)
+            return 2
         # Disposable database/uploads prevent benchmark runs from touching application data.
         with TemporaryDirectory(prefix="research-evaluation-") as temporary, ExitStack() as resources:
             root = Path(temporary)
-            settings = Settings(
-                _env_file=None if args.provider == "fake" else ".env",
-                chat_provider=args.provider, embedding_provider=args.provider,
-                data_dir=root, upload_dir=root / "uploads", database_path=root / "evaluation.db",
-                retrieval_top_k=5, max_revision_iterations=2,
-                **({"retrieval_min_similarity": -1.0} if args.provider == "fake" else {}),
-            )
+            settings = settings.model_copy(update={
+                "data_dir": root, "upload_dir": root / "uploads", "database_path": root / "evaluation.db",
+            })
             workflows = _build_workflows(settings, cases, args.corpus, args.variants, resources)
             report = evaluate_benchmark(
                 cases, workflows, corpus_dir=args.corpus, settings=settings, dataset_path=args.dataset,
