@@ -94,6 +94,11 @@ class DemoFakeChatProvider:
         answer = "\n".join(text for _, text in evidence) or "No supplied evidence is available in this offline demonstration."
         return answer, self._metadata()
 
+    @staticmethod
+    def _literal_markdown(text: str) -> str:
+        # Source syntax must not become active citation tokens in the draft.
+        return text.replace("\\", "\\\\").replace("[", "\\[").replace("]", "\\]")
+
     def generate_structured(self, messages: Sequence[ChatMessage], schema: type[T]) -> tuple[T, ProviderMetadata]:
         question = self._question(messages)
         evidence = self._evidence(messages)
@@ -111,7 +116,7 @@ class DemoFakeChatProvider:
                 title="Offline evidence summary", summary="Deterministic extraction of supplied evidence.",
                 findings=[dict(heading="Evidence", narrative=text, evidence_ids=[evidence_id]) for evidence_id, text in evidence],
                 limitations=["Offline extraction demonstrates the pipeline, not real-model research quality."],
-                markdown="\n\n".join(f"{text}\n[[cite:{evidence_id}]]" for evidence_id, text in evidence) or "No supplied evidence.",
+                markdown="\n\n".join(f"{self._literal_markdown(text)}\n[[cite:{evidence_id}]]" for evidence_id, text in evidence) or "No supplied evidence.",
             )
         elif set(schema.model_fields) == {"queries"}:
             payload = dict(queries=[question])

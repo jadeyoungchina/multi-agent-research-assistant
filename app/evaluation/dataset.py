@@ -1,9 +1,15 @@
 """Load and validate the local, synthetic benchmark dataset."""
 
+from collections.abc import Sequence
+from dataclasses import dataclass
+from hashlib import sha256
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 from pydantic import ValidationError
+
+from app.domain.errors import DocumentError
+from app.retrieval.loaders import SUPPORTED, load_document
 
 from .models import BenchmarkCase
 
@@ -32,33 +38,68 @@ def load_benchmark_cases(dataset_path: Path) -> list[BenchmarkCase]:
     return cases
 
 
-def validate_benchmark_corpus(cases: list[BenchmarkCase], corpus_dir: Path) -> None:
-    """Ensure all local evidence files and expected phrases stay within the corpus."""
-    corpus_root = corpus_dir.resolve()
-    contents: dict[str, str] = {}
+@dataclass(frozen=True)
+class BenchmarkSource:
+    media_type: str
+    content: bytes
+    text: str
 
-    def read_source(source_file: str) -> str:
-        if ".." in Path(source_file).parts:
-            raise ValueError(f"benchmark source path contains parent component: {source_file}")
-        source_path = (corpus_root / source_file).resolve()
-        try:
-            source_path.relative_to(corpus_root)
-        except ValueError as error:
-            raise ValueError(f"benchmark source path escapes corpus root: {source_file}") from error
-        if not source_path.is_file():
-            raise ValueError(f"benchmark source does not exist: {source_file}")
-        return contents.setdefault(source_file, source_path.read_text(encoding="utf-8").casefold())
+
+def preflight_benchmark_sources(
+    cases: Sequence[BenchmarkCase], corpus_dir: Path,
+) -> dict[str, BenchmarkSource]:
+    """Validate source-only inputs before any provider setup or ingestion.
+
+    Content hashes follow DocumentService deduplication: distinct filenames for
+    identical bytes would share a document ID and cannot represent distinct sources.
+    No expected evidence or answer targets are inspected here.
+    """
+    root = corpus_dir.resolve()
+    sources: dict[str, BenchmarkSource] = {}
+    filenames_by_digest: dict[str, str] = {}
+    for case in cases:
+        for filename in case.source_files:
+            if filename in sources:
+                continue
+            relative = Path(filename)
+            windows_path = PureWindowsPath(filename)
+            if ".." in relative.parts or ".." in windows_path.parts:
+                raise ValueError("benchmark source path contains parent component")
+            if relative.is_absolute() or windows_path.drive or windows_path.root:
+                raise ValueError("benchmark source must be a confined relative path")
+            path = (root / relative).resolve()
+            if not path.is_relative_to(root):
+                raise ValueError("benchmark source path escapes corpus root")
+            if not path.is_file():
+                raise ValueError("benchmark source does not exist")
+            supported = SUPPORTED.get(path.suffix.casefold())
+            if supported is None:
+                raise ValueError("unsupported benchmark document type")
+            content = path.read_bytes()
+            digest = sha256(content).hexdigest()
+            if digest in filenames_by_digest:
+                raise ValueError("ambiguous benchmark source filenames share identical content")
+            filenames_by_digest[digest] = filename
+            try:
+                pages = load_document(content, filename, supported[0])
+            except DocumentError as error:
+                raise ValueError("benchmark source could not be parsed") from error
+            sources[filename] = BenchmarkSource(supported[0], content, "\n".join(page.text for page in pages))
+    return sources
+
+
+def validate_benchmark_corpus(cases: list[BenchmarkCase], corpus_dir: Path) -> None:
+    """Preflight all sources, then validate evaluator-owned evidence expectations."""
+    sources = preflight_benchmark_sources(cases, corpus_dir)
 
     for case in cases:
         declared_sources = set(case.source_files)
-        for source_file in declared_sources:
-            read_source(source_file)
         for expectation in case.expected_evidence:
             if expectation.source_file not in declared_sources:
                 raise ValueError(
                     f"expected evidence source is not declared by {case.id}: {expectation.source_file}"
                 )
-            if expectation.contains.casefold() not in read_source(expectation.source_file):
+            if expectation.contains.casefold() not in sources[expectation.source_file].text.casefold():
                 raise ValueError(
                     f"expected phrase not found for {case.id} in {expectation.source_file}: "
                     f"{expectation.contains}"

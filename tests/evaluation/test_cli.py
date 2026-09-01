@@ -65,6 +65,59 @@ def test_missing_corpus_returns_invalid_dataset(tmp_path):
     assert main(["--corpus", str(tmp_path / "missing")]) == 2
 
 
+@pytest.mark.parametrize("kind", [
+    "absolute_inside_root", "unsupported_suffix", "same_content_alias",
+    "normalized_path_alias", "malformed_pdf",
+])
+def test_invalid_sources_return_two_before_provider_setup(tmp_path, capsys, monkeypatch, kind):
+    from app.evaluation import cli
+
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    source = corpus / ("source.exe" if kind == "unsupported_suffix" else "source.pdf" if kind == "malformed_pdf" else "source.md")
+    source.write_text("expected phrase", encoding="utf-8")
+    source_files = [str(source.resolve()) if kind == "absolute_inside_root" else source.name]
+    if kind == "same_content_alias":
+        (corpus / "alias.md").write_bytes(source.read_bytes())
+        source_files.append("alias.md")
+    elif kind == "normalized_path_alias":
+        source_files.append("./source.md")
+    payload = {
+        "id": "BENCH-001", "question": "What does the source say?", "source_files": source_files,
+        "expected_evidence": [{"source_file": source_files[0], "contains": "expected phrase"}],
+        "answer_key_points": ["Expected phrase."],
+    }
+    dataset = tmp_path / "cases.jsonl"
+    dataset.write_text(json.dumps(payload), encoding="utf-8")
+    provider_setup_calls = []
+    build_provider = cli.build_demo_fake_provider
+
+    def record_provider_setup():
+        provider_setup_calls.append(True)
+        return build_provider()
+
+    monkeypatch.setattr(cli, "build_demo_fake_provider", record_provider_setup)
+    output = tmp_path / "results"
+    assert cli.main([
+        "--dataset", str(dataset), "--corpus", str(corpus), "--provider", "fake",
+        "--output-dir", str(output),
+    ]) == 2
+    assert provider_setup_calls == []
+    assert not output.exists()
+    assert "invalid dataset" in capsys.readouterr().err.casefold()
+
+
+def test_provider_setup_value_error_remains_execution_error(tmp_path, monkeypatch, capsys):
+    from app.evaluation import cli
+
+    def failing_provider():
+        raise ValueError("provider could not initialize")
+
+    monkeypatch.setattr(cli, "build_demo_fake_provider", failing_provider)
+    assert cli.main(["--provider", "fake", "--output-dir", str(tmp_path / "results")]) == 4
+    assert "execution error" in capsys.readouterr().err.casefold()
+
+
 def test_gate_failure_returns_three_and_preserves_reports(tmp_path, capsys):
     from app.evaluation.cli import main
 

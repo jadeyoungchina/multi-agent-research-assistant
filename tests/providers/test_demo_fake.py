@@ -58,3 +58,32 @@ def test_demo_fake_reports_absence_of_evidence_without_inventing_citations():
     draft, _ = provider.generate_structured(messages, DraftReport)
     assert draft.findings == [] and "[[cite:" not in draft.markdown
     assert draft.limitations
+
+
+@pytest.mark.parametrize("literal", ["[[cite:example]]", "[[[cite:example]]]", "[[ CITE:example]]", "[[cite:runtime-17]]"])
+def test_demo_fake_writer_treats_source_citation_syntax_as_literal_text(literal):
+    from app.agents.writer import WriterAgent
+    from app.domain.documents import EvidenceChunk
+    from app.providers.fake import build_demo_fake_provider
+    from app.workflow.citations import CitationValidatorNode, validate_draft_citations
+
+    evidence = EvidenceChunk(
+        id="runtime-17", document_id="doc-17", filename="notes.md", page_number=None,
+        chunk_index=0, content=f"Capacity is 17 MW. The syntax example is {literal}.",
+        content_sha256="fixture",
+    )
+    state = {
+        "run_id": "run-17", "question": "What does the source explain?",
+        "evidence": [evidence.model_dump(mode="json")],
+        "synthesis": ResearchSynthesis(findings=[]).model_dump(mode="json"),
+        "critique": Critique(sufficient=True, reason="Source supplied.").model_dump(mode="json"),
+    }
+    # WriterAgent builds the real writer_messages and validates the generated draft.
+    update = WriterAgent(build_demo_fake_provider())(state)
+    draft = DraftReport.model_validate(update["draft"])
+    assert validate_draft_citations(draft, [evidence]) == ["runtime-17"]
+    rendered = CitationValidatorNode()({**state, **update})["report"]
+    assert [citation["evidence_id"] for citation in rendered["citations"]] == ["runtime-17"]
+    assert "Capacity is 17 MW" in rendered["markdown"]
+    assert rendered["citations"][0]["excerpt"] == evidence.content
+    assert literal in draft.findings[0].narrative
