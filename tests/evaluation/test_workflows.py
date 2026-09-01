@@ -2,6 +2,8 @@ from copy import deepcopy
 from pathlib import Path
 from types import SimpleNamespace
 
+import httpx
+from openai import BadRequestError
 import pytest
 
 from app.agents.critic import CriticAgent
@@ -14,6 +16,7 @@ from app.domain.documents import EvidenceChunk
 from app.domain.errors import ProviderError
 from app.domain.providers import ProviderMetadata, TokenUsage
 from app.domain.research import Critique, DraftReport, Finding, ReportFinding, ResearchPlan, ResearchSynthesis
+from app.evaluation.metrics import score_case
 from app.evaluation.models import BenchmarkCase, WorkflowVariant
 from app.evaluation.workflows import (
     BaselineLlmWorkflow,
@@ -25,6 +28,7 @@ from app.evaluation.workflows import (
     prepare_benchmark_documents,
 )
 from app.providers.fake import DeterministicEmbeddingProvider, FakeChatProvider
+from app.providers.openai_compatible import OpenAICompatibleChatProvider
 from app.retrieval.contracts import RetrievalBatch
 from app.retrieval.index import LocalVectorIndex
 from app.retrieval.retriever import EvidenceRetriever
@@ -362,3 +366,73 @@ def test_metadata_identifiers_reject_secrets_and_negative_counts(case):
     assert trace.provider == trace.model == ""
     assert trace.prompt_tokens == trace.completion_tokens == trace.total_tokens == trace.retry_count == 0
     assert "secret" not in trace.model_dump_json()
+
+
+@pytest.mark.parametrize("cls, calls", [(LlmRagWorkflow, 2), (SingleAgentRagWorkflow, 3)])
+def test_structured_adapters_satisfy_real_provider_json_mode_boundary(cls, calls, environment, case):
+    responses = [GroundedAnswer(answer_markdown="12 MW", cited_evidence_ids=[environment.evidence.id])]
+    if cls is SingleAgentRagWorkflow:
+        responses.insert(0, QueryPlan(queries=["capacity"]))
+    responses = iter(responses)
+
+    class JsonRequiredCompletions:
+        def create(self, **kwargs):
+            if kwargs.get("response_format") != {"type": "json_object"} or not any(
+                "json" in message["content"].casefold() for message in kwargs["messages"]
+            ):
+                raise BadRequestError(
+                    "messages must mention JSON when requesting JSON mode",
+                    response=httpx.Response(400, request=httpx.Request("POST", "https://provider.invalid/chat")),
+                    body={"error": "JSON instruction required"},
+                )
+            return SimpleNamespace(
+                model="boundary-chat",
+                choices=[SimpleNamespace(message=SimpleNamespace(content=next(responses).model_dump_json()))],
+                usage=SimpleNamespace(prompt_tokens=10, completion_tokens=3, total_tokens=13),
+            )
+
+    provider = OpenAICompatibleChatProvider(
+        client=SimpleNamespace(chat=SimpleNamespace(completions=JsonRequiredCompletions())),
+        provider_name="fake", model="boundary-chat", max_retries=0,
+    )
+    trace = cls(provider, RecordingRetriever([environment.evidence]), environment.mapping).run(
+        case.id, case.question, case.source_files,
+    )
+    assert trace.status == "success"
+    assert trace.answer == "12 MW" and trace.cited_evidence_ids == [environment.evidence.id]
+    assert trace.model_calls == calls and trace.retry_count == 2
+
+
+@pytest.mark.parametrize("variant", [WorkflowVariant.LLM_RAG, WorkflowVariant.SINGLE_AGENT_RAG, WorkflowVariant.MULTI_AGENT_RAG])
+def test_deduplicated_document_uses_benchmark_filename_for_recall_and_coverage(
+    variant, environment, workflow_factory, case,
+):
+    benchmark_filename = "benchmark-solar.md"
+    (environment.corpus / benchmark_filename).write_bytes(b"The solar capacity is 12 MW.")
+    benchmark = BenchmarkCase(
+        id=case.id, question=case.question, source_files=[benchmark_filename],
+        expected_evidence=[{"source_file": benchmark_filename, "contains": "12 MW"}],
+        answer_key_points=["The solar capacity is 12 MW."],
+    )
+    environment.mapping = prepare_benchmark_documents(
+        [benchmark], environment.corpus, environment.document_service,
+    )
+    document_id = environment.mapping[benchmark_filename]
+    assert environment.documents.get_document(document_id).filename == "solar-storage.md"
+    assert document_id == environment.evidence.document_id
+    workflow, _, _ = workflow_factory(variant)
+    trace = workflow.run(benchmark.id, benchmark.question, benchmark.source_files)
+    score = score_case(benchmark, trace)
+    assert score.retrieval_recall_at_5 == 1.0
+    assert score.evidence_coverage == 1.0
+    assert trace.retrieved_evidence[0].source_file == benchmark_filename
+    assert environment.evidence.filename == "solar-storage.md"
+
+
+@pytest.mark.parametrize("alias", ["same-content.md", "./solar-storage.md"])
+def test_prepare_rejects_ambiguous_benchmark_aliases_for_one_document(environment, case, alias):
+    if alias == "same-content.md":
+        (environment.corpus / alias).write_bytes(b"The solar capacity is 12 MW.")
+    ambiguous = case.model_copy(update={"source_files": ["solar-storage.md", alias]})
+    with pytest.raises(ValueError, match="ambiguous"):
+        prepare_benchmark_documents([ambiguous], environment.corpus, environment.document_service)
