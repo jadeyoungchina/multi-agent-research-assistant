@@ -108,3 +108,84 @@ The EventSource `error` callback intentionally leaves a non-terminal stream
 open so the browser can perform its built-in cursor-based reconnect. It tells
 the user that it is reconnecting; a terminal error is instead represented by a
 workflow `failed` event and final REST status.
+
+## Fix round: async ownership and terminal SSE recovery
+
+### Findings and fixes
+
+- Research creation assigned a run ID only after an asynchronous POST. An old
+  POST response could therefore invoke `openEventStream()` after a newer one,
+  close the newer stream, and later render an old terminal report while the
+  next request was still waiting for its run ID.
+- A monotonic research-submission version now starts before the POST. Every
+  asynchronous creation response/error, workflow callback, terminal result
+  response/error, and final render confirms it still owns the current version
+  before changing the UI.
+- Document refreshes now use their own monotonic version. Only the latest
+  document GET may replace the document data/selection controls or report its
+  loading error.
+- EventSource errors now preserve native reconnect behavior only while
+  `readyState` is `CONNECTING`. A `CLOSED` source is cleared and reconciled
+  through the final REST result. If that result is non-terminal or unavailable,
+  the UI gives an actionable retry message and reveals the retry control.
+
+### Executable browser coverage
+
+`tests/static/test_app_behavior.mjs` is a dependency-free Node VM harness for
+the real `app/static/app.js`. It supplies a minimal DOM, deferred fetch
+promises, and a controllable EventSource implementation. The Python static
+suite invokes it directly, so no npm package, browser framework, or CDN is
+required.
+
+It verifies:
+
+- two research POSTs resolving in reverse order leave the newer stream open;
+- an old final result cannot render while a newer submission is awaiting its
+  own run ID;
+- `CONNECTING` shows a reconnecting state without a final GET, while `CLOSED`
+  fetches and renders a final result;
+- a permanently closed source with only a non-terminal result shows retry;
+- two deferred document refreshes resolving newest-first retain the newer
+  document list.
+
+### RED evidence
+
+```powershell
+.venv\Scripts\python.exe -m pytest tests/static/test_static_ui.py::test_dashboard_browser_async_behavior -v
+```
+
+The first RED run failed as intended against the old ownership behavior:
+
+```text
+AssertionError: an older POST must not close the newer stream
+true !== false
+```
+
+After the ownership fix, the additional terminal-recovery case was introduced
+before its handling code. Its RED result was:
+
+```text
+AssertionError: Expected values to be strictly equal:
+true !== false
+```
+
+The retry control remained hidden for a closed stream whose final REST status
+was still `running`.
+
+### GREEN and final verification
+
+```powershell
+.venv\Scripts\python.exe -m pytest tests/static/test_static_ui.py::test_dashboard_browser_async_behavior -v
+node --check app/static/app.js
+.venv\Scripts\python.exe -m pytest tests/static tests/api -q
+.venv\Scripts\python.exe -m pytest -q
+git diff --check
+```
+
+```text
+1 passed
+JavaScript syntax check exited 0
+66 passed
+412 passed
+No whitespace errors
+```
