@@ -1,7 +1,9 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from app.api.dependencies import ApplicationServices
 from app.api.errors import register_error_handlers
@@ -10,6 +12,9 @@ from app.api.routes import api_router
 from app.api.tasks import RunTaskManager
 from app.bootstrap import ApplicationContainer, build_container
 from app.observability import configure_json_logging
+
+
+_STATIC_DIRECTORY = Path(__file__).resolve().parent / "static"
 
 
 def create_app(
@@ -54,6 +59,11 @@ def create_app(
     application.add_middleware(RequestContextMiddleware)
     register_error_handlers(application)
     application.include_router(api_router)
+    application.mount(
+        "/static",
+        StaticFiles(directory=_STATIC_DIRECTORY),
+        name="static",
+    )
     return application
 
 
