@@ -1,11 +1,10 @@
-from collections.abc import Sequence
-
-from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
 from starlette.datastructures import UploadFile as StarletteUploadFile
 
 from app.api.dependencies import ApplicationServices, get_services
 from app.api.schemas import DocumentResponse, DocumentUploadResponse
+from app.api.uploads import parse_upload_form
 from app.domain.documents import DocumentRecord
 from app.retrieval.loaders import validate_document_type
 
@@ -51,20 +50,38 @@ def _settings(request: Request, services: ApplicationServices) -> object:
     return settings
 
 
-async def _close_uploads(uploads: Sequence[UploadFile]) -> None:
-    for upload in uploads:
-        await upload.close()
-
-
-@router.post("", status_code=201, response_model=DocumentUploadResponse)
+@router.post(
+    "",
+    status_code=201,
+    response_model=DocumentUploadResponse,
+    openapi_extra={
+        "requestBody": {
+            "content": {
+                "multipart/form-data": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "files": {
+                                "type": "array",
+                                "items": {"type": "string", "format": "binary"},
+                            }
+                        },
+                    }
+                }
+            }
+        }
+    },
+)
 async def upload_documents(
     request: Request,
-    files: list[UploadFile | str] = File(default=[]),
     services: ApplicationServices = Depends(get_services),
 ) -> DocumentUploadResponse:
-    submitted = files
-    uploads = [item for item in submitted if isinstance(item, StarletteUploadFile)]
-    try:
+    settings = _settings(request, services)
+    async with parse_upload_form(
+        request, settings.max_upload_file_bytes, settings.max_upload_total_bytes
+    ) as form:
+        submitted = form.getlist("files")
+        uploads = [item for item in submitted if isinstance(item, StarletteUploadFile)]
         if not submitted:
             raise HTTPException(
                 status_code=400, detail={"code": "upload_files_required"}
@@ -72,7 +89,6 @@ async def upload_documents(
         if len(uploads) != len(submitted):
             raise HTTPException(status_code=400, detail={"code": "invalid_filename"})
 
-        settings = _settings(request, services)
         prepared: list[tuple[str, str, bytes]] = []
         accepted_bytes = 0
         for upload in uploads:
@@ -88,8 +104,6 @@ async def upload_documents(
             )
             accepted_bytes += len(content)
             prepared.append((filename, media_type, content))
-    finally:
-        await _close_uploads(uploads)
 
     documents = [
         await run_in_threadpool(services.documents.ingest, filename, media_type, content)

@@ -151,7 +151,9 @@ async function loadDashboard(fetch) {
       createElement: (tagName) => new FakeElement(tagName),
     },
     EventSource: FakeEventSource,
-    FormData: class {},
+    FormData,
+    Blob,
+    File,
     fetch,
     console,
     JSON,
@@ -322,7 +324,46 @@ async function testNewerDocumentRefreshOwnsTheList() {
   assert.doesNotMatch(elements.get("#research-documents").textContent, /old.txt/);
 }
 
+async function testUploadsNormalizeSupportedMimeTypesAndPreserveContents() {
+  let uploaded;
+  const { elements } = await loadDashboard((path, options = {}) => {
+    assert.equal(path, "/api/documents");
+    if (options.method === "POST") {
+      uploaded = options.body;
+      return Promise.resolve(response({ documents: [] }, 201));
+    }
+    return Promise.resolve(response([]));
+  });
+  const cases = [
+    ["notes.md", "", "text/markdown", "# Untyped Markdown"],
+    ["notes.MARKDOWN", "", "text/markdown", "# Uppercase Markdown"],
+    ["generic.md", "application/octet-stream", "text/markdown", "# Generic Markdown"],
+    ["typed.md", "text/markdown", "text/markdown", "# Typed Markdown"],
+    ["paper.pdf", "application/pdf", "application/pdf", "%PDF-1.7"],
+    ["notes.txt", "text/plain", "text/plain", "Plain text"],
+    ["untyped.pdf", "", "application/pdf", "%PDF-1.7"],
+    ["untyped.txt", "", "text/plain", "Untyped text"],
+    ["unsupported.bin", "application/octet-stream", "application/octet-stream", "Unknown"],
+  ];
+  elements.get("#document-input").files = cases.map(([name, type, , content]) =>
+    new File([content], name, { type }),
+  );
+
+  await elements.get("#upload-form").listeners.get("submit")({ preventDefault() {} });
+
+  assert.ok(uploaded instanceof FormData, "the submit handler must send multipart form data");
+  const files = uploaded.getAll("files");
+  assert.equal(files.length, cases.length);
+  for (let index = 0; index < cases.length; index += 1) {
+    const [name, , expectedType, content] = cases[index];
+    assert.equal(files[index].name, name, "normalization must preserve the filename");
+    assert.equal(files[index].type, expectedType, `${name} must be sent with its supported MIME type`);
+    assert.equal(await files[index].text(), content, "normalization must preserve the content");
+  }
+}
+
 await testNewerResearchSubmissionOwnsTheUi();
 await testClosedEventSourceFetchesFinalStatus();
 await testClosedEventSourceWithoutTerminalResultOffersRetry();
 await testNewerDocumentRefreshOwnsTheList();
+await testUploadsNormalizeSupportedMimeTypesAndPreserveContents();
