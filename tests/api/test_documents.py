@@ -5,10 +5,13 @@ from types import SimpleNamespace
 
 import pytest
 from fastapi import HTTPException
+from multipart.exceptions import MultipartParseError
 from starlette import formparsers
+from starlette.requests import Request
 
 from app.api.dependencies import ApplicationServices
 from app.api.routes.documents import read_upload_limited
+from app.api.uploads import parse_upload_form
 from app.domain.documents import DocumentRecord
 
 
@@ -281,6 +284,33 @@ def assert_stream_rejected(result, document_service, code: str) -> None:
     assert document_service.ingest_calls == []
 
 
+def test_malformed_multipart_charset_returns_stable_bad_request(
+    client, document_service
+) -> None:
+    body = multipart_part("files", b"valid", "first.txt") + b"--upload-boundary--\r\n"
+
+    response = client.post(
+        "/api/documents",
+        content=body,
+        headers={
+            "Content-Type": "multipart/form-data; boundary=upload-boundary; charset=undefined",
+            "X-Request-ID": "malformed-charset",
+        },
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "error": {
+            "code": "http_error",
+            "message": "There was an error parsing the body",
+            "request_id": "malformed-charset",
+            "details": {},
+        }
+    }
+    assert response.headers["X-Request-ID"] == "malformed-charset"
+    assert document_service.ingest_calls == []
+
+
 @pytest.mark.parametrize("field_name", ["files", "unexpected"])
 def test_streaming_file_limit_stops_receiving_before_ingesting_any_file(
     client, document_service, field_name
@@ -372,6 +402,40 @@ def upload_handles(monkeypatch):
     yield opened
     for handle in opened:
         handle.close()
+
+
+@pytest.mark.parametrize("error_type", [UnicodeError, MultipartParseError])
+def test_upload_context_preserves_consumer_errors_and_closes_files(
+    upload_handles, error_type
+) -> None:
+    body = (
+        multipart_part("files", b"valid", "first.txt")
+        + multipart_part("ignored", b"small", "ignored.bin")
+        + b"--upload-boundary--\r\n"
+    )
+
+    async def receive():
+        return {"type": "http.request", "body": body, "more_body": False}
+
+    request = Request(
+        {
+            "type": "http",
+            "headers": [(b"content-type", b"multipart/form-data; boundary=upload-boundary")],
+        },
+        receive,
+    )
+    consumer_error = error_type("endpoint failure after parsing")
+
+    async def fail_after_parsing():
+        async with parse_upload_form(request, 1024, 1024):
+            raise consumer_error
+
+    with pytest.raises(Exception) as caught:
+        asyncio.run(fail_after_parsing())
+
+    assert caught.value is consumer_error
+    assert len(upload_handles) == 2
+    assert all(handle.closed for handle in upload_handles)
 
 
 @pytest.mark.parametrize("ending", ["success", "limit", "malformed", "truncated", "disconnect", "cancelled"])

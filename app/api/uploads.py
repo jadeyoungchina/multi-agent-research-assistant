@@ -2,11 +2,10 @@ from collections.abc import AsyncGenerator, AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import HTTPException, Request
-from multipart.exceptions import MultipartParseError
 from multipart.multipart import parse_options_header
 from starlette.datastructures import FormData, Headers
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.formparsers import FormParser, MultiPartException, MultiPartParser
-from starlette.requests import ClientDisconnect
 
 
 async def _limited_stream(request: Request, total_limit: int) -> AsyncGenerator[bytes, None]:
@@ -57,25 +56,30 @@ class _LimitedMultiPartParser(MultiPartParser):
 async def parse_upload_form(
     request: Request, per_file_limit: int, total_limit: int
 ) -> AsyncIterator[FormData]:
-    content_type, _ = parse_options_header(request.headers.get("Content-Type"))
-    stream = _limited_stream(request, total_limit)
     parser = None
     try:
-        if content_type == b"multipart/form-data":
-            parser = _LimitedMultiPartParser(request.headers, stream, per_file_limit)
-            form = await parser.parse()
-            # python-multipart 0.0.9 finalize() does not validate the final boundary.
-            if not parser.complete:
-                raise HTTPException(status_code=400, detail="There was an error parsing the body")
-        elif content_type == b"application/x-www-form-urlencoded":
-            form = await FormParser(request.headers, stream).parse()
-        else:
-            form = FormData()
+        # Match FastAPI's malformed-body handling only during parsing. Exceptions
+        # from the consumer after yield must propagate without being reclassified.
+        try:
+            content_type, _ = parse_options_header(request.headers.get("Content-Type"))
+            stream = _limited_stream(request, total_limit)
+            if content_type == b"multipart/form-data":
+                parser = _LimitedMultiPartParser(request.headers, stream, per_file_limit)
+                form = await parser.parse()
+                # python-multipart 0.0.9 finalize() does not validate the final boundary.
+                if not parser.complete:
+                    raise HTTPException(status_code=400, detail="There was an error parsing the body")
+            elif content_type == b"application/x-www-form-urlencoded":
+                form = await FormParser(request.headers, stream).parse()
+            else:
+                form = FormData()
+        except StarletteHTTPException:
+            raise
+        except MultiPartException as exc:
+            raise HTTPException(status_code=400, detail=exc.message) from exc
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail="There was an error parsing the body") from exc
         yield form
-    except MultiPartException as exc:
-        raise HTTPException(status_code=400, detail=exc.message) from exc
-    except (MultipartParseError, ClientDisconnect) as exc:
-        raise HTTPException(status_code=400, detail="There was an error parsing the body") from exc
     finally:
         if parser is not None:
             parser.close()
