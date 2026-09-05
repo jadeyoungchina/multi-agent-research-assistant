@@ -6,7 +6,7 @@ from pydantic import SecretStr
 from app.config import Settings
 from app.domain.errors import ConfigurationError
 from app.domain.providers import ChatProvider, EmbeddingProvider
-from app.providers.fake import DeterministicEmbeddingProvider, FakeChatProvider
+from app.providers.fake import DeterministicEmbeddingProvider, build_demo_fake_provider
 from app.providers.openai_compatible import (
     OpenAICompatibleChatProvider,
     OpenAICompatibleEmbeddingProvider,
@@ -26,7 +26,7 @@ def _client(api_key: str, base_url: str, timeout: float) -> Any:
 
 def build_chat_provider(settings: Settings) -> ChatProvider:
     if settings.chat_provider == "fake":
-        return FakeChatProvider()
+        return build_demo_fake_provider()
 
     if settings.chat_provider == "dashscope":
         client = _client(
