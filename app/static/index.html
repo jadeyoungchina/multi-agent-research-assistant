@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>多智能体研究助手</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <p class="eyebrow">本地证据研究</p>
+        <h1>多智能体研究助手</h1>
+        <p>上传资料，提出问题，并跟随研究流程获得可追溯的结论。</p>
+      </header>
+
+      <p id="status-message" class="status-message" role="status" aria-live="polite"></p>
+
+      <div class="workspace">
+        <section class="panel documents-panel" aria-labelledby="documents-heading">
+          <div class="section-heading">
+            <p class="eyebrow">第一步</p>
+            <h2 id="documents-heading">研究资料</h2>
+          </div>
+          <form id="upload-form">
+            <label for="document-input">选择文件</label>
+            <input id="document-input" name="files" type="file" multiple accept=".pdf,.md,.markdown,.txt">
+            <button type="submit">上传资料</button>
+          </form>
+          <div id="document-list" aria-live="polite" aria-label="已上传资料"></div>
+        </section>
+
+        <section class="panel research-panel" aria-labelledby="research-heading">
+          <div class="section-heading">
+            <p class="eyebrow">第二步</p>
+            <h2 id="research-heading">开始研究</h2>
+          </div>
+          <form id="research-form">
+            <label for="question-input">研究问题</label>
+            <textarea id="question-input" required minlength="3" maxlength="4000" rows="5" placeholder="例如：这些资料对问题提供了哪些证据？"></textarea>
+            <fieldset>
+              <legend>选择用于研究的资料</legend>
+              <div id="research-documents"></div>
+            </fieldset>
+            <div class="form-actions">
+              <button id="research-submit" type="submit">开始研究</button>
+              <button id="retry-research" type="button" hidden>重试研究</button>
+            </div>
+          </form>
+
+          <section class="progress-section" aria-labelledby="progress-heading">
+            <h3 id="progress-heading">研究进度</h3>
+            <ol id="timeline" aria-live="polite"></ol>
+          </section>
+
+          <article id="report" aria-live="polite" aria-label="研究报告"></article>
+        </section>
+      </div>
+    </main>
+
+    <dialog id="citation-dialog" aria-labelledby="citation-title">
+      <div class="dialog-header">
+        <h2 id="citation-title">引用证据</h2>
+        <button id="citation-close" type="button">关闭</button>
+      </div>
+      <div id="citation-content"></div>
+    </dialog>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
