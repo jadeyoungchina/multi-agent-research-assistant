@@ -133,8 +133,16 @@ async function uploadDocuments(event) {
   }
 
   const formData = new FormData();
+  const mediaTypes = {
+    ".pdf": "application/pdf",
+    ".txt": "text/plain",
+    ".md": "text/markdown",
+    ".markdown": "text/markdown",
+  };
   for (const file of documentInput.files) {
-    formData.append("files", file);
+    const extension = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+    const mediaType = mediaTypes[extension] || file.type;
+    formData.append("files", new Blob([file], { type: mediaType }), file.name);
   }
 
   try {
