@@ -1,0 +1,5 @@
+Synthetic offline evaluation notes
+
+The demo corpus is local-only and contains no credentials, private data, or
+network-dependent claims. Use it to verify upload, retrieval, and citation
+rendering in the product smoke test.

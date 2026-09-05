@@ -4,7 +4,7 @@ import pytest
 
 from app.config import Settings
 from app.domain.errors import ConfigurationError
-from app.providers.fake import DeterministicEmbeddingProvider, FakeChatProvider
+from app.providers.fake import DemoFakeChatProvider, DeterministicEmbeddingProvider
 from app.providers.factory import build_chat_provider, build_embedding_provider
 from app.providers.openai_compatible import (
     OpenAICompatibleChatProvider,
@@ -19,7 +19,7 @@ def settings(**overrides: Any) -> Settings:
 def test_fake_providers_do_not_require_api_keys() -> None:
     configured = settings(chat_provider="fake", embedding_provider="fake")
 
-    assert isinstance(build_chat_provider(configured), FakeChatProvider)
+    assert isinstance(build_chat_provider(configured), DemoFakeChatProvider)
     assert isinstance(build_embedding_provider(configured), DeterministicEmbeddingProvider)
 
 
