@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+import json
 
 import pytest
 from fastapi.testclient import TestClient
@@ -6,6 +7,23 @@ from fastapi.testclient import TestClient
 from app.bootstrap import build_container
 from app.config import Settings
 from app.main import create_app
+from app.domain.runs import RunEvent
+
+
+def _workflow_events(sse_payload: str) -> list[RunEvent]:
+    """Decode complete workflow frames and reject malformed stream boundaries."""
+    assert sse_payload.endswith("\n\n")
+    frames = sse_payload[:-2].split("\n\n")
+    events = []
+    for frame in frames:
+        lines = frame.splitlines()
+        assert len(lines) == 3
+        event_id, event_name, data = lines
+        assert event_id.startswith("id: ")
+        assert event_name == "event: workflow"
+        assert data.startswith("data: ")
+        events.append(RunEvent.model_validate(json.loads(data.removeprefix("data: "))))
+    return events
 
 
 @pytest.fixture
@@ -62,8 +80,9 @@ def test_fake_product_flow_uploads_runs_streams_and_reports(
         event_payload = "".join(stream.iter_text())
 
     result = fake_app_client.get(f"/api/research/{run_id}").json()
+    events = _workflow_events(event_payload)
     assert stream.status_code == 200
-    assert "event: workflow" in event_payload
-    assert '"stage":"citation_validator"' in event_payload
+    assert events[-1].event_type == "finished"
+    assert events[-1].payload["status"] == "completed"
     assert result["run"]["status"] == "completed"
     assert result["report"]["citations"][0]["filename"] == "overview.md"
