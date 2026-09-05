@@ -13,9 +13,10 @@ const citationContent = document.querySelector("#citation-content");
 const citationClose = document.querySelector("#citation-close");
 
 let activeEventSource = null;
-let activeRunId = null;
 let currentCitations = [];
 let documents = [];
+let researchSubmissionVersion = 0;
+let documentRefreshVersion = 0;
 
 async function apiFetch(path, options = {}) {
   const response = await fetch(path, options);
@@ -54,7 +55,6 @@ function closeEventStream() {
     activeEventSource.close();
     activeEventSource = null;
   }
-  activeRunId = null;
 }
 
 function selectedDocumentIds() {
@@ -110,11 +110,17 @@ function renderDocuments() {
 }
 
 async function refreshDocuments() {
+  const refreshVersion = ++documentRefreshVersion;
   try {
-    documents = await apiFetch("/api/documents");
-    renderDocuments();
+    const loadedDocuments = await apiFetch("/api/documents");
+    if (refreshVersion === documentRefreshVersion) {
+      documents = loadedDocuments;
+      renderDocuments();
+    }
   } catch (error) {
-    showStatus(`无法加载资料：${error.message}`, true);
+    if (refreshVersion === documentRefreshVersion) {
+      showStatus(`无法加载资料：${error.message}`, true);
+    }
   }
 }
 
@@ -184,6 +190,7 @@ async function startResearch(event) {
     return;
   }
 
+  const submissionVersion = ++researchSubmissionVersion;
   resetResearchOutput();
   try {
     showStatus("已创建研究任务，正在连接进度流…");
@@ -192,10 +199,14 @@ async function startResearch(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ question, document_ids: documentIds }),
     });
-    openEventStream(created.run_id);
+    if (submissionVersion === researchSubmissionVersion) {
+      openEventStream(created.run_id, submissionVersion);
+    }
   } catch (error) {
-    showStatus(`创建研究失败：${error.message}`, true);
-    retryResearchButton.hidden = false;
+    if (submissionVersion === researchSubmissionVersion) {
+      showStatus(`创建研究失败：${error.message}`, true);
+      retryResearchButton.hidden = false;
+    }
   }
 }
 
@@ -228,12 +239,21 @@ function renderWorkflowEvent(event) {
   }
 }
 
-function openEventStream(runId) {
+function ownsResearchSubmission(submissionVersion) {
+  return submissionVersion === researchSubmissionVersion;
+}
+
+function openEventStream(runId, submissionVersion) {
+  if (!ownsResearchSubmission(submissionVersion)) {
+    return;
+  }
   closeEventStream();
-  activeRunId = runId;
   const source = new EventSource(`/api/research/${encodeURIComponent(runId)}/events`);
   activeEventSource = source;
   source.addEventListener("workflow", async (message) => {
+    if (!ownsResearchSubmission(submissionVersion) || activeEventSource !== source) {
+      return;
+    }
     let event;
     try {
       event = JSON.parse(message.data);
@@ -247,29 +267,48 @@ function openEventStream(runId) {
       if (activeEventSource === source) {
         activeEventSource = null;
       }
-      await fetchResearchResult(runId);
+      await fetchResearchResult(runId, submissionVersion);
     }
   });
   source.onerror = () => {
-    if (activeEventSource === source) {
+    if (!ownsResearchSubmission(submissionVersion) || activeEventSource !== source) {
+      return;
+    }
+    if (source.readyState === EventSource.CONNECTING) {
       showStatus("进度连接暂时中断，正在安全地重新连接…", true);
+      return;
+    }
+    if (source.readyState === EventSource.CLOSED) {
+      source.close();
+      if (activeEventSource === source) {
+        activeEventSource = null;
+      }
+      fetchResearchResult(runId, submissionVersion);
     }
   };
 }
 
-async function fetchResearchResult(runId) {
+async function fetchResearchResult(runId, submissionVersion) {
+  if (!ownsResearchSubmission(submissionVersion)) {
+    return;
+  }
   try {
     const result = await apiFetch(`/api/research/${encodeURIComponent(runId)}`);
-    if (activeRunId === runId || activeRunId === null) {
-      renderResearchResult(result);
+    if (ownsResearchSubmission(submissionVersion)) {
+      renderResearchResult(result, submissionVersion);
     }
   } catch (error) {
-    showStatus(`无法读取研究结果：${error.message}`, true);
-    retryResearchButton.hidden = false;
+    if (ownsResearchSubmission(submissionVersion)) {
+      showStatus(`无法读取研究结果：${error.message}；请重试研究。`, true);
+      retryResearchButton.hidden = false;
+    }
   }
 }
 
-function renderResearchResult(result) {
+function renderResearchResult(result, submissionVersion) {
+  if (!ownsResearchSubmission(submissionVersion)) {
+    return;
+  }
   clearChildren(report);
   if (result.run.status === "failed") {
     appendText(report, "h2", "研究失败");
@@ -285,7 +324,10 @@ function renderResearchResult(result) {
   if (result.run.status === "completed" && result.report) {
     renderReport(result.report, result.run);
     showStatus(result.run.evidence_sufficient === false ? "研究已完成，但证据不足。" : "研究已完成。");
+    return;
   }
+  showStatus("进度连接已关闭，无法确认最终结果；请重试研究。", true);
+  retryResearchButton.hidden = false;
 }
 
 function addCitationButtons(parent, evidenceIds) {

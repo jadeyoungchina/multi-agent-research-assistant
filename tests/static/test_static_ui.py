@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 from types import SimpleNamespace
 
 from fastapi.testclient import TestClient
@@ -67,3 +68,14 @@ def test_static_assets_are_served_when_the_server_starts_elsewhere(
 
     assert response.status_code == 200
     assert "@media (max-width: 760px)" in response.text
+
+
+def test_dashboard_browser_async_behavior() -> None:
+    result = subprocess.run(
+        ["node", "tests/static/test_app_behavior.mjs"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
