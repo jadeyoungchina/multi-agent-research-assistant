@@ -61,6 +61,31 @@ def test_verifier_rejects_tracked_runtime_files(repository: Path, name: str) -> 
     assert name in result.stdout + result.stderr
 
 
+@pytest.mark.parametrize("name", [
+    "backup.sqlite3.bak", "backup.sqlite.backup", "nested/Backup.SQLITE3.BAK",
+    "archive.sqlite3.bak/chunks.bin",
+])
+def test_verifier_rejects_sqlite_backups_with_additional_suffixes(repository: Path, name: str) -> None:
+    path = repository / name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"database backup")
+    git(repository, "add", "--", name)
+    result = verify(repository)
+    assert result.returncode == 1
+    assert name in result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("prefix", ["sk-", "sk-proj-", "sk-svcacct-"])
+def test_verifier_scans_non_utf8_text_without_leaking_credentials(repository: Path, prefix: str) -> None:
+    secret = prefix + "A7b9Q2x8" * 5
+    (repository / "legacy-notes.md").write_bytes(("café\nprovider token: " + secret).encode("cp1252"))
+    git(repository, "add", "legacy-notes.md")
+    result = verify(repository)
+    assert result.returncode == 1
+    assert "legacy-notes.md" in result.stdout + result.stderr
+    assert secret not in result.stdout + result.stderr
+
+
 @pytest.mark.parametrize("prefix", ["sk-", "sk-proj-", "sk-svcacct-"])
 def test_verifier_rejects_key_patterns_without_printing_credentials(repository: Path, prefix: str) -> None:
     secret = prefix + "A7b9Q2x8" * 5

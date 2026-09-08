@@ -19,6 +19,7 @@ UPSTREAM_COMMIT = "4c95ae14cc2462c442b5c064cccd74430d02bc46"
 KEY_NAMES = ("DASHSCOPE_API_KEY", "OPENAI_API_KEY")
 # Both providers use sk-prefixed credentials; OpenAI also has project/service keys.
 KEY_PATTERN = re.compile(r"\bsk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{20,}\b")
+KEY_BYTES_PATTERN = re.compile(KEY_PATTERN.pattern.encode("ascii"))
 ASSIGNMENT = re.compile(r'''^\s*(?:export\s+)?["']?(DASHSCOPE_API_KEY|OPENAI_API_KEY)["']?\s*[:=]\s*(.*?)\s*$''')
 PLACEHOLDERS = {"", "replace-me", "your-api-key", "your_api_key", "<your-api-key>", "placeholder"}
 
@@ -41,7 +42,7 @@ def forbidden_path(name: str) -> bool:
         return True
     if "evaluation/results" in "/".join(parts) or basename in {"results.json", "results.csv"}:
         return True
-    if re.search(r"\.(?:db(?:-.*)?|sqlite[^.]*|key|pem)$", basename):
+    if ".sqlite" in path.as_posix() or re.search(r"\.(?:db(?:-.*)?|key|pem)$", basename):
         return True
     fixture = name.startswith(("benchmarks/corpus/", "examples/demo-corpus/", "tests/fixtures/"))
     return not fixture and path.suffix in {".pdf", ".doc", ".docx", ".odt", ".rtf"}
@@ -76,6 +77,10 @@ def verify_repository(root: Path) -> tuple[list[str], int]:
         except OSError:
             problems.append(f"{name}: tracked file is missing or unreadable")
             continue
+        # ASCII provider credentials must be checked even when surrounding text
+        # uses another encoding or the file cannot be decoded at all.
+        if KEY_BYTES_PATTERN.search(content):
+            problems.append(f"{name}: possible provider credential in file bytes")
         # UTF-16 text can contain credentials too; binary documents are path-checked above.
         try:
             encoding = "utf-16" if content.startswith((b"\xff\xfe", b"\xfe\xff")) else "utf-8-sig"
