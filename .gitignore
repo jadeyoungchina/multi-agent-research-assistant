@@ -5,13 +5,18 @@ venv/
 # 环境变量（禁止提交真实 Key）
 .env
 .env.local
+.env.*
+!.env.example
 *.key
+*.pem
 
 # Python 缓存
 __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
+.coverage
+htmlcov/
 .ipynb_checkpoints/
 
 # 本地 Git 工作树
@@ -19,6 +24,13 @@ __pycache__/
 
 # Generated and local data
 artifacts/
+uploads/
+uploaded_documents/
+*.db
+*.db-*
+*.sqlite*
+results.json
+results.csv
 data/*
 !data/.gitkeep
 logs/*
@@ -29,4 +41,3 @@ evaluation/results/*
 # 系统文件
 .DS_Store
 Thumbs.db
-.env
