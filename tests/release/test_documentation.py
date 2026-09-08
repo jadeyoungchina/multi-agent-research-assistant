@@ -59,6 +59,11 @@ def test_ci_runs_offline_release_checks_and_uploads_benchmark_even_on_failure() 
     # Global overrides would invalidate tests of the application's real defaults.
     assert "CHAT_PROVIDER" not in job["env"] and "EMBEDDING_PROVIDER" not in job["env"]
     assert job["env"]["DASHSCOPE_API_KEY"] == job["env"]["OPENAI_API_KEY"] == ""
+    checkout = next(
+        step for step in job["steps"]
+        if step.get("uses", "").startswith("actions/checkout@")
+    )
+    assert checkout["with"]["fetch-depth"] == 0
     setup = next(step for step in job["steps"] if step.get("uses", "").startswith("actions/setup-python@"))
     assert setup["with"]["python-version"] == "3.11"
     commands = "\n".join(step.get("run", "") for step in job["steps"])

@@ -1,0 +1,254 @@
+{
+  "timezone": "Asia/Shanghai",
+  "disclosure": "Transparent reconstruction after accidental deletion",
+  "commits": [
+    {
+      "subject": "chore: initialize development environment",
+      "timestamp": "2026-07-06T20:18:00+08:00"
+    },
+    {
+      "subject": "docs: add project design specification",
+      "timestamp": "2026-07-06T20:37:00+08:00"
+    },
+    {
+      "subject": "docs: add implementation plans",
+      "timestamp": "2026-07-06T21:04:00+08:00"
+    },
+    {
+      "subject": "chore: ignore local worktrees",
+      "timestamp": "2026-07-06T21:05:00+08:00"
+    },
+    {
+      "subject": "chore: establish licensed project foundation",
+      "timestamp": "2026-07-06T21:31:00+08:00"
+    },
+    {
+      "subject": "build: define project configuration and dependencies",
+      "timestamp": "2026-07-13T20:18:00+08:00"
+    },
+    {
+      "subject": "fix: allow gitkeep placeholders in ignored data directories",
+      "timestamp": "2026-07-13T20:19:00+08:00"
+    },
+    {
+      "subject": "feat: define research domain contracts",
+      "timestamp": "2026-07-13T21:07:00+08:00"
+    },
+    {
+      "subject": "fix: validate stable error and evidence identifiers",
+      "timestamp": "2026-07-13T21:08:00+08:00"
+    },
+    {
+      "subject": "feat: add SQLite application schema",
+      "timestamp": "2026-07-13T21:30:00+08:00"
+    },
+    {
+      "subject": "feat: add deterministic test providers",
+      "timestamp": "2026-07-13T21:42:00+08:00"
+    },
+    {
+      "subject": "fix: normalize empty deterministic embeddings",
+      "timestamp": "2026-07-13T21:43:00+08:00"
+    },
+    {
+      "subject": "feat: persist documents and research runs",
+      "timestamp": "2026-07-13T22:49:00+08:00"
+    },
+    {
+      "subject": "feat: define workflow state and grounded prompts",
+      "timestamp": "2026-07-22T20:14:00+08:00"
+    },
+    {
+      "subject": "feat: add planning retrieval and research agents",
+      "timestamp": "2026-07-22T20:58:00+08:00"
+    },
+    {
+      "subject": "feat: add bounded evidence critique",
+      "timestamp": "2026-07-22T21:31:00+08:00"
+    },
+    {
+      "subject": "feat: add citation-safe report writing",
+      "timestamp": "2026-07-22T21:58:00+08:00"
+    },
+    {
+      "subject": "fix: reject malformed citation fragments",
+      "timestamp": "2026-07-22T21:59:00+08:00"
+    },
+    {
+      "subject": "feat: compile bounded multi-agent workflow",
+      "timestamp": "2026-07-22T22:16:00+08:00"
+    },
+    {
+      "subject": "feat: add safe local document loading",
+      "timestamp": "2026-07-30T20:15:00+08:00"
+    },
+    {
+      "subject": "fix: suppress PDF parser byte logging",
+      "timestamp": "2026-07-30T20:16:00+08:00"
+    },
+    {
+      "subject": "fix: isolate PDF parser logging",
+      "timestamp": "2026-07-30T20:17:00+08:00"
+    },
+    {
+      "subject": "fix: filter PDF logs through last resort",
+      "timestamp": "2026-07-30T20:18:00+08:00"
+    },
+    {
+      "subject": "feat: add traceable document chunking",
+      "timestamp": "2026-07-30T20:43:00+08:00"
+    },
+    {
+      "subject": "fix: distinguish missing evidence page IDs",
+      "timestamp": "2026-07-30T20:44:00+08:00"
+    },
+    {
+      "subject": "feat: add local vector search",
+      "timestamp": "2026-08-08T20:31:00+08:00"
+    },
+    {
+      "subject": "feat: persist embedded documents",
+      "timestamp": "2026-08-08T20:45:00+08:00"
+    },
+    {
+      "subject": "fix: make document ingestion race safe",
+      "timestamp": "2026-08-08T21:00:00+08:00"
+    },
+    {
+      "subject": "feat: add fused evidence retrieval",
+      "timestamp": "2026-08-08T21:26:00+08:00"
+    },
+    {
+      "subject": "test: isolate retriever test modules",
+      "timestamp": "2026-08-08T21:27:00+08:00"
+    },
+    {
+      "subject": "feat: persist and resume research workflows",
+      "timestamp": "2026-08-17T22:09:00+08:00"
+    },
+    {
+      "subject": "feat: add OpenAI-compatible model providers",
+      "timestamp": "2026-08-25T20:51:00+08:00"
+    },
+    {
+      "subject": "fix: validate embedding response vectors",
+      "timestamp": "2026-08-25T20:52:00+08:00"
+    },
+    {
+      "subject": "feat: add FastAPI application boundary",
+      "timestamp": "2026-08-25T21:21:00+08:00"
+    },
+    {
+      "subject": "fix: harden API privacy and logging",
+      "timestamp": "2026-08-25T21:22:00+08:00"
+    },
+    {
+      "subject": "fix: restrict public validation error types",
+      "timestamp": "2026-08-25T21:23:00+08:00"
+    },
+    {
+      "subject": "feat: expose document management API",
+      "timestamp": "2026-08-25T21:48:00+08:00"
+    },
+    {
+      "subject": "feat: run research tasks through the API",
+      "timestamp": "2026-08-25T22:18:00+08:00"
+    },
+    {
+      "subject": "feat: stream research workflow events",
+      "timestamp": "2026-08-25T22:47:00+08:00"
+    },
+    {
+      "subject": "fix: preserve terminal workflow events",
+      "timestamp": "2026-08-25T22:48:00+08:00"
+    },
+    {
+      "subject": "feat: add reproducible research benchmark",
+      "timestamp": "2026-09-01T20:22:00+08:00"
+    },
+    {
+      "subject": "fix: harden benchmark validation",
+      "timestamp": "2026-09-01T20:23:00+08:00"
+    },
+    {
+      "subject": "feat: add trace-based evaluation metrics",
+      "timestamp": "2026-09-01T20:58:00+08:00"
+    },
+    {
+      "subject": "fix: harden trace evaluation scoring",
+      "timestamp": "2026-09-01T20:59:00+08:00"
+    },
+    {
+      "subject": "feat: compare four research workflows",
+      "timestamp": "2026-09-01T21:18:00+08:00"
+    },
+    {
+      "subject": "fix: normalize evaluation sources and JSON prompts",
+      "timestamp": "2026-09-01T21:19:00+08:00"
+    },
+    {
+      "subject": "fix: make structured requests JSON-mode compatible",
+      "timestamp": "2026-09-01T21:20:00+08:00"
+    },
+    {
+      "subject": "fix: serialize structured schemas as JSON",
+      "timestamp": "2026-09-01T21:21:00+08:00"
+    },
+    {
+      "subject": "feat: evaluate four research workflows",
+      "timestamp": "2026-09-01T21:34:00+08:00"
+    },
+    {
+      "subject": "fix: preflight benchmark sources and escape fake citations",
+      "timestamp": "2026-09-01T21:35:00+08:00"
+    },
+    {
+      "subject": "fix: enforce configured benchmark source size limit",
+      "timestamp": "2026-09-01T21:36:00+08:00"
+    },
+    {
+      "subject": "feat: add browser research dashboard",
+      "timestamp": "2026-09-05T22:12:00+08:00"
+    },
+    {
+      "subject": "fix: guard dashboard async updates",
+      "timestamp": "2026-09-05T22:13:00+08:00"
+    },
+    {
+      "subject": "test: verify complete offline product flow",
+      "timestamp": "2026-09-05T22:44:00+08:00"
+    },
+    {
+      "subject": "test: assert terminal product SSE event",
+      "timestamp": "2026-09-05T22:45:00+08:00"
+    },
+    {
+      "subject": "fix: bound multipart streams and normalize upload MIME types",
+      "timestamp": "2026-09-05T22:46:00+08:00"
+    },
+    {
+      "subject": "fix: restore bad-request errors for malformed multipart input",
+      "timestamp": "2026-09-05T22:47:00+08:00"
+    },
+    {
+      "subject": "docs: publish transparent v1.0.0 reconstruction",
+      "timestamp": "2026-09-08T20:45:00+08:00"
+    },
+    {
+      "subject": "fix: close encoded-secret and SQLite backup verifier gaps",
+      "timestamp": "2026-09-08T20:46:00+08:00"
+    },
+    {
+      "subject": "test: verify optional Qwen connectivity",
+      "timestamp": "2026-09-08T21:10:00+08:00"
+    },
+    {
+      "subject": "test: close live provider client",
+      "timestamp": "2026-09-08T21:11:00+08:00"
+    },
+    {
+      "subject": "chore: add release verification tooling",
+      "timestamp": "2026-09-08T21:40:00+08:00"
+    }
+  ]
+}
