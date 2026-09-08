@@ -1,11 +1,27 @@
 # Multi-Agent Research Assistant 设计规格
 
 > 日期：2026-09-08  
-> 状态：已确认
+> 状态：已确认；下述设计以本文件“实现核对”与发布文档注明的实际边界为准
 > 用途：个人学习成果与非商业作品展示  
 > Upstream：[`NirDiamant/GenAI_Agents`](https://github.com/NirDiamant/GenAI_Agents)，审计基准 `4c95ae14cc2462c442b5c064cccd74430d02bc46`
 
 ## 1. 背景
+
+### 实现核对（发布文档阶段）
+
+本文保留设计意图，当前实现以发布文档和验证结果为准。
+当前实现和约束详见 `docs/architecture.md`、`docs/experiments.md`、
+`docs/technical-report.md` 与 `docs/release-checklist.md`。具体差异如下：
+
+- Provider 通过共用的 OpenAI compatible 实现按配置创建，并非独立的 DashScopeProvider 类。
+- 四种实验配置为直接 LLM、LLM + RAG、单 Agent 规划 + RAG、产品多 Agent 图；没有单独复制的顺序多 Agent baseline。
+- Critic 使用有效支持 ID 和完成条件字面匹配加模型判断；引用检查不保证语义正确或所有事实真实。
+- benchmark 的 recall@5 先筛选预期来源后再取前五条，与常规全局 recall@5 不同。
+- case 内循环/时延预算是数据字段，当前发布 gate 不逐条约束；门禁只检查 multi_agent_rag 聚合指标。
+- 阶段快照支持恢复，但中断时未持久化的模型调用可能重复，不承诺外部调用恰好一次。
+- 无真实模型结果文件作为依据时，不宣称 qwen3.7-flash 已完成 benchmark 或具备任何量化优势。
+- 实际适配与 concept-only 文件以 THIRD_PARTY_NOTICES.md 和 docs/upstream-analysis.md 为准。
+- 远端推送和 v1.0.0 标签是单独的发布步骤，文档生成不表示已完成发布。
 
 项目目标是交付一个可运行、可测试、可追溯、可展示的多智能体研究助手。
 
