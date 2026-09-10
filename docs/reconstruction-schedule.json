@@ -249,6 +249,14 @@
     {
       "subject": "chore: add release verification tooling",
       "timestamp": "2026-09-08T21:40:00+08:00"
+    },
+    {
+      "subject": "fix: stabilize DashScope structured workflows",
+      "timestamp": "2026-09-10T20:16:03+08:00"
+    },
+    {
+      "subject": "chore: register DashScope compatibility fix",
+      "timestamp": "2026-09-10T20:28:00+08:00"
     }
   ]
 }
