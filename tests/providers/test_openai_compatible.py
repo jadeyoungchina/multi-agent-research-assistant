@@ -111,6 +111,37 @@ def test_structured_completion_is_validated() -> None:
     assert "json" in request["messages"][1]["content"].lower()
     assert request["temperature"] == 0
     assert request["response_format"] == {"type": "json_object"}
+    assert request["extra_body"] == {"enable_thinking": False}
+
+
+def test_openai_structured_completion_omits_dashscope_thinking_control() -> None:
+    completions = SequencedCompletions([chat_response(VALID_CRITIQUE)])
+    provider = OpenAICompatibleChatProvider(
+        client=chat_client(completions),
+        provider_name="openai",
+        model="gpt-4o-mini",
+        max_retries=0,
+    )
+
+    provider.generate_structured(
+        [ChatMessage(role="user", content="review")], Critique
+    )
+
+    assert "extra_body" not in completions.calls[0]
+
+
+def test_unstructured_dashscope_completion_keeps_default_thinking_behavior() -> None:
+    completions = SequencedCompletions([chat_response("answer")])
+    provider = OpenAICompatibleChatProvider(
+        client=chat_client(completions),
+        provider_name="dashscope",
+        model="qwen3.7-flash",
+        max_retries=0,
+    )
+
+    provider.generate([ChatMessage(role="user", content="question")])
+
+    assert "extra_body" not in completions.calls[0]
 
 
 def test_chat_retries_twice_before_success(monkeypatch: pytest.MonkeyPatch) -> None:

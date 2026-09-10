@@ -82,7 +82,12 @@ unless your account uses different supported models or a regional endpoint:
 DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 DASHSCOPE_CHAT_MODEL=qwen3.7-flash
 DASHSCOPE_EMBEDDING_MODEL=text-embedding-v4
+EMBEDDING_BATCH_SIZE=10
 ```
+
+The DashScope-compatible defaults keep embedding batches within the current
+`text-embedding-v4` limit. Structured JSON requests also disable Qwen thinking
+output so workflow stages return bounded machine-readable responses.
 
 Unset earlier shell provider and similarity overrides or use a fresh terminal,
 activate the environment, and start the real-provider configuration:

@@ -75,7 +75,12 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 DASHSCOPE_CHAT_MODEL=qwen3.7-flash
 DASHSCOPE_EMBEDDING_MODEL=text-embedding-v4
+EMBEDDING_BATCH_SIZE=10
 ```
+
+DashScope 兼容配置默认将 embedding 批次控制在当前 `text-embedding-v4`
+的限制内；结构化 JSON 请求会关闭 Qwen thinking 输出，使工作流阶段返回
+规模可控、便于校验的机器可读结果。
 
 删除终端中先前设置的 provider 和相似度环境变量，或打开新终端并激活环境，再启动真实配置：
 

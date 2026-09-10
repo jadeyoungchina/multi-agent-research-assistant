@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     provider_max_retries: int = 2
     chunk_size: int = 1200
     chunk_overlap: int = 200
-    embedding_batch_size: int = 32
+    embedding_batch_size: int = 10
     retrieval_top_k: int = 6
     retrieval_candidate_k: int = 20
     retrieval_rrf_k: int = 60
