@@ -11,6 +11,7 @@ def test_settings_default_to_dashscope_qwen(tmp_path: Path) -> None:
     )
     assert settings.chat_provider == "dashscope"
     assert settings.dashscope_chat_model == "qwen3.7-flash"
+    assert settings.embedding_batch_size == 10
     assert settings.max_revision_iterations == 2
     assert settings.max_workflow_steps == 24
     assert settings.max_upload_file_bytes < settings.max_upload_total_bytes

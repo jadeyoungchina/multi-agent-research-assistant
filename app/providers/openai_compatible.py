@@ -37,6 +37,8 @@ class OpenAICompatibleChatProvider:
         }
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
+            if self.provider_name == "dashscope":
+                kwargs["extra_body"] = {"enable_thinking": False}
         return self.client.chat.completions.create(**kwargs)
 
     def generate(
