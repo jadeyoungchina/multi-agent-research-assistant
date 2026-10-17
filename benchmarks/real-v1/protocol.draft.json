@@ -1,0 +1,156 @@
+{
+  "protocol_version": "real-v1-draft-1",
+  "status": "design_recorded_execution_parameters_not_frozen",
+  "recorded_date": "2026-10-18",
+  "timezone": "Asia/Shanghai",
+  "scope": "Real public technical documents; custom authored and reviewed questions; four workflow comparison",
+  "primary_comparison": {
+    "treatment": "multi_agent_rag",
+    "control": "single_agent_rag",
+    "outcomes": ["answer_correctness", "incremental_cost_cny"]
+  },
+  "variants": [
+    "baseline_llm",
+    "llm_rag",
+    "single_agent_rag",
+    "multi_agent_rag"
+  ],
+  "dataset": {
+    "status": "not_collected",
+    "document_count_target": {"minimum": 20, "maximum": 30},
+    "document_family_count_target": {"minimum": 10, "maximum": 15},
+    "question_count": 60,
+    "splits": {"dev": 20, "test": 40},
+    "languages": {"zh": 30, "en": 30},
+    "task_types": [
+      {"name": "single_document_fact", "dev": 4, "test": 8},
+      {"name": "cross_document_synthesis", "dev": 4, "test": 8},
+      {"name": "conditions_limits_and_numbers", "dev": 4, "test": 8},
+      {"name": "version_and_apparent_conflict", "dev": 4, "test": 8},
+      {"name": "insufficient_corpus_evidence", "dev": 4, "test": 8}
+    ],
+    "per_task_language_counts": {
+      "dev": {"zh": 2, "en": 2},
+      "test": {"zh": 4, "en": 4}
+    },
+    "split_unit": "document_family_and_question_group",
+    "gold_visibility": "evaluator_and_judge_only",
+    "retrieval_pool": "entire_split_corpus_including_distractors",
+    "human_gold_review_required": true,
+    "source_manifest_required_fields": [
+      "source_url", "immutable_revision", "retrieved_at", "license",
+      "sha256", "document_family", "normalization_rule", "evidence_location_mapping"
+    ]
+  },
+  "model_plan": {
+    "main": {
+      "provider": "dashscope",
+      "requested_model": "qwen3.7-flash-2026-07-15",
+      "availability": "not_live_verified",
+      "same_chat_model_for_all_variants_and_roles": true,
+      "test_repeats": 3,
+      "planned_test_traces": 480
+    },
+    "embedding": {"provider": "dashscope", "requested_model": "text-embedding-v4"},
+    "assistant_tasks": {
+      "preferred_interface": "deepseek_official_dsh_cli",
+      "command": "dsh",
+      "profile": "headless",
+      "observed_cli_version": "0.2.1-rc.2",
+      "observed_authentication_mode": "deepseek-account",
+      "observed_model": "deepseek-flash",
+      "observed_reasoning_effort": "high",
+      "target_reasoning_policy": "off_for_simple_tasks",
+      "local_credential_presence_only": true,
+      "network_authentication_verified": false,
+      "paid_calls_require_phase_b_budget_control": true
+    },
+    "main_output_judge": {"preferred_model": "deepseek-flash", "blind_to_variant": true},
+    "optional_replication": {
+      "model": "deepseek-flash",
+      "test_repeats": 1,
+      "planned_test_traces": 160,
+      "execution_condition": "budget_gate_passes_before_replication_starts"
+    }
+  },
+  "measurements": {
+    "primary_quality": "reference_key_point_correctness",
+    "secondary": [
+      "first_pass_global_evidence_recall_at_5",
+      "final_context_evidence_coverage",
+      "all_round_unique_evidence_recall",
+      "citation_id_validity",
+      "claim_citation_support",
+      "citation_completeness",
+      "correct_abstention",
+      "unsupported_assertion_rate",
+      "false_abstention",
+      "execution_failure_rate",
+      "latency_p50_ms",
+      "latency_p95_ms",
+      "cost_cny"
+    ],
+    "not_applicable_policy": "report_null_and_denominator_not_zero",
+    "failed_execution_policy": "retain_in_matrix_and_apply_preregistered_quality_penalty",
+    "unexecuted_policy": "explicit_status_never_claim_as_completed",
+    "timing": "serial_online_inference_excluding_separately_reported_corpus_ingestion",
+    "retrieval_trace": "per_round_queries_and_ranks_not_cross_round_rrf_as_single_ranking"
+  },
+  "human_review": {
+    "gold_cases": 60,
+    "minimum_dev_calibration_answers": 20,
+    "minimum_operational_categorical_agreement": 0.8,
+    "test_sample_question_groups": 20,
+    "test_sample_answers": 80,
+    "test_sample_repeat": "selected_before_results",
+    "additional_disagreement_reviews_separate_from_random_sample": true,
+    "reviewer_status": "pending"
+  },
+  "budget": {
+    "currency": "CNY",
+    "total_cap": 100,
+    "allocations": {
+      "preparation_and_cli_assistance": 5,
+      "dev_and_pilot": 10,
+      "main_and_embeddings": 15,
+      "judging_and_review": 25,
+      "optional_replication": 15,
+      "contingency": 30
+    },
+    "reestimate_at_spent_plus_reserved": 70,
+    "stop_new_requests_at_spent_plus_reserved": 90,
+    "unknown_usage_policy": "retain_conservative_reservation_until_reconciled",
+    "all_interfaces_share_ledger": true,
+    "client_reservation_not_guarantee_of_provider_invoice": true,
+    "control_implementation_status": "pending_phase_b"
+  },
+  "statistics": {
+    "repeat_aggregation": "mean_per_question_then_paired_difference",
+    "resampling_unit": "document_family_or_question_cluster",
+    "confidence_level": 0.95,
+    "small_cluster_intervals": "exploratory_report_cluster_differences",
+    "execution_order": "balanced_randomized_order_with_recorded_seed",
+    "independent_repeats_require_fresh_generation": true
+  },
+  "freeze_before_test_requires": [
+    "source_and_dataset_manifests",
+    "human_gold_review",
+    "candidate_pool_and_metric_corrections",
+    "budgeted_cli_and_provider_paths",
+    "pilot_cost_projection",
+    "judge_calibration",
+    "code_commit_and_prompt_hashes",
+    "output_caps_and_retry_limits",
+    "chunking_embedding_and_retrieval_parameters",
+    "execution_order_seed",
+    "review_sample_rule",
+    "current_price_snapshot"
+  ],
+  "unresolved": [
+    "CLI account-route billing and usage availability versus API-key-route pricing",
+    "CLI request and tool limits and shared budget interception",
+    "availability of requested fixed Qwen snapshot",
+    "final document selection and license checks",
+    "pilot-calibrated inference parameters and judge rubric"
+  ]
+}
