@@ -130,7 +130,7 @@ def test_openai_structured_completion_omits_dashscope_thinking_control() -> None
     assert "extra_body" not in completions.calls[0]
 
 
-def test_unstructured_dashscope_completion_keeps_default_thinking_behavior() -> None:
+def test_unstructured_dashscope_completion_uses_same_non_thinking_mode_as_agents() -> None:
     completions = SequencedCompletions([chat_response("answer")])
     provider = OpenAICompatibleChatProvider(
         client=chat_client(completions),
@@ -141,7 +141,8 @@ def test_unstructured_dashscope_completion_keeps_default_thinking_behavior() -> 
 
     provider.generate([ChatMessage(role="user", content="question")])
 
-    assert "extra_body" not in completions.calls[0]
+    assert completions.calls[0]["extra_body"] == {"enable_thinking": False}
+    assert completions.calls[0]["max_tokens"] == 2048
 
 
 def test_chat_retries_twice_before_success(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -390,7 +391,7 @@ def test_embedding_retries_exponentially(monkeypatch: pytest.MonkeyPatch) -> Non
     delays: list[float] = []
     monkeypatch.setattr("app.providers.openai_compatible.sleep", delays.append)
     embeddings = SequencedEmbeddings(
-        [RuntimeError("one"), RuntimeError("two"), embedding_response()]
+        [TimeoutError("one"), TimeoutError("two"), embedding_response()]
     )
     provider = OpenAICompatibleEmbeddingProvider(
         client=SimpleNamespace(embeddings=embeddings),

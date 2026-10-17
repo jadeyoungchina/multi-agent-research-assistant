@@ -28,6 +28,32 @@ Qwen rates apply to Beijing and requests within the declared input tier; request
 above the tier are refused. Recheck rates and account region before paid runs.
 DeepSeek account-login billing is not assumed to equal API-key billing.
 
-This first implementation adds the ledger and its concurrency/failure tests.
-Provider and CLI integration are separate subsequent changes. Merely creating a
-ledger does not constrain a caller that bypasses it.
+The evaluation CLI uses the ledger for both chat and embedding, including corpus
+ingestion. Real-provider runs default to five cases. For example:
+
+```powershell
+.venv/Scripts/python.exe -m app.evaluation.cli --provider dashscope --embedding-provider dashscope --limit 5 --output-dir artifacts/evaluation/pilot-01
+```
+
+The command makes paid requests. Credentials must already be configured locally.
+`--max-output-tokens` defaults to 2048; the SDK's own retries are disabled, and the
+application owns bounded retries. Authentication/configuration failures do not
+retry. Truncation fails without silently increasing the output limit. DashScope
+and DeepSeek use explicit non-thinking mode for both plain and structured calls.
+`--provider deepseek` uses a separately configured API key, not a CLI account;
+its embedding provider defaults to DashScope. Unpriced providers or mismatched
+endpoint regions cannot enter a budgeted run.
+
+Real runs write an incremental `traces.jsonl`, a safe configuration manifest and
+`budget-summary.json`, in addition to the usual reports. Budget stop returns code
+5 and preserves the partial matrix, with `execution_complete=false`. Use the same
+command with `--resume` to reuse recorded units and their original timing; source,
+model, corpus, dataset and configuration changes are rejected. Each independent
+experimental repeat must use a new output directory. Corpus ingestion currently
+runs again on resume and remains accounted; persistent embedding caching is a
+later change. Failed requests with unknown charges retain their reservations.
+
+The ordinary application factory also disables SDK retries and caps output, but
+the research web application does not attach this experimental shared ledger by
+default. The ledger constrains callers that explicitly use it; merely creating a
+database does not constrain a process that bypasses it.

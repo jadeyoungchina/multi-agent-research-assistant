@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     max_upload_file_bytes: int = 20 * 1024 * 1024
     max_upload_total_bytes: int = 50 * 1024 * 1024
 
-    chat_provider: Literal["dashscope", "openai", "fake"] = "dashscope"
+    chat_provider: Literal["dashscope", "openai", "deepseek", "fake"] = "dashscope"
     embedding_provider: Literal["dashscope", "openai", "fake"] = "dashscope"
     dashscope_api_key: SecretStr | None = Field(default=None, repr=False)
     dashscope_base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
@@ -30,9 +30,13 @@ class Settings(BaseSettings):
     openai_base_url: str = "https://api.openai.com/v1"
     openai_chat_model: str = "gpt-4o-mini"
     openai_embedding_model: str = "text-embedding-3-small"
+    deepseek_api_key: SecretStr | None = Field(default=None, repr=False)
+    deepseek_base_url: str = "https://api.deepseek.com/v1"
+    deepseek_chat_model: str = "deepseek-flash"
 
     provider_timeout_seconds: float = 60.0
-    provider_max_retries: int = 2
+    provider_max_retries: int = Field(default=2, ge=0, le=2)
+    provider_max_output_tokens: int = Field(default=2048, ge=1, le=16384)
     chunk_size: int = 1200
     chunk_overlap: int = 200
     embedding_batch_size: int = 10

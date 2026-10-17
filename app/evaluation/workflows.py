@@ -68,6 +68,8 @@ _SAFE_CODES = frozenset({
     "invalid_stored_embedding", "embedding_dimension_mismatch",
     "run_not_found", "run_failed", "report_not_persisted",
     "workflow_failed", "workflow_stage_failed", "invalid_citation",
+    "provider_embedding_failed", "provider_output_truncated",
+    "budget_exhausted", "budget_overrun", "budget_input_limit", "budget_unpriced_model",
 })
 
 
@@ -94,7 +96,9 @@ def _add_metadata(trace: EvaluationTrace, metadata: ProviderMetadata) -> None:
     trace.completion_tokens += max(0, metadata.usage.completion_tokens)
     trace.total_tokens += max(0, metadata.usage.total_tokens)
     trace.retry_count += max(0, metadata.retries)
-    trace.model_calls += 1
+    trace.model_calls += metadata.attempt_count
+    trace.attempt_ids.extend(metadata.attempt_ids)
+    trace.usage_complete = trace.usage_complete and metadata.usage_complete
     trace.provider = _safe_identifier(metadata.provider)
     trace.model = _safe_identifier(metadata.model)
 
@@ -142,6 +146,8 @@ class _Workflow:
             trace.status = "success"
             trace.error_code = None
         except Exception as error:
+            if isinstance(getattr(error, "metadata", None), ProviderMetadata):
+                _add_metadata(trace, error.metadata)
             trace.status = "failed"
             trace.error_code = _error_code(error)
         trace.latency_ms = max(0, int((perf_counter() - started) * 1000))

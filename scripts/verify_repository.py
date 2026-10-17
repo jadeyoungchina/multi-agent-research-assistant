@@ -16,11 +16,11 @@ from app.evaluation.dataset import load_benchmark_cases, validate_benchmark_corp
 
 LICENSE_SHA256 = "c9877e4d8788a0bb97502348dca8fbd78a6eaa73db0638221b3cb67422d30177"
 UPSTREAM_COMMIT = "4c95ae14cc2462c442b5c064cccd74430d02bc46"
-KEY_NAMES = ("DASHSCOPE_API_KEY", "OPENAI_API_KEY")
+KEY_NAMES = ("DASHSCOPE_API_KEY", "OPENAI_API_KEY", "DEEPSEEK_API_KEY")
 # Both providers use sk-prefixed credentials; OpenAI also has project/service keys.
 KEY_PATTERN = re.compile(r"\bsk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{20,}\b")
 KEY_BYTES_PATTERN = re.compile(KEY_PATTERN.pattern.encode("ascii"))
-ASSIGNMENT = re.compile(r'''^\s*(?:export\s+)?["']?(DASHSCOPE_API_KEY|OPENAI_API_KEY)["']?\s*[:=]\s*(.*?)\s*$''')
+ASSIGNMENT = re.compile(r'''^\s*(?:export\s+)?["']?(DASHSCOPE_API_KEY|OPENAI_API_KEY|DEEPSEEK_API_KEY)["']?\s*[:=]\s*(.*?)\s*$''')
 PLACEHOLDERS = {"", "replace-me", "your-api-key", "your_api_key", "<your-api-key>", "placeholder"}
 
 

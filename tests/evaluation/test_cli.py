@@ -201,3 +201,47 @@ def test_generated_artifacts_are_ignored():
     ], capture_output=True, text=True)
     assert result.returncode == 0
     assert len(result.stdout.splitlines()) == 3
+
+
+def test_paid_resume_does_not_generate_completed_units_again(tmp_path, monkeypatch):
+    from app.evaluation import cli
+    from app.domain.providers import ProviderMetadata
+
+    calls = []
+    class Chat:
+        def generate(self, messages):
+            calls.append(messages)
+            return "answer", ProviderMetadata(provider="dashscope", model="qwen3.7-flash", latency_ms=1)
+    monkeypatch.setattr(cli, "build_chat_provider", lambda *args, **kwargs: Chat())
+    args = ["--provider", "dashscope", "--embedding-provider", "fake", "--variants", "baseline_llm",
+            "--limit", "2", "--ledger", str(tmp_path / "budget.db"), "--output-dir", str(tmp_path / "run")]
+    assert cli.main(args) == 0
+    first = json.loads((tmp_path / "run/results.json").read_text("utf-8"))
+    assert len(calls) == 2
+    assert cli.main(args + ["--resume"]) == 0
+    assert len(calls) == 2
+    second = json.loads((tmp_path / "run/results.json").read_text("utf-8"))
+    assert first["traces"] == second["traces"]
+    assert len((tmp_path / "run/traces.jsonl").read_text("utf-8").splitlines()) == 2
+    assert cli.main(args + ["--resume", "--max-output-tokens", "1024"]) == 4
+    assert len(calls) == 2
+
+
+def test_budget_stop_saves_partial_matrix_and_ledger(tmp_path, monkeypatch):
+    from app.evaluation import cli
+    from app.evaluation.budget import BudgetError
+
+    calls = []
+    class Chat:
+        def generate(self, messages):
+            calls.append(messages)
+            raise BudgetError("budget_exhausted", "stop")
+    monkeypatch.setattr(cli, "build_chat_provider", lambda *args, **kwargs: Chat())
+    assert cli.main([
+        "--provider", "dashscope", "--embedding-provider", "fake", "--variants", "baseline_llm",
+        "--limit", "2", "--ledger", str(tmp_path / "budget.db"), "--output-dir", str(tmp_path / "run"),
+    ]) == 5
+    report = json.loads((tmp_path / "run/results.json").read_text("utf-8"))
+    assert not report["execution_complete"] and report["planned_trace_count"] == 2
+    assert len(report["traces"]) == 1 and len(calls) == 1
+    assert (tmp_path / "run/budget-summary.json").exists()

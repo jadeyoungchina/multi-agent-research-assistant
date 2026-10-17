@@ -6,6 +6,7 @@ from hashlib import sha256
 from pathlib import Path
 import subprocess
 from time import perf_counter
+from typing import Callable
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -41,6 +42,7 @@ class ProviderConfiguration(BaseModel):
     max_query_expansions: int
     max_critic_loops: int
     max_workflow_steps: int
+    max_output_tokens: int = 2048
 
     @field_validator("provider", "model", "embedding_provider", "embedding_model")
     @classmethod
@@ -67,6 +69,7 @@ class ProviderConfiguration(BaseModel):
             max_query_expansions=settings.max_query_expansions,
             max_critic_loops=settings.max_revision_iterations,
             max_workflow_steps=settings.max_workflow_steps,
+            max_output_tokens=settings.provider_max_output_tokens,
         )
 
 
@@ -95,6 +98,8 @@ class EvaluationReport(BaseModel):
     scores: list[CaseScore]
     aggregate: ReportMetrics
     by_variant: dict[WorkflowVariant, ReportMetrics]
+    planned_trace_count: int = 0
+    execution_complete: bool = True
 
 
 def corpus_sha256(corpus_dir: Path) -> str:
@@ -128,6 +133,8 @@ def evaluate_benchmark(
     cases: Sequence[BenchmarkCase], workflows: Mapping[WorkflowVariant, EvaluationWorkflow], *,
     corpus_dir: Path = PROJECT_ROOT / "benchmarks/corpus", settings: Settings | None = None,
     dataset_path: Path | None = None,
+    on_trace: Callable[[EvaluationTrace], None] | None = None,
+    resume_traces: Mapping[tuple[str, WorkflowVariant], EvaluationTrace] | None = None,
 ) -> EvaluationReport:
     """Run an identical case matrix, isolating failures and timing every adapter.
 
@@ -155,18 +162,21 @@ def evaluate_benchmark(
     traces: list[EvaluationTrace] = []
     scores: list[CaseScore] = []
     variants = [variant for variant in WorkflowVariant if variant in workflows]
+    halted = False
     for case in sorted(cases, key=lambda item: item.id):
         for variant in variants:
             started = perf_counter()
+            cached = (resume_traces or {}).get((case.id, variant))
             try:
-                trace = workflows[variant].run(case.id, case.question, list(case.source_files))
+                trace = cached if cached is not None else workflows[variant].run(case.id, case.question, list(case.source_files))
                 if not isinstance(trace, EvaluationTrace) or trace.case_id != case.id or trace.variant != variant:
                     trace = EvaluationTrace.failed(case.id, variant, "invalid_trace")
                 else:
                     trace = EvaluationTrace.model_validate(trace.model_dump()).model_copy(deep=True)
             except Exception as error:
                 trace = EvaluationTrace.failed(case.id, variant, _error_code(error))
-            trace.latency_ms = max(0, int((perf_counter() - started) * 1000))
+            if cached is None:
+                trace.latency_ms = max(0, int((perf_counter() - started) * 1000))
             trace.provider = _safe_identifier(trace.provider) or configuration.provider
             trace.model = _safe_identifier(trace.model) or configuration.model
             if trace.status == "success":
@@ -175,6 +185,13 @@ def evaluate_benchmark(
                 trace.error_code = "workflow_failed"
             traces.append(trace)
             scores.append(score_case(case, trace))
+            if on_trace is not None and cached is None:
+                on_trace(trace)
+            if trace.error_code in {"budget_exhausted", "budget_overrun", "budget_input_limit", "budget_unpriced_model"}:
+                halted = True
+                break
+        if halted:
+            break
     return EvaluationReport(
         metadata=metadata, traces=traces, scores=scores, aggregate=_aggregate(scores, traces),
         by_variant={
@@ -184,4 +201,6 @@ def evaluate_benchmark(
             )
             for variant in variants
         },
+        planned_trace_count=len(cases) * len(workflows),
+        execution_complete=not halted and len(traces) == len(cases) * len(workflows),
     )

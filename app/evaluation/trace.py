@@ -49,6 +49,8 @@ class EvaluationTrace(BaseModel):
     total_tokens: int = Field(default=0, ge=0)
     model_calls: int = Field(ge=0)
     retry_count: int = Field(default=0, ge=0)
+    attempt_ids: list[str] = Field(default_factory=list)
+    usage_complete: bool = True
     critic_loops: int = Field(ge=0)
     evidence_sufficient: bool | None = None
     provider: str
