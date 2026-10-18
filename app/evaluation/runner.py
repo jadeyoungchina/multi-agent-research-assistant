@@ -20,7 +20,7 @@ from .trace import EvaluationTrace
 from .workflows import EvaluationWorkflow, _SAFE_CODES, _error_code, _safe_identifier
 
 
-PROMPT_VERSION = "evaluation-v5"
+PROMPT_VERSION = "evaluation-v6"
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 

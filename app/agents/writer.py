@@ -1,4 +1,5 @@
 from typing import Any
+import re
 
 from app.agents.common import EvidenceLabels
 from app.agents.prompts import writer_messages
@@ -10,16 +11,19 @@ from app.workflow.citations import validate_draft_citations
 from app.workflow.state import WorkflowState
 
 
-def _preserve_insufficiency(draft: DraftReport, critique: Critique) -> DraftReport:
+def _preserve_insufficiency(draft: DraftReport, critique: Critique, question: str) -> DraftReport:
     if critique.sufficient:
         return draft
 
-    reason = critique.reason.strip() or "现有证据未达到充分性要求。"
-    if any(reason in limitation for limitation in draft.limitations):
+    # Keep the internal critique in workflow state, not in the user's report.
+    reason = ("现有文档不足以支持完整结论；无法确认的部分未作推断。"
+              if re.search(r"[\u4e00-\u9fff]", question)
+              else "The available documents do not support a complete conclusion; unresolved details remain unconfirmed.")
+    if reason in draft.limitations:
         return draft
 
     updated = draft.model_copy(deep=True)
-    updated.limitations.append(f"证据不足：{reason}")
+    updated.limitations.append(reason)
     return updated
 
 
@@ -66,7 +70,7 @@ class WriterAgent:
             completed.append(metadata)
             draft = labels.draft(draft)
             try:
-                draft = _preserve_insufficiency(draft, critique)
+                draft = _preserve_insufficiency(draft, critique, state["question"])
                 validate_draft_citations(draft, evidence)
                 break
             except CitationError as error:

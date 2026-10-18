@@ -104,8 +104,9 @@ def test_writer_adds_limitation_when_critique_remains_insufficient() -> None:
     update = WriterAgent(provider)(state)
 
     assert update["draft"]["limitations"] == [
-        "证据不足：The revision limit was reached with conflicting evidence."
+        "The available documents do not support a complete conclusion; unresolved details remain unconfirmed."
     ]
+    assert "revision limit" not in str(update["draft"])
 
 
 def test_writer_does_not_duplicate_existing_insufficiency_limitation() -> None:
@@ -119,14 +120,14 @@ def test_writer_does_not_duplicate_existing_insufficiency_limitation() -> None:
             draft_with(
                 ["ev_good"],
                 "Finding [[cite:ev_good]]",
-                limitations=["Evidence remains incomplete."],
+                limitations=["The available documents do not support a complete conclusion; unresolved details remain unconfirmed."],
             )
         ]
     )
 
     update = WriterAgent(provider)(state)
 
-    assert update["draft"]["limitations"] == ["Evidence remains incomplete."]
+    assert len(update["draft"]["limitations"]) == 1
 
 
 def test_bounded_citation_repair_uses_feedback_and_accounts_both_responses():

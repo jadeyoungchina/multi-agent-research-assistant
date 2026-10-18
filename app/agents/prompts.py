@@ -97,7 +97,9 @@ def writer_messages(
                 "Cite every evidence-backed statement in the summary and findings of markdown "
                 "with the exact token [[cite:{Evidence ID}]]. Do not include filenames, "
                 "page numbers, or invented reference labels; the deterministic validator "
-                "supplies source metadata.\n\n"
+                  "supplies source metadata. Describe missing document information in plain "
+                  "language. Do not expose internal agent names, critique reasons, completion "
+                  "criteria, scoring or revision bookkeeping in the report.\n\n"
                 f"{_GROUNDING_RULES}"
             ),
         ),
@@ -106,7 +108,7 @@ def writer_messages(
             content=(
                 f"Research question:\n{question}\n\n"
                 f"Synthesis:\n{synthesis.model_dump_json(indent=2)}\n\n"
-                f"Critique:\n{critique.model_dump_json(indent=2)}\n\n"
+                  f"Evidence sufficient: {critique.sufficient}\n\n"
                 f"Supplied evidence:\n{format_evidence(evidence)}"
             ),
         ),
