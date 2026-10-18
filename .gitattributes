@@ -9,3 +9,4 @@ docs/evaluation/dev-pilot/*.json text eol=lf
 docs/evaluation/dev-pilot/*.jsonl text eol=lf
 docs/evaluation/full-dev/*.json text eol=lf
 docs/evaluation/full-dev/*.jsonl text eol=lf
+docs/evaluation/post-dev-confirmation.json text eol=lf

@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.agents.common import EvidenceLabels, combine_provider_metadata
+from app.agents.common import EvidenceLabels, combine_provider_metadata, generate_grounded
 from app.agents.prompts import writer_messages
 from app.domain.documents import EvidenceChunk
 from app.domain.errors import CitationError, ProviderError
@@ -36,7 +36,7 @@ class WriterAgent:
         completed = []
         for repair in range(self._max_citation_repairs + 1):
             try:
-                draft, metadata = self._provider.generate_structured(messages, DraftReport)
+                draft, metadata = generate_grounded(self._provider, messages, DraftReport, [item.id for item in labels.evidence])
             except ProviderError as error:
                 if isinstance(error.metadata, ProviderMetadata) and completed:
                     error.metadata = error.metadata.model_copy(deep=True)

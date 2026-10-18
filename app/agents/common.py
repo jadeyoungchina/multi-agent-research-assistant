@@ -4,6 +4,14 @@ from app.domain.documents import EvidenceChunk
 from app.domain.providers import ProviderMetadata, TokenUsage
 
 
+def generate_grounded(provider, messages, schema, evidence_ids):
+    """Use optional request-bound ID schemas; custom/fake providers keep working."""
+    grounded = getattr(provider, "generate_grounded", None)
+    if callable(grounded):
+        return grounded(messages, schema, evidence_ids=evidence_ids)
+    return provider.generate_structured(messages, schema)
+
+
 def format_evidence(evidence: list[EvidenceChunk]) -> str:
     """Render evidence with the source details available to agent prompts."""
     return "\n\n".join(

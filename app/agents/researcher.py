@@ -5,7 +5,7 @@
 
 from typing import Any
 
-from app.agents.common import EvidenceLabels, combine_provider_metadata
+from app.agents.common import EvidenceLabels, combine_provider_metadata, generate_grounded
 from app.agents.prompts import researcher_messages
 from app.domain.documents import EvidenceChunk
 from app.domain.errors import CitationError, ProviderError
@@ -29,7 +29,7 @@ class ResearcherAgent:
         allowed = {item.id for item in evidence}
         for repair in range(self._max_citation_repairs + 1):
             try:
-                synthesis, metadata = self.provider.generate_structured(messages, ResearchSynthesis)
+                synthesis, metadata = generate_grounded(self.provider, messages, ResearchSynthesis, [item.id for item in labels.evidence])
             except ProviderError as error:
                 if isinstance(error.metadata, ProviderMetadata) and completed:
                     error.metadata = error.metadata.model_copy(deep=True)

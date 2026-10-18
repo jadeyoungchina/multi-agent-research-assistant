@@ -9,7 +9,7 @@ from typing import Protocol
 from pydantic import BaseModel, Field
 
 from app.workflow.citations import validate_citation_tokens
-from app.agents.common import EvidenceLabels, format_evidence
+from app.agents.common import EvidenceLabels, format_evidence, generate_grounded
 from app.domain.documents import EvidenceChunk
 from app.domain.errors import CitationError, DomainError, WorkflowError
 from app.domain.providers import ChatMessage, ChatProvider, ProviderMetadata
@@ -228,7 +228,7 @@ class LlmRagWorkflow(_DocumentWorkflow):
         original = _grounded_messages(question, labels.evidence)
         messages = original
         for repair in range(self._max_citation_repairs + 1):
-            answer, metadata = self.provider.generate_structured(messages, GroundedAnswer)
+            answer, metadata = generate_grounded(self.provider, messages, GroundedAnswer, [item.id for item in labels.evidence])
             metadata = metadata.model_copy(deep=True)
             metadata.retries += int(repair > 0)
             _add_metadata(trace, metadata)

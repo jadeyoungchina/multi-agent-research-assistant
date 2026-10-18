@@ -40,3 +40,23 @@ Use the fixed Qwen snapshot, real embeddings, strict schema, cap 4096 and seed
 These four units confirm repair behavior; they are not independent accuracy
 repeats, do not replace v6 failures and do not establish general reliability.
 Keep any new failures. No held-out question is used.
+
+The [v7 confirmation](post-dev-confirmation.json) completed 3/4 units successfully
+using clean commit `febc470`. Question 019 still returned passage text after the
+single model correction. This failure is retained alongside the three successes;
+69 physical request receipts include both index constructions and every attempt.
+
+## Request-specific ID constraints, v8
+
+The compatible provider now binds evidence ID arrays to the exact labels supplied
+for that request in both the schema instruction and native strict JSON schema.
+This applies to the researcher, writer, plain RAG and single-agent RAG equally.
+An empty evidence set constrains ID arrays to length zero. Model classes and
+other requests are not mutated. Custom/fake providers can use the existing
+structured-output interface; local citation checks remain mandatory everywhere.
+No gold/reference answer enters this request schema.
+
+Before execution, select question 019, multi-agent only, for one further live
+confirmation with the same model, cap, retry/repair limits and seed in a fresh
+`enum-confirmation` directory and separate ledger. Preserve its outcome even if
+it fails; do not pool it with the 80-unit report or the four-unit v7 confirmation.

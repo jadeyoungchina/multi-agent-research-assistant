@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 from collections.abc import Sequence as RuntimeSequence
 from math import isfinite
 from numbers import Real
@@ -14,6 +15,27 @@ from app.evaluation.budget import BudgetError, BudgetLedger
 from app.providers.accounting import RequestAccounting
 
 T = TypeVar("T", bound=BaseModel)
+
+
+def _evidence_schema(document: dict, evidence_ids: Sequence[str]) -> dict:
+    """Bind ID arrays to this request's supplied evidence, leaving models intact."""
+    result = deepcopy(document)
+    ids = list(dict.fromkeys(evidence_ids))
+    def visit(node):
+        if isinstance(node, dict):
+            for name, value in node.get("properties", {}).items():
+                if name in {"supporting_evidence_ids", "conflicting_evidence_ids", "evidence_ids", "cited_evidence_ids"} and value.get("type") == "array":
+                    if ids:
+                        value.setdefault("items", {})["enum"] = ids
+                    else:
+                        value["maxItems"] = 0
+            for child in node.values():
+                visit(child)
+        elif isinstance(node, list):
+            for child in node:
+                visit(child)
+    visit(result)
+    return result
 
 
 def _closed_schema(schema: type[BaseModel]) -> dict:
@@ -79,19 +101,29 @@ class OpenAICompatibleChatProvider:
         content, metadata = self._complete_with_retries(messages, schema)
         return schema.model_validate_json(content), metadata
 
-    def _complete_with_retries(self, messages: Sequence[ChatMessage], schema: type[BaseModel] | None):
+    def generate_grounded(self, messages: Sequence[ChatMessage], schema: type[T], *, evidence_ids: Sequence[str]) -> tuple[T, ProviderMetadata]:
+        content, metadata = self._complete_with_retries(messages, schema, evidence_ids=evidence_ids)
+        return schema.model_validate_json(content), metadata
+
+    def _complete_with_retries(self, messages: Sequence[ChatMessage], schema: type[BaseModel] | None, *, evidence_ids: Sequence[str] | None = None):
         started = perf_counter()
         request_messages = list(messages)
         if schema is not None:
+            document = schema.model_json_schema()
+            if evidence_ids is not None:
+                document = _evidence_schema(document, evidence_ids)
             request_messages.append(ChatMessage(role="user", content=(
                 f"Return only a JSON object matching the {schema.__name__} Pydantic JSON schema: "
-                f"{json.dumps(schema.model_json_schema())}."
+                f"{json.dumps(document)}."
             )))
         payload = self._payload(request_messages, json_mode=schema is not None)
         if schema is not None and self.structured_output == "json_schema":
+            document = _closed_schema(schema)
+            if evidence_ids is not None:
+                document = _evidence_schema(document, evidence_ids)
             payload["response_format"] = {
                 "type": "json_schema", "json_schema": {
-                    "name": schema.__name__, "strict": True, "schema": _closed_schema(schema),
+                    "name": schema.__name__, "strict": True, "schema": document,
                 },
             }
         accounting = RequestAccounting(self.ledger, self.provider_name, self.model, "chat", self.role)

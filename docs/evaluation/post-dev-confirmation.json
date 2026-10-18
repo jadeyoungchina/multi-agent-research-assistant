@@ -1,0 +1,2123 @@
+{
+  "schema_version": "targeted-dev-confirmation-v1",
+  "purpose": "Engineering confirmation selected after v6 failures; not independent accuracy repeats.",
+  "generation_commit": "febc4705e5d21c57fce56f1462f82153a545355b",
+  "human_reviewed": false,
+  "semantic_scoring_performed": false,
+  "successful_units": 3,
+  "checks": [
+    {
+      "case_id": "REAL-DEV-020",
+      "variant": "multi_agent_rag",
+      "status": "success",
+      "error_code": null,
+      "trace_sha256": "1478092a29532b28fa1ac13ddd3aa6964f9c8950aa08befe1858d4cccb6ff3f1",
+      "citation_diagnostic": {
+        "applicable": true,
+        "syntax_valid": true,
+        "unknown_ids": [],
+        "declared_ids_missing_inline": [],
+        "passed": true
+      }
+    },
+    {
+      "case_id": "REAL-DEV-019",
+      "variant": "multi_agent_rag",
+      "status": "failed",
+      "error_code": "invalid_citation",
+      "trace_sha256": "97b2246ccd7c1dee1e58a8ebf492d652891e097b8edac7eb07f21ef28a36fb8f",
+      "citation_diagnostic": {
+        "applicable": false
+      }
+    },
+    {
+      "case_id": "REAL-DEV-007",
+      "variant": "single_agent_rag",
+      "status": "success",
+      "error_code": null,
+      "trace_sha256": "6d9d61ee73c0e11258e3042304bced719a93bb867dceba5938248e94aedac484",
+      "citation_diagnostic": {
+        "applicable": true,
+        "syntax_valid": true,
+        "unknown_ids": [],
+        "declared_ids_missing_inline": [],
+        "passed": true
+      }
+    },
+    {
+      "case_id": "REAL-DEV-007",
+      "variant": "llm_rag",
+      "status": "success",
+      "error_code": null,
+      "trace_sha256": "96e0164049760f23d3e89aa60f640964cfc8e41694036fbcfda429e709ffc381",
+      "citation_diagnostic": {
+        "applicable": true,
+        "syntax_valid": true,
+        "unknown_ids": [],
+        "declared_ids_missing_inline": [],
+        "passed": true
+      }
+    }
+  ],
+  "metadata": {
+    "multi": {
+      "run_at_utc": "2026-10-18T10:35:41.501156Z",
+      "git_commit": "febc4705e5d21c57fce56f1462f82153a545355b",
+      "git_dirty": false,
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "prompt_version": "evaluation-v7",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema",
+        "max_researcher_citation_repairs": 1,
+        "max_writer_citation_repairs": 1
+      },
+      "synthetic": false,
+      "dataset_kind": "public_documents_ai_authored_questions",
+      "references_human_reviewed": false,
+      "references_ai_reviewed": true,
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "metrics_version": "global-first-pass-v2",
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-019/multi_agent_rag"
+      ],
+      "setup_latency_ms": 33055
+    },
+    "baselines": {
+      "run_at_utc": "2026-10-18T10:37:37.419140Z",
+      "git_commit": "febc4705e5d21c57fce56f1462f82153a545355b",
+      "git_dirty": false,
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "prompt_version": "evaluation-v7",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema",
+        "max_researcher_citation_repairs": 1,
+        "max_writer_citation_repairs": 1
+      },
+      "synthetic": false,
+      "dataset_kind": "public_documents_ai_authored_questions",
+      "references_human_reviewed": false,
+      "references_ai_reviewed": true,
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "metrics_version": "global-first-pass-v2",
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/llm_rag"
+      ],
+      "setup_latency_ms": 30991
+    }
+  },
+  "traces": [
+    {
+      "case_id": "REAL-DEV-020",
+      "variant": "multi_agent_rag",
+      "status": "success",
+      "answer": "# Latency Impact of Starlette HTTPException in FastAPI\n\nThe provided documentation does not contain performance benchmarks or latency measurements for FastAPI 0.112.2, so the specific overhead of raising a `Starlette.HTTPException` cannot be quantified [[cite:ev_0c9ef3788a06eacf214484395254d423d9187439e01fbd06bf30a3e8176dffe2]]. The evidence focuses on API usage and inheritance rather than execution metrics.\n\n## Findings\n\n1. **Documentation Scope**: The supplied evidence consists solely of user guide documentation regarding error handling syntax and exception class relationships, lacking any technical performance data [[cite:ev_f9d76a0fb23fa6310cc429d7e3961ee89c408aba6f1a07bcd907531a308fd117]].\n2. **Inheritance Details**: FastAPI's `HTTPException` inherits from Starlette's `HTTPException`, with the primary difference being that FastAPI accepts JSON-able data for the `detail` field while Starlette requires strings [[cite:ev_c24396c166f52e545fe9054b7a065ae3161b0bdb94d4c14670cb5a5e29a6b397]].\n3. **Handler Configuration**: Users can register custom handlers for Starlette's `HTTPException` to catch exceptions raised by internal Starlette code or extensions, but this configuration process is not described in terms of performance cost [[cite:ev_1aded9e994838436177f13741c811b38d854b19767c6a549632e61d8901ec3ad]].\n\nLimitations:\nNo performance benchmarks, latency measurements, or source code analysis of execution steps are available in the supplied evidence.\nThere is no data regarding baseline latency, p95/p99 differences, or serialization costs in a production-like environment.\nThe available documents do not support a complete conclusion; unresolved details remain unconfirmed.",
+      "retrieved_evidence": [
+        {
+          "id": "ev_f9d76a0fb23fa6310cc429d7e3961ee89c408aba6f1a07bcd907531a308fd117",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 8,
+          "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+        },
+        {
+          "id": "ev_1aded9e994838436177f13741c811b38d854b19767c6a549632e61d8901ec3ad",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 9,
+          "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+        },
+        {
+          "id": "ev_c24396c166f52e545fe9054b7a065ae3161b0bdb94d4c14670cb5a5e29a6b397",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 7,
+          "text": "1  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette.\n\n///\n\n### Use the `RequestValidationError` body\n\nThe `RequestValidationError` contains the `body` it received with invalid data.\n\nYou could use it while developing your app to log the body and debug it, return it to the user, etc.\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial005.py!}\n```\n\nNow try sending an invalid item like:\n\n```JSON\n{\n  \"title\": \"towel\",\n  \"size\": \"XL\"\n}\n```\n\nYou will receive a response telling you that the data is invalid containing the received body:\n\n```JSON hl_lines=\"12-15\"\n{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"body\",\n        \"size\"\n      ],\n      \"msg\": \"value is not a valid integer\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own"
+        },
+        {
+          "id": "ev_4159129f3a6acd07aef94a828d60fad7d1f1ede63f51640ebe79148daa43e559",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 3,
+          "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+        },
+        {
+          "id": "ev_0c9ef3788a06eacf214484395254d423d9187439e01fbd06bf30a3e8176dffe2",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 0,
+          "text": "Snapshot repository: fastapi/fastapi\nSnapshot version: 0.112.2\nSnapshot source: https://github.com/fastapi/fastapi/blob/d00af00d3f15e9a963e2f1baf8f9b4c8357f6f66/docs/en/docs/tutorial/handling-errors.md\n\n---\n\n# Handling Errors\n\nThere are many situations in which you need to notify an error to a client that is using your API.\n\nThis client could be a browser with a frontend, a code from someone else, an IoT device, etc.\n\nYou could need to tell the client that:\n\n* The client doesn't have enough privileges for that operation.\n* The client doesn't have access to that resource.\n* The item the client was trying to access doesn't exist.\n* etc.\n\nIn these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499).\n\nThis is similar to the 200 HTTP status codes (from 200 to 299). Those \"200\" status codes mean that somehow there was a \"success\" in the request.\n\nThe status codes in the 400 range mean that there was an error from the client.\n\nRemember all those **\"404 Not Found\"** errors (and jokes)?\n\n## Use `HTTPException`\n\nTo return HTTP responses with errors to the client you use `HTTPException`.\n\n### Import `HTTPException`\n\n```Python hl_lines=\"1\""
+        },
+        {
+          "id": "ev_760337065d49926d5ca4800808dfc8a77927fc31bf1e4cd085035bb34d2ef354",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 4,
+          "text": "will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.requests import Request` and `from starlette.responses import JSONResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette. The same with `Request`.\n\n///\n\n## Override the default exception handlers\n\n**FastAPI** has some default exception handlers.\n\nThese handlers are in charge of returning the default JSON responses when you `raise` an `HTTPException` and when the request has invalid data.\n\nYou can override these exception handlers with your own.\n\n### Override request validation exceptions\n\nWhen a request contains invalid data, **FastAPI** internally raises a `RequestValidationError`.\n\nAnd it also includes a default exception handler for it.\n\nTo override it, import the `RequestValidationError` and use it with `@app.exception_handler(RequestValidationError)` to decorate the exception handler.\n\nThe exception handler"
+        }
+      ],
+      "retrieval_rounds": [
+        {
+          "round_index": 0,
+          "queries": [
+            "How much latency does raising a Starlette HTTPException add to request handling in FastAPI 0.112.2 in production?",
+            "FastAPI 0.112.2 release notes HTTPException changes",
+            "Starlette HTTPException implementation source code latency",
+            "FastAPI vs Starlette exception handling performance benchmark",
+            "Uvicorn ASGI server exception handling overhead metrics"
+          ],
+          "evidence": [
+            {
+              "id": "ev_f9d76a0fb23fa6310cc429d7e3961ee89c408aba6f1a07bcd907531a308fd117",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 8,
+              "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+            },
+            {
+              "id": "ev_1aded9e994838436177f13741c811b38d854b19767c6a549632e61d8901ec3ad",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 9,
+              "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+            },
+            {
+              "id": "ev_4159129f3a6acd07aef94a828d60fad7d1f1ede63f51640ebe79148daa43e559",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 3,
+              "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+            },
+            {
+              "id": "ev_0c9ef3788a06eacf214484395254d423d9187439e01fbd06bf30a3e8176dffe2",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 0,
+              "text": "Snapshot repository: fastapi/fastapi\nSnapshot version: 0.112.2\nSnapshot source: https://github.com/fastapi/fastapi/blob/d00af00d3f15e9a963e2f1baf8f9b4c8357f6f66/docs/en/docs/tutorial/handling-errors.md\n\n---\n\n# Handling Errors\n\nThere are many situations in which you need to notify an error to a client that is using your API.\n\nThis client could be a browser with a frontend, a code from someone else, an IoT device, etc.\n\nYou could need to tell the client that:\n\n* The client doesn't have enough privileges for that operation.\n* The client doesn't have access to that resource.\n* The item the client was trying to access doesn't exist.\n* etc.\n\nIn these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499).\n\nThis is similar to the 200 HTTP status codes (from 200 to 299). Those \"200\" status codes mean that somehow there was a \"success\" in the request.\n\nThe status codes in the 400 range mean that there was an error from the client.\n\nRemember all those **\"404 Not Found\"** errors (and jokes)?\n\n## Use `HTTPException`\n\nTo return HTTP responses with errors to the client you use `HTTPException`.\n\n### Import `HTTPException`\n\n```Python hl_lines=\"1\""
+            },
+            {
+              "id": "ev_c24396c166f52e545fe9054b7a065ae3161b0bdb94d4c14670cb5a5e29a6b397",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 7,
+              "text": "1  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette.\n\n///\n\n### Use the `RequestValidationError` body\n\nThe `RequestValidationError` contains the `body` it received with invalid data.\n\nYou could use it while developing your app to log the body and debug it, return it to the user, etc.\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial005.py!}\n```\n\nNow try sending an invalid item like:\n\n```JSON\n{\n  \"title\": \"towel\",\n  \"size\": \"XL\"\n}\n```\n\nYou will receive a response telling you that the data is invalid containing the received body:\n\n```JSON hl_lines=\"12-15\"\n{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"body\",\n        \"size\"\n      ],\n      \"msg\": \"value is not a valid integer\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own"
+            }
+          ]
+        },
+        {
+          "round_index": 1,
+          "queries": [
+            "How much latency does raising a Starlette HTTPException add to request handling in FastAPI 0.112.2 in production?",
+            "Are there any public performance benchmarks or profiling results available for FastAPI 0.112.2 that compare the latency of standard JSON responses versus HTTPException responses?",
+            "What is the computational cost of instantiating and serializing a Starlette HTTPException object in Python compared to a standard response model?",
+            "Does the Uvicorn ASGI server implementation introduce measurable overhead when handling exceptions raised by Starlette/FastAPI applications?",
+            "Can source code analysis of FastAPI 0.112.2 and Starlette reveal specific code paths or object allocations during exception handling that contribute to latency?"
+          ],
+          "evidence": [
+            {
+              "id": "ev_f9d76a0fb23fa6310cc429d7e3961ee89c408aba6f1a07bcd907531a308fd117",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 8,
+              "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+            },
+            {
+              "id": "ev_1aded9e994838436177f13741c811b38d854b19767c6a549632e61d8901ec3ad",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 9,
+              "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+            },
+            {
+              "id": "ev_c24396c166f52e545fe9054b7a065ae3161b0bdb94d4c14670cb5a5e29a6b397",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 7,
+              "text": "1  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette.\n\n///\n\n### Use the `RequestValidationError` body\n\nThe `RequestValidationError` contains the `body` it received with invalid data.\n\nYou could use it while developing your app to log the body and debug it, return it to the user, etc.\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial005.py!}\n```\n\nNow try sending an invalid item like:\n\n```JSON\n{\n  \"title\": \"towel\",\n  \"size\": \"XL\"\n}\n```\n\nYou will receive a response telling you that the data is invalid containing the received body:\n\n```JSON hl_lines=\"12-15\"\n{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"body\",\n        \"size\"\n      ],\n      \"msg\": \"value is not a valid integer\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own"
+            },
+            {
+              "id": "ev_760337065d49926d5ca4800808dfc8a77927fc31bf1e4cd085035bb34d2ef354",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 4,
+              "text": "will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.requests import Request` and `from starlette.responses import JSONResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette. The same with `Request`.\n\n///\n\n## Override the default exception handlers\n\n**FastAPI** has some default exception handlers.\n\nThese handlers are in charge of returning the default JSON responses when you `raise` an `HTTPException` and when the request has invalid data.\n\nYou can override these exception handlers with your own.\n\n### Override request validation exceptions\n\nWhen a request contains invalid data, **FastAPI** internally raises a `RequestValidationError`.\n\nAnd it also includes a default exception handler for it.\n\nTo override it, import the `RequestValidationError` and use it with `@app.exception_handler(RequestValidationError)` to decorate the exception handler.\n\nThe exception handler"
+            },
+            {
+              "id": "ev_4159129f3a6acd07aef94a828d60fad7d1f1ede63f51640ebe79148daa43e559",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 3,
+              "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+            }
+          ]
+        },
+        {
+          "round_index": 2,
+          "queries": [
+            "How much latency does raising a Starlette HTTPException add to request handling in FastAPI 0.112.2 in production?",
+            "Are there any public performance benchmarks or latency studies available for FastAPI 0.112.2 that compare normal response times with HTTPException response times?",
+            "What is the source code implementation detail of Starlette's HTTPException instantiation and serialization process that could impact latency?",
+            "Do ASGI servers like Uvicorn have documented overhead metrics specifically related to exception handling paths versus success paths?",
+            "FastAPI 0.112.2 release notes HTTPException changes"
+          ],
+          "evidence": [
+            {
+              "id": "ev_f9d76a0fb23fa6310cc429d7e3961ee89c408aba6f1a07bcd907531a308fd117",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 8,
+              "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+            },
+            {
+              "id": "ev_1aded9e994838436177f13741c811b38d854b19767c6a549632e61d8901ec3ad",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 9,
+              "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+            },
+            {
+              "id": "ev_0c9ef3788a06eacf214484395254d423d9187439e01fbd06bf30a3e8176dffe2",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 0,
+              "text": "Snapshot repository: fastapi/fastapi\nSnapshot version: 0.112.2\nSnapshot source: https://github.com/fastapi/fastapi/blob/d00af00d3f15e9a963e2f1baf8f9b4c8357f6f66/docs/en/docs/tutorial/handling-errors.md\n\n---\n\n# Handling Errors\n\nThere are many situations in which you need to notify an error to a client that is using your API.\n\nThis client could be a browser with a frontend, a code from someone else, an IoT device, etc.\n\nYou could need to tell the client that:\n\n* The client doesn't have enough privileges for that operation.\n* The client doesn't have access to that resource.\n* The item the client was trying to access doesn't exist.\n* etc.\n\nIn these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499).\n\nThis is similar to the 200 HTTP status codes (from 200 to 299). Those \"200\" status codes mean that somehow there was a \"success\" in the request.\n\nThe status codes in the 400 range mean that there was an error from the client.\n\nRemember all those **\"404 Not Found\"** errors (and jokes)?\n\n## Use `HTTPException`\n\nTo return HTTP responses with errors to the client you use `HTTPException`.\n\n### Import `HTTPException`\n\n```Python hl_lines=\"1\""
+            },
+            {
+              "id": "ev_4159129f3a6acd07aef94a828d60fad7d1f1ede63f51640ebe79148daa43e559",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 3,
+              "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+            },
+            {
+              "id": "ev_c24396c166f52e545fe9054b7a065ae3161b0bdb94d4c14670cb5a5e29a6b397",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 7,
+              "text": "1  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette.\n\n///\n\n### Use the `RequestValidationError` body\n\nThe `RequestValidationError` contains the `body` it received with invalid data.\n\nYou could use it while developing your app to log the body and debug it, return it to the user, etc.\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial005.py!}\n```\n\nNow try sending an invalid item like:\n\n```JSON\n{\n  \"title\": \"towel\",\n  \"size\": \"XL\"\n}\n```\n\nYou will receive a response telling you that the data is invalid containing the received body:\n\n```JSON hl_lines=\"12-15\"\n{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"body\",\n        \"size\"\n      ],\n      \"msg\": \"value is not a valid integer\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own"
+            }
+          ]
+        }
+      ],
+      "cited_evidence_ids": [
+        "ev_0c9ef3788a06eacf214484395254d423d9187439e01fbd06bf30a3e8176dffe2",
+        "ev_f9d76a0fb23fa6310cc429d7e3961ee89c408aba6f1a07bcd907531a308fd117",
+        "ev_c24396c166f52e545fe9054b7a065ae3161b0bdb94d4c14670cb5a5e29a6b397",
+        "ev_1aded9e994838436177f13741c811b38d854b19767c6a549632e61d8901ec3ad"
+      ],
+      "latency_ms": 62199,
+      "prompt_tokens": 18973,
+      "completion_tokens": 2460,
+      "total_tokens": 21433,
+      "model_calls": 23,
+      "retry_count": 0,
+      "attempt_ids": [
+        "9944d604cc45405083662146b0a75a30",
+        "f5877a63aff94d3fb6cb624f1f96de28",
+        "80433b3219cc4cb7b60a0840bdde5e2a",
+        "d494c8b05ce9416a8c96b29c1dad7520",
+        "77fbfb3c5d1b43abb9177b915792425c",
+        "07da1e461da94fa09018b52cd60d79f7",
+        "859a938c7ab944bb8c936dd5579997d8",
+        "d44992913b924daa955d0bd08f39a94e",
+        "f3703aa99c12485180bc5f2173a20392",
+        "308f9b3626b842b1a8338c0176187123",
+        "2d634df6dcdb4e1f8fed9ce5f2753f32",
+        "8bf0629d2f7c4a7e9fd93b209ab950f6",
+        "b9403250ade74d73a702372d182c1a0b",
+        "914e7346a7624cf8b73690e66971d717",
+        "58c3a3c2cf354a5aa0fa7a2789f01ccc",
+        "702d36d05b994e46baf8c2c5e2429bc8",
+        "0ada29e249f34a32b25ebab7d0011678",
+        "9255f7b721ef4ec7a6465a24c7e6e438",
+        "3a66ca25f9314e22bc271d88ce18cf1c",
+        "57b552e7e5374ffbb9f4771a837913ab",
+        "2522052c698a42f7b70e919b41debe64",
+        "0e59711ba6314b18bc1c691a80fbe76f",
+        "a7473c981a91447e8277ba19dcb3e72d"
+      ],
+      "usage_complete": true,
+      "critic_loops": 2,
+      "evidence_sufficient": false,
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "error_code": null
+    },
+    {
+      "case_id": "REAL-DEV-019",
+      "variant": "multi_agent_rag",
+      "status": "failed",
+      "answer": "",
+      "retrieved_evidence": [
+        {
+          "id": "ev_f9d76a0fb23fa6310cc429d7e3961ee89c408aba6f1a07bcd907531a308fd117",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 8,
+          "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+        },
+        {
+          "id": "ev_1aded9e994838436177f13741c811b38d854b19767c6a549632e61d8901ec3ad",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 9,
+          "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+        },
+        {
+          "id": "ev_0c9ef3788a06eacf214484395254d423d9187439e01fbd06bf30a3e8176dffe2",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 0,
+          "text": "Snapshot repository: fastapi/fastapi\nSnapshot version: 0.112.2\nSnapshot source: https://github.com/fastapi/fastapi/blob/d00af00d3f15e9a963e2f1baf8f9b4c8357f6f66/docs/en/docs/tutorial/handling-errors.md\n\n---\n\n# Handling Errors\n\nThere are many situations in which you need to notify an error to a client that is using your API.\n\nThis client could be a browser with a frontend, a code from someone else, an IoT device, etc.\n\nYou could need to tell the client that:\n\n* The client doesn't have enough privileges for that operation.\n* The client doesn't have access to that resource.\n* The item the client was trying to access doesn't exist.\n* etc.\n\nIn these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499).\n\nThis is similar to the 200 HTTP status codes (from 200 to 299). Those \"200\" status codes mean that somehow there was a \"success\" in the request.\n\nThe status codes in the 400 range mean that there was an error from the client.\n\nRemember all those **\"404 Not Found\"** errors (and jokes)?\n\n## Use `HTTPException`\n\nTo return HTTP responses with errors to the client you use `HTTPException`.\n\n### Import `HTTPException`\n\n```Python hl_lines=\"1\""
+        },
+        {
+          "id": "ev_4159129f3a6acd07aef94a828d60fad7d1f1ede63f51640ebe79148daa43e559",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 3,
+          "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+        },
+        {
+          "id": "ev_5a4e93fb7b9338f022159652aad442dc6eec8a632bd8962efc4d6dc6b7d9cefa",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 6,
+          "text": "'s <a href=\"https://docs.pydantic.dev/latest/concepts/models/#error-handling\" class=\"external-link\" target=\"_blank\">`ValidationError`</a>.\n\n**FastAPI** uses it so that, if you use a Pydantic model in `response_model`, and your data has an error, you will see the error in your log.\n\nBut the client/user will not see it. Instead, the client will receive an \"Internal Server Error\" with a HTTP status code `500`.\n\nIt should be this way because if you have a Pydantic `ValidationError` in your *response* or anywhere in your code (not in the client's *request*), it's actually a bug in your code.\n\nAnd while you fix it, your clients/users shouldn't have access to internal information about the error, as that could expose a security vulnerability.\n\n### Override the `HTTPException` error handler\n\nThe same way, you can override the `HTTPException` handler.\n\nFor example, you could want to return a plain text response instead of JSON for these errors:\n\n```Python hl_lines=\"3-4  9-11  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same"
+        }
+      ],
+      "retrieval_rounds": [
+        {
+          "round_index": 0,
+          "queries": [
+            "In FastAPI 0.112.2, FastAPI's HTTPException inherits from Starlette's, so which should be raised in code, and which should be registered in an exception handler?",
+            "FastAPI 0.112.2 HTTPException source code inheritance",
+            "Starlette vs FastAPI HTTPException difference",
+            "FastAPI custom exception handler HTTPException type",
+            "Should I raise starlette.exceptions.HTTPException or fastapi.HTTPException"
+          ],
+          "evidence": [
+            {
+              "id": "ev_f9d76a0fb23fa6310cc429d7e3961ee89c408aba6f1a07bcd907531a308fd117",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 8,
+              "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+            },
+            {
+              "id": "ev_1aded9e994838436177f13741c811b38d854b19767c6a549632e61d8901ec3ad",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 9,
+              "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+            },
+            {
+              "id": "ev_0c9ef3788a06eacf214484395254d423d9187439e01fbd06bf30a3e8176dffe2",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 0,
+              "text": "Snapshot repository: fastapi/fastapi\nSnapshot version: 0.112.2\nSnapshot source: https://github.com/fastapi/fastapi/blob/d00af00d3f15e9a963e2f1baf8f9b4c8357f6f66/docs/en/docs/tutorial/handling-errors.md\n\n---\n\n# Handling Errors\n\nThere are many situations in which you need to notify an error to a client that is using your API.\n\nThis client could be a browser with a frontend, a code from someone else, an IoT device, etc.\n\nYou could need to tell the client that:\n\n* The client doesn't have enough privileges for that operation.\n* The client doesn't have access to that resource.\n* The item the client was trying to access doesn't exist.\n* etc.\n\nIn these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499).\n\nThis is similar to the 200 HTTP status codes (from 200 to 299). Those \"200\" status codes mean that somehow there was a \"success\" in the request.\n\nThe status codes in the 400 range mean that there was an error from the client.\n\nRemember all those **\"404 Not Found\"** errors (and jokes)?\n\n## Use `HTTPException`\n\nTo return HTTP responses with errors to the client you use `HTTPException`.\n\n### Import `HTTPException`\n\n```Python hl_lines=\"1\""
+            },
+            {
+              "id": "ev_4159129f3a6acd07aef94a828d60fad7d1f1ede63f51640ebe79148daa43e559",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 3,
+              "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+            },
+            {
+              "id": "ev_5a4e93fb7b9338f022159652aad442dc6eec8a632bd8962efc4d6dc6b7d9cefa",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 6,
+              "text": "'s <a href=\"https://docs.pydantic.dev/latest/concepts/models/#error-handling\" class=\"external-link\" target=\"_blank\">`ValidationError`</a>.\n\n**FastAPI** uses it so that, if you use a Pydantic model in `response_model`, and your data has an error, you will see the error in your log.\n\nBut the client/user will not see it. Instead, the client will receive an \"Internal Server Error\" with a HTTP status code `500`.\n\nIt should be this way because if you have a Pydantic `ValidationError` in your *response* or anywhere in your code (not in the client's *request*), it's actually a bug in your code.\n\nAnd while you fix it, your clients/users shouldn't have access to internal information about the error, as that could expose a security vulnerability.\n\n### Override the `HTTPException` error handler\n\nThe same way, you can override the `HTTPException` handler.\n\nFor example, you could want to return a plain text response instead of JSON for these errors:\n\n```Python hl_lines=\"3-4  9-11  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same"
+            }
+          ]
+        }
+      ],
+      "cited_evidence_ids": [],
+      "latency_ms": 20462,
+      "prompt_tokens": 5384,
+      "completion_tokens": 1033,
+      "total_tokens": 6417,
+      "model_calls": 8,
+      "retry_count": 1,
+      "attempt_ids": [
+        "4d31e0f830334c7a9c92d73bc1d68dd3",
+        "3effbd149dc646ec8cc06957198fe37e",
+        "cde71d6068354df9ab079c0ee4c76c75",
+        "f61a4dd0fff24177a0e89008a4390800",
+        "3166ee83b812434fa4319a0006773d8d",
+        "4495bda56eb54c2ebdf9b89388c40751",
+        "cdff9d7a39604b719b05caa63cc51790",
+        "84df44795b29490eb7a08cad43bec23e"
+      ],
+      "usage_complete": true,
+      "critic_loops": 0,
+      "evidence_sufficient": null,
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "error_code": "invalid_citation"
+    },
+    {
+      "case_id": "REAL-DEV-007",
+      "variant": "single_agent_rag",
+      "status": "success",
+      "answer": "To allow a `first_name` field to accept both 'first_name' and 'fname' during validation, you should use the `validation_alias` parameter in the `Field` definition along with setting `populate_by_name=True` in the model configuration [[cite:ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e]]. This allows the model to be instantiated using either the Python attribute name or the alias at runtime.\n\nHowever, VSCode's initializer signature will not reflect the `validation_alias`. According to the evidence, VSCode does not use the `validation_alias` in the class initializer signature, meaning editor hints will likely only show the primary field name or require specific workarounds like using `alias` combined with `serialization_alias` to influence IDE behavior [[cite:ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e]], [[cite:ev_feeb348b3211794e344637b6817dc3120156e46d25bd6f3c9b14c9d92be7e584]].\n\nThis highlights a key distinction between runtime validation and editor hints: while Pydantic handles both names correctly during instance creation (runtime), static analysis tools and IDEs like VSCode may not recognize the `validation_alias` for autocomplete or warning suppression unless specific configurations are used [[cite:ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e]], [[cite:ev_c2a2f1f9b178b5bede17ebcc26fbd775a0ffe1521b2da24926f6382b4f7ad7bc]].",
+      "retrieved_evidence": [
+        {
+          "id": "ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e",
+          "source_file": "pydantic-v2--concepts--fields.md",
+          "page_number": null,
+          "chunk_index": 6,
+          "text": "ass User(BaseModel):\n        model_config = ConfigDict(populate_by_name=True)\n\n        name: str = Field(..., alias=str('username'))  # noqa: UP018\n\n    user = User(name='johndoe')  # (1)!\n    user = User(username='johndoe')  # (2)!\n    ```\n\n    1. Now VSCode will NOT show a warning\n    2. VSCode will show a warning here, though\n\n    This is discussed in more detail in [this issue](https://github.com/pydantic/pydantic/issues/5893).\n\n    ### Validation Alias\n\n    Even though Pydantic treats `alias` and `validation_alias` the same when creating model instances, VSCode will not\n    use the `validation_alias` in the class initializer signature. If you want VSCode to use the `validation_alias`\n    in the class initializer, you can instead specify both an `alias` and `serialization_alias`, as the\n    `serialization_alias` will override the `alias` during serialization:\n\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(..., validation_alias='myValidationAlias')\n    ```\n    with:\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(\n            ...,"
+        },
+        {
+          "id": "ev_feeb348b3211794e344637b6817dc3120156e46d25bd6f3c9b14c9d92be7e584",
+          "source_file": "pydantic-v2--concepts--fields.md",
+          "page_number": null,
+          "chunk_index": 7,
+          "text": "validation_alias='myValidationAlias')\n    ```\n    with:\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(\n            ...,\n            alias='myValidationAlias',\n            serialization_alias='my_serialization_alias',\n        )\n\n    m = MyModel(myValidationAlias=1)\n    print(m.model_dump(by_alias=True))\n    #> {'my_serialization_alias': 1}\n    ```\n\n    All of the above will likely also apply to other tools that respect the\n    [`@typing.dataclass_transform`](https://docs.python.org/3/library/typing.html#typing.dataclass_transform)\n    decorator, such as Pyright.\n\nFor more information on alias usage, see the [Alias] concepts page.\n\n## Numeric Constraints\n\nThere are some keyword arguments that can be used to constrain numeric values:\n\n* `gt` - greater than\n* `lt` - less than\n* `ge` - greater than or equal to\n* `le` - less than or equal to\n* `multiple_of` - a multiple of the given number\n* `allow_inf_nan` - allow `'inf'`, `'-inf'`, `'nan'` values\n\nHere's an example:\n\n```py\nfrom pydantic import BaseModel, Field\n\nclass Foo(BaseModel):\n    positive: int = Field(gt=0)\n    non_negative: int = Field(ge=0)\n    negative: int"
+        },
+        {
+          "id": "ev_c2a2f1f9b178b5bede17ebcc26fbd775a0ffe1521b2da24926f6382b4f7ad7bc",
+          "source_file": "pydantic-v2--concepts--fields.md",
+          "page_number": null,
+          "chunk_index": 5,
+          "text": "ser = User(username='johndoe')  # (1)!\n    ```\n\n    1. VSCode will NOT show a warning here.\n\n    When the `'alias'` keyword argument is specified, even if you set `populate_by_name` to `True` in the\n    [Model Config][pydantic.config.ConfigDict.populate_by_name], VSCode will show a warning when instantiating\n    a model using the field name (though it will work at runtime) — in this case, `'name'`:\n\n    ```py\n    from pydantic import BaseModel, ConfigDict, Field\n\n    class User(BaseModel):\n        model_config = ConfigDict(populate_by_name=True)\n\n        name: str = Field(..., alias='username')\n\n    user = User(name='johndoe')  # (1)!\n    ```\n\n    1. VSCode will show a warning here.\n\n    To \"trick\" VSCode into preferring the field name, you can use the `str` function to wrap the alias value.\n    With this approach, though, a warning is shown when instantiating a model using the alias for the field:\n\n    ```py\n    from pydantic import BaseModel, ConfigDict, Field\n\n    class User(BaseModel):\n        model_config = ConfigDict(populate_by_name=True)\n\n        name: str = Field(..., alias=str('username'))  # noqa: UP018\n\n    user = User(name='johndoe')  # (1)!\n    user ="
+        },
+        {
+          "id": "ev_fb8fe8017a36b41de77150b517e1a61c0a635ed90994f20f0d804ea0794d35b3",
+          "source_file": "pydantic-v2--concepts--strict_mode.md",
+          "page_number": null,
+          "chunk_index": 1,
+          "text": "error if the data is not of the correct type.\n\nHere is a brief example showing the difference between validation behavior in strict and the default/\"lax\" mode:\n\n```py\nfrom pydantic import BaseModel, ValidationError\n\nclass MyModel(BaseModel):\n    x: int\n\nprint(MyModel.model_validate({'x': '123'}))  # lax mode\n#> x=123\n\ntry:\n    MyModel.model_validate({'x': '123'}, strict=True)  # strict mode\nexcept ValidationError as exc:\n    print(exc)\n    \"\"\"\n    1 validation error for MyModel\n    x\n      Input should be a valid integer [type=int_type, input_value='123', input_type=str]\n    \"\"\"\n```\n\nThere are various ways to get strict-mode validation while using Pydantic, which will be discussed in more detail below:\n\n* [Passing `strict=True` to the validation methods](#strict-mode-in-method-calls), such as `BaseModel.model_validate`,\n  `TypeAdapter.validate_python`, and similar for JSON\n* [Using `Field(strict=True)`](#strict-mode-with-field) with fields of a `BaseModel`, `dataclass`, or `TypedDict`\n* [Using `pydantic.types.Strict` as a type annotation](#strict-mode-with-annotated-strict) on a field\n  * Pydantic provides some type aliases that are already annotated with `Strict`, such as"
+        },
+        {
+          "id": "ev_6038239df74730e4c9f6b8226308d8f08adc7445af89cbca8237f04e5045e684",
+          "source_file": "pydantic-v2--concepts--strict_mode.md",
+          "page_number": null,
+          "chunk_index": 7,
+          "text": "age: int\n    n_pets: int\n\nuser = User(name='John', age='42', n_pets='1')\nprint(user)\n#> name='John' age=42 n_pets=1\n\nclass AnotherUser(BaseModel):\n    name: str\n    age: int = Field(strict=True)\n    n_pets: int\n\ntry:\n    anotheruser = AnotherUser(name='John', age='42', n_pets='1')\nexcept ValidationError as e:\n    print(e)\n    \"\"\"\n    1 validation error for AnotherUser\n    age\n      Input should be a valid integer [type=int_type, input_value='42', input_type=str]\n    \"\"\"\n```\n\nNote that making fields strict will also affect the validation performed when instantiating the model class:\n\n```python\nfrom pydantic import BaseModel, Field, ValidationError\n\nclass Model(BaseModel):\n    x: int = Field(strict=True)\n    y: int = Field(strict=False)\n\ntry:\n    Model(x='1', y='2')\nexcept ValidationError as exc:\n    print(exc)\n    \"\"\"\n    1 validation error for Model\n    x\n      Input should be a valid integer [type=int_type, input_value='1', input_type=str]\n    \"\"\"\n```\n\n### Using `Field` as an annotation\n\nNote that `Field(strict=True)` (or with any other keyword arguments) can be used as an annotation if necessary, e.g.,\nwhen working with `TypedDict`:\n\n```python\nfrom typing_extensions import"
+        }
+      ],
+      "retrieval_rounds": [
+        {
+          "round_index": 0,
+          "queries": [
+            "In Pydantic v2.8.2, how can a first_name field accept both 'first_name' and 'fname' during validation, and will VSCode's initializer signature reflect a validation_alias? Explain runtime validation versus editor hints.",
+            "Pydantic v2.8.2 validation_alias multiple aliases first_name fname",
+            "Pydantic Field alias vs validation_alias difference",
+            "VSCode Pydantic model signature validation_alias hint",
+            "Pydantic runtime validation vs static type checking editor hints"
+          ],
+          "evidence": [
+            {
+              "id": "ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e",
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "page_number": null,
+              "chunk_index": 6,
+              "text": "ass User(BaseModel):\n        model_config = ConfigDict(populate_by_name=True)\n\n        name: str = Field(..., alias=str('username'))  # noqa: UP018\n\n    user = User(name='johndoe')  # (1)!\n    user = User(username='johndoe')  # (2)!\n    ```\n\n    1. Now VSCode will NOT show a warning\n    2. VSCode will show a warning here, though\n\n    This is discussed in more detail in [this issue](https://github.com/pydantic/pydantic/issues/5893).\n\n    ### Validation Alias\n\n    Even though Pydantic treats `alias` and `validation_alias` the same when creating model instances, VSCode will not\n    use the `validation_alias` in the class initializer signature. If you want VSCode to use the `validation_alias`\n    in the class initializer, you can instead specify both an `alias` and `serialization_alias`, as the\n    `serialization_alias` will override the `alias` during serialization:\n\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(..., validation_alias='myValidationAlias')\n    ```\n    with:\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(\n            ...,"
+            },
+            {
+              "id": "ev_feeb348b3211794e344637b6817dc3120156e46d25bd6f3c9b14c9d92be7e584",
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "page_number": null,
+              "chunk_index": 7,
+              "text": "validation_alias='myValidationAlias')\n    ```\n    with:\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(\n            ...,\n            alias='myValidationAlias',\n            serialization_alias='my_serialization_alias',\n        )\n\n    m = MyModel(myValidationAlias=1)\n    print(m.model_dump(by_alias=True))\n    #> {'my_serialization_alias': 1}\n    ```\n\n    All of the above will likely also apply to other tools that respect the\n    [`@typing.dataclass_transform`](https://docs.python.org/3/library/typing.html#typing.dataclass_transform)\n    decorator, such as Pyright.\n\nFor more information on alias usage, see the [Alias] concepts page.\n\n## Numeric Constraints\n\nThere are some keyword arguments that can be used to constrain numeric values:\n\n* `gt` - greater than\n* `lt` - less than\n* `ge` - greater than or equal to\n* `le` - less than or equal to\n* `multiple_of` - a multiple of the given number\n* `allow_inf_nan` - allow `'inf'`, `'-inf'`, `'nan'` values\n\nHere's an example:\n\n```py\nfrom pydantic import BaseModel, Field\n\nclass Foo(BaseModel):\n    positive: int = Field(gt=0)\n    non_negative: int = Field(ge=0)\n    negative: int"
+            },
+            {
+              "id": "ev_c2a2f1f9b178b5bede17ebcc26fbd775a0ffe1521b2da24926f6382b4f7ad7bc",
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "page_number": null,
+              "chunk_index": 5,
+              "text": "ser = User(username='johndoe')  # (1)!\n    ```\n\n    1. VSCode will NOT show a warning here.\n\n    When the `'alias'` keyword argument is specified, even if you set `populate_by_name` to `True` in the\n    [Model Config][pydantic.config.ConfigDict.populate_by_name], VSCode will show a warning when instantiating\n    a model using the field name (though it will work at runtime) — in this case, `'name'`:\n\n    ```py\n    from pydantic import BaseModel, ConfigDict, Field\n\n    class User(BaseModel):\n        model_config = ConfigDict(populate_by_name=True)\n\n        name: str = Field(..., alias='username')\n\n    user = User(name='johndoe')  # (1)!\n    ```\n\n    1. VSCode will show a warning here.\n\n    To \"trick\" VSCode into preferring the field name, you can use the `str` function to wrap the alias value.\n    With this approach, though, a warning is shown when instantiating a model using the alias for the field:\n\n    ```py\n    from pydantic import BaseModel, ConfigDict, Field\n\n    class User(BaseModel):\n        model_config = ConfigDict(populate_by_name=True)\n\n        name: str = Field(..., alias=str('username'))  # noqa: UP018\n\n    user = User(name='johndoe')  # (1)!\n    user ="
+            },
+            {
+              "id": "ev_fb8fe8017a36b41de77150b517e1a61c0a635ed90994f20f0d804ea0794d35b3",
+              "source_file": "pydantic-v2--concepts--strict_mode.md",
+              "page_number": null,
+              "chunk_index": 1,
+              "text": "error if the data is not of the correct type.\n\nHere is a brief example showing the difference between validation behavior in strict and the default/\"lax\" mode:\n\n```py\nfrom pydantic import BaseModel, ValidationError\n\nclass MyModel(BaseModel):\n    x: int\n\nprint(MyModel.model_validate({'x': '123'}))  # lax mode\n#> x=123\n\ntry:\n    MyModel.model_validate({'x': '123'}, strict=True)  # strict mode\nexcept ValidationError as exc:\n    print(exc)\n    \"\"\"\n    1 validation error for MyModel\n    x\n      Input should be a valid integer [type=int_type, input_value='123', input_type=str]\n    \"\"\"\n```\n\nThere are various ways to get strict-mode validation while using Pydantic, which will be discussed in more detail below:\n\n* [Passing `strict=True` to the validation methods](#strict-mode-in-method-calls), such as `BaseModel.model_validate`,\n  `TypeAdapter.validate_python`, and similar for JSON\n* [Using `Field(strict=True)`](#strict-mode-with-field) with fields of a `BaseModel`, `dataclass`, or `TypedDict`\n* [Using `pydantic.types.Strict` as a type annotation](#strict-mode-with-annotated-strict) on a field\n  * Pydantic provides some type aliases that are already annotated with `Strict`, such as"
+            },
+            {
+              "id": "ev_6038239df74730e4c9f6b8226308d8f08adc7445af89cbca8237f04e5045e684",
+              "source_file": "pydantic-v2--concepts--strict_mode.md",
+              "page_number": null,
+              "chunk_index": 7,
+              "text": "age: int\n    n_pets: int\n\nuser = User(name='John', age='42', n_pets='1')\nprint(user)\n#> name='John' age=42 n_pets=1\n\nclass AnotherUser(BaseModel):\n    name: str\n    age: int = Field(strict=True)\n    n_pets: int\n\ntry:\n    anotheruser = AnotherUser(name='John', age='42', n_pets='1')\nexcept ValidationError as e:\n    print(e)\n    \"\"\"\n    1 validation error for AnotherUser\n    age\n      Input should be a valid integer [type=int_type, input_value='42', input_type=str]\n    \"\"\"\n```\n\nNote that making fields strict will also affect the validation performed when instantiating the model class:\n\n```python\nfrom pydantic import BaseModel, Field, ValidationError\n\nclass Model(BaseModel):\n    x: int = Field(strict=True)\n    y: int = Field(strict=False)\n\ntry:\n    Model(x='1', y='2')\nexcept ValidationError as exc:\n    print(exc)\n    \"\"\"\n    1 validation error for Model\n    x\n      Input should be a valid integer [type=int_type, input_value='1', input_type=str]\n    \"\"\"\n```\n\n### Using `Field` as an annotation\n\nNote that `Field(strict=True)` (or with any other keyword arguments) can be used as an annotation if necessary, e.g.,\nwhen working with `TypedDict`:\n\n```python\nfrom typing_extensions import"
+            }
+          ]
+        }
+      ],
+      "cited_evidence_ids": [
+        "ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e",
+        "ev_feeb348b3211794e344637b6817dc3120156e46d25bd6f3c9b14c9d92be7e584",
+        "ev_c2a2f1f9b178b5bede17ebcc26fbd775a0ffe1521b2da24926f6382b4f7ad7bc"
+      ],
+      "latency_ms": 9758,
+      "prompt_tokens": 2310,
+      "completion_tokens": 374,
+      "total_tokens": 2684,
+      "model_calls": 7,
+      "retry_count": 0,
+      "attempt_ids": [
+        "6561cab6a3964dfcab034d6cc8d68e18",
+        "6fa1531a86c446e0a00b49b262893ab8",
+        "666807cd398a4bbc9378dfd8ae6dc43d",
+        "8b3bd7aee357458ca94dd7f520e1eb88",
+        "ffa1ef19479844c4abfbe0fa1bca37f7",
+        "1163451246554995be7cb8fdc3d472f8",
+        "b5876832b1ce4e07b1455e09886f385a"
+      ],
+      "usage_complete": true,
+      "critic_loops": 0,
+      "evidence_sufficient": null,
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "error_code": null
+    },
+    {
+      "case_id": "REAL-DEV-007",
+      "variant": "llm_rag",
+      "status": "success",
+      "answer": "To allow a `first_name` field to accept both 'first_name' and 'fname' during validation in Pydantic v2.8.2, you should use the `AliasChoices` class with the `validation_alias` parameter [[cite:ev_b074c4df75ada9cbd1afe5b2b117ac92620397cf00fc9d7ca4979a031c5b233a]]. The implementation is as follows:\n\n```python\nfrom pydantic import BaseModel, Field, AliasChoices\n\nclass User(BaseModel):\n    first_name: str = Field(validation_alias=AliasChoices('first_name', 'fname'))\n```\n\nThis configuration allows the model to be validated using either input key: `User.model_validate({'fname': 'John'})` or `User.model_validate({'first_name': 'John'})` [[cite:ev_b074c4df75ada9cbd1afe5b2b117ac92620397cf00fc9d7ca4979a031c5b233a]].\n\nRegarding VSCode's initializer signature, it will **not** reflect the `validation_alias`. VSCode uses the `alias` keyword argument for editor hints (such as showing no warning when using the alias), but it does not use `validation_alias` in the class initializer signature [[cite:ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e]]. If you want VSCode to recognize an alias in the initializer, you must specify an `alias` (and optionally a `serialization_alias`) rather than relying solely on `validation_alias` [[cite:ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e]]. \n\nIn summary, runtime validation handles multiple inputs via `AliasChoices`, while editor hints are strictly tied to the `alias` parameter, not `validation_alias` [[cite:ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e]][[cite:ev_b074c4df75ada9cbd1afe5b2b117ac92620397cf00fc9d7ca4979a031c5b233a]].",
+      "retrieved_evidence": [
+        {
+          "id": "ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e",
+          "source_file": "pydantic-v2--concepts--fields.md",
+          "page_number": null,
+          "chunk_index": 6,
+          "text": "ass User(BaseModel):\n        model_config = ConfigDict(populate_by_name=True)\n\n        name: str = Field(..., alias=str('username'))  # noqa: UP018\n\n    user = User(name='johndoe')  # (1)!\n    user = User(username='johndoe')  # (2)!\n    ```\n\n    1. Now VSCode will NOT show a warning\n    2. VSCode will show a warning here, though\n\n    This is discussed in more detail in [this issue](https://github.com/pydantic/pydantic/issues/5893).\n\n    ### Validation Alias\n\n    Even though Pydantic treats `alias` and `validation_alias` the same when creating model instances, VSCode will not\n    use the `validation_alias` in the class initializer signature. If you want VSCode to use the `validation_alias`\n    in the class initializer, you can instead specify both an `alias` and `serialization_alias`, as the\n    `serialization_alias` will override the `alias` during serialization:\n\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(..., validation_alias='myValidationAlias')\n    ```\n    with:\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(\n            ...,"
+        },
+        {
+          "id": "ev_b074c4df75ada9cbd1afe5b2b117ac92620397cf00fc9d7ca4979a031c5b233a",
+          "source_file": "pydantic-v2--concepts--alias.md",
+          "page_number": null,
+          "chunk_index": 2,
+          "text": "API reference.\n\nIn the `'first_name'` field, we are using the alias `'names'` and the index `0` to specify the path to the first name.\nIn the `'last_name'` field, we are using the alias `'names'` and the index `1` to specify the path to the last name.\n\n`AliasChoices` is used to specify a choice of aliases. For example:\n\n```py lint=\"skip\"\nfrom pydantic import BaseModel, Field, AliasChoices\n\nclass User(BaseModel):\n    first_name: str = Field(validation_alias=AliasChoices('first_name', 'fname'))\n    last_name: str = Field(validation_alias=AliasChoices('last_name', 'lname'))\n\nuser = User.model_validate({'fname': 'John', 'lname': 'Doe'})  # (1)!\nprint(user)\n#> first_name='John' last_name='Doe'\nuser = User.model_validate({'first_name': 'John', 'lname': 'Doe'})  # (2)!\nprint(user)\n#> first_name='John' last_name='Doe'\n```\n\n1. We are using the second alias choice for both fields.\n2. We are using the first alias choice for the field `'first_name'` and the second alias choice\n   for the field `'last_name'`.\n\nYou can also use `AliasChoices` with `AliasPath`:\n\n```py lint=\"skip\"\nfrom pydantic import BaseModel, Field, AliasPath, AliasChoices\n\nclass User(BaseModel):\n    first_name: str ="
+        },
+        {
+          "id": "ev_feeb348b3211794e344637b6817dc3120156e46d25bd6f3c9b14c9d92be7e584",
+          "source_file": "pydantic-v2--concepts--fields.md",
+          "page_number": null,
+          "chunk_index": 7,
+          "text": "validation_alias='myValidationAlias')\n    ```\n    with:\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(\n            ...,\n            alias='myValidationAlias',\n            serialization_alias='my_serialization_alias',\n        )\n\n    m = MyModel(myValidationAlias=1)\n    print(m.model_dump(by_alias=True))\n    #> {'my_serialization_alias': 1}\n    ```\n\n    All of the above will likely also apply to other tools that respect the\n    [`@typing.dataclass_transform`](https://docs.python.org/3/library/typing.html#typing.dataclass_transform)\n    decorator, such as Pyright.\n\nFor more information on alias usage, see the [Alias] concepts page.\n\n## Numeric Constraints\n\nThere are some keyword arguments that can be used to constrain numeric values:\n\n* `gt` - greater than\n* `lt` - less than\n* `ge` - greater than or equal to\n* `le` - less than or equal to\n* `multiple_of` - a multiple of the given number\n* `allow_inf_nan` - allow `'inf'`, `'-inf'`, `'nan'` values\n\nHere's an example:\n\n```py\nfrom pydantic import BaseModel, Field\n\nclass Foo(BaseModel):\n    positive: int = Field(gt=0)\n    non_negative: int = Field(ge=0)\n    negative: int"
+        },
+        {
+          "id": "ev_11bc34aa30f999ea11a306c79e450cbe501b6a085d78e3cf75f37b6ac545ad31",
+          "source_file": "pydantic-v2--concepts--fields.md",
+          "page_number": null,
+          "chunk_index": 3,
+          "text": "g serialization.\n\nIf you want to use an alias _only_ for validation, you can use the `validation_alias` parameter:\n\n```py\nfrom pydantic import BaseModel, Field\n\nclass User(BaseModel):\n    name: str = Field(..., validation_alias='username')\n\nuser = User(username='johndoe')  # (1)!\nprint(user)\n#> name='johndoe'\nprint(user.model_dump(by_alias=True))  # (2)!\n#> {'name': 'johndoe'}\n```\n\n1. The validation alias `'username'` is used during validation.\n2. The field name `'name'` is used during serialization.\n\nIf you only want to define an alias for _serialization_, you can use the `serialization_alias` parameter:\n\n```py\nfrom pydantic import BaseModel, Field\n\nclass User(BaseModel):\n    name: str = Field(..., serialization_alias='username')\n\nuser = User(name='johndoe')  # (1)!\nprint(user)\n#> name='johndoe'\nprint(user.model_dump(by_alias=True))  # (2)!\n#> {'username': 'johndoe'}\n```\n\n1. The field name `'name'` is used for validation.\n2. The serialization alias `'username'` is used for serialization.\n\n!!! note \"Alias precedence and priority\"\n    In case you use `alias` together with `validation_alias` or `serialization_alias` at the same time,\n    the `validation_alias` will have priority"
+        },
+        {
+          "id": "ev_89eeec9ffb00a4ff235459b2d71dcb6500d4e0d83343f9bf9f19c35679b1113f",
+          "source_file": "pydantic-v2--concepts--fields.md",
+          "page_number": null,
+          "chunk_index": 4,
+          "text": "zation.\n\n!!! note \"Alias precedence and priority\"\n    In case you use `alias` together with `validation_alias` or `serialization_alias` at the same time,\n    the `validation_alias` will have priority over `alias` for validation, and `serialization_alias` will have priority\n    over `alias` for serialization.\n\n    If you use an `alias_generator` in the [Model Config][pydantic.config.ConfigDict.alias_generator], you can control\n    the order of precedence for specified field vs generated aliases via the `alias_priority` setting. You can read more about alias precedence [here](../concepts/alias.md#alias-precedence).\n\n??? tip \"VSCode and Pyright users\"\n    In VSCode, if you use the [Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)\n    extension, you won't see a warning when instantiating a model using a field's alias:\n\n    ```py\n    from pydantic import BaseModel, Field\n\n    class User(BaseModel):\n        name: str = Field(..., alias='username')\n\n    user = User(username='johndoe')  # (1)!\n    ```\n\n    1. VSCode will NOT show a warning here.\n\n    When the `'alias'` keyword argument is specified, even if you set `populate_by_name` to `True` in the"
+        }
+      ],
+      "retrieval_rounds": [
+        {
+          "round_index": 0,
+          "queries": [
+            "In Pydantic v2.8.2, how can a first_name field accept both 'first_name' and 'fname' during validation, and will VSCode's initializer signature reflect a validation_alias? Explain runtime validation versus editor hints."
+          ],
+          "evidence": [
+            {
+              "id": "ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e",
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "page_number": null,
+              "chunk_index": 6,
+              "text": "ass User(BaseModel):\n        model_config = ConfigDict(populate_by_name=True)\n\n        name: str = Field(..., alias=str('username'))  # noqa: UP018\n\n    user = User(name='johndoe')  # (1)!\n    user = User(username='johndoe')  # (2)!\n    ```\n\n    1. Now VSCode will NOT show a warning\n    2. VSCode will show a warning here, though\n\n    This is discussed in more detail in [this issue](https://github.com/pydantic/pydantic/issues/5893).\n\n    ### Validation Alias\n\n    Even though Pydantic treats `alias` and `validation_alias` the same when creating model instances, VSCode will not\n    use the `validation_alias` in the class initializer signature. If you want VSCode to use the `validation_alias`\n    in the class initializer, you can instead specify both an `alias` and `serialization_alias`, as the\n    `serialization_alias` will override the `alias` during serialization:\n\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(..., validation_alias='myValidationAlias')\n    ```\n    with:\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(\n            ...,"
+            },
+            {
+              "id": "ev_b074c4df75ada9cbd1afe5b2b117ac92620397cf00fc9d7ca4979a031c5b233a",
+              "source_file": "pydantic-v2--concepts--alias.md",
+              "page_number": null,
+              "chunk_index": 2,
+              "text": "API reference.\n\nIn the `'first_name'` field, we are using the alias `'names'` and the index `0` to specify the path to the first name.\nIn the `'last_name'` field, we are using the alias `'names'` and the index `1` to specify the path to the last name.\n\n`AliasChoices` is used to specify a choice of aliases. For example:\n\n```py lint=\"skip\"\nfrom pydantic import BaseModel, Field, AliasChoices\n\nclass User(BaseModel):\n    first_name: str = Field(validation_alias=AliasChoices('first_name', 'fname'))\n    last_name: str = Field(validation_alias=AliasChoices('last_name', 'lname'))\n\nuser = User.model_validate({'fname': 'John', 'lname': 'Doe'})  # (1)!\nprint(user)\n#> first_name='John' last_name='Doe'\nuser = User.model_validate({'first_name': 'John', 'lname': 'Doe'})  # (2)!\nprint(user)\n#> first_name='John' last_name='Doe'\n```\n\n1. We are using the second alias choice for both fields.\n2. We are using the first alias choice for the field `'first_name'` and the second alias choice\n   for the field `'last_name'`.\n\nYou can also use `AliasChoices` with `AliasPath`:\n\n```py lint=\"skip\"\nfrom pydantic import BaseModel, Field, AliasPath, AliasChoices\n\nclass User(BaseModel):\n    first_name: str ="
+            },
+            {
+              "id": "ev_feeb348b3211794e344637b6817dc3120156e46d25bd6f3c9b14c9d92be7e584",
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "page_number": null,
+              "chunk_index": 7,
+              "text": "validation_alias='myValidationAlias')\n    ```\n    with:\n    ```py\n    from pydantic import BaseModel, Field\n\n    class MyModel(BaseModel):\n        my_field: int = Field(\n            ...,\n            alias='myValidationAlias',\n            serialization_alias='my_serialization_alias',\n        )\n\n    m = MyModel(myValidationAlias=1)\n    print(m.model_dump(by_alias=True))\n    #> {'my_serialization_alias': 1}\n    ```\n\n    All of the above will likely also apply to other tools that respect the\n    [`@typing.dataclass_transform`](https://docs.python.org/3/library/typing.html#typing.dataclass_transform)\n    decorator, such as Pyright.\n\nFor more information on alias usage, see the [Alias] concepts page.\n\n## Numeric Constraints\n\nThere are some keyword arguments that can be used to constrain numeric values:\n\n* `gt` - greater than\n* `lt` - less than\n* `ge` - greater than or equal to\n* `le` - less than or equal to\n* `multiple_of` - a multiple of the given number\n* `allow_inf_nan` - allow `'inf'`, `'-inf'`, `'nan'` values\n\nHere's an example:\n\n```py\nfrom pydantic import BaseModel, Field\n\nclass Foo(BaseModel):\n    positive: int = Field(gt=0)\n    non_negative: int = Field(ge=0)\n    negative: int"
+            },
+            {
+              "id": "ev_11bc34aa30f999ea11a306c79e450cbe501b6a085d78e3cf75f37b6ac545ad31",
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "page_number": null,
+              "chunk_index": 3,
+              "text": "g serialization.\n\nIf you want to use an alias _only_ for validation, you can use the `validation_alias` parameter:\n\n```py\nfrom pydantic import BaseModel, Field\n\nclass User(BaseModel):\n    name: str = Field(..., validation_alias='username')\n\nuser = User(username='johndoe')  # (1)!\nprint(user)\n#> name='johndoe'\nprint(user.model_dump(by_alias=True))  # (2)!\n#> {'name': 'johndoe'}\n```\n\n1. The validation alias `'username'` is used during validation.\n2. The field name `'name'` is used during serialization.\n\nIf you only want to define an alias for _serialization_, you can use the `serialization_alias` parameter:\n\n```py\nfrom pydantic import BaseModel, Field\n\nclass User(BaseModel):\n    name: str = Field(..., serialization_alias='username')\n\nuser = User(name='johndoe')  # (1)!\nprint(user)\n#> name='johndoe'\nprint(user.model_dump(by_alias=True))  # (2)!\n#> {'username': 'johndoe'}\n```\n\n1. The field name `'name'` is used for validation.\n2. The serialization alias `'username'` is used for serialization.\n\n!!! note \"Alias precedence and priority\"\n    In case you use `alias` together with `validation_alias` or `serialization_alias` at the same time,\n    the `validation_alias` will have priority"
+            },
+            {
+              "id": "ev_89eeec9ffb00a4ff235459b2d71dcb6500d4e0d83343f9bf9f19c35679b1113f",
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "page_number": null,
+              "chunk_index": 4,
+              "text": "zation.\n\n!!! note \"Alias precedence and priority\"\n    In case you use `alias` together with `validation_alias` or `serialization_alias` at the same time,\n    the `validation_alias` will have priority over `alias` for validation, and `serialization_alias` will have priority\n    over `alias` for serialization.\n\n    If you use an `alias_generator` in the [Model Config][pydantic.config.ConfigDict.alias_generator], you can control\n    the order of precedence for specified field vs generated aliases via the `alias_priority` setting. You can read more about alias precedence [here](../concepts/alias.md#alias-precedence).\n\n??? tip \"VSCode and Pyright users\"\n    In VSCode, if you use the [Pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)\n    extension, you won't see a warning when instantiating a model using a field's alias:\n\n    ```py\n    from pydantic import BaseModel, Field\n\n    class User(BaseModel):\n        name: str = Field(..., alias='username')\n\n    user = User(username='johndoe')  # (1)!\n    ```\n\n    1. VSCode will NOT show a warning here.\n\n    When the `'alias'` keyword argument is specified, even if you set `populate_by_name` to `True` in the"
+            }
+          ]
+        }
+      ],
+      "cited_evidence_ids": [
+        "ev_d75b32c83065e4b64f8a1cb59b2aca49839c497bdaab5e2aa1ac30c47026138e",
+        "ev_b074c4df75ada9cbd1afe5b2b117ac92620397cf00fc9d7ca4979a031c5b233a"
+      ],
+      "latency_ms": 8127,
+      "prompt_tokens": 2086,
+      "completion_tokens": 375,
+      "total_tokens": 2461,
+      "model_calls": 2,
+      "retry_count": 0,
+      "attempt_ids": [
+        "61a1e55f40844c65bd1711c7e52877ae",
+        "dc3ff3fa7f4f4c9694144b0244ffc92f"
+      ],
+      "usage_complete": true,
+      "critic_loops": 0,
+      "evidence_sufficient": null,
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "error_code": null
+    }
+  ],
+  "request_receipts": [
+    {
+      "id": "3f9c6da0e1ba493abd690cc7700b09da",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "unknown",
+      "outcome": "provider_embedding_failed",
+      "request_sha256": "69eccbc80fcfd6c434dbad97929b8950f15a67caad1e7856aea2c12115b12487",
+      "input_tokens": null,
+      "output_tokens": null,
+      "cached_input_tokens": null,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "73c081ad6a3447d09da60fd56c24f83a",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "69eccbc80fcfd6c434dbad97929b8950f15a67caad1e7856aea2c12115b12487",
+      "input_tokens": 3199,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015995"
+    },
+    {
+      "id": "05233450480f49919e700cedcb98969a",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "2aa02a9031395d807614022c13766b1bd42450f3fa5a85c472110c4561c009ff",
+      "input_tokens": 1348,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000674"
+    },
+    {
+      "id": "f681bc3f8220409fa635a39be8ce9d6d",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "c1fb4451a64da0606e93687f079713a2a504d064213530ba4eb4770e22b687f3",
+      "input_tokens": 2979,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0014895"
+    },
+    {
+      "id": "0baaa09b58664c5b8b3c009cb629afef",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5dda73c1d6732499233131b3ed2eab3d1aff66d0f346e1235fd4f319497d1613",
+      "input_tokens": 2985,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0014925"
+    },
+    {
+      "id": "6d281c436bbf4db89511b40b5146a756",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "cc83c04afac923b23dfad87a63dc89ea13df602bcf9d37bffdeb7104ff2c204a",
+      "input_tokens": 569,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0002845"
+    },
+    {
+      "id": "cdc21ad92a194181bf3696c88bf55242",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "c6d64692d60197af1e75ebf8533754eb2bcec9dd873e6d631fa2ea469be60c17",
+      "input_tokens": 3021,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015105"
+    },
+    {
+      "id": "67080077191f4052a6da0c6584d41c78",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "ce0deda07a42000d802b57f72139b8fb2dee4000c82bd4b3c8af32cae72a9187",
+      "input_tokens": 3009,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015045"
+    },
+    {
+      "id": "3afa4a4260224e858238fe0a4f4754c2",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "55fb77702b45c61b1e411cd9d576efe77d58001a2b24a5e115d28064475c4f35",
+      "input_tokens": 1030,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000515"
+    },
+    {
+      "id": "13650674a1fc42e39211bf8a66877c21",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "61415a1f1a51da94174e4e26d6100848b3db6b354fd5a978bd3213ab10cc4b2c",
+      "input_tokens": 2144,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.001072"
+    },
+    {
+      "id": "00146147d444414fa3222e5439c15b45",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "25384e290bb4b0f1212ba1758779123e5fcf350431030d4317e85f234e301642",
+      "input_tokens": 3089,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015445"
+    },
+    {
+      "id": "70553b6789114272acd9197d64115e0b",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "01591067acf1cf80d852356cbaa87f0b6c1b676b30cdee3c9bc3f8ae4172a9fc",
+      "input_tokens": 494,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000247"
+    },
+    {
+      "id": "5a843784442a440bbaa8482c7126b9a7",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "0f25549da5425db1fd0a0fb254af43fb5de35321e85e8385771885052b227f4f",
+      "input_tokens": 1862,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000931"
+    },
+    {
+      "id": "6bd5b1ea51b3422aa80a0e641ad6ef26",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "cd7eb46f022c8925bf6a12ac21f3a6675123646f6a25fe6c307865e53c187fa4",
+      "input_tokens": 2784,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.001392"
+    },
+    {
+      "id": "3cea49ebfec54078aa7f62e80e601f9c",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "22673fa4aa857689cf3525fe7589462d005b67a7976fcfbeea9196fe515deed8",
+      "input_tokens": 1257,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0006285"
+    },
+    {
+      "id": "9944d604cc45405083662146b0a75a30",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "05e2a9844e971eb2a20f7dcbfcc81c551cd88b7f0bbc336c24ab5d98126d1ba3",
+      "input_tokens": 233,
+      "output_tokens": 377,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0003482"
+    },
+    {
+      "id": "f5877a63aff94d3fb6cb624f1f96de28",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "36dae6509066b1a0163f741d88c5089c320cc8cac4b6350dc2d4ad861b96a486",
+      "input_tokens": 29,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000145"
+    },
+    {
+      "id": "80433b3219cc4cb7b60a0840bdde5e2a",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "570d0ec3c22c99bd6152d71128db7f0d6a47ceef3cb6cd8ee93537bad47c0864",
+      "input_tokens": 16,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000008"
+    },
+    {
+      "id": "d494c8b05ce9416a8c96b29c1dad7520",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "ec6d993d4b12f40fa85af38802ca6b0665b51627e9bcc6935dc0de810b21e8c0",
+      "input_tokens": 9,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000045"
+    },
+    {
+      "id": "77fbfb3c5d1b43abb9177b915792425c",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "6c635183775cd5d7050fa386acf493f97d0556c5cfdd0beb7a0c4cd26ba581ca",
+      "input_tokens": 10,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000005"
+    },
+    {
+      "id": "07da1e461da94fa09018b52cd60d79f7",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "382d5aa6f3ef84fb6ae4d67b548a08bf50083053f981249e96ccfa85163defda",
+      "input_tokens": 11,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000055"
+    },
+    {
+      "id": "859a938c7ab944bb8c936dd5579997d8",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "3e62be0c4523e9327a073fc8f4a9be57b488e93bf5b13ee4f689f0fb7b971d36",
+      "input_tokens": 2422,
+      "output_tokens": 156,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0006092"
+    },
+    {
+      "id": "d44992913b924daa955d0bd08f39a94e",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "682218816424bb173a5a85fff29cee4f8c8f07a0fcbca72c6d6824bad1a59bd9",
+      "input_tokens": 2459,
+      "output_tokens": 367,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0007854"
+    },
+    {
+      "id": "f3703aa99c12485180bc5f2173a20392",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "36dae6509066b1a0163f741d88c5089c320cc8cac4b6350dc2d4ad861b96a486",
+      "input_tokens": 29,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000145"
+    },
+    {
+      "id": "308f9b3626b842b1a8338c0176187123",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "855d6be3ea5e8f68abafb4afad9f0baf144290bddf0e088975fca66b8e1db872",
+      "input_tokens": 35,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000175"
+    },
+    {
+      "id": "2d634df6dcdb4e1f8fed9ce5f2753f32",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "8e45125da87293adb143189160669d807b110691d1327ba8acc703503ff0677d",
+      "input_tokens": 27,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000135"
+    },
+    {
+      "id": "8bf0629d2f7c4a7e9fd93b209ab950f6",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "ffe428948cba97857fbec49b0d83fb9109fa0108a49d48bb30a5e27045ef5ecf",
+      "input_tokens": 25,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000125"
+    },
+    {
+      "id": "b9403250ade74d73a702372d182c1a0b",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "12c6577236043cd0744de396d20e7e94d37d5167afa3cc9f743cdf90eeb0dd11",
+      "input_tokens": 34,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000017"
+    },
+    {
+      "id": "914e7346a7624cf8b73690e66971d717",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "fb10a92251ee0181fde8feea98b55a7ed6ab5262dd4b2f71d7921d5628096d21",
+      "input_tokens": 2712,
+      "output_tokens": 104,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0006256"
+    },
+    {
+      "id": "58c3a3c2cf354a5aa0fa7a2789f01ccc",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5bd62bc1dce2b02dd97bf74baecfa4d9087a1c50b0a88385e4fe2582c92a6ea9",
+      "input_tokens": 2697,
+      "output_tokens": 298,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0007778"
+    },
+    {
+      "id": "702d36d05b994e46baf8c2c5e2429bc8",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "36dae6509066b1a0163f741d88c5089c320cc8cac4b6350dc2d4ad861b96a486",
+      "input_tokens": 29,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000145"
+    },
+    {
+      "id": "0ada29e249f34a32b25ebab7d0011678",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "390f63c4b70495f25a160981e872a7276695dbefcae1e72a89811d79f5852819",
+      "input_tokens": 33,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000165"
+    },
+    {
+      "id": "9255f7b721ef4ec7a6465a24c7e6e438",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "c22f32587922eb00bd0a6ff2d97956117fee27df898600cfe756395cf920241f",
+      "input_tokens": 23,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000115"
+    },
+    {
+      "id": "3a66ca25f9314e22bc271d88ce18cf1c",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "90e9ebc327a323d7ceb5fbf5f5a94ad3cacf3912f6bb90da891d5c9c8d693c72",
+      "input_tokens": 23,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000115"
+    },
+    {
+      "id": "57b552e7e5374ffbb9f4771a837913ab",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "570d0ec3c22c99bd6152d71128db7f0d6a47ceef3cb6cd8ee93537bad47c0864",
+      "input_tokens": 16,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000008"
+    },
+    {
+      "id": "2522052c698a42f7b70e919b41debe64",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "3671fb4055cde2c06e26902ed2580afedd2bf7fcdc3b9bd43fd4e3411373c418",
+      "input_tokens": 2712,
+      "output_tokens": 133,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0006488"
+    },
+    {
+      "id": "0e59711ba6314b18bc1c691a80fbe76f",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "8456df4cc2d30fabe75677ef44703e94a689dd35386a83d550bbadf1416ffc7d",
+      "input_tokens": 2726,
+      "output_tokens": 350,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0008252"
+    },
+    {
+      "id": "a7473c981a91447e8277ba19dcb3e72d",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "1d1e24caeca5a02861f34ad90c6bea15a0385e28489e33fa342a0598cba31ebc",
+      "input_tokens": 2663,
+      "output_tokens": 675,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0010726"
+    },
+    {
+      "id": "4d31e0f830334c7a9c92d73bc1d68dd3",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "130651938702c09abe3c0b923b21b3c89fc3f2bd4ed4c18482e4f4210f68f208",
+      "input_tokens": 246,
+      "output_tokens": 327,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0003108"
+    },
+    {
+      "id": "3effbd149dc646ec8cc06957198fe37e",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5433e51e69fbff7608b72174cde1db34bf5a6758cb64e7fa8dfef89c9a26c383",
+      "input_tokens": 42,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000021"
+    },
+    {
+      "id": "cde71d6068354df9ab079c0ee4c76c75",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "efb9f3792655cd94ff0f271ad4637903cd3de53d9113655ee3d2d7b9975630c1",
+      "input_tokens": 16,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000008"
+    },
+    {
+      "id": "f61a4dd0fff24177a0e89008a4390800",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "767e7f4cde52c5462e186303bf4567266bbed49c085819d9e3b35ed807eba38b",
+      "input_tokens": 9,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000045"
+    },
+    {
+      "id": "3166ee83b812434fa4319a0006773d8d",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "4a8a681fd9bfbba2bc0d4e7066e4622ba71cf05530c15bd6ac5cc9b0662eb004",
+      "input_tokens": 9,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000045"
+    },
+    {
+      "id": "4495bda56eb54c2ebdf9b89388c40751",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "62244987eba6d204dbcae20667f2952075bb0eb7f064d2ba56eb38f559813acf",
+      "input_tokens": 14,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000007"
+    },
+    {
+      "id": "cdff9d7a39604b719b05caa63cc51790",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "1c544b7b6f0bd08469274a41df7c50a2b59e224a98779542d3982ee39c6fe594",
+      "input_tokens": 2332,
+      "output_tokens": 353,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0007488"
+    },
+    {
+      "id": "84df44795b29490eb7a08cad43bec23e",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "9c4266ea689e22fe9a5401e98c6c6cb942624005b6506c72df669321440e2224",
+      "input_tokens": 2716,
+      "output_tokens": 353,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0008256"
+    },
+    {
+      "id": "a9ec7b582537480994b01d18824c5f67",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "69eccbc80fcfd6c434dbad97929b8950f15a67caad1e7856aea2c12115b12487",
+      "input_tokens": 3199,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015995"
+    },
+    {
+      "id": "b24b7aa332324ab9b05546dcd350fa9b",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "2aa02a9031395d807614022c13766b1bd42450f3fa5a85c472110c4561c009ff",
+      "input_tokens": 1348,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000674"
+    },
+    {
+      "id": "48dc3231764e438481e53fed79a00784",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "c1fb4451a64da0606e93687f079713a2a504d064213530ba4eb4770e22b687f3",
+      "input_tokens": 2979,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0014895"
+    },
+    {
+      "id": "9fc8c879cd34408ba3962867db10afbb",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5dda73c1d6732499233131b3ed2eab3d1aff66d0f346e1235fd4f319497d1613",
+      "input_tokens": 2985,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0014925"
+    },
+    {
+      "id": "3e68b8cd05f74de3915669880b302ff6",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "cc83c04afac923b23dfad87a63dc89ea13df602bcf9d37bffdeb7104ff2c204a",
+      "input_tokens": 569,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0002845"
+    },
+    {
+      "id": "6311aa40c7af4c34bc0d616f5b717448",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "c6d64692d60197af1e75ebf8533754eb2bcec9dd873e6d631fa2ea469be60c17",
+      "input_tokens": 3021,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015105"
+    },
+    {
+      "id": "28cf8b66d8394020b78dea722f197f84",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "ce0deda07a42000d802b57f72139b8fb2dee4000c82bd4b3c8af32cae72a9187",
+      "input_tokens": 3009,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015045"
+    },
+    {
+      "id": "39a712a5e5c644d1947ccff81c81683d",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "55fb77702b45c61b1e411cd9d576efe77d58001a2b24a5e115d28064475c4f35",
+      "input_tokens": 1030,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000515"
+    },
+    {
+      "id": "315a50d3adfc4da6939f337d98ea87e2",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "61415a1f1a51da94174e4e26d6100848b3db6b354fd5a978bd3213ab10cc4b2c",
+      "input_tokens": 2144,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.001072"
+    },
+    {
+      "id": "6f3400989e9d4f089464427dd9082fa9",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "25384e290bb4b0f1212ba1758779123e5fcf350431030d4317e85f234e301642",
+      "input_tokens": 3089,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015445"
+    },
+    {
+      "id": "06f3b1496d004133b7857090fcca5b6c",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "01591067acf1cf80d852356cbaa87f0b6c1b676b30cdee3c9bc3f8ae4172a9fc",
+      "input_tokens": 494,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000247"
+    },
+    {
+      "id": "77b3506d35ae439eb4891442be37ea28",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "0f25549da5425db1fd0a0fb254af43fb5de35321e85e8385771885052b227f4f",
+      "input_tokens": 1862,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000931"
+    },
+    {
+      "id": "b1fc35317469467db53fb43980eff839",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "cd7eb46f022c8925bf6a12ac21f3a6675123646f6a25fe6c307865e53c187fa4",
+      "input_tokens": 2784,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.001392"
+    },
+    {
+      "id": "5e9c188d9ab74f4787a3419baa58091e",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "22673fa4aa857689cf3525fe7589462d005b67a7976fcfbeea9196fe515deed8",
+      "input_tokens": 1257,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0006285"
+    },
+    {
+      "id": "6561cab6a3964dfcab034d6cc8d68e18",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "7d4b8c2eb891ff8af3672102977da24359852a2fd48d31441fbfe1a8f1f5d748",
+      "input_tokens": 171,
+      "output_tokens": 74,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0000934"
+    },
+    {
+      "id": "6fa1531a86c446e0a00b49b262893ab8",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "45129748bb4769b5274a1fdd140ca7845d7ecdfd3788c00086eab2d328b968d7",
+      "input_tokens": 50,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000025"
+    },
+    {
+      "id": "666807cd398a4bbc9378dfd8ae6dc43d",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "dcd8019ec9f1dff933d033ab70d79b02ec2e98a22619f94b665ef090781a8f0b",
+      "input_tokens": 17,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000085"
+    },
+    {
+      "id": "8b3bd7aee357458ca94dd7f520e1eb88",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "b9d2186e4dfe1c40755d28be82f434fba990e5181d13cf473668ca3aba105522",
+      "input_tokens": 10,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000005"
+    },
+    {
+      "id": "ffa1ef19479844c4abfbe0fa1bca37f7",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "17b6c64a007e68968210736f49be4bfa8cbcbe56a8907f8eef5fc9bb65a201d2",
+      "input_tokens": 11,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000055"
+    },
+    {
+      "id": "1163451246554995be7cb8fdc3d472f8",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "f90d9a026e9357cccc6448dac0f864d13e4a5caf73e0d2305ed96c04e0c06c17",
+      "input_tokens": 12,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000006"
+    },
+    {
+      "id": "b5876832b1ce4e07b1455e09886f385a",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "0832e68acec9b275298996fb04f47d79714e8727717f3766ccc9d0d79e0916e3",
+      "input_tokens": 2039,
+      "output_tokens": 300,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0006478"
+    },
+    {
+      "id": "61a1e55f40844c65bd1711c7e52877ae",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "45129748bb4769b5274a1fdd140ca7845d7ecdfd3788c00086eab2d328b968d7",
+      "input_tokens": 50,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000025"
+    },
+    {
+      "id": "dc3ff3fa7f4f4c9694144b0244ffc92f",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "c30f953978ea9a896f21fe353aee188a1f78bac9f300d08faa3563d7780703a0",
+      "input_tokens": 2036,
+      "output_tokens": 375,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0007072"
+    }
+  ],
+  "usage": {
+    "physical_attempts": 69,
+    "usage_complete": false,
+    "input_tokens": 88293,
+    "output_tokens": 4242,
+    "cached_input_tokens": 0,
+    "estimated_cost_cny": null,
+    "unknown_usage_attempts": 1
+  },
+  "limits": [
+    "The original 80-unit v6 report, three failures and citation-format diagnostics are unchanged.",
+    "Four selected units cannot establish general reliability, semantic superiority or held-out quality.",
+    "The 4096-token cap remains; truncation is still an explicit failure mode."
+  ]
+}

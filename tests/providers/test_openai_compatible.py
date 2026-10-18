@@ -19,6 +19,32 @@ VALID_CRITIQUE = (
 )
 
 
+@pytest.mark.parametrize("kind", ["researcher", "writer", "answer"])
+@pytest.mark.parametrize("empty", [False, True])
+def test_grounded_request_binds_only_supplied_ids_without_mutating_model(kind, empty):
+    from app.domain.research import ResearchSynthesis, DraftReport
+    from app.evaluation.workflows import GroundedAnswer
+    schemas = {"researcher": (ResearchSynthesis, {"findings": []}, "Finding", "supporting_evidence_ids"),
+               "writer": (DraftReport, {"markdown": "Insufficient evidence.", "title": "Answer", "summary": "None", "findings": []}, "ReportFinding", "evidence_ids"),
+               "answer": (GroundedAnswer, {"answer_markdown": "Insufficient evidence.", "cited_evidence_ids": []}, None, "cited_evidence_ids")}
+    schema, response, definition, field = schemas[kind]
+    original = schema.model_json_schema()
+    completions = SequencedCompletions([chat_response(json.dumps(response))])
+    provider = OpenAICompatibleChatProvider(chat_client(completions), "dashscope", "qwen3.7-flash", structured_output="json_schema")
+    ids = [] if empty else ["ref_0001", "ref_0002"]
+    provider.generate_grounded([ChatMessage(role="user", content="Public evidence")], schema, evidence_ids=ids)
+    document = completions.calls[0]["response_format"]["json_schema"]["schema"]
+    node = document["$defs"][definition] if definition else document
+    array = node["properties"][field]
+    if empty:
+        assert array["maxItems"] == 0 and "enum" not in array["items"]
+    else:
+        assert array["items"]["enum"] == ids
+        assert '"enum": ["ref_0001", "ref_0002"]' in completions.calls[0]["messages"][-1]["content"]
+    assert original == schema.model_json_schema()
+    assert document["additionalProperties"] is False
+
+
 def test_opt_in_receipts_capture_invalid_output_without_headers_or_exception_inputs():
     receipts = []
     completions = SequencedCompletions([chat_response('{"sufficient":"wrong"}')])
