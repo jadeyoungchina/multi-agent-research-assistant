@@ -1,0 +1,1583 @@
+{
+  "initial": {
+    "metadata": {
+      "run_at_utc": "2026-10-18T05:26:45.666836Z",
+      "git_commit": "9848e108a0bb91410e7bcfaa699147730b45a03e",
+      "git_dirty": false,
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "prompt_version": "evaluation-v2",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 2048,
+        "structured_output": "json_object",
+        "max_writer_citation_repairs": 0
+      },
+      "synthetic": false,
+      "dataset_kind": "public_documents_ai_authored_questions",
+      "references_human_reviewed": false,
+      "references_ai_reviewed": true,
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "metrics_version": "global-first-pass-v2",
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-019/llm_rag",
+        "REAL-DEV-019/single_agent_rag",
+        "REAL-DEV-019/multi_agent_rag",
+        "REAL-DEV-019/baseline_llm",
+        "REAL-DEV-020/single_agent_rag",
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-020/baseline_llm",
+        "REAL-DEV-020/llm_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/baseline_llm",
+        "REAL-DEV-001/llm_rag",
+        "REAL-DEV-001/single_agent_rag",
+        "REAL-DEV-013/baseline_llm",
+        "REAL-DEV-013/llm_rag",
+        "REAL-DEV-013/single_agent_rag",
+        "REAL-DEV-013/multi_agent_rag",
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-007/baseline_llm"
+      ],
+      "setup_latency_ms": null
+    },
+    "by_variant": {
+      "baseline_llm": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 4.944,
+        "mean_latency_seconds": 6.448,
+        "first_round_recall_at_5": null,
+        "recall_denominator": 0,
+        "chat": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 337,
+          "output_tokens": 2142,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.001781",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 0,
+          "usage_complete": true,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 337,
+          "output_tokens": 2142,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.001781",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "llm_rag": {
+        "trace_count": 5,
+        "successes": 4,
+        "median_latency_seconds": 9.656,
+        "mean_latency_seconds": 9.5518,
+        "first_round_recall_at_5": 0.75,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 9,
+          "usage_complete": true,
+          "input_tokens": 19888,
+          "output_tokens": 3482,
+          "cached_input_tokens": 8192,
+          "estimated_cost_cny": "0.0067632",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 208,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000104",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 14,
+          "usage_complete": true,
+          "input_tokens": 20096,
+          "output_tokens": 3482,
+          "cached_input_tokens": 8192,
+          "estimated_cost_cny": "0.0068672",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "single_agent_rag": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 12.917,
+        "mean_latency_seconds": 12.107,
+        "first_round_recall_at_5": 0.8333333333333334,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 13,
+          "usage_complete": true,
+          "input_tokens": 18191,
+          "output_tokens": 3327,
+          "cached_input_tokens": 7680,
+          "estimated_cost_cny": "0.0062998",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 23,
+          "usage_complete": true,
+          "input_tokens": 439,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0002195",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 36,
+          "usage_complete": true,
+          "input_tokens": 18630,
+          "output_tokens": 3327,
+          "cached_input_tokens": 7680,
+          "estimated_cost_cny": "0.0065193",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "multi_agent_rag": {
+        "trace_count": 5,
+        "successes": 2,
+        "median_latency_seconds": 46.07,
+        "mean_latency_seconds": 46.52,
+        "first_round_recall_at_5": 0.5,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 26,
+          "usage_complete": true,
+          "input_tokens": 63814,
+          "output_tokens": 17910,
+          "cached_input_tokens": 7936,
+          "estimated_cost_cny": "0.0270908",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 35,
+          "usage_complete": true,
+          "input_tokens": 730,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000365",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 61,
+          "usage_complete": true,
+          "input_tokens": 64544,
+          "output_tokens": 17910,
+          "cached_input_tokens": 7936,
+          "estimated_cost_cny": "0.0274558",
+          "unknown_usage_attempts": 0
+        }
+      }
+    },
+    "generation_manifest": {
+      "code_commit": "9848e108a0bb91410e7bcfaa699147730b45a03e",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 2048
+      },
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "cases": [
+        "REAL-DEV-001",
+        "REAL-DEV-007",
+        "REAL-DEV-013",
+        "REAL-DEV-019",
+        "REAL-DEV-020"
+      ],
+      "variants": [
+        "baseline_llm",
+        "llm_rag",
+        "single_agent_rag",
+        "multi_agent_rag"
+      ],
+      "prompt_version": "evaluation-v2",
+      "candidate_source_files": [
+        "pydantic-v2--concepts--strict_mode.md",
+        "pydantic-v2--concepts--unions.md",
+        "pydantic-v2--concepts--fields.md",
+        "pydantic-v2--concepts--alias.md",
+        "fastapi--en--docs--tutorial--dependencies--index.md",
+        "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+        "fastapi--en--docs--tutorial--handling-errors.md",
+        "fastapi--en--docs--tutorial--response-status-code.md"
+      ],
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-019/llm_rag",
+        "REAL-DEV-019/single_agent_rag",
+        "REAL-DEV-019/multi_agent_rag",
+        "REAL-DEV-019/baseline_llm",
+        "REAL-DEV-020/single_agent_rag",
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-020/baseline_llm",
+        "REAL-DEV-020/llm_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/baseline_llm",
+        "REAL-DEV-001/llm_rag",
+        "REAL-DEV-001/single_agent_rag",
+        "REAL-DEV-013/baseline_llm",
+        "REAL-DEV-013/llm_rag",
+        "REAL-DEV-013/single_agent_rag",
+        "REAL-DEV-013/multi_agent_rag",
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-007/baseline_llm"
+      ],
+      "source_sha256": "0b5d87e1baa55a11021ca1144672fd80639b3c37272d5d7d98ee27db5762dafd"
+    },
+    "shared_index_embedding": {
+      "physical_attempts": 14,
+      "usage_complete": true,
+      "input_tokens": 29770,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.014885",
+      "unknown_usage_attempts": 0
+    },
+    "unassigned_non_embedding": {
+      "physical_attempts": 1,
+      "usage_complete": true,
+      "input_tokens": 3158,
+      "output_tokens": 1598,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.00191",
+      "unknown_usage_attempts": 0
+    },
+    "total": {
+      "physical_attempts": 131,
+      "usage_complete": true,
+      "input_tokens": 136535,
+      "output_tokens": 28459,
+      "cached_input_tokens": 23808,
+      "estimated_cost_cny": "0.0594183",
+      "unknown_usage_attempts": 0
+    },
+    "failures": [
+      {
+        "case_id": "REAL-DEV-019",
+        "variant": "multi_agent_rag",
+        "error": "provider_invalid_response"
+      },
+      {
+        "case_id": "REAL-DEV-020",
+        "variant": "multi_agent_rag",
+        "error": "provider_output_truncated"
+      },
+      {
+        "case_id": "REAL-DEV-001",
+        "variant": "multi_agent_rag",
+        "error": "invalid_citation"
+      },
+      {
+        "case_id": "REAL-DEV-007",
+        "variant": "llm_rag",
+        "error": "provider_invalid_response"
+      }
+    ]
+  },
+  "diagnostic": {
+    "metadata": {
+      "run_at_utc": "2026-10-18T05:34:54.293435Z",
+      "git_commit": "fe483cb6aaa1f90d5673f9034dd7b110f5ae7374",
+      "git_dirty": false,
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "prompt_version": "evaluation-v2",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 2048,
+        "structured_output": "json_object",
+        "max_writer_citation_repairs": 0
+      },
+      "synthetic": false,
+      "dataset_kind": "public_documents_ai_authored_questions",
+      "references_human_reviewed": false,
+      "references_ai_reviewed": true,
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "metrics_version": "global-first-pass-v2",
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/llm_rag"
+      ],
+      "setup_latency_ms": null
+    },
+    "by_variant": {
+      "llm_rag": {
+        "trace_count": 2,
+        "successes": 1,
+        "median_latency_seconds": 20.0375,
+        "mean_latency_seconds": 20.0375,
+        "first_round_recall_at_5": 0.5,
+        "recall_denominator": 2,
+        "chat": {
+          "physical_attempts": 6,
+          "usage_complete": true,
+          "input_tokens": 14034,
+          "output_tokens": 3109,
+          "cached_input_tokens": 8704,
+          "estimated_cost_cny": "0.005294",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 2,
+          "usage_complete": true,
+          "input_tokens": 101,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0000505",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 8,
+          "usage_complete": true,
+          "input_tokens": 14135,
+          "output_tokens": 3109,
+          "cached_input_tokens": 8704,
+          "estimated_cost_cny": "0.0053445",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "multi_agent_rag": {
+        "trace_count": 2,
+        "successes": 1,
+        "median_latency_seconds": 43.406,
+        "mean_latency_seconds": 43.406,
+        "first_round_recall_at_5": 0.5,
+        "recall_denominator": 2,
+        "chat": {
+          "physical_attempts": 10,
+          "usage_complete": true,
+          "input_tokens": 26353,
+          "output_tokens": 7020,
+          "cached_input_tokens": 6400,
+          "estimated_cost_cny": "0.0108866",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 10,
+          "usage_complete": true,
+          "input_tokens": 207,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0001035",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 20,
+          "usage_complete": true,
+          "input_tokens": 26560,
+          "output_tokens": 7020,
+          "cached_input_tokens": 6400,
+          "estimated_cost_cny": "0.0109901",
+          "unknown_usage_attempts": 0
+        }
+      }
+    },
+    "generation_manifest": {
+      "code_commit": "fe483cb6aaa1f90d5673f9034dd7b110f5ae7374",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 2048
+      },
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "cases": [
+        "REAL-DEV-001",
+        "REAL-DEV-007"
+      ],
+      "variants": [
+        "llm_rag",
+        "multi_agent_rag"
+      ],
+      "prompt_version": "evaluation-v2",
+      "candidate_source_files": [
+        "pydantic-v2--concepts--strict_mode.md",
+        "pydantic-v2--concepts--unions.md",
+        "pydantic-v2--concepts--fields.md",
+        "pydantic-v2--concepts--alias.md",
+        "fastapi--en--docs--tutorial--dependencies--index.md",
+        "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+        "fastapi--en--docs--tutorial--handling-errors.md",
+        "fastapi--en--docs--tutorial--response-status-code.md"
+      ],
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "order_seed": 20261018,
+      "capture_responses": true,
+      "execution_order": [
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/llm_rag"
+      ],
+      "source_sha256": "259cfb45ddb9c5ad36b651c70fb7081f1fce224674826502eebab42063568b90"
+    },
+    "shared_index_embedding": {
+      "physical_attempts": 14,
+      "usage_complete": true,
+      "input_tokens": 29770,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.014885",
+      "unknown_usage_attempts": 0
+    },
+    "unassigned_non_embedding": {
+      "physical_attempts": 0,
+      "usage_complete": true,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0",
+      "unknown_usage_attempts": 0
+    },
+    "total": {
+      "physical_attempts": 42,
+      "usage_complete": true,
+      "input_tokens": 70465,
+      "output_tokens": 10129,
+      "cached_input_tokens": 15104,
+      "estimated_cost_cny": "0.0312196",
+      "unknown_usage_attempts": 0
+    },
+    "failures": [
+      {
+        "case_id": "REAL-DEV-007",
+        "variant": "llm_rag",
+        "error": "provider_invalid_response"
+      },
+      {
+        "case_id": "REAL-DEV-001",
+        "variant": "multi_agent_rag",
+        "error": "provider_invalid_response"
+      }
+    ]
+  },
+  "followup": {
+    "metadata": {
+      "run_at_utc": "2026-10-18T05:39:12.864150Z",
+      "git_commit": "5dde18308d435aa637de9b6df8b802b6ab20bc02",
+      "git_dirty": false,
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "prompt_version": "evaluation-v3",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema",
+        "max_writer_citation_repairs": 0
+      },
+      "synthetic": false,
+      "dataset_kind": "public_documents_ai_authored_questions",
+      "references_human_reviewed": false,
+      "references_ai_reviewed": true,
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "metrics_version": "global-first-pass-v2",
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-019/llm_rag",
+        "REAL-DEV-019/single_agent_rag",
+        "REAL-DEV-019/multi_agent_rag",
+        "REAL-DEV-019/baseline_llm",
+        "REAL-DEV-020/single_agent_rag",
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-020/baseline_llm",
+        "REAL-DEV-020/llm_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/baseline_llm",
+        "REAL-DEV-001/llm_rag",
+        "REAL-DEV-001/single_agent_rag",
+        "REAL-DEV-013/baseline_llm",
+        "REAL-DEV-013/llm_rag",
+        "REAL-DEV-013/single_agent_rag",
+        "REAL-DEV-013/multi_agent_rag",
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-007/baseline_llm"
+      ],
+      "setup_latency_ms": 91491
+    },
+    "by_variant": {
+      "baseline_llm": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 5.338,
+        "mean_latency_seconds": 6.1194,
+        "first_round_recall_at_5": null,
+        "recall_denominator": 0,
+        "chat": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 337,
+          "output_tokens": 1926,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0016082",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 0,
+          "usage_complete": true,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 337,
+          "output_tokens": 1926,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0016082",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "llm_rag": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 6.915,
+        "mean_latency_seconds": 6.7494,
+        "first_round_recall_at_5": 1.0,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 11058,
+          "output_tokens": 2336,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0040804",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 208,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000104",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 10,
+          "usage_complete": true,
+          "input_tokens": 11266,
+          "output_tokens": 2336,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0041844",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "single_agent_rag": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 9.076,
+        "mean_latency_seconds": 9.9028,
+        "first_round_recall_at_5": 0.8333333333333334,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 10,
+          "usage_complete": true,
+          "input_tokens": 11768,
+          "output_tokens": 2183,
+          "cached_input_tokens": 1920,
+          "estimated_cost_cny": "0.0041",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 24,
+          "usage_complete": true,
+          "input_tokens": 450,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000225",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 34,
+          "usage_complete": true,
+          "input_tokens": 12218,
+          "output_tokens": 2183,
+          "cached_input_tokens": 1920,
+          "estimated_cost_cny": "0.004325",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "multi_agent_rag": {
+        "trace_count": 5,
+        "successes": 2,
+        "median_latency_seconds": 29.733,
+        "mean_latency_seconds": 26.7506,
+        "first_round_recall_at_5": 0.5,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 14,
+          "usage_complete": true,
+          "input_tokens": 28590,
+          "output_tokens": 8179,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0122612",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 25,
+          "usage_complete": true,
+          "input_tokens": 458,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000229",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 39,
+          "usage_complete": true,
+          "input_tokens": 29048,
+          "output_tokens": 8179,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0124902",
+          "unknown_usage_attempts": 0
+        }
+      }
+    },
+    "generation_manifest": {
+      "code_commit": "5dde18308d435aa637de9b6df8b802b6ab20bc02",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema"
+      },
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "cases": [
+        "REAL-DEV-001",
+        "REAL-DEV-007",
+        "REAL-DEV-013",
+        "REAL-DEV-019",
+        "REAL-DEV-020"
+      ],
+      "variants": [
+        "baseline_llm",
+        "llm_rag",
+        "single_agent_rag",
+        "multi_agent_rag"
+      ],
+      "prompt_version": "evaluation-v3",
+      "candidate_source_files": [
+        "pydantic-v2--concepts--strict_mode.md",
+        "pydantic-v2--concepts--unions.md",
+        "pydantic-v2--concepts--fields.md",
+        "pydantic-v2--concepts--alias.md",
+        "fastapi--en--docs--tutorial--dependencies--index.md",
+        "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+        "fastapi--en--docs--tutorial--handling-errors.md",
+        "fastapi--en--docs--tutorial--response-status-code.md"
+      ],
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "order_seed": 20261018,
+      "capture_responses": true,
+      "execution_order": [
+        "REAL-DEV-019/llm_rag",
+        "REAL-DEV-019/single_agent_rag",
+        "REAL-DEV-019/multi_agent_rag",
+        "REAL-DEV-019/baseline_llm",
+        "REAL-DEV-020/single_agent_rag",
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-020/baseline_llm",
+        "REAL-DEV-020/llm_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/baseline_llm",
+        "REAL-DEV-001/llm_rag",
+        "REAL-DEV-001/single_agent_rag",
+        "REAL-DEV-013/baseline_llm",
+        "REAL-DEV-013/llm_rag",
+        "REAL-DEV-013/single_agent_rag",
+        "REAL-DEV-013/multi_agent_rag",
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-007/baseline_llm"
+      ],
+      "source_sha256": "1795430b620b5f2f28f0295c0aa3081f573f060fc85f68cd7d8dc88216767729"
+    },
+    "shared_index_embedding": {
+      "physical_attempts": 15,
+      "usage_complete": false,
+      "input_tokens": 29770,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 1
+    },
+    "unassigned_non_embedding": {
+      "physical_attempts": 2,
+      "usage_complete": true,
+      "input_tokens": 5478,
+      "output_tokens": 1480,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.0022796",
+      "unknown_usage_attempts": 0
+    },
+    "total": {
+      "physical_attempts": 105,
+      "usage_complete": false,
+      "input_tokens": 88117,
+      "output_tokens": 16104,
+      "cached_input_tokens": 1920,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 1
+    },
+    "failures": [
+      {
+        "case_id": "REAL-DEV-019",
+        "variant": "multi_agent_rag",
+        "error": "invalid_citation"
+      },
+      {
+        "case_id": "REAL-DEV-020",
+        "variant": "multi_agent_rag",
+        "error": "invalid_citation"
+      },
+      {
+        "case_id": "REAL-DEV-001",
+        "variant": "multi_agent_rag",
+        "error": "invalid_citation"
+      }
+    ]
+  },
+  "calibrated": {
+    "metadata": {
+      "run_at_utc": "2026-10-18T05:45:57.796310Z",
+      "git_commit": "b75475917ff1e8fb764aa01bfa8530ae9b8104a3",
+      "git_dirty": false,
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "prompt_version": "evaluation-v4",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema",
+        "max_writer_citation_repairs": 1
+      },
+      "synthetic": false,
+      "dataset_kind": "public_documents_ai_authored_questions",
+      "references_human_reviewed": false,
+      "references_ai_reviewed": true,
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "metrics_version": "global-first-pass-v2",
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-019/llm_rag",
+        "REAL-DEV-019/single_agent_rag",
+        "REAL-DEV-019/multi_agent_rag",
+        "REAL-DEV-019/baseline_llm",
+        "REAL-DEV-020/single_agent_rag",
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-020/baseline_llm",
+        "REAL-DEV-020/llm_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/baseline_llm",
+        "REAL-DEV-001/llm_rag",
+        "REAL-DEV-001/single_agent_rag",
+        "REAL-DEV-013/baseline_llm",
+        "REAL-DEV-013/llm_rag",
+        "REAL-DEV-013/single_agent_rag",
+        "REAL-DEV-013/multi_agent_rag",
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-007/baseline_llm"
+      ],
+      "setup_latency_ms": 36269
+    },
+    "by_variant": {
+      "baseline_llm": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 5.518,
+        "mean_latency_seconds": 6.647399999999999,
+        "first_round_recall_at_5": null,
+        "recall_denominator": 0,
+        "chat": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 337,
+          "output_tokens": 2017,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.001681",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 0,
+          "usage_complete": true,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 337,
+          "output_tokens": 2017,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.001681",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "llm_rag": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 6.395,
+        "mean_latency_seconds": 7.474,
+        "first_round_recall_at_5": 1.0,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 11032,
+          "output_tokens": 2500,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0042064",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 208,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000104",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 10,
+          "usage_complete": true,
+          "input_tokens": 11240,
+          "output_tokens": 2500,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0043104",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "single_agent_rag": {
+        "trace_count": 5,
+        "successes": 4,
+        "median_latency_seconds": 11.322,
+        "mean_latency_seconds": 10.8928,
+        "first_round_recall_at_5": 0.75,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 10,
+          "usage_complete": true,
+          "input_tokens": 11866,
+          "output_tokens": 2370,
+          "cached_input_tokens": 1920,
+          "estimated_cost_cny": "0.0042692",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 24,
+          "usage_complete": true,
+          "input_tokens": 452,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000226",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 34,
+          "usage_complete": true,
+          "input_tokens": 12318,
+          "output_tokens": 2370,
+          "cached_input_tokens": 1920,
+          "estimated_cost_cny": "0.0044952",
+          "unknown_usage_attempts": 0
+        }
+      },
+      "multi_agent_rag": {
+        "trace_count": 5,
+        "successes": 3,
+        "median_latency_seconds": 39.693,
+        "mean_latency_seconds": 44.6516,
+        "first_round_recall_at_5": 0.75,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 28,
+          "usage_complete": true,
+          "input_tokens": 75787,
+          "output_tokens": 16198,
+          "cached_input_tokens": 5760,
+          "estimated_cost_cny": "0.0281158",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 34,
+          "usage_complete": true,
+          "input_tokens": 714,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000357",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 62,
+          "usage_complete": true,
+          "input_tokens": 76501,
+          "output_tokens": 16198,
+          "cached_input_tokens": 5760,
+          "estimated_cost_cny": "0.0284728",
+          "unknown_usage_attempts": 0
+        }
+      }
+    },
+    "generation_manifest": {
+      "code_commit": "75d6f43da13c542069916af3cc5c09ab03967c02",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema",
+        "max_writer_citation_repairs": 1
+      },
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "cases": [
+        "REAL-DEV-001",
+        "REAL-DEV-007",
+        "REAL-DEV-013",
+        "REAL-DEV-019",
+        "REAL-DEV-020"
+      ],
+      "variants": [
+        "baseline_llm",
+        "llm_rag",
+        "single_agent_rag",
+        "multi_agent_rag"
+      ],
+      "prompt_version": "evaluation-v4",
+      "candidate_source_files": [
+        "pydantic-v2--concepts--strict_mode.md",
+        "pydantic-v2--concepts--unions.md",
+        "pydantic-v2--concepts--fields.md",
+        "pydantic-v2--concepts--alias.md",
+        "fastapi--en--docs--tutorial--dependencies--index.md",
+        "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+        "fastapi--en--docs--tutorial--handling-errors.md",
+        "fastapi--en--docs--tutorial--response-status-code.md"
+      ],
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "order_seed": 20261018,
+      "capture_responses": true,
+      "execution_order": [
+        "REAL-DEV-019/llm_rag",
+        "REAL-DEV-019/single_agent_rag",
+        "REAL-DEV-019/multi_agent_rag",
+        "REAL-DEV-019/baseline_llm",
+        "REAL-DEV-020/single_agent_rag",
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-020/baseline_llm",
+        "REAL-DEV-020/llm_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/baseline_llm",
+        "REAL-DEV-001/llm_rag",
+        "REAL-DEV-001/single_agent_rag",
+        "REAL-DEV-013/baseline_llm",
+        "REAL-DEV-013/llm_rag",
+        "REAL-DEV-013/single_agent_rag",
+        "REAL-DEV-013/multi_agent_rag",
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-007/baseline_llm"
+      ],
+      "source_sha256": "4a5ec606aaa26ed4d22704b97e93389bac327479754d80c3dadd85ef8aa3a9cd"
+    },
+    "shared_index_embedding": {
+      "physical_attempts": 14,
+      "usage_complete": true,
+      "input_tokens": 29770,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.014885",
+      "unknown_usage_attempts": 0
+    },
+    "unassigned_non_embedding": {
+      "physical_attempts": 0,
+      "usage_complete": true,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0",
+      "unknown_usage_attempts": 0
+    },
+    "total": {
+      "physical_attempts": 125,
+      "usage_complete": true,
+      "input_tokens": 130166,
+      "output_tokens": 23085,
+      "cached_input_tokens": 7680,
+      "estimated_cost_cny": "0.0538444",
+      "unknown_usage_attempts": 0
+    },
+    "failures": [
+      {
+        "case_id": "REAL-DEV-019",
+        "variant": "multi_agent_rag",
+        "error": "invalid_citation"
+      },
+      {
+        "case_id": "REAL-DEV-020",
+        "variant": "multi_agent_rag",
+        "error": "invalid_citation"
+      },
+      {
+        "case_id": "REAL-DEV-007",
+        "variant": "single_agent_rag",
+        "error": "invalid_citation"
+      }
+    ]
+  },
+  "final": {
+    "metadata": {
+      "run_at_utc": "2026-10-18T05:54:51.734891Z",
+      "git_commit": "c53b1715909692669fcd1d5e6c31891faf496bf8",
+      "git_dirty": false,
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "prompt_version": "evaluation-v5",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema",
+        "max_writer_citation_repairs": 1
+      },
+      "synthetic": false,
+      "dataset_kind": "public_documents_ai_authored_questions",
+      "references_human_reviewed": false,
+      "references_ai_reviewed": true,
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "metrics_version": "global-first-pass-v2",
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-019/llm_rag",
+        "REAL-DEV-019/single_agent_rag",
+        "REAL-DEV-019/multi_agent_rag",
+        "REAL-DEV-019/baseline_llm",
+        "REAL-DEV-020/single_agent_rag",
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-020/baseline_llm",
+        "REAL-DEV-020/llm_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/baseline_llm",
+        "REAL-DEV-001/llm_rag",
+        "REAL-DEV-001/single_agent_rag",
+        "REAL-DEV-013/baseline_llm",
+        "REAL-DEV-013/llm_rag",
+        "REAL-DEV-013/single_agent_rag",
+        "REAL-DEV-013/multi_agent_rag",
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-007/baseline_llm"
+      ],
+      "setup_latency_ms": 36914
+    },
+    "by_variant": {
+      "baseline_llm": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 5.775,
+        "mean_latency_seconds": 6.0588,
+        "first_round_recall_at_5": null,
+        "recall_denominator": 0,
+        "chat": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 337,
+          "output_tokens": 1943,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0016218",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 0,
+          "usage_complete": true,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 337,
+          "output_tokens": 1943,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0016218",
+          "unknown_usage_attempts": 0
+        },
+        "valid_ai_score_count": 5,
+        "answer_correctness": 0.48333333333333334,
+        "answer_correctness_denominator": 5,
+        "answer_key_point_coverage": 0.4,
+        "answer_key_point_coverage_denominator": 5,
+        "citation_support_rate": null,
+        "citation_support_rate_denominator": 0,
+        "citation_completeness": null,
+        "citation_completeness_denominator": 0
+      },
+      "llm_rag": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 4.86,
+        "mean_latency_seconds": 5.0326,
+        "first_round_recall_at_5": 1.0,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 9753,
+          "output_tokens": 1211,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0029194",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 5,
+          "usage_complete": true,
+          "input_tokens": 208,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.000104",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 10,
+          "usage_complete": true,
+          "input_tokens": 9961,
+          "output_tokens": 1211,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0030234",
+          "unknown_usage_attempts": 0
+        },
+        "valid_ai_score_count": 5,
+        "answer_correctness": 0.9,
+        "answer_correctness_denominator": 5,
+        "answer_key_point_coverage": 0.8666666666666667,
+        "answer_key_point_coverage_denominator": 5,
+        "citation_support_rate": 0.88,
+        "citation_support_rate_denominator": 5,
+        "citation_completeness": 0.77,
+        "citation_completeness_denominator": 5
+      },
+      "single_agent_rag": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 8.117,
+        "mean_latency_seconds": 8.0622,
+        "first_round_recall_at_5": 0.8333333333333334,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 10,
+          "usage_complete": true,
+          "input_tokens": 10454,
+          "output_tokens": 1335,
+          "cached_input_tokens": 1536,
+          "estimated_cost_cny": "0.0031588",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 24,
+          "usage_complete": true,
+          "input_tokens": 449,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0002245",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 34,
+          "usage_complete": true,
+          "input_tokens": 10903,
+          "output_tokens": 1335,
+          "cached_input_tokens": 1536,
+          "estimated_cost_cny": "0.0033833",
+          "unknown_usage_attempts": 0
+        },
+        "valid_ai_score_count": 5,
+        "answer_correctness": 0.9,
+        "answer_correctness_denominator": 5,
+        "answer_key_point_coverage": 0.8666666666666667,
+        "answer_key_point_coverage_denominator": 5,
+        "citation_support_rate": 0.85,
+        "citation_support_rate_denominator": 4,
+        "citation_completeness": 0.8125,
+        "citation_completeness_denominator": 4
+      },
+      "multi_agent_rag": {
+        "trace_count": 5,
+        "successes": 5,
+        "median_latency_seconds": 25.86,
+        "mean_latency_seconds": 34.2104,
+        "first_round_recall_at_5": 1.0,
+        "recall_denominator": 4,
+        "chat": {
+          "physical_attempts": 26,
+          "usage_complete": true,
+          "input_tokens": 59531,
+          "output_tokens": 8977,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0190878",
+          "unknown_usage_attempts": 0
+        },
+        "query_embedding": {
+          "physical_attempts": 40,
+          "usage_complete": true,
+          "input_tokens": 840,
+          "output_tokens": 0,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.00042",
+          "unknown_usage_attempts": 0
+        },
+        "all_requests": {
+          "physical_attempts": 66,
+          "usage_complete": true,
+          "input_tokens": 60371,
+          "output_tokens": 8977,
+          "cached_input_tokens": 0,
+          "estimated_cost_cny": "0.0195078",
+          "unknown_usage_attempts": 0
+        },
+        "valid_ai_score_count": 5,
+        "answer_correctness": 0.9333333333333333,
+        "answer_correctness_denominator": 5,
+        "answer_key_point_coverage": 0.9333333333333333,
+        "answer_key_point_coverage_denominator": 5,
+        "citation_support_rate": 0.8714285714285714,
+        "citation_support_rate_denominator": 5,
+        "citation_completeness": 0.8333333333333334,
+        "citation_completeness_denominator": 5
+      }
+    },
+    "generation_manifest": {
+      "code_commit": "c53b1715909692669fcd1d5e6c31891faf496bf8",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema",
+        "max_writer_citation_repairs": 1
+      },
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "cases": [
+        "REAL-DEV-001",
+        "REAL-DEV-007",
+        "REAL-DEV-013",
+        "REAL-DEV-019",
+        "REAL-DEV-020"
+      ],
+      "variants": [
+        "baseline_llm",
+        "llm_rag",
+        "single_agent_rag",
+        "multi_agent_rag"
+      ],
+      "prompt_version": "evaluation-v5",
+      "candidate_source_files": [
+        "pydantic-v2--concepts--strict_mode.md",
+        "pydantic-v2--concepts--unions.md",
+        "pydantic-v2--concepts--fields.md",
+        "pydantic-v2--concepts--alias.md",
+        "fastapi--en--docs--tutorial--dependencies--index.md",
+        "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+        "fastapi--en--docs--tutorial--handling-errors.md",
+        "fastapi--en--docs--tutorial--response-status-code.md"
+      ],
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "order_seed": 20261018,
+      "capture_responses": true,
+      "execution_order": [
+        "REAL-DEV-019/llm_rag",
+        "REAL-DEV-019/single_agent_rag",
+        "REAL-DEV-019/multi_agent_rag",
+        "REAL-DEV-019/baseline_llm",
+        "REAL-DEV-020/single_agent_rag",
+        "REAL-DEV-020/multi_agent_rag",
+        "REAL-DEV-020/baseline_llm",
+        "REAL-DEV-020/llm_rag",
+        "REAL-DEV-001/multi_agent_rag",
+        "REAL-DEV-001/baseline_llm",
+        "REAL-DEV-001/llm_rag",
+        "REAL-DEV-001/single_agent_rag",
+        "REAL-DEV-013/baseline_llm",
+        "REAL-DEV-013/llm_rag",
+        "REAL-DEV-013/single_agent_rag",
+        "REAL-DEV-013/multi_agent_rag",
+        "REAL-DEV-007/llm_rag",
+        "REAL-DEV-007/single_agent_rag",
+        "REAL-DEV-007/multi_agent_rag",
+        "REAL-DEV-007/baseline_llm"
+      ],
+      "source_sha256": "0d07cf144d7e637f2e5f404526030011c72ed0448d371719cf3a84bc39be2d9a"
+    },
+    "shared_index_embedding": {
+      "physical_attempts": 14,
+      "usage_complete": true,
+      "input_tokens": 29770,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.014885",
+      "unknown_usage_attempts": 0
+    },
+    "unassigned_non_embedding": {
+      "physical_attempts": 0,
+      "usage_complete": true,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0",
+      "unknown_usage_attempts": 0
+    },
+    "total": {
+      "physical_attempts": 129,
+      "usage_complete": true,
+      "input_tokens": 111342,
+      "output_tokens": 13466,
+      "cached_input_tokens": 1536,
+      "estimated_cost_cny": "0.0424213",
+      "unknown_usage_attempts": 0
+    },
+    "failures": []
+  },
+  "judge_usage": {
+    "physical_attempts": 20,
+    "usage_complete": true,
+    "input_tokens": 70908,
+    "output_tokens": 16377,
+    "cached_input_tokens": 14592,
+    "estimated_cost_cny": null,
+    "unknown_usage_attempts": 0
+  },
+  "all_pilot_usage": {
+    "physical_attempts": 552,
+    "usage_complete": false,
+    "input_tokens": 607533,
+    "output_tokens": 107620,
+    "cached_input_tokens": 64640,
+    "estimated_cost_cny": null,
+    "unknown_usage_attempts": 1
+  },
+  "limitations": [
+    "Development tuning on five questions; no inferential quality claim.",
+    "AI reference review, AI judge and Codex adjudication; no human scoring.",
+    "Closed-book model may have seen these public docs in training.",
+    "Prices are dated estimates, not invoices; account-mode judge price is unknown.",
+    "Per-variant model_calls includes query embeddings; chat requests are separated here."
+  ],
+  "publications": [
+    {
+      "path": "initial-traces.jsonl",
+      "sha256": "1288e4909d70162f9b1322d6c8ba736eccf7fdb7a07b839bd539e64780692cdd"
+    },
+    {
+      "path": "diagnostic-traces.jsonl",
+      "sha256": "09598f34bb544441c6d238421c6678cd2edfc36dee9fb4deec663bb9db67b77b"
+    },
+    {
+      "path": "followup-traces.jsonl",
+      "sha256": "50ad556adc4d9335ea4360f927788befb2267f3c69be1c68a005610692b80acb"
+    },
+    {
+      "path": "calibrated-traces.jsonl",
+      "sha256": "4392ecadd7543fa010ea9a7595fccaedb0dcd799a42d1f77fb57849ba14bea55"
+    },
+    {
+      "path": "final-traces.jsonl",
+      "sha256": "1d7a32dfc6064b7b64d00d2efd967037039bada472b4cc308b2adfbc703a0ad2"
+    },
+    {
+      "path": "request-usage.jsonl",
+      "sha256": "41ba8b0fa7b9b21d1de674cb53c8497b402931473b66143437eda262561e1907"
+    },
+    {
+      "path": "adjudications.json",
+      "sha256": "a0a876aa8d40642c2abe761662e516370807ad61f14323f71cacb81a8f5d06b2"
+    },
+    {
+      "path": "ai-judgments.json",
+      "sha256": "184e71862619df29ad637c0e757f9b59a9527a09d5fca3065d61bbf612c57c52"
+    }
+  ]
+}

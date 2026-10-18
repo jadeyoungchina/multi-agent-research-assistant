@@ -229,7 +229,7 @@ def test_paid_resume_does_not_generate_completed_units_again(tmp_path, monkeypat
     assert len(calls) == 2
 
 
-@pytest.mark.parametrize("selection", ["BENCH-999", "BENCH-001,BENCH-001", "BENCH-001,"])
+@pytest.mark.parametrize("selection", ["BENCH-999", "BENCH-001,BENCH-001", "BENCH-001,", ""])
 def test_invalid_case_selection_stops_before_provider_setup(tmp_path, monkeypatch, selection):
     from app.evaluation import cli
     monkeypatch.setattr(cli, "_build_workflows", lambda *args, **kwargs: pytest.fail("invalid selection must not call providers"))

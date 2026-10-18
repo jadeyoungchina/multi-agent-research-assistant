@@ -234,7 +234,7 @@ def main(argv: list[str] | None = None) -> int:
                 validate_benchmark_corpus(cases, args.corpus, max_upload_file_bytes=settings.max_upload_file_bytes)
             if not cases:
                 raise ValueError("benchmark dataset is empty")
-            if args.case_ids:
+            if args.case_ids is not None:
                 selected = [item.strip() for item in args.case_ids.split(",")]
                 if len(set(selected)) != len(selected) or not set(selected) <= {case.id for case in cases}:
                     raise ValueError("case selection must contain unique IDs from the selected split")
@@ -242,7 +242,7 @@ def main(argv: list[str] | None = None) -> int:
         except (OSError, ValueError):
             print("Invalid dataset: check cases, corpus hashes, split, and required human review. Paid test runs require a frozen experiment.", file=sys.stderr)
             return 2
-        if not args.case_ids:
+        if args.case_ids is None:
             cases = cases[:args.limit if args.limit is not None else 5 if paid else len(cases)]
         if paid:
             ledger = BudgetLedger(args.ledger, total_cny=args.budget_cny, stop_cny=args.stop_cny)

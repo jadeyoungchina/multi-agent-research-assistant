@@ -27,6 +27,12 @@ Extract ALL factual claims in the answer as atomic verbatim spans, including
 uncited claims. A citation may support only the claim to which it is attached.
 For each claim provide claim_text, requires_citation, cited_evidence_ids,
 support (supported / partial / unsupported / uncited / not_applicable), and reason.
+These are CITATION verdicts, not factual-correctness labels: a factual claim with
+no attached citation MUST use uncited even if it is true or false. Baseline factual
+claims are therefore uncited (its citation metrics are N/A). A non-factual span or
+an explicit scoped missing-evidence limitation uses requires_citation=false and
+not_applicable, never supported/uncited. Keep factual errors in key-point scores
+and unsupported_assertion. Do not mistake absence of a citation for a factual error.
 ID existence alone NEVER establishes support. Check that the cited passage entails
 the complete claim, including numbers, versions, qualifiers and scope. Mark partial
 when only part of the claim is supported. Citation completeness counts only claims
@@ -97,6 +103,30 @@ def judge_prompt(case: RealBenchmarkCase, trace: EvaluationTrace) -> str:
             + "\nEvaluation data:\n" + json.dumps(blinded_judge_payload(case, trace), ensure_ascii=False))
 
 
+def _bound_citations(answer: str, claim: str) -> set[str]:
+    """Allow a contiguous attached citation group, regardless of hash lengths.
+
+    The first token must begin within 160 characters of the claim. A paragraph
+    boundary cannot be crossed. Further tokens separated only by whitespace or
+    comma/semicolon belong to the same group; a later sentence does not.
+    """
+    token = re.compile(r"\[\[cite:([A-Za-z0-9_-]+)\]\]")
+    attached = set()
+    for occurrence in re.finditer(re.escape(claim), answer):
+        suffix = answer[occurrence.end():]
+        first = token.search(suffix)
+        if first is None or first.start() > 160 or "\n\n" in suffix[:first.start()]:
+            continue
+        attached.add(first.group(1))
+        cursor = first.end()
+        for following in token.finditer(suffix, cursor):
+            if not re.fullmatch(r"[\s,;]*", suffix[cursor:following.start()]):
+                break
+            attached.add(following.group(1))
+            cursor = following.end()
+    return attached
+
+
 def score_semantic_judgment(case: RealBenchmarkCase, trace: EvaluationTrace,
                             judgment: SemanticJudgment) -> SemanticScore:
     """Validate judge completeness and citation bindings before computing denominators."""
@@ -114,10 +144,8 @@ def score_semantic_judgment(case: RealBenchmarkCase, trace: EvaluationTrace,
             raise ValueError("judge cited unknown or undeclared evidence")
         # A nearby explicit citation must bind the asserted span. This conservative
         # check can reject ambiguous prose; those cases require manual adjudication.
-        offsets = [match.end() for match in re.finditer(re.escape(claim.claim_text), trace.answer)]
-        for identifier in claim.cited_evidence_ids:
-            if not any(f"[[cite:{identifier}]]" in trace.answer[end:end + 160] for end in offsets):
-                raise ValueError("judge citation has no explicit nearby answer binding")
+        if not set(claim.cited_evidence_ids) <= _bound_citations(trace.answer, claim.claim_text):
+            raise ValueError("judge citation has no explicit nearby answer binding")
         if claim.support in {"supported", "partial", "unsupported"} and not claim.cited_evidence_ids:
             raise ValueError("citation support verdict requires an actual citation")
         if claim.support == "uncited" and claim.cited_evidence_ids:

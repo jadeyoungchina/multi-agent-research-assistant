@@ -1,0 +1,1637 @@
+{
+  "created_at": "2026-10-18T06:06:57.273765+00:00",
+  "reviewer": "Codex",
+  "reviewer_kind": "ai",
+  "human_reviewed": false,
+  "generation_commit": "c53b1715909692669fcd1d5e6c31891faf496bf8",
+  "original_judge_prompt_code_commit": "c53b1715909692669fcd1d5e6c31891faf496bf8",
+  "adjudication_semantic_source_sha256": "c57db5a56f730b165be407a7378eac3729d7619422fa3f2c40b6f3e3c882054c",
+  "adjudications": {
+    "answer-001": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "reason": "The pinned handling-errors passage supports the three cited recommendations. Retain the reference's additional JSON-detail/import-alias requirements: the answer omits them. This reference is stricter than the question's wording; report that limitation, do not change gold after observing answers.",
+      "trace_sha256": "e9eac38a523518d270ebc9fa43ca5a3c9fcbbfd085647a2afbe152bf8dd62b91",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 1,
+            "reason": "Correctly says raise FastAPI's HTTPException; omits JSON-able detail point."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Register Starlette's HTTPException; catches Starlette internal raises."
+          },
+          {
+            "index": 2,
+            "score": 0,
+            "reason": "Does not mention StarletteHTTPException renamed import."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "In FastAPI 0.112.2, you should keep raising **FastAPI**'s `HTTPException` as normally in your code",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage states keep raising FastAPI's HTTPException as normally."
+          },
+          {
+            "claim_text": "However, when you register an exception handler, you should register it for Starlette's `HTTPException`",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage states register handler for Starlette's HTTPException."
+          },
+          {
+            "claim_text": "This approach ensures that if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage says handler will catch Starlette internal raises."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly identifies raising FastAPI's HTTPException and registering Starlette's, with full citation support. It omits the JSON-able detail difference and the StarletteHTTPException renamed import, so key points 0 and 2 are partial/zero."
+      }
+    },
+    "answer-002": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "reason": "Same source check as answer-001. The answer correctly identifies the raising and handler classes and the internal-Starlette rationale, but omits the reference's JSON-detail and import-alias extras.",
+      "trace_sha256": "3772f19e5b86f0c6d44fc292fa1f5ad5fa185085005568ac3f8e29ba807a8659",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 1,
+            "reason": "Correct on raising FastAPI's HTTPException; omits JSON-able detail acceptance."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers Starlette's HTTPException so internal raises are caught."
+          },
+          {
+            "index": 2,
+            "score": 0,
+            "reason": "Renamed StarletteHTTPException import not mentioned."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "In FastAPI 0.112.2, you should raise FastAPI's `HTTPException` in your code",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Evidence states keep raising FastAPI's HTTPException normally."
+          },
+          {
+            "claim_text": "However, when registering an exception handler, you should register it for Starlette's `HTTPException` to ensure that internal Starlette code or extensions raising that exception are also caught and handled",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Evidence says register for Starlette's HTTPException to catch internal raises."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly covers raise-FastAPI/register-Starlette with proper evidence, but omits JSON-able detail difference and the StarletteHTTPException import rename."
+      }
+    },
+    "answer-003": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "reason": "The cited handling-errors passage supports inheritance, JSON-able detail and the Starlette handler recommendation. The example import-alias key point is absent, so its original zero is retained.",
+      "trace_sha256": "bc6ba6b1563e4750c4c54ed61ae61e5270d158aace6afa51955833dd208f0567",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI's HTTPException with JSON-able detail."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly says register handler for Starlette's HTTPException to catch internals."
+          },
+          {
+            "index": 2,
+            "score": 0,
+            "reason": "Answer never mentions the StarletteHTTPException rename import."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "# FastAPI vs Starlette HTTPException Usage",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Heading, not a factual claim."
+          },
+          {
+            "claim_text": "In FastAPI 0.112.2, you should raise **FastAPI's** `HTTPException` in your application code and register exception handlers for **Starlette's** `HTTPException`",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage says keep raising FastAPI's, register for Starlette's."
+          },
+          {
+            "claim_text": "FastAPI's `HTTPException` inherits from Starlette's but allows JSON-able data in the `detail` field, making it suitable for raising in user code",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage states inheritance and JSON-able detail; code raises FastAPI's."
+          },
+          {
+            "claim_text": "Registering handlers for Starlette's base class ensures that internal Starlette errors or extensions are also caught correctly",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage says handler catches Starlette internal/extension HTTPExceptions."
+          },
+          {
+            "claim_text": "1. **Inheritance Relationship**: FastAPI's `HTTPException` inherits directly from Starlette's `HTTPException`, establishing a parent-child relationship between the two classes",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage confirms FastAPI's inherits from Starlette's."
+          },
+          {
+            "claim_text": "2. **Raising Exceptions**: Use FastAPI's `HTTPException` in your code because it accepts any JSON-able data for the `detail` field, whereas Starlette's is restricted to strings only",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage states exactly this difference and to raise FastAPI's."
+          },
+          {
+            "claim_text": "3. **Registering Handlers**: Register custom exception handlers for Starlette's `HTTPException` to ensure compatibility with exceptions raised by Starlette's internal code or plugins",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d"
+            ],
+            "support": "supported",
+            "reason": "Passage says register for Starlette's to catch internals/plug-ins."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly covers raising FastAPI's HTTPException and registering for Starlette's, all supported, but omits the StarletteHTTPException rename key point."
+      }
+    },
+    "answer-004": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The recommendation that a FastAPI-subclass handler catches both base and subclass exceptions reverses inheritance. Naming Starlette as an alternative does not cure the later explicit wrong preference. Handler key point becomes zero. Baseline citation statuses are uncited, regardless of factual correctness; the factual-error flag remains true.",
+      "trace_sha256": "27c78de358d1a2308de4806b93e9932c31a542c3821fdc5b2035246a233a642f",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 1,
+            "reason": "Raising fastapi.HTTPException correct; JSON-able detail not mentioned."
+          },
+          {
+            "index": 1,
+            "score": 0,
+            "reason": "Wrongly recommends subclass handler and claims it catches base exceptions."
+          },
+          {
+            "index": 2,
+            "score": 0,
+            "reason": "StarletteHTTPException rename alias not mentioned."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "In FastAPI 0.112.2, you should **raise** `fastapi.HTTPException` in your code and **register** a handler for `fastapi.HTTPException` (or `starlette.exceptions.HTTPException`) in your exception handler.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Raise part supported; register preference not per evidence."
+          },
+          {
+            "claim_text": "`fastapi.HTTPException` is the standard exception used throughout FastAPI's internal logic and documentation.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "No citation; not established by evidence."
+          },
+          {
+            "claim_text": "It includes additional context (like `headers`) that FastAPI expects.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Evidence only says JSON-able detail difference."
+          },
+          {
+            "claim_text": "Raising `starlette.exceptions.HTTPException` directly works but bypasses FastAPI-specific enhancements.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Only detail-string difference supported; 'enhancements' overbroad."
+          },
+          {
+            "claim_text": "Since `fastapi.HTTPException` inherits from `starlette.exceptions.HTTPException`, registering a handler for either will catch both.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Inheritance given in question; both-catching not evidenced."
+          },
+          {
+            "claim_text": "However, it is best practice to register the handler for `fastapi.HTTPException` to ensure consistency with FastAPI’s design and to handle any FastAPI-specific attributes properly.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Evidence says register Starlette's handler instead."
+          },
+          {
+            "claim_text": "### Example:\n```python\nfrom fastapi import FastAPI, HTTPException\nfrom starlette.requests import Request\nfrom starlette.responses import JSONResponse\n\napp = FastAPI()\n\n# Raise FastAPI's HTTPException\n@app.get(\"/error\")\ndef raise_error():\n    raise HTTPException(status_code=404, detail=\"Not found\")\n\n# Register handler for FastAPI's HTTPException\n@app.exception_handler(HTTPException)\nasync def http_exception_handler(request: Request, exc: HTTPException):\n    return JSONResponse(\n        status_code=exc.status_code,\n        content={\"detail\": exc.detail},\n        headers=exc.headers,\n    )\n```",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Example registers FastAPI handler, contrary to evidence."
+          },
+          {
+            "claim_text": "This approach ensures compatibility with FastAPI’s ecosystem and leverages its specific features.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Marketing claim not established by evidence."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer correctly says to raise fastapi.HTTPException, but recommends registering a FastAPI handler rather than Starlette's, contrary to evidence, and omits the StarletteHTTPException alias and internal-raise rationale. Codex source adjudication: The recommendation that a FastAPI-subclass handler catches both base and subclass exceptions reverses inheritance. Naming Starlette as an alternative does not cure the later explicit wrong preference. Handler key point becomes zero. Baseline citation statuses are uncited, regardless of factual correctness; the factual-error flag remains true."
+      }
+    },
+    "answer-005": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "Both statements are scoped acknowledgments that supplied evidence lacks measured latency, not external quantitative facts requiring citations. Use N/A citation statuses and retain correct abstention.",
+      "trace_sha256": "801510cd783ac2111a3942a14f3d5abedc1c4ce89a3ab94a55377b650771db7f",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states corpus lacks latency measurement; invents no number."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "The provided evidence does not contain information regarding the specific latency impact of raising a Starlette HTTPException in FastAPI 0.112.2.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Evidence covers exception handling, not latency; absence accurate."
+          },
+          {
+            "claim_text": "Therefore, it is not possible to state how much latency this operation adds based on the supplied documents.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Accurate conclusion from absent latency evidence."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly abstains, noting no latency data exists in the supplied documentation; no measured values invented. Codex source adjudication: Both statements are scoped acknowledgments that supplied evidence lacks measured latency, not external quantitative facts requiring citations. Use N/A citation statuses and retain correct abstention."
+      }
+    },
+    "answer-006": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "Scoped corpus-absence statements are limitations, not claims that one cited chunk proves global absence. The factual Python-exception and inheritance/handler descriptions are supported by their attached source passages. Preserve the internal critic commentary as N/A process text and record it as a presentation defect. Accept the full contiguous citation group after checking its attachment; do not cut it off because long hashes exceed 160 characters.",
+      "trace_sha256": "bf366a1bee4cebec1f64cdfec4f4f9bca9239326e5b4852a561c13c87e926de7",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states corpus lacks measured latency; invents no number."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "The provided evidence does not contain latency measurements or performance benchmarks for raising `HTTPException` in FastAPI 0.112.2",
+            "requires_citation": false,
+            "cited_evidence_ids": [
+              "ev_30ec3a4a06a7a9f8f0b84346e0794697647008aac3bacb1c83a7bdd0f2943491"
+            ],
+            "support": "not_applicable",
+            "reason": "Scoped missing-evidence limitation; no measured fact asserted."
+          },
+          {
+            "claim_text": "making it impossible to quantify the specific overhead",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Inference drawn from absence; no external fact asserted."
+          },
+          {
+            "claim_text": "Consequently, no data is available to compare this approach against returning standard responses or assessing ASGI server impacts.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Logical consequence of data absence; consistent."
+          },
+          {
+            "claim_text": "The documentation confirms that `HTTPException` is a normal Python exception used to terminate requests immediately",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_2ccaaf69741db07fc24f08b3921a8f2bba741b1a9d0c815673bfbd97f307ae65"
+            ],
+            "support": "supported",
+            "reason": "Cited passage states normal Python exception terminating request immediately."
+          },
+          {
+            "claim_text": "but it provides no metrics on execution time or latency compared to other methods",
+            "requires_citation": false,
+            "cited_evidence_ids": [
+              "ev_2ccaaf69741db07fc24f08b3921a8f2bba741b1a9d0c815673bfbd97f307ae65"
+            ],
+            "support": "not_applicable",
+            "reason": "Scoped missing-evidence limitation; no measured fact asserted."
+          },
+          {
+            "claim_text": "Evidence describes the inheritance relationship between FastAPI and Starlette exceptions and how handlers work",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d",
+              "ev_a50387341d988576733ecefc1967913bffeb769dfb3c850c92a0f66db2c9b324"
+            ],
+            "support": "supported",
+            "reason": "Passages cover inheritance and default exception handlers."
+          },
+          {
+            "claim_text": "but lacks any technical details regarding traceback generation costs or serialization latency",
+            "requires_citation": false,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d",
+              "ev_a50387341d988576733ecefc1967913bffeb769dfb3c850c92a0f66db2c9b324"
+            ],
+            "support": "not_applicable",
+            "reason": "Scoped missing-evidence limitation; no measured fact asserted."
+          },
+          {
+            "claim_text": "There is no information comparing the latency of raising an exception versus returning a `JSONResponse`",
+            "requires_citation": false,
+            "cited_evidence_ids": [
+              "ev_30ec3a4a06a7a9f8f0b84346e0794697647008aac3bacb1c83a7bdd0f2943491"
+            ],
+            "support": "not_applicable",
+            "reason": "Scoped missing-evidence limitation; no measured fact asserted."
+          },
+          {
+            "claim_text": "nor are there third-party benchmarks for version 0.112.2",
+            "requires_citation": false,
+            "cited_evidence_ids": [
+              "ev_30ec3a4a06a7a9f8f0b84346e0794697647008aac3bacb1c83a7bdd0f2943491"
+            ],
+            "support": "not_applicable",
+            "reason": "Scoped missing-evidence limitation; no measured fact asserted."
+          },
+          {
+            "claim_text": "The provided evidence consists solely of qualitative documentation regarding usage and inheritance, lacking any quantitative performance benchmarks, latency measurements, or production metrics for FastAPI 0.112.2.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Scoped missing-evidence limitation; no measured fact asserted."
+          },
+          {
+            "claim_text": "证据不足：The synthesis correctly identifies that the provided evidence lacks performance benchmarks, latency measurements, or production metrics. However, it fails to explicitly map these missing data points to the specific completion criteria defined in the research plan. Specifically, it does not state which criteria are unmet (e.g., 'A controlled benchmark report... is available') nor does it provide focused follow-up queries to address the gap between the qualitative documentation and the quantitative research question.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Internal critic process commentary; presentation defect, not a domain assertion."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "The answer correctly declines to quantify latency, acknowledging the corpus lacks measurements and inventing none, so the sole key point is fully met. Its few citations all point to the handling-errors docs, which indeed contain no timing data; the only overreach is the uncited 'third-party benchmarks' absence claim, which is minor since it reinforces the abstention. The final Chinese paragraph is evaluator meta-commentary rather than a substantive answer claim. Codex source adjudication: Scoped corpus-absence statements are limitations, not claims that one cited chunk proves global absence. The factual Python-exception and inheritance/handler descriptions are supported by their attached source passages. Preserve the internal critic commentary as N/A process text and record it as a presentation defect. Accept the full contiguous citation group after checking its attachment; do not cut it off because long hashes exceed 160 characters."
+      }
+    },
+    "answer-007": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The corpus contains no production latency measurements. Invented microsecond ranges and benchmark percentages remain incorrect and unsupported. With no citations, factual spans use uncited; advice remains N/A.",
+      "trace_sha256": "bdc231911615ce4dc6f5a131b1d8386d1c582bdc17a03790371a91b0726b6eba",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 0,
+            "reason": "Asserts microseconds instead of acknowledging lack of deployment measurement evidence."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "Raising a `Starlette HTTPException` in FastAPI 0.112.2 adds negligible latency, typically measured in **microseconds** (often < 10–50 µs depending on the system load and Python interpreter overhead).",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "No evidence provides any latency measurement."
+          },
+          {
+            "claim_text": "The exception is raised and handled entirely within the application process; no network round-trip occurs at this stage.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Domain reasoning, but no supplied evidence supports it."
+          },
+          {
+            "claim_text": "FastAPI/Starlette has optimized exception handling for common HTTP errors (4xx, 5xx).",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "No supplied evidence confirms optimization claim."
+          },
+          {
+            "claim_text": "The stack trace generation is minimal for known exceptions like `HTTPException`.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "No evidence supplied about traceback cost."
+          },
+          {
+            "claim_text": "In production, this latency is dwarfed by I/O operations (database queries, external API calls), serialization/deserialization, and network transmission times.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "No production evidence supplied to support comparison."
+          },
+          {
+            "claim_text": "It is generally considered **free** from a performance engineering perspective.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Unsupported evaluative assertion with no evidence."
+          },
+          {
+            "claim_text": "`HTTPException` with standard status codes (e.g., 404, 403) triggers a fast response path without complex traceback formatting.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "No supplied evidence describes this fast path."
+          },
+          {
+            "claim_text": "Starlette handles these exceptions asynchronously without blocking event loops.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "No supplied evidence confirms async behavior."
+          },
+          {
+            "claim_text": "Community benchmarks and internal profiling consistently show that raising an `HTTPException` contributes less than 0.1% to total request time in typical microservices.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Invented benchmark figure; no evidence supplied."
+          },
+          {
+            "claim_text": "Do not avoid using `HTTPException` for error handling due to latency concerns.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Recommendation, not an evidence claim."
+          },
+          {
+            "claim_text": "Use it as intended for clean, maintainable code.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Advice, not factual claim."
+          },
+          {
+            "claim_text": "If you need extreme low-latency paths, optimize your business logic or I/O, not the exception mechanism itself.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Recommendation, not factual claim."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "The question lacks deployment-specific measured evidence; the answer invents microsecond figures and a 0.1% benchmark share rather than acknowledging that absence. Codex source adjudication: The corpus contains no production latency measurements. Invented microsecond ranges and benchmark percentages remain incorrect and unsupported. With no citations, factual spans use uncited; advice remains N/A."
+      }
+    },
+    "answer-008": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The first sentence is a scoped missing-evidence limitation without an attached citation, so N/A. The final contiguous citation group attaches to the subsequent description of the documents; it is not borrowed backward across the first sentence. No measurement is invented.",
+      "trace_sha256": "4f90cb28e08f96601a86a5f4a03044c82f3f751bc21f86cbfae69ec78421538c",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Explicitly states corpus lacks latency data and invents no number."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "The provided evidence does not contain information regarding the specific latency impact of raising a Starlette HTTPException in FastAPI 0.112.2 during production.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Cited chunks contain no latency metrics; absence confirmed."
+          },
+          {
+            "claim_text": "The documents discuss the differences between FastAPI's and Starlette's HTTPException classes, how to handle them, and general error handling concepts",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d",
+              "ev_9d23f18e4908075b6e4533e2019b675853b617c67b193092d68e165bc24f3fa1",
+              "ev_b6bfe4972aacc9f1bf749e52dfefb86fa6ca5607dc4fb988f83373bd62eca94f",
+              "ev_d9e14a4063c3976450b0379dd1adaab2a040753a2ca2bec1c0198c52353f9863",
+              "ev_30ec3a4a06a7a9f8f0b84346e0794697647008aac3bacb1c83a7bdd0f2943491"
+            ],
+            "support": "supported",
+            "reason": "Chunks cover exception class differences and handlers."
+          },
+          {
+            "claim_text": "but do not provide performance metrics or latency data",
+            "requires_citation": false,
+            "cited_evidence_ids": [
+              "ev_74d9655f9f837617026870e3ce257f0a71f55cf8e8a2e384881531ac18e6467d",
+              "ev_9d23f18e4908075b6e4533e2019b675853b617c67b193092d68e165bc24f3fa1",
+              "ev_b6bfe4972aacc9f1bf749e52dfefb86fa6ca5607dc4fb988f83373bd62eca94f",
+              "ev_d9e14a4063c3976450b0379dd1adaab2a040753a2ca2bec1c0198c52353f9863",
+              "ev_30ec3a4a06a7a9f8f0b84346e0794697647008aac3bacb1c83a7bdd0f2943491"
+            ],
+            "support": "not_applicable",
+            "reason": "No performance metrics appear in any cited chunk."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "The answer correctly identifies the absence of latency data in the corpus, fabricates no figures, and its descriptive claims about the documents are accurate. Codex source adjudication: The first sentence is a scoped missing-evidence limitation without an attached citation, so N/A. The final contiguous citation group attaches to the subsequent description of the documents; it is not borrowed backward across the first sentence. No measurement is invented."
+      }
+    },
+    "answer-009": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The Chinese phrase '提示输入应为有效整数' faithfully translates the reference's valid-integer error, so key point 1 is fully met. Strict/lax statements are assessed in the question's int/string scope. The literal int example establishes that strict validation rejects rather than coerces this input; it need not repeat the prose verbatim.",
+      "trace_sha256": "dde3f0faf6b339e19d349659444bd3f61617752a6fd35ceba7af3a1577743d5c",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states lax mode coerces '123' to int 123; matches evidence."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Chinese valid-integer error phrase is a faithful translation."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "在 Pydantic v2.8.2 中，`model_validate` 对 `{'x': '123'}` 传入 `int` 字段的处理取决于模式设置：",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Introductory framing, not a standalone factual claim."
+          },
+          {
+            "claim_text": "**默认（lax）模式**：Pydantic 会自动将字符串 `'123'` 强制转换为整数 `123`，验证成功",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6"
+            ],
+            "support": "supported",
+            "reason": "Evidence shows lax mode #> x=123 for same input."
+          },
+          {
+            "claim_text": "这是默认行为，旨在提高对用户输入、URL 参数等场景的兼容性",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_03ecda2b1b452c5af1bc5a031f75402ab9a4ae18b2e145126d34571d1955bcc3"
+            ],
+            "support": "supported",
+            "reason": "Evidence lists UUIDs, URL parameters, user input coercion scenarios."
+          },
+          {
+            "claim_text": "**strict=True 模式**：当显式启用严格模式时，Pydantic 禁用自动类型转换。",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6"
+            ],
+            "support": "supported",
+            "reason": "Int/string strict example explicitly rejects coercion in this question's scope."
+          },
+          {
+            "claim_text": "由于输入值是字符串而非整数，验证将失败并抛出 `ValidationError`，提示输入应为有效整数",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6"
+            ],
+            "support": "supported",
+            "reason": "Evidence shows ValidationError with 'Input should be a valid integer'."
+          },
+          {
+            "claim_text": "严格模式确保数据必须具有正确的类型，否则报错",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_03ecda2b1b452c5af1bc5a031f75402ab9a4ae18b2e145126d34571d1955bcc3"
+            ],
+            "support": "supported",
+            "reason": "Evidence says strict mode errors if data not correct type."
+          },
+          {
+            "claim_text": "在默认 lax 模式下，Pydantic 会将字符串 `'123'` 自动转换为整数 `123` 以通过验证",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6"
+            ],
+            "support": "supported",
+            "reason": "Restates lax-mode conversion shown in cited example."
+          },
+          {
+            "claim_text": "而在 strict=True 模式下，这种自动转换被禁止，导致验证因类型不匹配而失败并抛出错误",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6"
+            ],
+            "support": "supported",
+            "reason": "Evidence shows strict validation raising ValidationError for same input."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly describes lax coercion to 123 and strict-mode ValidationError, matching reference evidence. The specific error message 'Input should be a valid integer' is implied but not quoted, so key point 1 is partial. All claims are backed by cited evidence; no unsupported assertions. Codex source adjudication: The Chinese phrase '提示输入应为有效整数' faithfully translates the reference's valid-integer error, so key point 1 is fully met. Strict/lax statements are assessed in the question's int/string scope. The literal int example establishes that strict validation rejects rather than coerces this input; it need not repeat the prose verbatim."
+      }
+    },
+    "answer-010": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "Baseline correctly states conversion and ValidationError but never describes the valid-integer error message, so retain the partial key-point score. Introductory question framing is N/A; all substantive uncited facts use uncited rather than supported/partial citation labels.",
+      "trace_sha256": "5c28fe6dde4fa9e9f11819815c73fa33eb4871e5c341ea40f3a0f1e2d1bdc96b",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States '123' string converts to int 123 in lax mode"
+          },
+          {
+            "index": 1,
+            "score": 1,
+            "reason": "Raises ValidationError but omits 'Input should be a valid integer' message"
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "在 Pydantic v2.8.2 中，针对 `model_validate` 处理 `{'x': '123'}`（字符串 `'123'`）传入 `int` 字段的情况：",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Version and scenario framed; conversion itself supported separately."
+          },
+          {
+            "claim_text": "**默认 lax 模式**：Pydantic 会尝试进行**类型转换**。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Strict-mode doc says lax coerces string to int."
+          },
+          {
+            "claim_text": "字符串 `'123'` 会被成功解析并转换为整数 `123`。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Doc: string \"123\" for int field converted to 123."
+          },
+          {
+            "claim_text": "因此，模型验证通过，最终得到的对象中 `x` 的值为整数 `123`。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Conversion to 123 implies validation succeeds."
+          },
+          {
+            "claim_text": "**开启 strict=True 后**：Pydantic 会执行**严格类型检查**，拒绝任何隐式类型转换。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Doc states strict mode disables coercion."
+          },
+          {
+            "claim_text": "由于输入是字符串而期望类型是整数，且两者类型不匹配，验证将失败，抛出 `ValidationError` 异常。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Error implied but exact message 'Input should be a valid integer' omitted."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly describes lax coercion and strict failure, but omits the specific strict-mode error message text required by key point 1. No citations were attached, so citation completeness is lacking, though all claims are grounded in reference evidence. Codex source adjudication: Baseline correctly states conversion and ValidationError but never describes the valid-integer error message, so retain the partial key-point score. Introductory question framing is N/A; all substantive uncited facts use uncited rather than supported/partial citation labels."
+      }
+    },
+    "answer-011": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "reason": "The supplied strict-mode example and introductory paragraph jointly establish string-to-int coercion and the strict valid-integer error. Chinese paraphrases are faithful. Both attached citations bind to each full statement.",
+      "trace_sha256": "9de3dc356751e91c3459c05a3722e72d075e974b86885e54b113c9a44238289a",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states lax coercion of '123' to 123, matching evidence."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states ValidationError with valid integer message in strict mode."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "在 Pydantic v2.8.2 中，默认（lax）模式下，`model_validate` 会尝试将字符串 `'123'` 强制转换为整数 `123`，因此验证成功并返回 `x=123`",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6",
+              "ev_03ecda2b1b452c5af1bc5a031f75402ab9a4ae18b2e145126d34571d1955bcc3"
+            ],
+            "support": "supported",
+            "reason": "Lax example prints x=123; doc also states coercion."
+          },
+          {
+            "claim_text": "当开启 `strict=True` 后，Pydantic 不再进行类型强制转换，如果输入数据类型不正确则会报错；对于传入的字符串 `'123'`，它会抛出 `ValidationError`，提示输入应为有效整数但实际为字符串类型",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6",
+              "ev_03ecda2b1b452c5af1bc5a031f75402ab9a4ae18b2e145126d34571d1955bcc3"
+            ],
+            "support": "supported",
+            "reason": "Strict example raises ValidationError with valid integer message."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points are correctly and fully supported by the cited evidence from the v2.8.2 strict_mode documentation; no unsupported claims were found."
+      }
+    },
+    "answer-012": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The same two strict-mode chunks support the answer in the question's int/string scope. Both contiguous citations bind even when the second long hash extends beyond a raw 160-character window. The answer explicitly describes the valid-integer error.",
+      "trace_sha256": "05688640548387fbda4a048427febb0cefe9698e2f4378391e3095c414906605",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States lax coercion of '123' to int 123, matching evidence."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States ValidationError with 'valid integer' message in strict mode."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "在 Pydantic v2.8.2 中，默认（lax）模式下，`model_validate` 会尝试将输入值强制转换为期望的类型。",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_03ecda2b1b452c5af1bc5a031f75402ab9a4ae18b2e145126d34571d1955bcc3",
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6"
+            ],
+            "support": "supported",
+            "reason": "Evidence says default Pydantic coerces values to desired type."
+          },
+          {
+            "claim_text": "对于传入 `{'x': '123'}` 且字段类型为 `int` 的情况，字符串 `'123'` 会被成功转换为整数 `123`",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_03ecda2b1b452c5af1bc5a031f75402ab9a4ae18b2e145126d34571d1955bcc3",
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6"
+            ],
+            "support": "supported",
+            "reason": "Example prints x=123; text says '123' converted to 123."
+          },
+          {
+            "claim_text": "当开启 `strict=True` 后，Pydantic 不再进行类型强制转换，如果数据不是正确的类型则会报错。",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6",
+              "ev_03ecda2b1b452c5af1bc5a031f75402ab9a4ae18b2e145126d34571d1955bcc3"
+            ],
+            "support": "supported",
+            "reason": "Cited strict-mode prose and int example establish this scoped statement."
+          },
+          {
+            "claim_text": "因此，传入 `{'x': '123'}` 时，由于输入值是字符串而非整数，验证将失败并抛出 `ValidationError`，提示输入应为有效整数",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_736f9b2981a1f154e83a6439b2e00dfbc01abf76a692f8ac02b149feb8695ea6",
+              "ev_03ecda2b1b452c5af1bc5a031f75402ab9a4ae18b2e145126d34571d1955bcc3"
+            ],
+            "support": "supported",
+            "reason": "Example shows ValidationError with 'Input should be a valid integer'."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points are correctly stated; all claims cite the strict-mode doc evidence. The assertion that strict mode eliminates all coercion is slightly stronger than the source, which describes it as much less lenient, but this does not reverse the conclusion. Codex source adjudication: The same two strict-mode chunks support the answer in the question's int/string scope. Both contiguous citations bind even when the second long hash extends beyond a raw 160-character window. The answer explicitly describes the valid-integer error."
+      }
+    },
+    "answer-013": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The answer contradicts its correct final use_cache=False instruction by inventing a necessary generator condition and a scope='call' mechanism. The conditions key point is zero under the rubric's contradicted rule. Pinned FastAPI sub-dependency docs and the installed matching 0.112.2 Depends signature have no such requirement. Its route-registration code is an API claim, not exempt illustration. Keep unsupported_assertion=true.",
+      "trace_sha256": "a0ea26537518db0c9723b83e51fddab363c6473eff908a276cac28e98d7f99f5",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states default one call, cached and reused."
+          },
+          {
+            "index": 1,
+            "score": 0,
+            "reason": "Invented generator prerequisite contradicts correct use_cache=False conclusion."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "在 FastAPI 0.112.2 中，同一依赖被多次声明时，默认只调用 **1 次**（即结果会被缓存/复用）。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct per docs but no citation attached."
+          },
+          {
+            "claim_text": "1.  **依赖函数必须是一个异步生成器（`async def ... yield`）或同步生成器（`def ... yield`）**。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Docs set no generator requirement for use_cache."
+          },
+          {
+            "claim_text": "普通的 `async def` 或 `def` 函数无法通过此机制实现“多次调用”，因为它们没有上下文管理器语义来支持“清理”阶段，FastAPI 会将其视为单次调用并缓存结果。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Wrong; use_cache=False applies to any dependency."
+          },
+          {
+            "claim_text": "只有使用 `yield` 的生成器依赖才具有“进入-退出”生命周期，FastAPI 才能根据作用域决定是否重复执行。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Invented scope/generator-only limitation."
+          },
+          {
+            "claim_text": "2.  **将依赖的作用域设置为 `\"scope\"` 为 `\"call\"` 或使用 `Depends(..., use_cache=False)`**。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "No scope=\"call\" parameter exists."
+          },
+          {
+            "claim_text": "在每次 `Depends()` 调用中显式设置 `use_cache=False`。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Matches docs but no citation attached."
+          },
+          {
+            "claim_text": "        from fastapi import Depends\n\n        async def my_dep():\n            print(\"Called\")\n            yield \"value\"\n            print(\"Cleanup\")\n\n        # 每次都会调用一次\n        app.get(\"/path\")(Depends(my_dep, use_cache=False))",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Illustrative code; not authoritative source."
+          },
+          {
+            "claim_text": "如果希望整个应用中某个依赖始终不被缓存，可以在定义依赖时使用 `Depends` 的 `use_cache` 参数（但通常是在调用处控制更灵活）。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Option is per-Depends call, not global."
+          },
+          {
+            "claim_text": "注意：`use_cache` 是 `Depends` 类的参数，不是依赖函数本身的属性。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct per docs but uncited."
+          },
+          {
+            "claim_text": "对于所有类型的依赖（包括生成器），FastAPI 会在同一个请求处理过程中缓存依赖的结果，确保同一依赖在多个地方被引用时只执行一次。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Matches docs but no citation attached."
+          },
+          {
+            "claim_text": "打破缓存**：必须在每个 `Depends()` 调用中传入 `use_cache=False`。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct but uncited."
+          },
+          {
+            "claim_text": "虽然 `use_cache=False` 可用于任何依赖，但对于非生成器依赖，它只是意味着“不调用缓存”，但由于非生成器依赖本身无状态且立即返回，效果等同于每次都调用。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Use on any dependency correct; 'stateless' rationale inaccurate."
+          },
+          {
+            "claim_text": "**真正体现“多次调用”价值的是生成器依赖**，因为这样可以确保每次 `yield` 前的代码和 `yield` 后的清理代码都被独立执行。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Value claim about generators not in docs."
+          },
+          {
+            "claim_text": "默认调用次数**：1 次（缓存）。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct but uncited."
+          },
+          {
+            "claim_text": "改为多次调用的条件**：在每次 `Depends()` 调用中设置 `use_cache=False`。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct but uncited."
+          },
+          {
+            "claim_text": "如何设置**：`Depends(MyDependency, use_cache=False)`。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct but uncited."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Core facts (default one cached call; use_cache=False to repeat) are right, but the answer adds invented conditions: generator-only requirement, scope=\"call\", and global use_cache. No citations were attached, and several unsupported assertions are made. Codex source adjudication: The answer contradicts its correct final use_cache=False instruction by inventing a necessary generator condition and a scope='call' mechanism. The conditions key point is zero under the rubric's contradicted rule. Pinned FastAPI sub-dependency docs and the installed matching 0.112.2 Depends signature have no such requirement. Its route-registration code is an API claim, not exempt illustration. Keep unsupported_assertion=true."
+      }
+    },
+    "answer-014": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "reason": "The per-request cache passage supports the three prose claims. Both generated code examples lack an attached citation; they remain uncited even though the pinned document contains equivalent examples. ID validity alone must not produce perfect citation completeness.",
+      "trace_sha256": "6fed40bd5d50b79689fc63f6a2a7dae42dd8e0b8e7b7f8e1ece51cc265d80339",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States called once and value cached for dependants per request."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly says set use_cache=False on Depends for advanced scenario."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "在 FastAPI 0.112.2 中，如果同一依赖被多次声明用于同一个路径操作（path operation），默认情况下该依赖只会被调用一次",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Passage states sub-dependency called only once per request."
+          },
+          {
+            "claim_text": "FastAPI 会将返回的值保存在一个“缓存”中，并将其传递给所有需要它的依赖项，从而避免在同一请求中多次调用该依赖",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Passage matches cache and pass to dependants."
+          },
+          {
+            "claim_text": "若需要在高级场景中强制每次步骤都重新调用依赖（即不使用缓存值），可以通过在使用 `Depends` 时设置参数 `use_cache=False` 来实现",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Passage states use_cache=False for every step."
+          },
+          {
+            "claim_text": "```python\nasync def needy_dependency(fresh_value: Annotated[str, Depends(get_value, use_cache=False)]):\n    return {\"fresh_value\": fresh_value}\n```",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Code matches chunk 4 example but no citation attached."
+          },
+          {
+            "claim_text": "或者在非 Annotated 风格中：",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "Transitional wording, no factual claim."
+          },
+          {
+            "claim_text": "```python\nasync def needy_dependency(fresh_value: str = Depends(get_value, use_cache=False)):\n    return {\"fresh_value\": fresh_value}\n```",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Matches chunk 5 example but lacks immediate citation."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly conveys both key points: once-per-request caching by default and use_cache=False to force repeated calls. Code examples lack immediate citations but are faithful to the evidence."
+      }
+    },
+    "answer-015": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The source is pinned to FastAPI 0.112.2 in the corpus manifest, so the version context is established without repeating the version in every retrieved paragraph. The per-request cache statement is fully supported; the judge's version-only partial penalty is rejected.",
+      "trace_sha256": "f0d29af6954543c94ad4425caf9a0549a19686c6bf525b9593579fb967ad0c62",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states once per request, cached for dependants"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states use_cache=False enables multiple calls"
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "在 FastAPI 0.112.2 中，如果同一依赖被多次声明（例如多个依赖项共享一个公共的子依赖），默认情况下该子依赖只会被调用一次",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Version is established by pinned source identity; cache behavior explicit."
+          },
+          {
+            "claim_text": "FastAPI 会将返回的值存储在“缓存”中，并在该特定请求中将此值传递给所有需要它的“依赖者”，从而避免为同一个请求多次调用该依赖",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Evidence states cache stored and passed to dependants"
+          },
+          {
+            "claim_text": "若需要在同一请求中的每一步都调用该依赖（即不使用缓存值），可以通过在使用 `Depends` 时设置参数 `use_cache=False` 来改为多次调用",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Evidence states use_cache=False calls at every step"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly covers both key points: default single call with caching per request, and use_cache=False for repeated calls. Minor overreach is asserting the specific version 0.112.2, which the cited passage does not confirm, but core conclusions are accurate. Codex source adjudication: The source is pinned to FastAPI 0.112.2 in the corpus manifest, so the version context is established without repeating the version in every retrieved paragraph. The per-request cache statement is fully supported; the judge's version-only partial penalty is rejected."
+      }
+    },
+    "answer-016": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The two uncited summary sentences are factual repetitions and require citations, rather than becoming N/A because they are a summary. Preserve the partial verdict for the graph-recognition inference and full support for the attached cache/use_cache=False examples. Both key points remain correct.",
+      "trace_sha256": "3f3cd87dca84e5a652c44cf18e4952c830e9a45559eaa639e91cc81c24e0806a",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states once per request with caching for dependants."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly gives use_cache=False for repeated calls."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "在 FastAPI 0.112.2 中，同一依赖在同一请求生命周期内默认仅被调用 **一次**",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Evidence says sub-dependency called only once per request."
+          },
+          {
+            "claim_text": "系统通过内部缓存机制保存返回值并分发给所有需要该依赖的路径操作或子依赖，从而避免重复执行",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Evidence says value cached and passed to dependants."
+          },
+          {
+            "claim_text": "若需强制多次调用（即禁用缓存），可在 `Depends` 函数中设置参数 `use_cache=False`",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Evidence prescribes use_cache=False in Depends."
+          },
+          {
+            "claim_text": "这适用于 Python 3.8+ 的 `Annotated` 语法或非 `Annotated` 语法",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_23989ca151b8defab71ee678f84b9b6b643a3038eb34e4fe468e2cf2126c30dc"
+            ],
+            "support": "supported",
+            "reason": "Evidence shows Python 3.8+ Annotated and non-Annotated tabs."
+          },
+          {
+            "claim_text": "FastAPI 默认对同一请求中的相同依赖进行单次调用和结果缓存。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Summary restatement; correct but no citation attached."
+          },
+          {
+            "claim_text": "通过设置 `use_cache=False` 可覆盖此行为以允许重复调用。",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct but lacks citation."
+          },
+          {
+            "claim_text": "**默认单次调用**：当同一依赖被多次声明时，FastAPI 确保其仅执行一次，并将结果缓存供后续使用",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Evidence confirms once-call and cached value."
+          },
+          {
+            "claim_text": "**缓存机制**：系统识别依赖关系图，若检测到共同子依赖，则跳过重复调用，直接传递已计算的缓存值",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "partial",
+            "reason": "Caching supported; graph recognition is inference, not stated."
+          },
+          {
+            "claim_text": "**配置多次调用**：通过 `Depends(get_value, use_cache=False)` 可强制每次引用都触发新的依赖调用",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_23989ca151b8defab71ee678f84b9b6b643a3038eb34e4fe468e2cf2126c30dc",
+              "ev_4e72eeef1644181b9b687f99347db22f1c2b836d04b458db46cd752533cebd18"
+            ],
+            "support": "supported",
+            "reason": "Both evidence snippets show use_cache=False usage."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points answered correctly with adequate citations; only minor inference about dependency graph slightly exceeds evidence. Codex source adjudication: The two uncited summary sentences are factual repetitions and require citations, rather than becoming N/A because they are a summary. Preserve the partial verdict for the graph-recognition inference and full support for the attached cache/use_cache=False examples. Both key points remain correct."
+      }
+    },
+    "answer-017": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The answer explicitly demonstrates both runtime names, so the runtime-versus-editor key point is fully covered. A sentence about validation_alias has no citation of its own; do not borrow the next sentence's citation. Claims that serialization_alias controls initializer parameters are only partially supported, and 'likely applies' must not become certainty. Keep unsupported extra editor guidance visible despite correct core key points.",
+      "trace_sha256": "b5fb1d88ca4f23137562bc0f382c96baf9040276f777a4b2328ede16ce4d67da",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly uses Field(validation_alias=AliasChoices('first_name','fname')) with example."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Both runtime names are explicitly demonstrated; editor distinction stated."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "To allow a `first_name` field to accept both 'first_name' and 'fname' during validation in Pydantic v2.8.2, you should use the `AliasChoices` class with the `validation_alias` parameter",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_2bd88aa2f96d11a274380093753d366df4837b6f22ec6f46161e9f0b2be6443f"
+            ],
+            "support": "supported",
+            "reason": "Evidence shows AliasChoices with validation_alias accepting both keys."
+          },
+          {
+            "claim_text": "The implementation is as follows:\n\n```python\nfrom pydantic import BaseModel, Field, AliasChoices\n\nclass User(BaseModel):\n    first_name: str = Field(validation_alias=AliasChoices('first_name', 'fname'))\n```\n",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Code matches evidence but no citation attached."
+          },
+          {
+            "claim_text": "This configuration allows the model to be instantiated using either key, for example: `User.model_validate({'fname': 'John'})` or `User.model_validate({'first_name': 'John'})`",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_2bd88aa2f96d11a274380093753d366df4837b6f22ec6f46161e9f0b2be6443f"
+            ],
+            "support": "supported",
+            "reason": "Evidence demonstrates both keys validate successfully."
+          },
+          {
+            "claim_text": "Regarding VSCode's initializer signature, it will **not** reflect the `validation_alias`.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Evidence states VSCode will not use validation_alias in signature."
+          },
+          {
+            "claim_text": "VSCode uses the `alias` keyword argument (or `serialization_alias` if specified) to determine the parameters shown in the class initializer signature, rather than `validation_alias`",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_a363164a6672a7b094d23cc7eb1f10a01358e2d390f81d03992f671bddbad753"
+            ],
+            "support": "partial",
+            "reason": "Alias is relevant; serialization_alias does not set initializer parameters."
+          },
+          {
+            "claim_text": "If you want VSCode to recognize an alias in the initializer, you must specify an `alias` (and optionally a `serialization_alias`)",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_a363164a6672a7b094d23cc7eb1f10a01358e2d390f81d03992f671bddbad753"
+            ],
+            "support": "partial",
+            "reason": "Evidence says specify both alias and serialization_alias."
+          },
+          {
+            "claim_text": "This behavior also applies to other tools respecting the `@typing.dataclass_transform` decorator, such as Pyright",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_2f767064f7ff9331600ab57f05295adb75f80c0b628118a152a1c8574150878b"
+            ],
+            "support": "partial",
+            "reason": "Source says likely; answer asserts certainty."
+          },
+          {
+            "claim_text": "In summary, runtime validation handles multiple input keys via `AliasChoices`, while editor hints (like those in VSCode) are determined by the `alias` or `serialization_alias` settings, not `validation_alias`.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Summary claim lacks citation."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer correctly provides AliasChoices solution and VSCode signature limitation. Key point 1 slightly incomplete on runtime/editor distinction. Mixed claim support; several claims uncited. Codex source adjudication: The answer explicitly demonstrates both runtime names, so the runtime-versus-editor key point is fully covered. A sentence about validation_alias has no citation of its own; do not borrow the next sentence's citation. Claims that serialization_alias controls initializer parameters are only partially supported, and 'likely applies' must not become certainty. Keep unsupported extra editor guidance visible despite correct core key points."
+      }
+    },
+    "answer-018": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The question permits a valid alternative to AliasChoices: alias='fname' plus populate_by_name=True is documented in fields.md and accepts both names in the installed matching Pydantic 2.8.2. Grant that key point full credit. Strip citation tokens out of judge-selected claim spans, not out of the actual answer. Merge a duplicated overlapping editor-override claim and keep its two actual attached citations. The erroneous serialization-alias/editor override stays partial and unsupported_assertion remains true.",
+      "trace_sha256": "14032c338af98b436fa6265427283302540478890439c35654ae21bbb3e02965",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Documented alias plus populate_by_name alternative accepts both input names."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode ignores validation_alias though runtime applies it."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "To allow a `first_name` field to accept both 'first_name' and 'fname' during validation, you should use the `populate_by_name=True` configuration option along with defining an alias.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Supported in general for alias, but not the dual-name AliasChoices approach."
+          },
+          {
+            "claim_text": "Specifically, you can set `alias='fname'` (or use `validation_alias`) while enabling `model_config = ConfigDict(populate_by_name=True)`",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_9f2c214051d673e71c1d9bed732013f17cbc4fea0e5f21dfe68ec5cf81becc46"
+            ],
+            "support": "partial",
+            "reason": "Evidence shows alias+populate_by_name; AliasChoices not covered."
+          },
+          {
+            "claim_text": "This allows the model to be instantiated using either the field name (`first_name`) or the alias (`fname`) at runtime.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "True for alias with populate_by_name; omitted citation."
+          },
+          {
+            "claim_text": "However, VSCode's initializer signature will not reflect the `validation_alias`.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Matches fields evidence statement."
+          },
+          {
+            "claim_text": "According to the evidence, VSCode does not use the `validation_alias` in the class initializer signature",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_a363164a6672a7b094d23cc7eb1f10a01358e2d390f81d03992f671bddbad753"
+            ],
+            "support": "supported",
+            "reason": "Passage directly states this."
+          },
+          {
+            "claim_text": "If you want VSCode to recognize the alias in the signature, you must specify both an `alias` and a `serialization_alias`, as the `serialization_alias` overrides the `alias` for editor hints",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_a363164a6672a7b094d23cc7eb1f10a01358e2d390f81d03992f671bddbad753",
+              "ev_2f767064f7ff9331600ab57f05295adb75f80c0b628118a152a1c8574150878b"
+            ],
+            "support": "partial",
+            "reason": "Combined workaround exists; claimed editor override is actually serialization-only."
+          },
+          {
+            "claim_text": "This highlights the distinction between runtime validation and editor hints: at runtime, Pydantic accepts inputs based on the configured aliases and `populate_by_name` settings regardless of what the IDE suggests",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_9f2c214051d673e71c1d9bed732013f17cbc4fea0e5f21dfe68ec5cf81becc46"
+            ],
+            "support": "supported",
+            "reason": "Cited example explicitly works at runtime despite IDE warning."
+          },
+          {
+            "claim_text": "In contrast, editor tools like VSCode rely on specific field configurations (like having an explicit `alias` rather than just `validation_alias`) to provide accurate autocomplete and warning signals, which may differ from the actual runtime behavior",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_a363164a6672a7b094d23cc7eb1f10a01358e2d390f81d03992f671bddbad753",
+              "ev_9f2c214051d673e71c1d9bed732013f17cbc4fea0e5f21dfe68ec5cf81becc46"
+            ],
+            "support": "partial",
+            "reason": "Supported in spirit; autocomplete claim not explicitly stated."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "The answer correctly explains the VSCode/validation_alias mismatch but never mentions AliasChoices, the documented method for accepting two input names, instead proposing alias plus populate_by_name. Most cited passages support only part of each claim. Codex source adjudication: The question permits a valid alternative to AliasChoices: alias='fname' plus populate_by_name=True is documented in fields.md and accepts both names in the installed matching Pydantic 2.8.2. Grant that key point full credit. Strip citation tokens out of judge-selected claim spans, not out of the actual answer. Merge a duplicated overlapping editor-override claim and keep its two actual attached citations. The erroneous serialization-alias/editor override stays partial and unsupported_assertion remains true."
+      }
+    },
+    "answer-019": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "The prose method 'AliasChoices within validation_alias' is a sufficient faithful explanation; the question does not require a literal Field(...) code block. Grant the method key point full credit. Keep the unsupported static-analysis citation and partial/incorrect serialization_alias editor workaround; correct key points do not erase extra false assertions.",
+      "trace_sha256": "48f4b4d4f47b5164bba02e6cb957ae7f29d97b70581c3120f61ab9760097d9e1",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Faithful prose method; literal Field(...) syntax not required by question."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode ignores validation_alias in signature though runtime uses it."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "In Pydantic v2.8.2, a field can accept multiple input keys during validation by using `AliasChoices` within the `validation_alias` parameter",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_2bd88aa2f96d11a274380093753d366df4837b6f22ec6f46161e9f0b2be6443f"
+            ],
+            "support": "supported",
+            "reason": "Evidence shows AliasChoices in validation_alias accepting fname or first_name."
+          },
+          {
+            "claim_text": "However, VSCode's initializer signature will not reflect these validation aliases; it displays the model's attribute name instead",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_a363164a6672a7b094d23cc7eb1f10a01358e2d390f81d03992f671bddbad753"
+            ],
+            "support": "supported",
+            "reason": "Evidence states VSCode will not use validation_alias in initializer signature."
+          },
+          {
+            "claim_text": "This occurs because static analysis tools rely on class definitions rather than runtime validation logic",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_f8451fa2f6341814d9f660a0529363fc0c3fde4368e926e6375babe7a2a32048"
+            ],
+            "support": "unsupported",
+            "reason": "Cited passage describes alias semantics, not why static tools ignore validation_alias."
+          },
+          {
+            "claim_text": "To make VSCode show an alias in the signature, one must use the `alias` parameter or explicitly set `serialization_alias`, though this changes serialization behavior",
+            "requires_citation": true,
+            "cited_evidence_ids": [
+              "ev_f8451fa2f6341814d9f660a0529363fc0c3fde4368e926e6375babe7a2a32048",
+              "ev_a363164a6672a7b094d23cc7eb1f10a01358e2d390f81d03992f671bddbad753"
+            ],
+            "support": "partial",
+            "reason": "Alias affects initialization; serialization_alias-only editor workaround is incorrect."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Both key points largely addressed: AliasChoices approach and VSCode signature limitation are correct. However, the causal explanation about static analysis tools and the claim that using alias or serialization_alias makes the signature reflect it are not established by the cited passages; the supporting citations are partly mismatched. Codex source adjudication: The prose method 'AliasChoices within validation_alias' is a sufficient faithful explanation; the question does not require a literal Field(...) code block. Grant the method key point full credit. Keep the unsupported static-analysis citation and partial/incorrect serialization_alias editor workaround; correct key points do not erase extra false assertions."
+      }
+    },
+    "answer-020": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "reason": "Core AliasChoices and runtime/editor distinctions are correct; the Field import is explicitly noted. The final claim that native alias editor support requires separate fields/plugins conflicts with the pinned fields guide's alias workaround, so unsupported_assertion becomes true. Baseline citation metrics remain N/A.",
+      "trace_sha256": "c776c501d80b85bcac5b15569250b7b075ee5298403532008fdcbd9b2b6dfd1f",
+      "judgment": {
+        "rubric_version": "real-semantic-v1",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correct AliasChoices validation_alias solution for both names."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode initializer signature excludes validation_alias, runtime still applies it."
+          }
+        ],
+        "claims": [
+          {
+            "claim_text": "In Pydantic v2.8.2, you can make a `first_name` field accept both `'first_name'` and `'fname'` by using the `validation_alias` parameter with a `AliasChoices` object.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Matches alias docs but no citation attached."
+          },
+          {
+            "claim_text": "```python\nfrom pydantic import BaseModel, AliasChoices\n\nclass User(BaseModel):\n    first_name: str = Field(validation_alias=AliasChoices('first_name', 'fname'))\n```",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Matches docs example but uncited; Field import missing."
+          },
+          {
+            "claim_text": "Ensure `Field` is imported from `pydantic`.",
+            "requires_citation": false,
+            "cited_evidence_ids": [],
+            "support": "not_applicable",
+            "reason": "General correctness note, not evidence-dependent."
+          },
+          {
+            "claim_text": "**No.** VSCode (and other IDEs relying on static type analysis) will **not** reflect `'fname'` in the initializer signature for keyword arguments.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Consistent with fields doc but uncited."
+          },
+          {
+            "claim_text": "The IDE will only show `first_name` as the valid keyword argument because that is the actual Python attribute name defined in the class.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Reasonable explanation, not directly established."
+          },
+          {
+            "claim_text": "`validation_alias` is a **runtime-only** configuration.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Oversimplified but core runtime point uncited."
+          },
+          {
+            "claim_text": "It does not change the Python class definition or the type hints used by static analyzers.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Consistent with doc but no citation."
+          },
+          {
+            "claim_text": "How data is parsed and accepted when creating an instance (e.g., `User(fname=\"John\")` works).",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Runtime alias acceptance correct but uncited."
+          },
+          {
+            "claim_text": "What suggestions are shown to developers while typing code (e.g., autocomplete for `User(first_name=\"John\")`).",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Editor-hint behavior consistent but uncited."
+          },
+          {
+            "claim_text": "Handled by Pydantic’s internal validation logic during model instantiation.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "General mechanism claim, uncited."
+          },
+          {
+            "claim_text": "Handled by language servers (like Pylance) based on static type information and class attributes.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "General IDE claim, uncited."
+          },
+          {
+            "claim_text": "✅ Allows input keys like `'fname'` to map to the `first_name` field.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct runtime alias effect but uncited."
+          },
+          {
+            "claim_text": "❌ No effect. The IDE still expects the actual attribute name (`first_name`).",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Correct per fields doc but uncited."
+          },
+          {
+            "claim_text": "Use `AliasChoices` in `validation_alias` to accept multiple input keys at runtime.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Accurate summary, uncited."
+          },
+          {
+            "claim_text": "Do **not** expect IDE autocompletion to suggest alias keys; they only suggest the actual field names.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Matches doc implication but uncited."
+          },
+          {
+            "claim_text": "If you want IDE support for aliases, you would need to use separate fields or custom plugins, but this is not natively supported by Pydantic’s standard behavior.",
+            "requires_citation": true,
+            "cited_evidence_ids": [],
+            "support": "uncited",
+            "reason": "Speculative workaround claim, not established."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer matches both reference key points on AliasChoices and VSCode lacking validation_alias in initializer signature. All claims are uncited, so citation completeness fails, but content is correct. Codex source adjudication: Core AliasChoices and runtime/editor distinctions are correct; the Field import is explicitly noted. The final claim that native alias editor support requires separate fields/plugins conflicts with the pinned fields guide's alias workaround, so unsupported_assertion becomes true. Baseline citation metrics remain N/A."
+      }
+    }
+  }
+}

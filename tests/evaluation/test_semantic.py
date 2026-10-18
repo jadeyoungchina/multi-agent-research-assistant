@@ -87,3 +87,12 @@ def test_closed_book_baseline_has_no_citation_metric(inputs):
     case, trace, judgment = inputs
     result = score_semantic_judgment(case, trace.model_copy(update={"variant": WorkflowVariant.BASELINE_LLM}), judgment)
     assert result.citation_support_rate is result.citation_completeness is None
+
+
+def test_adjacent_citation_group_does_not_fail_due_to_long_hashes():
+    from app.evaluation.semantic import _bound_citations
+    ids = ["ev_" + digit * 64 for digit in "12345"]
+    answer = "A supported claim. " + ", ".join(f"[[cite:{identifier}]]" for identifier in ids)
+    assert _bound_citations(answer, "A supported claim.") == set(ids)
+    assert not _bound_citations("A supported claim.\n\nAnother paragraph. [[cite:e1]]", "A supported claim.")
+    assert _bound_citations("A supported claim. [[cite:e1]] Another claim. [[cite:e2]]", "A supported claim.") == {"e1"}

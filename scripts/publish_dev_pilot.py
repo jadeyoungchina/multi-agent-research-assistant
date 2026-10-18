@@ -38,6 +38,112 @@ def average(values):
     return statistics.mean(applicable) if applicable else None
 
 
+def markdown_report(summary, judgments):
+    final = summary["final"]
+    config = final["metadata"]["configuration"]
+    valid = sum(item["status"] == "valid_ai_judgment" for item in judgments)
+    reviewed = sum("codex_adjudication" in item for item in judgments)
+    corrected = sum(item.get("codex_adjudication", {}).get("action") == "corrected" for item in judgments)
+    fmt = lambda value: "N/A" if value is None else f"{value:.3f}"
+    lines = [
+        "# Five-question live development pilot", "",
+        f"Final matrix: **{sum(row['successes'] for row in final['by_variant'].values())}/20 successful executions**, "
+        f"**{valid}/20 valid AI scores**. Codex source checks: {reviewed}/20; "
+        f"{corrected} judge outputs corrected with explicit reasons. Human scoring: **0**.", "",
+        "This is development calibration on the same five prespecified questions, not a held-out "
+        "estimate or evidence that one architecture wins. Earlier failures are retained separately. "
+        "The 40 held-out questions have not been run.", "",
+        "[Selection and tuning decisions](../dev-pilot-selection.md) · [Machine-readable summary](summary.json) · "
+        "[Final answers and evidence](final-traces.jsonl) · [AI judgments and adjudications](ai-judgments.json) · "
+        "[Physical request receipts](request-usage.jsonl)", "",
+        "## Final development matrix", "",
+        "| Variant | Executions | AI scores | Key-point correctness | Citation support | Citation completeness | First-round recall@5 | Median seconds | Chat attempts | Query embedding attempts | API estimate CNY |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for variant, row in final["by_variant"].items():
+        lines.append(f"| {variant} | {row['successes']}/{row['trace_count']} | {row['valid_ai_score_count']} | "
+                     f"{fmt(row['answer_correctness'])} | {fmt(row['citation_support_rate'])} | "
+                     f"{fmt(row['citation_completeness'])} | {fmt(row['first_round_recall_at_5'])} | "
+                     f"{row['median_latency_seconds']:.3f} | {row['chat']['physical_attempts']} | "
+                     f"{row['query_embedding']['physical_attempts']} | {row['all_requests']['estimated_cost_cny'] or 'unknown'} |")
+    lines += ["", "Correctness is a per-answer mean of reference-key-point scores (0/1/2), normalized to 0–1. "
+              "Citation support checks entailment of attached factual claims; completeness includes uncited factual claims. "
+              "They are macro means over applicable, valid judgments, not citation-ID validity. Applicable counts are "
+              "explicit in summary.json; baseline citations and empty-gold recall are N/A. Failed execution and judge "
+              "errors remain missing for semantic quality, with execution failures separately visible. A valid ID alone "
+              "never establishes claim support. First-round recall uses the original global top five.", "",
+              f"Shared index setup: {final['shared_index_embedding']['physical_attempts']} embedding requests, "
+              f"{final['shared_index_embedding']['estimated_cost_cny']} CNY estimated; "
+              f"{final['metadata']['setup_latency_ms']} ms. This setup is excluded from answer latency and per-variant cost. "
+              "Request counts include failed attempts and bounded repairs. Trace model_calls counts both chat and "
+              "query embeddings; the table separates them.", "",
+              "## Retained tuning history", "",
+              "| Phase | Successful traces | Failed traces | Chat attempts | Embedding attempts including setup | API estimate CNY |",
+              "| --- | ---: | ---: | ---: | ---: | ---: |"]
+    for phase in ["initial", "diagnostic", "followup", "calibrated", "final"]:
+        block = summary[phase]
+        successes = sum(row["successes"] for row in block["by_variant"].values())
+        count = sum(row["trace_count"] for row in block["by_variant"].values())
+        chats = sum(row["chat"]["physical_attempts"] for row in block["by_variant"].values()) + block["unassigned_non_embedding"]["physical_attempts"]
+        embeddings = block["total"]["physical_attempts"] - chats
+        lines.append(f"| [{phase}]({phase}-traces.jsonl) | {successes} | {count-successes} | {chats} | {embeddings} | {block['total']['estimated_cost_cny'] or 'unknown'} |")
+    lines += ["", "Initial failures exposed misspelled JSON fields, schema confusion, output truncation and missing "
+              "inline citations. Follow-ups exposed long-ID transcription errors and a bounded citation repair that "
+              "could repeat the same uncited body. The final code uses strict field output, a Markdown-first report "
+              "schema, reversible request-local evidence labels for every RAG variant, and deterministic validation. "
+              "Unknown labels and unsupported claims are not repaired by guessing. Invalid researcher/writer responses "
+              "retain their paid usage even when the draft is rejected. Early missing trace counters remain visible "
+              "as unassigned non-embedding requests in the physical ledger; they are not charged to index setup.", "",
+              "One embedding timeout during the historical followup phase has unknown usage and charge. Its reservation "
+              "remains open; it is not treated as free. Thus that phase's total is unknown. The final generation run's "
+              "request usage is complete.", "",
+              "## Answer and judge calibration findings", "",
+              "The closed-book final answers invented a generator-only cache-bypass requirement, incorrectly preferred "
+              "a subclass exception handler, and fabricated deployment latency/benchmark figures. RAG answers avoided "
+              "those particular errors, but some still incorrectly claimed that serialization_alias controls editor "
+              "initializer signatures. The multi-agent insufficiency answer exposed internal critic commentary and "
+              "used two extra retrieval loops without finding measurements. These are development findings to address, "
+              "not claims of general superiority.", "",
+              "The initial judge returned 9 valid and 11 invalid judgments. Citation status was often confused with "
+              "factual correctness, several claim spans changed Markdown/indentation, and long adjacent citation groups "
+              "triggered a faulty character-window check. The binding validator now accepts a contiguous group after "
+              "its first nearby token and rejects borrowing across paragraphs; entailment still requires source review. "
+              "Chinese error-message translations and a documented alias+populate_by_name alternative were wrongly "
+              "penalized. Every raw output and Codex decision is preserved; judge errors were never application-quality zeros.", "",
+              "Reference caveat: question 019 asks which exception classes to raise/handle, but its key also expects "
+              "JSON-detail and an example import alias. The original additional criteria are retained in these scores "
+              "and can penalize an otherwise relevant answer. Question 007 admits valid alternatives to its reference "
+              "implementation. These pilot findings need reference clarification before full development-set scoring; "
+              "the test set has not been tuned against model results.", "",
+              "## Reproduction and limits", "",
+              f"Generation commit: `{final['generation_manifest']['code_commit']}`; prompt `{final['metadata']['prompt_version']}`. "
+              f"Chat snapshot: `{config['model']}` for all four variants and all chat roles, disabled thinking, temperature 0, "
+              f"cap {config['max_output_tokens']}, {config['max_retries']} provider retries, at most "
+              f"{config['max_critic_loops']} critic loops and {config['max_writer_citation_repairs']} writer citation repair. "
+              f"Embedding: `{config['embedding_model']}`, 1024 dimensions; chunks {config['chunk_size']}/{config['chunk_overlap']}, "
+              "top-k 5, whole eight-document development pool. Selection, exact serial execution order, seed, source/data "
+              "hashes, raw judge responses and corrections are published. No query/answer cache supplies independent repeats.", "",
+              "DeepSeek Flash non-thinking scoring uses the official dsh CLI in account mode. System/model labels, "
+              "costs and timings are excluded from judge input; answer style can still reveal architecture. AI reference "
+              "review, AI scoring and Codex source checks can share biases and do not constitute human validation. "
+              "The judge uses a rolling model alias, not a pinned snapshot. Sample size five does not support significance "
+              "tests, admissions predictions, or general RAG-quality claims. Public-document pretraining contamination "
+              "is possible. Latency is exploratory on a shared development machine.", "",
+              f"Judge usage: {summary['judge_usage']['physical_attempts']} physical requests; "
+              f"{summary['judge_usage']['input_tokens']} input and {summary['judge_usage']['output_tokens']} output tokens "
+              f"({summary['judge_usage']['cached_input_tokens']} cached input tokens, already included in input). "
+              "Account pricing is unknown, so judge cost and the combined monetary total are unknown. DashScope costs "
+              "are dated list-price estimates, not invoices. Six separate connectivity/constraint probes and earlier "
+              "dataset-authoring/review calls are outside this dedicated pilot ledger.", "",
+              "Recompute published evidence without API calls:", "", "```powershell",
+              ".venv/Scripts/python.exe scripts/verify_dev_pilot.py", "```", "",
+              "Regenerate publication from retained local runtime records:", "", "```powershell",
+              ".venv/Scripts/python.exe scripts/publish_dev_pilot.py --adjudications docs/evaluation/dev-pilot/adjudications.json",
+              "```", "", "Next: complete the full 20-question development set, then freeze the experiment before "
+              "running the repeated held-out comparison. This pilot does not freeze or complete that comparison.", ""]
+    return "\n".join(lines)
+
+
 def publish(root: Path, output: Path, corrections: Path | None = None):
     output.mkdir(parents=True, exist_ok=True)
     by_id = {case.id: case for case in load_real_suite(
@@ -45,7 +151,7 @@ def publish(root: Path, output: Path, corrections: Path | None = None):
     overrides = json.loads(corrections.read_text("utf-8")) if corrections else {}
     corrected = overrides.get("adjudications", {})
     previous = set()
-    summaries, publications = {}, []
+    summaries, publications, phases = {}, [], {}
     for name in ["initial", "diagnostic", "followup", "calibrated", "final"]:
         run_dir = root / name
         report = EvaluationReport.model_validate_json((run_dir / "results.json").read_text("utf-8"))
@@ -53,6 +159,7 @@ def publish(root: Path, output: Path, corrections: Path | None = None):
         budget = json.loads((run_dir / "budget-summary.json").read_text("utf-8"))
         all_rows = budget["attempts"]
         rows = [row for row in all_rows if row["id"] not in previous]
+        phases.update({row["id"]: name for row in rows})
         if not previous <= {row["id"] for row in all_rows}:
             raise ValueError("run ledgers are not consecutive snapshots")
         previous = {row["id"] for row in all_rows}
@@ -88,7 +195,7 @@ def publish(root: Path, output: Path, corrections: Path | None = None):
                                         for trace in report.traces if trace.status != "success"]}
         # This is evaluator-owned public data, not raw provider HTTP responses.
         path = output / f"{name}-traces.jsonl"
-        path.write_text("".join(trace.model_dump_json() + "\n" for trace in report.traces), "utf-8")
+        path.write_text("".join(trace.model_dump_json() + "\n" for trace in report.traces), "utf-8", newline="\n")
         publications.append({"path": path.name, "sha256": sha256(path.read_bytes()).hexdigest()})
 
     followup = EvaluationReport.model_validate_json((root / "final/results.json").read_text("utf-8"))
@@ -133,14 +240,34 @@ def publish(root: Path, output: Path, corrections: Path | None = None):
     judge_ids = {identifier for item in judgments for identifier in (item.get("raw_response") or {}).get("attempt_ids", [])}
     summaries["judge_usage"] = usage([row for row in ledger_rows if row["id"] in judge_ids])
     summaries["all_pilot_usage"] = usage(ledger_rows)
-    summaries["publications"] = publications
+    receipts = [{
+        "id": row["id"], "phase": phases.get(row["id"], "judge" if row["id"] in judge_ids else "unassigned"),
+        "created_at": row["created_at"], "provider": row["provider"], "model": row["model"],
+        "kind": row["kind"], "role": row["role"], "request_sha256": row["request_hash"],
+        "state": row["state"], "outcome": row["outcome"],
+        "input_tokens": row["input_tokens"], "output_tokens": row["output_tokens"],
+        "cached_input_tokens": row["cached_tokens"], "price": json.loads(row["price_json"]),
+        "reserved_estimate_cny": cny(row["reserved"]) if row["price_json"] != "null" else None,
+        "estimated_cost_cny": cny(row["charged"]) if row["state"] == "settled" and row["price_json"] != "null" else None,
+    } for row in ledger_rows]
+    path = output / "request-usage.jsonl"
+    path.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in receipts), "utf-8", newline="\n")
+    publications.append({"path": path.name, "sha256": sha256(path.read_bytes()).hexdigest()})
+    if corrections is not None:
+        path = output / "adjudications.json"
+        path.write_text(corrections.read_text("utf-8"), "utf-8", newline="\n")
+        publications.append({"path": path.name, "sha256": sha256(path.read_bytes()).hexdigest()})
     summaries["limitations"] = ["Development tuning on five questions; no inferential quality claim.",
                                  "AI reference review, AI judge and Codex adjudication; no human scoring.",
                                  "Closed-book model may have seen these public docs in training.",
                                  "Prices are dated estimates, not invoices; account-mode judge price is unknown.",
                                  "Per-variant model_calls includes query embeddings; chat requests are separated here."]
-    (output / "summary.json").write_text(json.dumps(summaries, ensure_ascii=False, indent=2) + "\n", "utf-8")
-    (output / "ai-judgments.json").write_text(json.dumps(judgments, ensure_ascii=False, indent=2) + "\n", "utf-8")
+    path = output / "ai-judgments.json"
+    path.write_text(json.dumps(judgments, ensure_ascii=False, indent=2) + "\n", "utf-8", newline="\n")
+    publications.append({"path": path.name, "sha256": sha256(path.read_bytes()).hexdigest()})
+    summaries["publications"] = publications
+    (output / "summary.json").write_text(json.dumps(summaries, ensure_ascii=False, indent=2) + "\n", "utf-8", newline="\n")
+    (output / "README.md").write_text(markdown_report(summaries, judgments), "utf-8", newline="\n")
     return summaries
 
 

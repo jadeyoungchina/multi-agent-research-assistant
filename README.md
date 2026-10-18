@@ -155,6 +155,14 @@ uploads them as artifacts. See [experiments](docs/experiments.md) for exact metr
 definitions, thresholds, real-provider commands, and limitations. No real-model
 quality or speedup is claimed by the fake benchmark.
 
+A [five-question live development pilot](docs/evaluation/dev-pilot/README.md)
+now publishes real Qwen answers, evidence, blinded DeepSeek judgments, explicit
+Codex source adjudications, and physical request receipts. The final 20-unit
+matrix executes successfully after documented fixes; earlier failures are retained.
+These are AI-reviewed development results, with no human scores or held-out
+comparison yet. Recheck the published scores, hashes and costs without API calls:
+`python scripts/verify_dev_pilot.py`.
+
 ## Privacy and development
 
 Uploads default to `data/uploads`; SQLite defaults to `data/research_assistant.db`.
