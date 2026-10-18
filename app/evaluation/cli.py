@@ -36,7 +36,7 @@ from .real_dataset import load_real_suite
 from .reference_review import validate_ai_reference_review
 from .quality_gate import QualityGateError, enforce_quality_gate
 from .reporters import write_reports
-from .runner import PROJECT_ROOT, PROMPT_VERSION, ProviderConfiguration, corpus_sha256, evaluate_benchmark
+from .runner import PROJECT_ROOT, PROMPT_VERSION, ProviderConfiguration, corpus_sha256, evaluate_benchmark, execution_order
 from .trace import EvaluationTrace
 from .workflows import (
     BaselineLlmWorkflow, EvaluationWorkflow, LlmRagWorkflow, MultiAgentRagWorkflow,
@@ -66,7 +66,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--embedding-provider", choices=("fake", "dashscope", "openai"))
     parser.add_argument("--chat-model")
     parser.add_argument("--max-output-tokens", type=int, default=2048)
-    parser.add_argument("--limit", type=int, help="first N cases; paid runs default to 5")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--limit", type=int, help="first N cases; paid runs default to 5")
+    selection.add_argument("--case-ids", help="explicit comma-separated case IDs, selected before any paid requests")
+    parser.add_argument("--order-seed", type=int, help="reproducible serial order with balanced variant positions")
     parser.add_argument("--ledger", type=Path, default=Path("artifacts/evaluation/budget/ledger.sqlite"))
     parser.add_argument("--budget-cny", default="100")
     parser.add_argument("--stop-cny", default="90")
@@ -135,6 +138,8 @@ def _journal(args, settings, cases):
         "candidate_source_files": getattr(args, "candidate_source_files", None),
         "corpus_manifest_sha256": sha256(args.real_manifest.read_bytes()).hexdigest() if getattr(args, "real_manifest", None) else None,
         "ai_reference_review_sha256": sha256(args.ai_reference_review.read_bytes()).hexdigest() if getattr(args, "ai_reference_review", None) else None,
+        "order_seed": args.order_seed,
+        "execution_order": [f"{case_id}/{variant.value}" for case_id, variant in execution_order(cases, args.variants, args.order_seed)],
     }
     # Changes in tracked or untracked source are part of the resume identity.
     source_digest = sha256()
@@ -171,6 +176,9 @@ def _journal(args, settings, cases):
         with journal_path.open("a", encoding="utf-8") as output:
             output.write(trace.model_dump_json() + "\n")
             output.flush()
+        print(f"Completed {trace.case_id}/{trace.variant.value}: {trace.status}; "
+              f"calls={trace.model_calls}; latency_ms={trace.latency_ms}; "
+              f"error={trace.error_code or 'none'}", flush=True)
     return cached, append
 
 
@@ -216,10 +224,16 @@ def main(argv: list[str] | None = None) -> int:
                 validate_benchmark_corpus(cases, args.corpus, max_upload_file_bytes=settings.max_upload_file_bytes)
             if not cases:
                 raise ValueError("benchmark dataset is empty")
+            if args.case_ids:
+                selected = [item.strip() for item in args.case_ids.split(",")]
+                if len(set(selected)) != len(selected) or not set(selected) <= {case.id for case in cases}:
+                    raise ValueError("case selection must contain unique IDs from the selected split")
+                cases = [case for case in cases if case.id in selected]
         except (OSError, ValueError):
             print("Invalid dataset: check cases, corpus hashes, split, and required human review. Paid test runs require a frozen experiment.", file=sys.stderr)
             return 2
-        cases = cases[:args.limit if args.limit is not None else 5 if paid else len(cases)]
+        if not args.case_ids:
+            cases = cases[:args.limit if args.limit is not None else 5 if paid else len(cases)]
         if paid:
             ledger = BudgetLedger(args.ledger, total_cny=args.budget_cny, stop_cny=args.stop_cny)
             ledger.set_enforcement(args.enforce_budget)
@@ -237,6 +251,7 @@ def main(argv: list[str] | None = None) -> int:
                 on_trace=on_trace, resume_traces=cached,
                 candidate_source_files=args.candidate_source_files, corpus_manifest_path=args.real_manifest,
                 ai_reference_review_path=args.ai_reference_review,
+                order_seed=args.order_seed,
             )
             paths = write_reports(report, args.output_dir)
         print(f"Wrote {len(report.traces)} traces to {len(paths)} output files in {args.output_dir}.")

@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 import subprocess
+import random
 from time import perf_counter
 from typing import Callable
 
@@ -91,6 +92,8 @@ class ReportMetadata(BaseModel):
     ai_reference_review_sha256: str | None = None
     metrics_version: str = "global-first-pass-v2"
     corpus_manifest_sha256: str | None = None
+    order_seed: int | None = None
+    execution_order: list[str] = Field(default_factory=list)
 
 
 class ReportMetrics(AggregateMetrics):
@@ -136,6 +139,26 @@ def _aggregate(scores: list[CaseScore], traces: list[EvaluationTrace]) -> Report
     )
 
 
+def execution_order(cases, variants, seed: int | None = None):
+    """Serial case blocks with balanced variant positions in each complete cycle.
+
+    With no seed the legacy sorted order is retained. Seeded runs randomize the
+    case order and base variant permutation, then rotate that permutation.
+    """
+    case_ids = sorted(case.id for case in cases)
+    ordered = [variant for variant in WorkflowVariant if variant in variants]
+    if seed is not None:
+        generator = random.Random(seed)
+        generator.shuffle(case_ids)
+        generator.shuffle(ordered)
+    return [
+        (case_id, variant)
+        for index, case_id in enumerate(case_ids)
+        for variant in (ordered[index % len(ordered):] + ordered[:index % len(ordered)]
+                        if seed is not None else ordered)
+    ]
+
+
 def evaluate_benchmark(
     cases: Sequence[BenchmarkCase | RealBenchmarkCase], workflows: Mapping[WorkflowVariant, EvaluationWorkflow], *,
     corpus_dir: Path = PROJECT_ROOT / "benchmarks/corpus", settings: Settings | None = None,
@@ -145,6 +168,7 @@ def evaluate_benchmark(
     candidate_source_files: Sequence[str] | None = None,
     corpus_manifest_path: Path | None = None,
     ai_reference_review_path: Path | None = None,
+    order_seed: int | None = None,
 ) -> EvaluationReport:
     """Run an identical case matrix, isolating failures and timing every adapter.
 
@@ -183,40 +207,41 @@ def evaluate_benchmark(
         references_ai_reviewed=ai_reference_review_path is not None,
         ai_reference_review_sha256=sha256(ai_reference_review_path.read_bytes()).hexdigest() if ai_reference_review_path else None,
         corpus_manifest_sha256=sha256(corpus_manifest_path.read_bytes()).hexdigest() if corpus_manifest_path else None,
+        order_seed=order_seed,
+        execution_order=[f"{case_id}/{variant.value}" for case_id, variant in execution_order(cases, workflows, order_seed)],
     )
     traces: list[EvaluationTrace] = []
     scores: list[CaseScore] = []
     variants = [variant for variant in WorkflowVariant if variant in workflows]
     halted = False
-    for case in sorted(cases, key=lambda item: item.id):
-        for variant in variants:
-            started = perf_counter()
-            cached = (resume_traces or {}).get((case.id, variant))
-            try:
-                sources = list(candidate_source_files) if candidate_source_files is not None else list(case.source_files)
-                trace = cached if cached is not None else workflows[variant].run(case.id, case.question, sources)
-                if not isinstance(trace, EvaluationTrace) or trace.case_id != case.id or trace.variant != variant:
-                    trace = EvaluationTrace.failed(case.id, variant, "invalid_trace")
-                else:
-                    trace = EvaluationTrace.model_validate(trace.model_dump()).model_copy(deep=True)
-            except Exception as error:
-                trace = EvaluationTrace.failed(case.id, variant, _error_code(error))
-            if cached is None:
-                trace.latency_ms = max(0, int((perf_counter() - started) * 1000))
-            trace.provider = _safe_identifier(trace.provider) or configuration.provider
-            trace.model = _safe_identifier(trace.model) or configuration.model
-            if trace.status == "success":
-                trace.error_code = None
-            elif trace.error_code not in _SAFE_CODES | {"invalid_trace"}:
-                trace.error_code = "workflow_failed"
-            traces.append(trace)
-            scores.append(score_case(case, trace))
-            if on_trace is not None and cached is None:
-                on_trace(trace)
-            if trace.error_code in {"budget_exhausted", "budget_overrun", "budget_input_limit", "budget_unpriced_model"}:
-                halted = True
-                break
-        if halted:
+    by_id = {case.id: case for case in cases}
+    for case_id, variant in execution_order(cases, workflows, order_seed):
+        case = by_id[case_id]
+        started = perf_counter()
+        cached = (resume_traces or {}).get((case.id, variant))
+        try:
+            sources = list(candidate_source_files) if candidate_source_files is not None else list(case.source_files)
+            trace = cached if cached is not None else workflows[variant].run(case.id, case.question, sources)
+            if not isinstance(trace, EvaluationTrace) or trace.case_id != case.id or trace.variant != variant:
+                trace = EvaluationTrace.failed(case.id, variant, "invalid_trace")
+            else:
+                trace = EvaluationTrace.model_validate(trace.model_dump()).model_copy(deep=True)
+        except Exception as error:
+            trace = EvaluationTrace.failed(case.id, variant, _error_code(error))
+        if cached is None:
+            trace.latency_ms = max(0, int((perf_counter() - started) * 1000))
+        trace.provider = _safe_identifier(trace.provider) or configuration.provider
+        trace.model = _safe_identifier(trace.model) or configuration.model
+        if trace.status == "success":
+            trace.error_code = None
+        elif trace.error_code not in _SAFE_CODES | {"invalid_trace"}:
+            trace.error_code = "workflow_failed"
+        traces.append(trace)
+        scores.append(score_case(case, trace))
+        if on_trace is not None and cached is None:
+            on_trace(trace)
+        if trace.error_code in {"budget_exhausted", "budget_overrun", "budget_input_limit", "budget_unpriced_model"}:
+            halted = True
             break
     return EvaluationReport(
         metadata=metadata, traces=traces, scores=scores, aggregate=_aggregate(scores, traces),

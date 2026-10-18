@@ -225,6 +225,33 @@ def test_paid_resume_does_not_generate_completed_units_again(tmp_path, monkeypat
     assert len((tmp_path / "run/traces.jsonl").read_text("utf-8").splitlines()) == 2
     assert cli.main(args + ["--resume", "--max-output-tokens", "1024"]) == 4
     assert len(calls) == 2
+    assert cli.main(args + ["--resume", "--order-seed", "42"]) == 4
+    assert len(calls) == 2
+
+
+@pytest.mark.parametrize("selection", ["BENCH-999", "BENCH-001,BENCH-001", "BENCH-001,"])
+def test_invalid_case_selection_stops_before_provider_setup(tmp_path, monkeypatch, selection):
+    from app.evaluation import cli
+    monkeypatch.setattr(cli, "_build_workflows", lambda *args, **kwargs: pytest.fail("invalid selection must not call providers"))
+    assert cli.main(["--case-ids", selection, "--output-dir", str(tmp_path)]) == 2
+
+
+def test_explicit_real_cases_keep_the_entire_split_pool(tmp_path, monkeypatch):
+    from app.evaluation import cli
+    pools = []
+    build = cli._build_workflows
+    def capture(*args, **kwargs):
+        pools.append(kwargs["candidate_source_files"])
+        return build(*args, **kwargs)
+    monkeypatch.setattr(cli, "_build_workflows", capture)
+    selected = ["REAL-DEV-001", "REAL-DEV-007", "REAL-DEV-013", "REAL-DEV-019", "REAL-DEV-020"]
+    output = tmp_path / "run"
+    assert cli.main(["--real-manifest", "benchmarks/real-v1/corpus-manifest.json", "--allow-ai-reviewed",
+                 "--case-ids", ",".join(selected), "--variants", "llm_rag", "--order-seed", "42",
+                 "--output-dir", str(output)]) == 0
+    report = json.loads((output / "results.json").read_text("utf-8"))
+    assert {trace["case_id"] for trace in report["traces"]} == set(selected)
+    assert len(pools) == 1 and len(set(pools[0])) == 8
 
 
 def test_budget_stop_saves_partial_matrix_and_ledger(tmp_path, monkeypatch):
