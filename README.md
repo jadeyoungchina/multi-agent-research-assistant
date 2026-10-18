@@ -177,6 +177,19 @@ confirmations retain v7's 3/4 outcome and v8's successful single-case check; the
 do not replace the original run. Full validation with the final rules precedes
 experiment freeze and held-out testing.
 
+The separate [final-rule development regression](docs/evaluation/final-dev/README.md)
+now completes **80/80 executions**, with **60/60 grounded answers** passing the
+shared citation structure checks. All 80 answers have AI scores after 21 source
+reviews; original judgments and 12 explicit corrections are retained. Mean
+key-point correctness is 0.892 for plain RAG, 0.854 for single-agent RAG and
+0.875 for multi-agent RAG; multi-agent median latency is 40.95 seconds. These
+reused development questions do not establish an architecture winner.
+[Findings and limitations](docs/evaluation/final-dev-observations.zh-CN.md)
+separate syntax, semantic support, missing usage and human review (still zero).
+The [test preparation](docs/evaluation/test-freeze-preparation.md) fixes proposed
+comparison and sampling choices before held-out answers; formal execution
+remains blocked until the experiment runner and identities are frozen.
+
 ## Privacy and development
 
 Uploads default to `data/uploads`; SQLite defaults to `data/research_assistant.db`.

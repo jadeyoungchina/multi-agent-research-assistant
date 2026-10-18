@@ -80,3 +80,11 @@ Recheck the separate confirmations and their physical receipts with:
 Before experiment freeze, repeat development validation with the final common
 rules and settle the remaining output-length/retrieval limits. No held-out run
 or frozen primary comparison is claimed here.
+
+The subsequent [complete v8 regression](final-dev/README.md), prespecified in
+[its own protocol](final-dev-protocol.md), now completes 80/80 units with 60/60
+grounded answers passing common citation structure checks. All 80 have AI
+scores after explicit source adjudication. This new packet remains separate
+from all prior runs and targeted confirmations. [Test preparation](test-freeze-preparation.md)
+records the next-stage design; formal experiment freeze and held-out execution
+remain pending.

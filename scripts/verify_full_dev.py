@@ -2,6 +2,7 @@
 
 from hashlib import sha256
 from datetime import datetime
+import argparse
 import json
 from pathlib import Path
 import statistics
@@ -96,6 +97,38 @@ def verify(root=ROOT / "docs/evaluation/full-dev"):
             raise ValueError("generation call attribution differs")
         if sum(row["input_tokens"] or 0 for row in rows)!=trace.prompt_tokens or sum(row["output_tokens"] or 0 for row in rows)!=trace.completion_tokens:
             raise ValueError("generation token attribution differs")
+    adjudications = json.loads((root / "adjudications.json").read_text("utf-8"))
+    decisions = adjudications["adjudications"]
+    if (adjudications["human_reviewed"] is not False
+            or summary["codex_source_checks"] != len(decisions)
+            or summary["corrected_judgments"] != sum(d["action"] == "corrected" for d in decisions.values())):
+        raise ValueError("source review attribution or count differs")
+    selected = {"REAL-DEV-001", "REAL-DEV-007", "REAL-DEV-013", "REAL-DEV-019", "REAL-DEV-020"}
+    required = {j["unit"] for j in judgments if units[j["case_id"],j["variant"]].status == "success"
+                and (j["case_id"] in selected or j["original"]["status"] == "judge_error")}
+    if not required <= decisions.keys():
+        raise ValueError("prespecified source reviews are missing")
+    for entry in judgments:
+        decision = decisions.get(entry["unit"])
+        if decision is None:
+            if "codex_adjudication" in entry:
+                raise ValueError("undocumented source review")
+            continue
+        if (entry.get("codex_adjudication") != decision or decision["reviewer_kind"] != "ai"
+                or not decision["reason"] or decision["trace_sha256"] != entry["original"]["trace_sha256"]
+                or decision["judgment"] != entry["judgment"]):
+            raise ValueError("source review identity differs")
+        if decision["action"] == "accepted" and decision["judgment"] != entry["original"].get("judgment"):
+            raise ValueError("accepted review changes the original judgment")
+        if decision["action"] not in {"accepted","corrected"}:
+            raise ValueError("unknown source review action")
+    failures = {j["unit"] for j in judgments if units[j["case_id"],j["variant"]].status != "success"}
+    audits = adjudications.get("execution_failure_audits", {})
+    if set(audits) != failures or summary["codex_execution_failure_audits"] != len(audits):
+        raise ValueError("execution failure audits are missing")
+    if summary["metadata"]["prompt_version"] == "evaluation-v8":
+        if summary["metadata"]["git_dirty"] or any(citation_diagnostic(t).get("passed") is False for t in traces):
+            raise ValueError("final-rule generation or citation contract differs")
     check_usage(summary["all_usage"],receipts)
     check_usage(summary["generation_usage"],[row for row in receipts if row["phase"]=="generation"])
     check_usage(summary["judge_usage"],[row for row in receipts if row["phase"]=="judge"])
@@ -116,9 +149,14 @@ def verify(root=ROOT / "docs/evaluation/full-dev"):
 
 
 if __name__=="__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--packet", choices=("all", "full-dev", "final-dev"), default="all")
+    args = parser.parse_args()
     try:
-        count,valid,requests=verify()
-        print(f"Full dev publication verified offline: {count} traces; {valid} AI scores; {requests} physical receipts.")
+        packets = ("full-dev", "final-dev") if args.packet == "all" else (args.packet,)
+        for packet in packets:
+            count,valid,requests=verify(ROOT / "docs/evaluation" / packet)
+            print(f"{packet} verified offline: {count} traces; {valid} AI scores; {requests} physical receipts.")
     except Exception as error:
         print(f"Full development verification failed ({type(error).__name__}).",file=sys.stderr)
         raise SystemExit(1)

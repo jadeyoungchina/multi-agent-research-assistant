@@ -135,7 +135,31 @@ def report_markdown(summary):
              "This records the complete development run, including its unresolved limitations. "
              "Fixing remaining development failures, experiment freeze, repeated held-out testing, "
              "independent human validation and any final comparison remain separate future work.", ""]
-    return "\n".join(rows)
+    markdown = "\n".join(rows)
+    if summary["metadata"]["prompt_version"] == "evaluation-v8":
+        markdown = markdown.replace("# Complete 20-question development calibration", "# Final-rule 20-question development regression")
+        markdown = markdown.replace("../full-dev-protocol.md", "../final-dev-protocol.md")
+        markdown = markdown.replace("one writer citation repair", "one researcher and one answer/writer citation correction")
+        markdown = markdown.replace(
+            "the pipeline returned under its then-current checks. Those checks did not enforce uniform "
+            "inline citation syntax across workflows; execution success is not correctness or citation validity.",
+            "the pipeline returned under shared strict inline citation checks. Structural validity does not "
+            "establish semantic correctness or citation entailment.")
+        markdown = markdown.replace(
+            "This deterministic diagnostic was added after inspecting full-run failures. It is reported "
+            "separately from the prespecified semantic metrics and does not relabel historical executions.",
+            "This shared structural check was fixed before the final-rule regression. "
+            "Its results are separate from semantic support and do not relabel earlier executions.")
+        markdown = markdown.replace(
+            "This is a single development run after five-question tuning, not a held-out comparison.",
+            "This is a separate final-rule development regression after tuning on the same questions. "
+            "It is not pooled with earlier runs or treated as a held-out comparison.")
+        markdown = markdown.replace(
+            "Fixing remaining development failures, experiment freeze, repeated held-out testing, "
+            "independent human validation and any final comparison remain separate future work.",
+            "The final-rule development regression is complete. Experiment freeze, repeated held-out "
+            "testing, independent human validation and any final comparison remain separate future work.")
+    return markdown
 
 
 def publish(root, output, adjudications_path):
@@ -202,7 +226,8 @@ def publish(root, output, adjudications_path):
             citation_format_valid_rate=statistics.mean(item["syntax_valid"] for item in applicable) if applicable else None,
             citation_reference_consistency_rate=statistics.mean(item["passed"] for item in applicable) if applicable else None)
     manifest = json.loads((root / "generation/run-manifest.json").read_text("utf-8"))
-    prep_rows = BudgetLedger(root / "preparation/ledger.sqlite").summary()["attempts"]
+    prep_path = root / "preparation/ledger.sqlite"
+    prep_rows = BudgetLedger(prep_path).summary()["attempts"] if prep_path.exists() else []
     setup_ids = {row["id"] for row in gen_rows if row["kind"] == "embedding"
                  and datetime.fromisoformat(row["created_at"]) < report.metadata.run_at_utc}
     if setup_ids & assigned:
