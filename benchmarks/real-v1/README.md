@@ -63,6 +63,28 @@ unless explicitly labeled preliminary with `--allow-unreviewed`. Paid test
 execution is disabled until a frozen experiment runner is implemented.
 Synthetic release thresholds are not applied to real-document quality.
 
+Generate the local human review page with
+`python scripts/review_real_dataset.py`. It opens no network connection and
+changes no review status. The generated file is
+`artifacts/evaluation/real-v1-human-review.html`; select each verdict after
+reading the sources, enter the actual reviewer's name, and export the JSON.
+Import that explicit export with
+`python scripts/review_real_dataset.py --apply PATH_TO_EXPORTED_JSON`.
+An import must match all three snapshot hashes, contain every case exactly
+once, and attribute completed reviews to a reviewer and zoned timestamp.
+Corrected references need a new dataset snapshot and review page.
+
+`app/evaluation/semantic.py` defines the separate blinded semantic rubric
+and validates per-key-point 0/1/2 judgments, verbatim claim spans, declared
+and explicitly bound citations, and abstention judgments. Full claim support
+and citation completeness have separate denominators; ID validity alone
+does not earn a support score. Judge failures are errors, never automatic
+quality zeros. Automatic checks cannot prove that a judge extracted every
+atomic claim or interpreted every citation correctly; human calibration
+and adjudication remain necessary. The conservative 160-character citation
+binding check may reject ambiguous formatting. No model-judge ratings have
+been generated in this milestone.
+
 Recollection is explicit and networked:
 `python scripts/collect_real_corpus.py`. It uses the fixed allowlist and
 commits in that script; rerunning changes retrieval timestamps, so retain

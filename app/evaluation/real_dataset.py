@@ -30,8 +30,10 @@ class HumanReview(BaseModel):
 
     @model_validator(mode="after")
     def completed_review_has_attribution(self):
-        if self.status != "pending" and (not self.reviewer or self.reviewed_at is None):
+        if self.status != "pending" and (not self.reviewer or not self.reviewer.strip() or self.reviewed_at is None):
             raise ValueError("completed human review requires reviewer and timestamp")
+        if self.reviewed_at is not None and self.reviewed_at.tzinfo is None:
+            raise ValueError("human review timestamp must include timezone")
         return self
 
 

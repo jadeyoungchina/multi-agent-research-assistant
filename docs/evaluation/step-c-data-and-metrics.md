@@ -18,9 +18,11 @@ and recall over all rounds have distinct fields. Baseline retrieval/citation
 metrics and empty-gold retrieval recall are N/A, with applicable denominators.
 `citation_id_validity` is explicit; `citation_precision` remains a deprecated
 compatibility alias and does not measure semantic support. Lexical answer
-scores also remain diagnostics. The next milestone supplies the blinded
-semantic rubric and a human review packet; actual judging/calibration remain
-separate operations.
+scores also remain diagnostics. `app/evaluation/semantic.py` supplies the
+blinded semantic rubric, per-key-point judgments, claim-support and citation
+completeness denominators, abstention rules, and validation of judge output.
+ID-valid but irrelevant citations receive no support credit. Actual model
+judging and human calibration remain separate operations and have not run.
 
 Critic follow-up queries now precede old plan expansions so the configured
 query cap does not silently discard them. Critic criterion coverage is judged
@@ -49,3 +51,24 @@ requests. Account-mode prices were not returned by the official catalogue,
 so monetary totals remain unknown. The token ledger stays local; sanitized
 task hashes and request IDs are in `drafting-provenance.json`. AI source
 checks and curation are recorded as AI work, not human review.
+
+The human review packet can be generated with
+`python scripts/review_real_dataset.py`. It contains all 60 cases, exact
+source locations, surrounding source text, and whole candidate-pool links.
+The page was rendered in a separate headless Edge profile: 60 question cards
+rendered and the screenshot was visually checked. Explicit exported reviews
+are tied to dataset/manifest hashes; attribution and timestamps are required.
+Generating or opening the page approves nothing. Further tests reject stale,
+duplicate, unattributed and incomplete review imports before modifying data.
+
+Stage D remains outstanding: human reference approval, five-case real-model
+dev calibration, judge calibration, full dev runs and prompt/parameter freeze,
+then the prespecified held-out repeated comparison and statistical analysis.
+The initial drafting batch yielded exactly 60 candidates rather than the
+design's approximate 80; rejected or deficient cases can be replaced during
+reference curation, before any paid held-out evaluation.
+
+Final local verification for this milestone: **566 offline tests passed, one
+live test deselected**. The repository verifier passed after all source
+snapshots were staged. The first data/metric commit `cf25b36` also passed
+GitHub Actions, including the added real-document pipeline check.
