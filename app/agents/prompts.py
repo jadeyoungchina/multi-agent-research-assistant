@@ -85,7 +85,11 @@ def writer_messages(
         ChatMessage(
             role="system",
             content=(
-                "Write the report in Markdown. Cite every evidence-backed statement "
+                "Return a concise JSON DraftReport, with Markdown only inside its markdown string. "
+                "Keep the entire JSON reply under 1200 tokens: at most three short findings, "
+                "a two-sentence summary and a compact Markdown answer. Do not repeat limitations. "
+                "Each finding's evidence_ids must also appear as inline citation tokens in markdown. "
+                "Cite every evidence-backed statement in the summary and findings of markdown "
                 "with the exact token [[cite:{Evidence ID}]]. Do not include filenames, "
                 "page numbers, or invented reference labels; the deterministic validator "
                 "supplies source metadata.\n\n"

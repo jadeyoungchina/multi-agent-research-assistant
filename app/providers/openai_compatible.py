@@ -16,6 +16,18 @@ from app.providers.accounting import RequestAccounting
 T = TypeVar("T", bound=BaseModel)
 
 
+def _closed_schema(schema: type[BaseModel]) -> dict:
+    """Forbid invented property names at every object, including nested $defs."""
+    def close(value):
+        if isinstance(value, dict):
+            result = {key: close(item) for key, item in value.items() if key != "default"}
+            if result.get("type") == "object" and "properties" in result:
+                result["additionalProperties"] = False
+            return result
+        return [close(item) for item in value] if isinstance(value, list) else value
+    return close(schema.model_json_schema())
+
+
 def _retryable(error: Exception) -> bool:
     status = getattr(error, "status_code", None)
     if status is not None:
@@ -36,10 +48,13 @@ def _failure_code(error: Exception, *, embedding: bool = False) -> str:
 class OpenAICompatibleChatProvider:
     def __init__(self, client: Any, provider_name: str, model: str, max_retries: int = 2,
                  *, max_output_tokens: int = 2048, ledger: BudgetLedger | None = None,
-                 role: str = "chat") -> None:
+                 role: str = "chat", structured_output: str = "json_object") -> None:
         self.client, self.provider_name, self.model = client, provider_name, model
         self.max_retries, self.max_output_tokens = max_retries, max_output_tokens
         self.ledger, self.role = ledger, role
+        if structured_output not in {"json_object", "json_schema"}:
+            raise ValueError("unsupported structured output mode")
+        self.structured_output = structured_output
         # Explicit diagnostic opt-in for public evaluation corpora only. Receipts
         # contain generated text and safe schema errors, never headers or Settings.
         self.response_observer = None
@@ -73,6 +88,12 @@ class OpenAICompatibleChatProvider:
                 f"{json.dumps(schema.model_json_schema())}."
             )))
         payload = self._payload(request_messages, json_mode=schema is not None)
+        if schema is not None and self.structured_output == "json_schema":
+            payload["response_format"] = {
+                "type": "json_schema", "json_schema": {
+                    "name": schema.__name__, "strict": True, "schema": _closed_schema(schema),
+                },
+            }
         accounting = RequestAccounting(self.ledger, self.provider_name, self.model, "chat", self.role)
         failure_code = "provider_request_failed"
         for attempt in range(self.max_retries + 1):

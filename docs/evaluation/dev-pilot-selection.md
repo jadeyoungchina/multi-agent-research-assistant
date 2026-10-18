@@ -35,3 +35,8 @@ do not overwrite the initial pilot. DeepSeek's official CLI will assess blinded
 answers against the semantic rubric, followed by Codex source checks. Scoring
 errors remain missing until corrected and adjudications are recorded explicitly.
 AI scores must not be presented as human judgments or admission predictions.
+
+After the [initial and diagnostic failures](dev-pilot-initial.md), repeat exactly
+the same selection and seed in a fresh `followup` output directory, adding
+`--structured-output json_schema --max-output-tokens 4096 --capture-responses`.
+This is development tuning, not an independent test. Keep all earlier traces.

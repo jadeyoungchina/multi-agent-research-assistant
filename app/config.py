@@ -37,6 +37,7 @@ class Settings(BaseSettings):
     provider_timeout_seconds: float = 60.0
     provider_max_retries: int = Field(default=2, ge=0, le=2)
     provider_max_output_tokens: int = Field(default=2048, ge=1, le=16384)
+    provider_structured_output: Literal["json_object", "json_schema"] = "json_object"
     chunk_size: int = 1200
     chunk_overlap: int = 200
     embedding_batch_size: int = 10

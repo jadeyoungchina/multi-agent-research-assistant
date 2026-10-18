@@ -7,6 +7,7 @@ from contextlib import ExitStack
 from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
+from time import perf_counter
 
 from app.agents.critic import CriticAgent
 from app.agents.planner import PlannerAgent
@@ -66,6 +67,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--embedding-provider", choices=("fake", "dashscope", "openai"))
     parser.add_argument("--chat-model")
     parser.add_argument("--max-output-tokens", type=int, default=2048)
+    parser.add_argument("--structured-output", choices=("json_object", "json_schema"), default="json_object")
     selection = parser.add_mutually_exclusive_group()
     selection.add_argument("--limit", type=int, help="first N cases; paid runs default to 5")
     selection.add_argument("--case-ids", help="explicit comma-separated case IDs, selected before any paid requests")
@@ -205,6 +207,7 @@ def main(argv: list[str] | None = None) -> int:
             _env_file=".env" if paid else None,
             chat_provider=args.provider, embedding_provider=embedding,
             provider_max_output_tokens=args.max_output_tokens,
+            provider_structured_output=args.structured_output,
             retrieval_top_k=5, max_revision_iterations=2,
             **({f"{args.provider}_chat_model": args.chat_model} if args.chat_model else {}),
             **({"retrieval_min_similarity": -1.0} if args.provider == "fake" else {}),
@@ -255,6 +258,7 @@ def main(argv: list[str] | None = None) -> int:
             settings = settings.model_copy(update={
                 "data_dir": root, "upload_dir": root / "uploads", "database_path": root / "evaluation.db",
             })
+            setup_started = perf_counter()
             workflows = _build_workflows(settings, cases, args.corpus, args.variants, resources, ledger,
                                          candidate_source_files=args.candidate_source_files,
                                          response_observer=capture_response if args.capture_responses else None)
@@ -264,6 +268,7 @@ def main(argv: list[str] | None = None) -> int:
                 candidate_source_files=args.candidate_source_files, corpus_manifest_path=args.real_manifest,
                 ai_reference_review_path=args.ai_reference_review,
                 order_seed=args.order_seed,
+                setup_latency_ms=max(0, int((perf_counter() - setup_started) * 1000)),
             )
             paths = write_reports(report, args.output_dir)
         print(f"Wrote {len(report.traces)} traces to {len(paths)} output files in {args.output_dir}.")

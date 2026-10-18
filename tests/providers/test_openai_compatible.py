@@ -33,6 +33,21 @@ def test_opt_in_receipts_capture_invalid_output_without_headers_or_exception_inp
     assert set(receipts[0]) == {"attempt_id", "schema", "content", "finish_reason", "validation_issues"}
 
 
+def test_strict_schema_transmits_real_field_names_and_closes_nested_objects():
+    from app.domain.research import DraftReport
+    from app.providers.openai_compatible import _closed_schema
+    completions = SequencedCompletions([chat_response(VALID_CRITIQUE)])
+    provider = OpenAICompatibleChatProvider(chat_client(completions), "dashscope", "qwen3.7-flash", structured_output="json_schema")
+    provider.generate_structured([ChatMessage(role="user", content="review")], Critique)
+    mode = completions.calls[0]["response_format"]
+    assert mode["type"] == "json_schema" and mode["json_schema"]["strict"] is True
+    assert mode["json_schema"]["schema"]["additionalProperties"] is False
+    report_schema = _closed_schema(DraftReport)
+    assert report_schema["$defs"]["ReportFinding"]["additionalProperties"] is False
+    assert "default" not in json.dumps(report_schema)
+    assert "additionalProperties" not in DraftReport.model_json_schema()
+
+
 def chat_response(content: Any, *, model: str = "qwen3.7-flash") -> SimpleNamespace:
     return SimpleNamespace(
         choices=[SimpleNamespace(message=SimpleNamespace(content=content))],

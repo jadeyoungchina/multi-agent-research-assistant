@@ -44,6 +44,7 @@ def build_chat_provider(settings: Settings, *, ledger: BudgetLedger | None = Non
         client=_provider_client(settings, provider, ledger), provider_name=provider,
         model=getattr(settings, f"{provider}_chat_model"), max_retries=settings.provider_max_retries,
         max_output_tokens=settings.provider_max_output_tokens, ledger=ledger, role=role,
+        structured_output=settings.provider_structured_output,
     )
 
 

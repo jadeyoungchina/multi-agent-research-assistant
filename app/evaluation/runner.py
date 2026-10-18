@@ -20,7 +20,7 @@ from .trace import EvaluationTrace
 from .workflows import EvaluationWorkflow, _SAFE_CODES, _error_code, _safe_identifier
 
 
-PROMPT_VERSION = "evaluation-v2"
+PROMPT_VERSION = "evaluation-v3"
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -45,6 +45,7 @@ class ProviderConfiguration(BaseModel):
     max_critic_loops: int
     max_workflow_steps: int
     max_output_tokens: int = 2048
+    structured_output: str = "json_object"
 
     @field_validator("provider", "model", "embedding_provider", "embedding_model")
     @classmethod
@@ -72,6 +73,7 @@ class ProviderConfiguration(BaseModel):
             max_critic_loops=settings.max_revision_iterations,
             max_workflow_steps=settings.max_workflow_steps,
             max_output_tokens=settings.provider_max_output_tokens,
+            structured_output=settings.provider_structured_output,
         )
 
 
@@ -94,6 +96,7 @@ class ReportMetadata(BaseModel):
     corpus_manifest_sha256: str | None = None
     order_seed: int | None = None
     execution_order: list[str] = Field(default_factory=list)
+    setup_latency_ms: int | None = Field(default=None, ge=0)
 
 
 class ReportMetrics(AggregateMetrics):
@@ -169,6 +172,7 @@ def evaluate_benchmark(
     corpus_manifest_path: Path | None = None,
     ai_reference_review_path: Path | None = None,
     order_seed: int | None = None,
+    setup_latency_ms: int | None = None,
 ) -> EvaluationReport:
     """Run an identical case matrix, isolating failures and timing every adapter.
 
@@ -208,6 +212,7 @@ def evaluate_benchmark(
         ai_reference_review_sha256=sha256(ai_reference_review_path.read_bytes()).hexdigest() if ai_reference_review_path else None,
         corpus_manifest_sha256=sha256(corpus_manifest_path.read_bytes()).hexdigest() if corpus_manifest_path else None,
         order_seed=order_seed,
+        setup_latency_ms=setup_latency_ms,
         execution_order=[f"{case_id}/{variant.value}" for case_id, variant in execution_order(cases, workflows, order_seed)],
     )
     traces: list[EvaluationTrace] = []
