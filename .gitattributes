@@ -11,3 +11,6 @@ docs/evaluation/full-dev/*.json text eol=lf
 docs/evaluation/full-dev/*.jsonl text eol=lf
 docs/evaluation/post-dev-confirmation.json text eol=lf
 docs/evaluation/enum-confirmation.json text eol=lf
+
+docs/evaluation/final-dev/*.json text eol=lf
+docs/evaluation/final-dev/*.jsonl text eol=lf
