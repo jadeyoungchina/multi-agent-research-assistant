@@ -91,6 +91,7 @@ def _build_workflows(
     ledger: BudgetLedger | None = None,
     candidate_source_files: list[str] | None = None,
     response_observer=None,
+    setup_ledger: BudgetLedger | None = None,
 ) -> dict[WorkflowVariant, EvaluationWorkflow]:
     chat = build_demo_fake_provider() if settings.chat_provider == "fake" else build_chat_provider(settings, ledger=ledger, role="evaluation")
     if response_observer is not None:
@@ -98,11 +99,15 @@ def _build_workflows(
     resources.callback(_close_providers, chat)
     embeddings = build_embedding_provider(settings, ledger=ledger, role="corpus_and_query")
     resources.callback(_close_providers, embeddings)
+    ingestion_embeddings = embeddings
+    if setup_ledger is not None:
+        ingestion_embeddings = build_embedding_provider(settings, ledger=setup_ledger, role="corpus_index")
+        resources.callback(_close_providers, ingestion_embeddings)
     database = Database(settings.database_path)
     database.initialize()
     documents = DocumentRepository(database)
     runs = RunRepository(database)
-    document_service = DocumentService(documents, LocalDocumentStore(settings.upload_dir), embeddings, settings)
+    document_service = DocumentService(documents, LocalDocumentStore(settings.upload_dir), ingestion_embeddings, settings)
     mapping = prepare_benchmark_documents(cases, corpus, document_service, candidate_source_files=candidate_source_files)
     retriever = EvidenceRetriever(
         embeddings, LocalVectorIndex(documents), candidate_k=settings.retrieval_candidate_k,
@@ -217,7 +222,7 @@ def main(argv: list[str] | None = None) -> int:
                 if args.enforce_gate:
                     raise ValueError("synthetic release thresholds cannot gate real-document quality")
                 if paid and args.split == "test":
-                    raise ValueError("paid test execution requires the later frozen experiment runner")
+                    raise ValueError("paid test execution requires scripts/frozen_experiment.py and a committed freeze")
                 args.dataset = args.real_manifest.parent / f"{args.split}.jsonl"
                 args.corpus = args.real_manifest.parent / "corpus"
                 suite = load_real_suite(

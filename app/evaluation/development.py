@@ -109,6 +109,13 @@ class DevelopmentJudgment(BaseModel):
 def score_development(case, trace, judgment: DevelopmentJudgment) -> SemanticScore:
     if trace.case_id != case.id or trace.status != "success" or case.split != "dev":
         raise ValueError("requires a successful matching development trace")
+    return score_blocks(case, trace, judgment)
+
+
+def score_blocks(case, trace, judgment: DevelopmentJudgment) -> SemanticScore:
+    """Shared exhaustive rubric; split-specific entry points enforce their scope."""
+    if trace.case_id != case.id or trace.status != "success":
+        raise ValueError("requires a successful matching trace")
     blocks = answer_blocks(trace.answer)
     if sorted(item.index for item in judgment.key_points) != list(range(len(case.answer_key_points))):
         raise ValueError("key-point audit is incomplete or duplicated")
@@ -144,6 +151,13 @@ def score_development(case, trace, judgment: DevelopmentJudgment) -> SemanticSco
 def development_prompt(case, trace, root: Path) -> str:
     if case.split != "dev" or trace.case_id != case.id or trace.status != "success":
         raise ValueError("development judge cannot score held-out or failed traces")
+    return block_judging_prompt(case, trace, root, DevelopmentJudgment)
+
+
+def block_judging_prompt(case, trace, root: Path, judgment_type) -> str:
+    """Build an allowlisted blinded payload, shared without dev reference overlays."""
+    if trace.case_id != case.id or trace.status != "success":
+        raise ValueError("requires a successful matching trace")
     sources = sorted({item.source_file for item in case.expected_evidence})
     payload = {
         "question": case.question, "reference_key_points": case.answer_key_points,
@@ -174,5 +188,5 @@ def development_prompt(case, trace, root: Path) -> str:
             "invented/contradicted conclusions, not merely missing citations. A scoped absence statement "
             "is not a factual claim of universal nonexistence. Reasons: at most 12 words each. "
             "Do not copy answer text or evidence IDs into your output; reference block indices only.\n"
-            + "Schema:\n" + json.dumps(DevelopmentJudgment.model_json_schema())
+            + "Schema:\n" + json.dumps(judgment_type.model_json_schema())
             + "\nData:\n" + json.dumps(payload, ensure_ascii=False))

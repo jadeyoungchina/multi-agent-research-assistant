@@ -190,6 +190,11 @@ The [test preparation](docs/evaluation/test-freeze-preparation.md) fixes propose
 comparison and sampling choices before held-out answers; formal execution
 remains blocked until the experiment runner and identities are frozen.
 
+The [frozen experiment runner](docs/evaluation/frozen-experiment.md) now implements
+repeat-specific identities, durable interruption handling, separate index/answer/
+judge ledgers and the prespecified paired family analysis. It requires a committed
+freeze and development-only judge calibration before paid held-out generation.
+
 ## Privacy and development
 
 Uploads default to `data/uploads`; SQLite defaults to `data/research_assistant.db`.
