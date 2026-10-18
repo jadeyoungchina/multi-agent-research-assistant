@@ -33,7 +33,12 @@ def review_payload(root: Path) -> dict:
                                        quote=evidence.contains, context="\n".join(lines[start:end])))
         row["candidate_pool"] = [dict(filename=name, url=docs[name].source_url) for name in (dev.sources if case.split == "dev" else test.sources)]
         cases.append(row)
-    return dict(schema_version="real-human-review-v1",
+    ai_review = None
+    if (root / "review/final-audit.json").is_file():
+        from app.evaluation.reference_review import validate_ai_reference_review
+        report = validate_ai_reference_review(root)
+        ai_review = dict(accepted_count=report["accepted_count"], corrected_count=report["corrected_count"])
+    return dict(schema_version="real-human-review-v1", ai_review=ai_review,
                 hashes={name: sha256((root / name).read_bytes()).hexdigest()
                         for name in ("corpus-manifest.json", "dev.jsonl", "test.jsonl")}, cases=cases)
 
@@ -51,13 +56,14 @@ button{background:#075967;color:white;cursor:pointer}textarea{box-sizing:border-
 pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f7;padding:12px;font:14px/1.5 ui-monospace,monospace}
 .muted{color:#52656c}label{display:inline-block;margin:5px 12px 5px 0}a{color:#075967}
 </style><main><h1>真实文档评测：参考答案审核</h1>
-<p>60 道题由 AI 起草和核查，初始均为“待审核”。请对照原文确认问题可回答、参考要点正确且完整。无答案题请检查整个候选文档池。只有你的明确选择才会产生人工审核记录。</p>
+<p id="ai-status">60 道题由 AI 起草和核查。下方状态单独记录真人审核；AI 复核不计入真人通过数。可对照原文核对问题与参考答案，无答案题需检查整个候选池。</p>
 <p class="muted">这是参考答案审核，不会运行模型，也不会自动推送 GitHub。页面刷新会清除本次未导出的选择；可随时导出当前进度。</p>
 <header><label>审核人 <input id="reviewer" placeholder="你的姓名或明确身份"></label>
 <label>查看 <select id="filter"><option value="all">全部 60 题</option><option value="dev">开发集 20 题</option><option value="test">测试集 40 题</option></select></label>
 <button id="export">导出审核记录</button><span id="progress" class="muted"></span></header><div id="cases"></div>
 <script>
 const data=__DATA__, reviews=new Map(data.cases.map(c=>[c.id,{...c.human_review}]));
+if(data.ai_review)document.querySelector('#ai-status').textContent='AI 复核已完成 '+data.ai_review.accepted_count+'/60 题，其中 '+data.ai_review.corrected_count+' 题修正了证据或内容。下方“待审核”仅指可选的真人核对状态。';
 const el=(tag,text,cls)=>{const node=document.createElement(tag);if(text)node.textContent=text;if(cls)node.className=cls;return node};
 function progress(){document.querySelector('#progress').textContent=' 已通过 '+[...reviews.values()].filter(r=>r.status==='approved').length+'/60';}
 function render(){

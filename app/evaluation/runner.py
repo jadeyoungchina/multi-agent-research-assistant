@@ -87,6 +87,8 @@ class ReportMetadata(BaseModel):
     synthetic: bool = True
     dataset_kind: str = "synthetic_documents_and_questions"
     references_human_reviewed: bool = False
+    references_ai_reviewed: bool = False
+    ai_reference_review_sha256: str | None = None
     metrics_version: str = "global-first-pass-v2"
     corpus_manifest_sha256: str | None = None
 
@@ -142,6 +144,7 @@ def evaluate_benchmark(
     resume_traces: Mapping[tuple[str, WorkflowVariant], EvaluationTrace] | None = None,
     candidate_source_files: Sequence[str] | None = None,
     corpus_manifest_path: Path | None = None,
+    ai_reference_review_path: Path | None = None,
 ) -> EvaluationReport:
     """Run an identical case matrix, isolating failures and timing every adapter.
 
@@ -151,6 +154,12 @@ def evaluate_benchmark(
     if not cases or not workflows:
         raise ValueError("at least one benchmark case and workflow are required")
     real = any(isinstance(case, RealBenchmarkCase) for case in cases)
+    if ai_reference_review_path is not None:
+        from .reference_review import reference_digest, validate_ai_reference_review
+        audit = validate_ai_reference_review(ai_reference_review_path.parent.parent)
+        accepted = {entry["id"]: entry["reference_sha256"] for entry in audit["reviews"]}
+        if not real or any(accepted.get(case.id) != reference_digest(case) for case in cases):
+            raise ValueError("AI review does not match these reference cases")
     if real and (not all(isinstance(case, RealBenchmarkCase) for case in cases) or not candidate_source_files):
         raise ValueError("real-document cases require an independent, whole-split candidate pool")
     if len({case.id for case in cases}) != len(cases):
@@ -171,6 +180,8 @@ def evaluate_benchmark(
         synthetic=not real,
         dataset_kind="public_documents_ai_authored_questions" if real else "synthetic_documents_and_questions",
         references_human_reviewed=real and all(case.human_review.status == "approved" for case in cases),
+        references_ai_reviewed=ai_reference_review_path is not None,
+        ai_reference_review_sha256=sha256(ai_reference_review_path.read_bytes()).hexdigest() if ai_reference_review_path else None,
         corpus_manifest_sha256=sha256(corpus_manifest_path.read_bytes()).hexdigest() if corpus_manifest_path else None,
     )
     traces: list[EvaluationTrace] = []

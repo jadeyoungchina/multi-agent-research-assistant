@@ -32,7 +32,7 @@ jobs:
         env:
           CHAT_PROVIDER: fake
           EMBEDDING_PROVIDER: fake
-      - run: python -m app.evaluation.cli --provider fake --real-manifest benchmarks/real-v1/corpus-manifest.json --split dev --limit 5 --output-dir artifacts/evaluation/real-v1-fake
+      - run: python -m app.evaluation.cli --provider fake --real-manifest benchmarks/real-v1/corpus-manifest.json --split dev --allow-ai-reviewed --limit 5 --output-dir artifacts/evaluation/real-v1-fake
       - uses: actions/upload-artifact@v4
         if: always()
         with:

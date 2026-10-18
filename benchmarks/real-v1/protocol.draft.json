@@ -19,7 +19,7 @@
     "multi_agent_rag"
   ],
   "dataset": {
-    "status": "24_pinned_documents_60_ai_candidates_pending_human_review",
+    "status": "24_pinned_documents_60_ai_reviewed_references",
     "document_count_target": {
       "minimum": 20,
       "maximum": 30
@@ -89,7 +89,10 @@
       "evidence_location_mapping"
     ],
     "collected_document_count": 24,
-    "human_approved_count": 0
+    "human_approved_count": 0,
+    "ai_adjudicated_count": 60,
+    "reference_review_policy": "user_delegated_deepseek_review_and_codex_source_adjudication",
+    "reference_review_report": "review/final-audit.json"
   },
   "model_plan": {
     "main": {

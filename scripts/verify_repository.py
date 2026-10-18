@@ -13,6 +13,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from app.evaluation.dataset import load_benchmark_cases, validate_benchmark_corpus
 from app.evaluation.real_dataset import validate_real_benchmark
+from app.evaluation.reference_review import validate_ai_reference_review
 
 
 LICENSE_SHA256 = "c9877e4d8788a0bb97502348dca8fbd78a6eaa73db0638221b3cb67422d30177"
@@ -131,6 +132,11 @@ def verify_repository(root: Path) -> tuple[list[str], int]:
         required.update("benchmarks/real-v1/" + item.path for item in dev.manifest.licenses)
         if not required <= tracked:
             raise ValueError("real corpus, cases, and licenses must all be tracked")
+        review = real_root / "review/final-audit.json"
+        if review.exists():
+            validate_ai_reference_review(real_root)
+            if "benchmarks/real-v1/review/final-audit.json" not in tracked:
+                raise ValueError("AI review must be tracked")
     except (OSError, UnicodeError, ValueError):
         problems.append("real benchmarks: require pinned tracked snapshots, licenses, isolated splits, and 60 source-validated cases")
 

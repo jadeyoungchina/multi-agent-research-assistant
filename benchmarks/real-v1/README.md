@@ -1,8 +1,9 @@
 # Public-document benchmark: real-v1 candidate release
 
 This is a custom, AI-authored question set over real public documentation.
-It is **not real-user traffic**, and **all 60 human reference reviews are
-pending**. No held-out model-quality result is claimed by this release.
+All **60 references have completed delegated AI adjudication** by DeepSeek
+and Codex; human reference reviews remain pending. It is **not real-user
+traffic**. No held-out model-quality result is claimed by this release.
 
 | Property | Current snapshot |
 | --- | --- |
@@ -14,6 +15,7 @@ pending**. No held-out model-quality result is claimed by this release.
 | Types | Five types, 12 questions each; 4 dev and 8 test per type |
 | Authorship | DeepSeek Flash drafts; Codex source checks and corrections |
 | Reference approval | 0 approved by a human; 60 pending |
+| Delegated AI adjudication | 60/60 accepted for a dev pilot; 46 cases corrected |
 | Intended domain | Documentation research for Python application engineering |
 
 `corpus-manifest.json` pins each document to an immutable upstream SHA and
@@ -58,8 +60,11 @@ Offline verification and a pipeline demonstration:
 .venv/Scripts/python.exe -m app.evaluation.cli --provider fake --real-manifest benchmarks/real-v1/corpus-manifest.json --split dev --output-dir artifacts/evaluation/real-v1-fake
 ```
 
-Fake results check execution only. Paid dev runs require approved references
-unless explicitly labeled preliminary with `--allow-unreviewed`. Paid test
+Fake results check execution only. An AI-reviewed dev pilot uses
+`--allow-ai-reviewed`, which validates the current per-reference and corpus
+hashes against `review/final-audit.json`. Run metadata records AI review and
+human approval separately. Human-reviewed dev runs are also supported;
+`--allow-unreviewed` remains an explicit preliminary override. Paid test
 execution is disabled until a frozen experiment runner is implemented.
 Synthetic release thresholds are not applied to real-document quality.
 
@@ -73,6 +78,15 @@ Import that explicit export with
 An import must match all three snapshot hashes, contain every case exactly
 once, and attribute completed reviews to a reviewer and zoned timestamp.
 Corrected references need a new dataset snapshot and review page.
+
+The delegated review trail is in `review/`: initial findings, exact before/
+after corrections, final task feedback and Codex adjudication. DeepSeek's
+suggestions are advisory and can be wrong; final acceptance is the source-
+checked Codex decision. All 139 final evidence units are reachable after
+actual document normalization/chunking. See
+[`ai-reference-review.md`](../../docs/evaluation/ai-reference-review.md) for
+the source checks, disagreements, usage and limits. No test-workflow output
+was used to curate these references.
 
 `app/evaluation/semantic.py` defines the separate blinded semantic rubric
 and validates per-key-point 0/1/2 judgments, verbatim claim spans, declared

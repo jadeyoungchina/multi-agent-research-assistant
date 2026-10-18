@@ -24,6 +24,7 @@ def _markdown(report: EvaluationReport) -> str:
         "Fake results verify the software pipeline only. Fake token counts are zero because "
         "no model is called; they are not estimates of real token usage.", "",
         f"Dataset kind: {metadata.dataset_kind}. Human references approved: {metadata.references_human_reviewed}.", "",
+        f"AI references reviewed: {metadata.references_ai_reviewed}. AI review SHA-256: {metadata.ai_reference_review_sha256 or 'not supplied'}.", "",
         "Metrics v2: recall@5 uses the first retrieval round's global ranking. "
         "Final context coverage and all-round recall are reported separately. "
         "citation_precision is a deprecated alias of citation_id_validity: it checks IDs, "

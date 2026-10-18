@@ -33,6 +33,7 @@ from .dataset import load_benchmark_cases, validate_benchmark_corpus
 from .budget import BudgetError, BudgetLedger
 from .models import BenchmarkCase, WorkflowVariant
 from .real_dataset import load_real_suite
+from .reference_review import validate_ai_reference_review
 from .quality_gate import QualityGateError, enforce_quality_gate
 from .reporters import write_reports
 from .runner import PROJECT_ROOT, PROMPT_VERSION, ProviderConfiguration, corpus_sha256, evaluate_benchmark
@@ -60,6 +61,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--real-manifest", type=Path, help="public-document corpus manifest; selects real-v1 cases")
     parser.add_argument("--split", choices=("dev", "test"), default="dev")
     parser.add_argument("--allow-unreviewed", action="store_true", help="preliminary dev runs only; never mark AI review as human review")
+    parser.add_argument("--allow-ai-reviewed", action="store_true", help="dev pilot using a complete, current AI reference audit; human review remains separate")
     parser.add_argument("--provider", choices=("fake", "dashscope", "openai", "deepseek"), default="fake")
     parser.add_argument("--embedding-provider", choices=("fake", "dashscope", "openai"))
     parser.add_argument("--chat-model")
@@ -132,6 +134,7 @@ def _journal(args, settings, cases):
         "prompt_version": PROMPT_VERSION, "ledger": str(args.ledger.resolve()),
         "candidate_source_files": getattr(args, "candidate_source_files", None),
         "corpus_manifest_sha256": sha256(args.real_manifest.read_bytes()).hexdigest() if getattr(args, "real_manifest", None) else None,
+        "ai_reference_review_sha256": sha256(args.ai_reference_review.read_bytes()).hexdigest() if getattr(args, "ai_reference_review", None) else None,
     }
     # Changes in tracked or untracked source are part of the resume identity.
     source_digest = sha256()
@@ -178,6 +181,7 @@ def main(argv: list[str] | None = None) -> int:
         embedding = args.embedding_provider or ("dashscope" if args.provider == "deepseek" else args.provider)
         paid = args.provider != "fake" or embedding != "fake"
         args.candidate_source_files = None
+        args.ai_reference_review = None
         if args.limit is not None and args.limit <= 0:
             raise ValueError("limit must be positive")
         if args.chat_model and args.provider == "fake":
@@ -200,8 +204,11 @@ def main(argv: list[str] | None = None) -> int:
                 args.corpus = args.real_manifest.parent / "corpus"
                 suite = load_real_suite(
                     args.real_manifest, args.dataset, args.split,
-                    require_human_review=paid and not args.allow_unreviewed, require_design_counts=True,
+                    require_human_review=paid and not (args.allow_unreviewed or args.allow_ai_reviewed), require_design_counts=True,
                 )
+                if args.allow_ai_reviewed:
+                    validate_ai_reference_review(args.real_manifest.parent)
+                    args.ai_reference_review = args.real_manifest.parent / "review/final-audit.json"
                 cases = suite.cases
                 args.candidate_source_files = suite.candidate_source_files
             else:
@@ -229,6 +236,7 @@ def main(argv: list[str] | None = None) -> int:
                 cases, workflows, corpus_dir=args.corpus, settings=settings, dataset_path=args.dataset,
                 on_trace=on_trace, resume_traces=cached,
                 candidate_source_files=args.candidate_source_files, corpus_manifest_path=args.real_manifest,
+                ai_reference_review_path=args.ai_reference_review,
             )
             paths = write_reports(report, args.output_dir)
         print(f"Wrote {len(report.traces)} traces to {len(paths)} output files in {args.output_dir}.")

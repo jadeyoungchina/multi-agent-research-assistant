@@ -5,6 +5,13 @@ topic families, and 60 AI-authored candidate questions (20 dev / 40 test;
 30 Chinese / 30 English). Human reference approval remains **0/60**.
 It does not publish model-quality or admissions-outcome claims.
 
+Subsequent user-delegated AI review is complete: 60/60 references accepted
+for a dev pilot, with 46 cases improved. The detailed source adjudications,
+before/after records and independent-context DeepSeek feedback are in
+[`ai-reference-review.md`](ai-reference-review.md). Human review remains
+separate; the authorized pilot uses `--allow-ai-reviewed` with a current
+audit, rather than waiting for a human approval record.
+
 The data card and immutable source records are in
 [`benchmarks/real-v1`](../../benchmarks/real-v1/README.md). Every reference
 quote is checked against its recorded line range. Candidate pools belong
@@ -61,9 +68,11 @@ are tied to dataset/manifest hashes; attribution and timestamps are required.
 Generating or opening the page approves nothing. Further tests reject stale,
 duplicate, unattributed and incomplete review imports before modifying data.
 
-Stage D remains outstanding: human reference approval, five-case real-model
+Stage D remains outstanding: five-case real-model
 dev calibration, judge calibration, full dev runs and prompt/parameter freeze,
 then the prespecified held-out repeated comparison and statistical analysis.
+Human reference checks are an optional later independent validation under
+the user's delegated-AI-review choice.
 The initial drafting batch yielded exactly 60 candidates rather than the
 design's approximate 80; rejected or deficient cases can be replaced during
 reference curation, before any paid held-out evaluation.

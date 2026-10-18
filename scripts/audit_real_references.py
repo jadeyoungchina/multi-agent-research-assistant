@@ -20,6 +20,7 @@ sys.path.insert(0, str(ROOT))
 from app.evaluation.budget import BudgetLedger
 from app.evaluation.deepseek_cli import run_task
 from app.evaluation.real_dataset import RealBenchmarkCase, validate_real_benchmark
+from app.evaluation.reference_review import reference_digest
 
 
 class ReferenceVerdict(BaseModel):
@@ -37,11 +38,6 @@ class AbsenceVerdict(BaseModel):
     found_answer: bool
     explanation: str
     evidence: list[dict[str, str]]
-
-
-def reference_digest(case: RealBenchmarkCase) -> str:
-    return sha256(json.dumps(case.model_dump(mode="json", exclude={"human_review", "provenance"}),
-                             ensure_ascii=False, sort_keys=True).encode()).hexdigest()
 
 
 def document_block(root, doc):
@@ -67,6 +63,8 @@ def jobs(root: Path):
             "contain enough information to support all required points. A fact elsewhere "
             "in the full source but absent from the selected quotes needs a gold-evidence fix. "
             "Cross-document cases must genuinely need both sources, not merely cite two files. "
+            "Judge faithful paraphrases semantically: do not flag harmless wording differences. "
+            "Literal inline code present in the snapshot is evidence; unresolved includes are not. "
             "Ignore human approval status; you are performing AI review only. "
             "Do not invent a problem merely to be adversarial; prefer exact, actionable findings. "
             "Return ONLY a JSON array with one object per case, exactly these keys: "
@@ -90,7 +88,8 @@ def jobs(root: Path):
             "unrelated approximate speedups do not supply production throughput or memory results. "
             "Return ONLY a JSON array of {id,found_answer:boolean,explanation:string,evidence:"
             "[{source_file,quote}]}. If found_answer=true, provide an exact supporting quote. "
-            "If false, evidence may list a relevant caveat but must not invent a measurement. "
+            "If false, evidence MUST be an empty array; describe relevant caveats in explanation "
+            "without claiming qualitative guidance establishes the requested measurement. "
             "Keep explanations short and total output under 1700 tokens.\nQUESTIONS:\n"
             + json.dumps([dict(id=c.id, question=c.question) for c in negatives], ensure_ascii=False)
             + "\nFULL SOURCES IN THIS SHARD:\n"
