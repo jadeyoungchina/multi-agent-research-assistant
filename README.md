@@ -163,6 +163,14 @@ These are AI-reviewed development results, with no human scores or held-out
 comparison yet. Recheck the published scores, hashes and costs without API calls:
 `python scripts/verify_dev_pilot.py`.
 
+The subsequent [complete development run](docs/evaluation/full-dev/README.md)
+covers 20 questions and 80 units: 77 executions succeeded, 3 failed. All successful
+answers have AI scores; 21 received explicit Codex source checks. The report
+separates execution reliability, conditional answer quality, citation-block
+support, latency and physical request usage. It also exposes previously uneven
+citation-format validation across workflows. This remains development evidence;
+the held-out comparison has not run. Verify with `python scripts/verify_full_dev.py`.
+
 ## Privacy and development
 
 Uploads default to `data/uploads`; SQLite defaults to `data/research_assistant.db`.

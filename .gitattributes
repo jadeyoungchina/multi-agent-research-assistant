@@ -7,3 +7,5 @@ benchmarks/real-v1/*.jsonl text eol=lf
 benchmarks/real-v1/review/** text eol=lf
 docs/evaluation/dev-pilot/*.json text eol=lf
 docs/evaluation/dev-pilot/*.jsonl text eol=lf
+docs/evaluation/full-dev/*.json text eol=lf
+docs/evaluation/full-dev/*.jsonl text eol=lf

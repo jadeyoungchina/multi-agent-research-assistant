@@ -1,0 +1,1194 @@
+{
+  "created_at_utc": "2026-10-18T10:22:06.040302+00:00",
+  "reviewer": "Codex",
+  "human_reviewed": false,
+  "policy_sha256": "8c70d3e029c4fda1db8515f96e9e9f749c182ddfa8008caab2e208078c4fbb4a",
+  "selection": "All successful units for the five prespecified pilot IDs, plus every unresolved judge error; all execution failures audited separately.",
+  "adjudications": {
+    "answer-018": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "cd926f5e71c2f36fb6a4e6bb6ecab08385c9a72d0d9ef89b6e85730a8dc6d82c",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Factual blocks without exact attached tokens are uncited, including malformed brace-wrapped labels; no arbitrary source is credited.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 0,
+            "reason": "Answer reverses priority 2; alias should stay protected"
+          },
+          {
+            "index": 1,
+            "score": 0,
+            "reason": "Answer reverses priority 1; generator should override alias"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual precedence assertion, no citations"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer reverses both alias_priority semantics and adds an unsupported default claim."
+      }
+    },
+    "answer-021": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "9fbdf0fa98e2a499c387cf6c341f7f4e9abce23377562192228b27702dc3075d",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. The whole-pool reference audit contains no production latency measurements. Baseline fabricates microsecond ranges; scoped RAG abstentions are appropriate and citation N/A.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 0,
+            "reason": "Invents microsecond numbers not established by corpus"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Invented latency figures with no evidence"
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading, not factual"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim about exception handling, uncited"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual performance claim, no citation"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Production latency comparison, uncited"
+          },
+          {
+            "index": 5,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading, not factual"
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Exception overhead claim, uncited"
+          },
+          {
+            "index": 7,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Response construction claim, uncited"
+          },
+          {
+            "index": 8,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading, not factual"
+          },
+          {
+            "index": 9,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Fabricated benchmark figure, no evidence"
+          },
+          {
+            "index": 10,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Fabricated production benchmark figure"
+          },
+          {
+            "index": 11,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Performance conclusion uncited and unsupported"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer fabricates precise latency numbers the corpus cannot establish; expected response was an evidence-scoped abstention. All factual blocks are uncited invented claims."
+      }
+    },
+    "answer-022": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "f578497508f30adc2717a93ad1a36c23c1d9839d2ae31e37f3b964144ebf6793",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. The whole-pool reference audit contains no production latency measurements. Baseline fabricates microsecond ranges; scoped RAG abstentions are appropriate and citation N/A.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States corpus lacks the measurement; no invented number."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped absence statement, not a domain fact."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "The answer correctly declines to give a latency figure because the evidence lacks performance data. Its block is a scoped limitation, so it is N/A."
+      }
+    },
+    "answer-023": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "49950b591549847f755013270b6509261777bb9686d04f8c9eabd1add23dad74",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. The whole-pool reference audit contains no production latency measurements. Baseline fabricates microsecond ranges; scoped RAG abstentions are appropriate and citation N/A.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Declines latency number; notes evidence lacks it."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped absence statement, no domain fact asserted."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly declines the deployment-specific latency figure as absent from the corpus; the sole block is a scoped limitation and asserts no hardware or benchmark facts."
+      }
+    },
+    "answer-029": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "bcacbeb2e6cc4ffa7ad39d5b60ec6f14a20525a0442fbbdcbf77a8af66b926a5",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Pinned sub-dependencies guide supports one cached call per request and use_cache=False without a generator condition. Baseline invents scope parameters and denies this option. Uncited code and weakly attached passages remain penalized.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States once per request, cached and passed to dependants"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States use_cache=False re-enables repeated calls"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage states called once, cached, passed to dependants"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Both citations show use_cache=False and example call"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both answer blocks are fully entailed by the cited sub-dependencies passages, and both reference key points are covered correctly."
+      }
+    },
+    "answer-030": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "4eba3b589cf7eaca7a351fae8cfe9fda32357124458c3e19c65f4a2472bd017c",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Pinned sub-dependencies guide supports one cached call per request and use_cache=False without a generator condition. Baseline invents scope parameters and denies this option. Uncited code and weakly attached passages remain penalized.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states default once per request and caching"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states use_cache=False for repeated calls"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails once-per-request caching behavior"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails use_cache=False for repeated calls"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Example code matches docs but no citation"
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Transitional prose, no domain fact"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Example code matches docs but no citation"
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Cited code examples shown; execution claim not fully entailed"
+          },
+          {
+            "index": 7,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Summary restates facts without citation"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly covers both key points; example code blocks and summary lack citations, and one cited claim exceeds entailment."
+      }
+    },
+    "answer-031": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "c4f730d521babb071ded454578819f0e29a3dc07de4238f3f3da1fae84a07ef3",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Factual blocks without exact attached tokens are uncited, including malformed brace-wrapped labels; no arbitrary source is credited. Pinned sub-dependencies guide supports one cached call per request and use_cache=False without a generator condition. Baseline invents scope parameters and denies this option. Uncited code and weakly attached passages remain penalized.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States default one call per request; value cached for dependants"
+          },
+          {
+            "index": 1,
+            "score": 0,
+            "reason": "Denies use_cache=False; invents nonexistent scope parameter"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Correct default claim but no citation"
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Introductory lead-in, no factual assertion"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Cache description accurate but uncited; internal name guessed"
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 7,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Speculative workaround asserted without citation"
+          },
+          {
+            "index": 8,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Recommends default behavior; no citation"
+          },
+          {
+            "index": 9,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Design suggestion asserted without citation"
+          },
+          {
+            "index": 10,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Default once-per-request with cached reuse is correct, but the answer invents a scope parameter, denies the documented use_cache=False option, and misses the second key point."
+      }
+    },
+    "answer-032": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "8613318a1a82f9e346846ed7cc7a1040d0ca154ec469dd7eba79289ec78fcedc",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Pinned sub-dependencies guide supports one cached call per request and use_cache=False without a generator condition. Baseline invents scope parameters and denies this option. Uncited code and weakly attached passages remain penalized.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Default single call, cached and shared, correctly stated."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "use_cache=False correctly given for per-step calls."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails single call and caching."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails use_cache=False and example."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both answers fully correct and entailed by the cited passage; no unsupported claims."
+      }
+    },
+    "answer-037": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "a4c1ec254c95aae076103102c9dfd81c2d441034a1d86d0ef4fba9753be26d65",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Factual blocks without exact attached tokens are uncited, including malformed brace-wrapped labels; no arbitrary source is credited. Raise FastAPI's class and register Starlette's base class. A subclass handler does not catch base-class exceptions; optional import aliases do not earn or cost points.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 0,
+            "reason": "Says register FastAPI handler; reverses required conclusion."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Names wrong handler class; no citation provided."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Raise advice correct but enhancement claims unsupported; uncited."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Example heading, no factual assertion."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Unsupported compatibility claim, no citation provided."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Raise advice is correct, but handler registration is reversed; the source says to register Starlette's HTTPException. All factual blocks are uncited and the example block is wrong."
+      }
+    },
+    "answer-038": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "c48de8c95e938351207481269281b4ceb30c054c99fa4fbc8e83bfcd7d621140",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Raise FastAPI's class and register Starlette's base class. A subclass handler does not catch base-class exceptions; optional import aliases do not earn or cost points.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI's HTTPException."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers handler for Starlette base class, catching internals and extensions."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails both raising and registering guidance."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer fully matches both reference points and is directly supported by the cited documentation passage."
+      }
+    },
+    "answer-039": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "4f8d570eca18c6b049c48e83431a4ebb9a1dd1d85099af420cd341545ca6964f",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Raise FastAPI's class and register Starlette's base class. A subclass handler does not catch base-class exceptions; optional import aliases do not earn or cost points.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Says raise FastAPI's HTTPException in code"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Says register handler for Starlette's base HTTPException"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails all stated assertions"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer covers both key points and block 0 is fully entailed by its cited passage."
+      }
+    },
+    "answer-049": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "e193e95ca477bae62c5e93e24f13971b35c9a97562b2698e006e4237447132cb",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States lax coerces string '123' to int 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States strict raises ValidationError with valid-integer message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual overview of behavior without citation"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages state coercion and x=123 result"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited example shows strict ValidationError and message"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "All answer claims match the reference example; block 1 lacks citations but is correct."
+      }
+    },
+    "answer-050": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "a933eaad89620c1eaa27b32cb7ae5e64d2f0359d0e4e247ad02b5b51a2667101",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Corrected a literal-error-wording penalty: both required facts are present in Chinese; exact English wording is not required.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states lax mode coerces string to 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "ValidationError and expected-int/got-string faithfully paraphrase the pinned integer error."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoping intro, no factual assertion"
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Lax coercion claim, no citation"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "String-to-int conversion claim, no citation"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Validated int value claim, no citation"
+          },
+          {
+            "index": 5,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only"
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Strict mode behavior claim, no citation"
+          },
+          {
+            "index": 7,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Type mismatch failure claim, no citation"
+          },
+          {
+            "index": 8,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Error message form differs from documented wording"
+          },
+          {
+            "index": 9,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Summary heading only"
+          },
+          {
+            "index": 10,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Lax coercion summary, no citation"
+          },
+          {
+            "index": 11,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Strict rejection summary, no citation"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Lax behavior correct but key point 2 omitted; all factual blocks lack citations and the final error message diverges from the documented wording."
+      }
+    },
+    "answer-051": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "c48fc3fb36037917e4a94b55035dca3972f84f3cb8d7f4eff58a6dd6e2b908d5",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Lax coercion of '123' to 123 stated correctly"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Strict raises ValidationError with valid-integer message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage shows both lax and strict outcomes"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "The single factual block is fully entailed by the cited example passage and covers both key points."
+      }
+    },
+    "answer-052": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "522619ad48ba67c15fbcd589c34d2393c0ebfa379a3f25105485392792b21b60",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Lax coercion of string to integer 123 stated correctly"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Strict mode raises ValidationError with integer-type message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage shows both lax result and strict error"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single cited block matches both reference points and is fully entailed by the attached passage."
+      }
+    },
+    "answer-057": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "3643af3506a4ac461854d09b1c2423bfd943647086b9d7db83380af2f005d41b",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Factual blocks without exact attached tokens are uncited, including malformed brace-wrapped labels; no arbitrary source is credited. Pinned dependencies/index lines 112 and 317 support the 0.95.0 history and editor/mypy benefits; non-Annotated examples establish the alternative syntax. Malformed citations affect citation scoring, not factual truth.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Notes both forms kept and Annotated preferred."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Both shown as alternatives, not conflicting APIs."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Question restatement, no domain assertion."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Core key points met, but equivalence and backward-compatibility claims lack entailment and are invented."
+      }
+    },
+    "answer-067": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "cf1b3b92462895271cbc048afd000307e7ef2683bcf7cbce43373823a23f1785",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Factual blocks without exact attached tokens are uncited, including malformed brace-wrapped labels; no arbitrary source is credited. The block mixes a scoped measurement limitation with the actual cache mechanism; it is factual and uncited because its brace-wrapped token is malformed. No fabricated measurement is asserted.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States corpus lacks production metrics; declines to fabricate."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No well-formed attached citation; factual correctness is assessed separately."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "Block 0 correctly reports that the supplied evidence contains no production throughput or latency measurements and declines to invent figures, satisfying the only key point. However, its substantive description of dependency caching behavior (saving returned values per request to avoid recomputation) is a factual domain assertion that carries no attached citation IDs; the inline token is not an attached evidence ID, so this block is partial rather than supported. No unsupported or invented conclusions were found, and the response properly abstains on the requested metric."
+      }
+    },
+    "answer-077": {
+      "action": "accepted",
+      "reviewer_kind": "ai",
+      "trace_sha256": "b0ebbb35aaa3cebc5a0b7486276e83aae1df5680b0c82562e6ef86b2d2ca8d37",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "AliasChoices validation_alias shown; matches reference."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Explicitly states VSCode ignores validation_alias; runtime vs editor distinguished."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "AliasChoices as validation_alias choice is entailed."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Executable example lacks citation."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Both choices validated in cited example."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "VSCode initializer ignores validation_alias; alias workaround entailed."
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Runtime validation accepting either alias entailed."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Editor hints use alias not validation_alias; entailed."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correct on both points; only the code example block is uncited."
+      }
+    },
+    "answer-078": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "96800a57f3444415f6cb569019a8ea00a5d9fb9caac8fcbd973b76f3f2f629df",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. The fields guide gives alias plus serialization_alias as an editor workaround. The broad no-standard-configuration claim is false; preserve partial citation verdicts and partial second-key-point credit.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "AliasChoices approach given, matches documented runtime behavior."
+          },
+          {
+            "index": 1,
+            "score": 1,
+            "reason": "Core validation_alias distinction is right; claimed lack of any editor workaround contradicts fields guide."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "AliasChoices cited; editor-signature claim not entailed by citations."
+          },
+          {
+            "index": 2,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "AliasChoices both-key acceptance entailed by attached passage."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Editor claim partly entailed; alias page citation irrelevant."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Runtime vs static distinction supported; no-config claim not entailed."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Key points covered. Blocks 1, 4, 5 mix entailed editor/runtime distinction with unsupported specifics (Python variable-name basis, no-configuration claim) not entailed by attached passages."
+      }
+    },
+    "answer-079": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "76839910955c855ea91b17b907dce7e4f4873d5903319007681d180130a934bb",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. The later AliasChoices example is correct and earns both key points. The first to_snake('first_name') example does not accept fname and is a misleading extra purported solution; retain an unsupported-extra flag.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States AliasChoices with both names; code example matches."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly says VSCode signature ignores validation_alias."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim, no citation attached."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Executable example, no citation attached."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Runtime behavior claim, no citation attached."
+          },
+          {
+            "index": 5,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Editor hint claim, no citation attached."
+          },
+          {
+            "index": 7,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Signature claim, no citation attached."
+          },
+          {
+            "index": 8,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Autocomplete claim, no citation attached."
+          },
+          {
+            "index": 9,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Editor guidance claim, no citation attached."
+          },
+          {
+            "index": 10,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 11,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Runtime summary claim, no citation attached."
+          },
+          {
+            "index": 12,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Editor hint summary, no citation attached."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Both key points answered correctly, but no citations were attached to any factual block; paraphrase-level accuracy is consistent with the corpus."
+      }
+    },
+    "answer-080": {
+      "action": "corrected",
+      "reviewer_kind": "ai",
+      "trace_sha256": "ee6634762f59b34795cc70ebe0f73427e6b8c4dafbc2fa8f255ac297b48ecb46",
+      "reason": "Codex checked the answer against the pinned source and actual attached passages; human review remains false. Removed the judge's invented third key point. Accept the documented runtime alternative, but give partial editor credit because serialization_alias controls output naming, not IDE signature selection. All three blocks lack well-formed citations.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "validation_alias with populate_by_name supports both described input names; AliasChoices is optional."
+          },
+          {
+            "index": 1,
+            "score": 1,
+            "reason": "Ignores validation_alias correctly, but wrongly says serialization_alias controls editor interpretation."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual alias claims, no attached passage cited"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual VSCode claims, no citation_ids given"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual runtime-versus-editor claims, no citation_ids given"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Key points largely covered; no unsupported conclusions. All factual blocks lack citation_ids, so marked uncited."
+      }
+    }
+  },
+  "execution_failure_audits": {
+    "answer-024": {
+      "case_id": "REAL-DEV-020",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "2750356a6b750e85aa03cd67e808fe294dc539e3940733918d95302cd9472d42",
+      "error_code": "invalid_citation",
+      "reason": "Writer repeated Cite:ref prefixes in ID fields after correction; both responses retain paid usage."
+    },
+    "answer-040": {
+      "case_id": "REAL-DEV-019",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "4f00bcecd67ded420c158bd07a26ef82995960ebf9c2a2a07b83594948d61705",
+      "error_code": "invalid_citation",
+      "reason": "Researcher returned source passages in ID fields; rejecting unknown references is correct."
+    },
+    "answer-062": {
+      "case_id": "REAL-DEV-004",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "dbe035327f0e0a55d465af491c20867193191c6e5818d2bf26b9c430e8ef0aec",
+      "error_code": "provider_output_truncated",
+      "reason": "Output reached the prespecified 4096-token cap; retain as execution failure, not a semantic zero."
+    }
+  }
+}
