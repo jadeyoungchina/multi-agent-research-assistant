@@ -310,8 +310,10 @@ def test_multi_agent_maps_citation_failure_and_preserves_checkpoint_costs(enviro
     service, _, _ = multi_service(environment, invalid_citation=True)
     trace = MultiAgentRagWorkflow(service, environment.mapping).run(case.id, case.question, case.source_files)
     assert trace.status == "failed" and trace.error_code == "invalid_citation"
-    assert (trace.prompt_tokens, trace.completion_tokens, trace.total_tokens, trace.retry_count) == (34, 9, 43, 5)
-    assert trace.model_calls == 4
+    # Include the writer's completed response even though its citations failed;
+    # the failed draft itself is not checkpointed as a completed business stage.
+    assert (trace.prompt_tokens, trace.completion_tokens, trace.total_tokens, trace.retry_count) == (44, 12, 56, 6)
+    assert trace.model_calls == 5
     assert trace.retrieved_evidence[0].id == environment.evidence.id
 
 
