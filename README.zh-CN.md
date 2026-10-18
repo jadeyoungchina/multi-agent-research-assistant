@@ -140,6 +140,12 @@ python -m app.evaluation.cli --provider fake --variants all --output-dir artifac
 指标定义、门槛、真实模型命令和限制见[实验说明](docs/experiments.md)。
 Fake benchmark 不支持真实模型质量、速度提升或成本节省的结论。
 
+完整的[真实开发集评测](docs/evaluation/full-dev/README.md)已覆盖 20 题、
+四条流程共 80 个单元：77 次执行成功、3 次失败；成功答案均有 AI 评分，
+21 份经过 Codex 原文复核，真人评分为 0。[中文发现记录](docs/evaluation/full-dev-observations.zh-CN.md)
+说明正确性、引用支持、耗时和失败之间的取舍。保留测试集尚未运行。
+使用 `python scripts/verify_full_dev.py` 可离线复算公开分数、哈希和用量。
+
 ## 隐私与开发
 
 默认上传目录为 `data/uploads`，数据库为 `data/research_assistant.db`。

@@ -112,7 +112,7 @@ def _build_workflows(
     configuration = ProviderConfiguration.from_settings(settings)
     graph = build_research_graph(WorkflowDependencies(
         planner=PlannerAgent(chat), retriever=RetrieverAgent(retriever, top_k=5),
-        researcher=ResearcherAgent(chat), critic=CriticAgent(chat, max_iterations=settings.max_revision_iterations),
+        researcher=ResearcherAgent(chat, max_citation_repairs=settings.max_researcher_citation_repairs), critic=CriticAgent(chat, max_iterations=settings.max_revision_iterations),
         writer=WriterAgent(chat, max_citation_repairs=settings.max_writer_citation_repairs), citation_validator=CitationValidatorNode(),
         max_iterations=settings.max_revision_iterations,
         node_wrapper=lambda stage, handler: checkpointed_node(stage, handler, runs),
@@ -123,8 +123,8 @@ def _build_workflows(
     )
     workflows = {
         WorkflowVariant.BASELINE_LLM: BaselineLlmWorkflow(chat),
-        WorkflowVariant.LLM_RAG: LlmRagWorkflow(chat, retriever, mapping, top_k=5),
-        WorkflowVariant.SINGLE_AGENT_RAG: SingleAgentRagWorkflow(chat, retriever, mapping, top_k=5),
+        WorkflowVariant.LLM_RAG: LlmRagWorkflow(chat, retriever, mapping, top_k=5, max_citation_repairs=settings.max_writer_citation_repairs),
+        WorkflowVariant.SINGLE_AGENT_RAG: SingleAgentRagWorkflow(chat, retriever, mapping, top_k=5, max_citation_repairs=settings.max_writer_citation_repairs),
         WorkflowVariant.MULTI_AGENT_RAG: MultiAgentRagWorkflow(research, mapping),
     }
     return {variant: workflows[variant] for variant in variants}

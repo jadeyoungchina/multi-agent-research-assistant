@@ -78,6 +78,37 @@ class RecordingChat(FakeChatProvider):
         return response, chat_metadata()
 
 
+def test_plain_rag_rejects_brace_wrapped_inline_citations(environment, case):
+    identifier = environment.evidence.id
+    provider = RecordingChat(structured_responses=[GroundedAnswer(
+        answer_markdown=f"A supported fact. [[cite:{{{identifier}}}]]", cited_evidence_ids=[identifier])])
+    workflow = LlmRagWorkflow(provider, RecordingRetriever([environment.evidence]), environment.mapping)
+    trace = workflow.run(case.id, case.question, case.source_files)
+    assert trace.status == "failed" and trace.error_code == "invalid_citation"
+    assert trace.model_calls == 2
+
+
+def test_plain_rag_bounded_format_repair_accounts_every_attempt(environment, case):
+    identifier = environment.evidence.id
+    provider = RecordingChat(structured_responses=[
+        GroundedAnswer(answer_markdown=f"A fact. [[cite:{{{identifier}}}]]", cited_evidence_ids=[identifier]),
+        GroundedAnswer(answer_markdown=f"A fact. [[cite:{identifier}]]", cited_evidence_ids=[identifier]),
+    ])
+    workflow = LlmRagWorkflow(provider, RecordingRetriever([environment.evidence]), environment.mapping,
+                              max_citation_repairs=1)
+    trace = workflow.run(case.id, case.question, case.source_files)
+    assert trace.status == "success" and trace.model_calls == 3
+    assert (trace.prompt_tokens, trace.completion_tokens) == (24, 6)
+
+
+def test_plain_rag_inline_citations_must_also_be_declared(environment, case):
+    provider = RecordingChat(structured_responses=[GroundedAnswer(
+        answer_markdown=f"A fact. [[cite:{environment.evidence.id}]]", cited_evidence_ids=[])])
+    trace = LlmRagWorkflow(provider, RecordingRetriever([environment.evidence]), environment.mapping).run(
+        case.id, case.question, case.source_files)
+    assert trace.status == "failed" and trace.error_code == "invalid_citation"
+
+
 class RecordingRetriever:
     def __init__(self, evidence):
         self.evidence = evidence
@@ -160,7 +191,7 @@ def multi_service(environment, *, insufficient=False, invalid_citation=False):
 @pytest.fixture
 def workflow_factory(environment):
     def factory(variant):
-        answer = GroundedAnswer(answer_markdown="The solar capacity is 12 MW.", cited_evidence_ids=[environment.evidence.id])
+        answer = GroundedAnswer(answer_markdown=f"The solar capacity is 12 MW. [[cite:{environment.evidence.id}]]", cited_evidence_ids=[environment.evidence.id])
         if variant == WorkflowVariant.BASELINE_LLM:
             provider = RecordingChat(text_responses=["The solar capacity is 12 MW."])
             return BaselineLlmWorkflow(provider), provider, None
@@ -272,7 +303,7 @@ def test_single_agent_expands_then_fuses_and_answers_once(environment, case):
     retriever = EvidenceRetriever(embedding, LocalVectorIndex(environment.documents), min_similarity=-1)
     provider = RecordingChat(structured_responses=[
         QueryPlan(queries=["solar output", "capacity", "solar output"]),
-        GroundedAnswer(answer_markdown="12 MW", cited_evidence_ids=[environment.evidence.id]),
+        GroundedAnswer(answer_markdown=f"12 MW [[cite:{environment.evidence.id}]]", cited_evidence_ids=[environment.evidence.id]),
     ])
     workflow = SingleAgentRagWorkflow(provider, retriever, environment.mapping)
     trace = workflow.run(case.id, case.question, case.source_files)
@@ -302,7 +333,7 @@ def test_multi_agent_copies_persisted_run_and_report_metadata(
     assert "## 引用" not in trace.answer
     assert all(call[2] == [environment.mapping["solar-storage.md"]] for call in retriever.calls)
     if insufficient:
-        assert "Capacity evidence" in trace.answer
+        assert "The available documents do not support a complete conclusion" in trace.answer
 
 
 @pytest.mark.parametrize("cls", [LlmRagWorkflow, SingleAgentRagWorkflow])
@@ -359,8 +390,8 @@ def test_unmapped_source_fails_before_provider_calls(variant, workflow_factory, 
 def test_mapping_and_trace_are_owned_by_each_adapter(environment, case):
     mapping = dict(environment.mapping)
     provider = RecordingChat(structured_responses=[
-        GroundedAnswer(answer_markdown="12 MW", cited_evidence_ids=[environment.evidence.id]),
-        GroundedAnswer(answer_markdown="12 MW", cited_evidence_ids=[environment.evidence.id]),
+        GroundedAnswer(answer_markdown=f"12 MW [[cite:{environment.evidence.id}]]", cited_evidence_ids=[environment.evidence.id]),
+        GroundedAnswer(answer_markdown=f"12 MW [[cite:{environment.evidence.id}]]", cited_evidence_ids=[environment.evidence.id]),
     ])
     retriever = RecordingRetriever([environment.evidence])
     workflow = LlmRagWorkflow(provider, retriever, mapping)
@@ -393,7 +424,7 @@ def test_metadata_identifiers_reject_secrets_and_negative_counts(case):
 
 @pytest.mark.parametrize("cls, calls", [(LlmRagWorkflow, 2), (SingleAgentRagWorkflow, 3)])
 def test_structured_adapters_satisfy_real_provider_json_mode_boundary(cls, calls, environment, case):
-    responses = [GroundedAnswer(answer_markdown="12 MW", cited_evidence_ids=[environment.evidence.id])]
+    responses = [GroundedAnswer(answer_markdown=f"12 MW [[cite:{environment.evidence.id}]]", cited_evidence_ids=[environment.evidence.id])]
     if cls is SingleAgentRagWorkflow:
         responses.insert(0, QueryPlan(queries=["capacity"]))
     responses = iter(responses)
@@ -422,7 +453,7 @@ def test_structured_adapters_satisfy_real_provider_json_mode_boundary(cls, calls
         case.id, case.question, case.source_files,
     )
     assert trace.status == "success"
-    assert trace.answer == "12 MW" and trace.cited_evidence_ids == [environment.evidence.id]
+    assert trace.answer == f"12 MW [[cite:{environment.evidence.id}]]" and trace.cited_evidence_ids == [environment.evidence.id]
     assert trace.model_calls == calls and trace.retry_count == 2
 
 

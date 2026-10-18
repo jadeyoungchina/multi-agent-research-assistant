@@ -8,6 +8,7 @@ from typing import Protocol
 
 from pydantic import BaseModel, Field
 
+from app.workflow.citations import validate_citation_tokens
 from app.agents.common import EvidenceLabels, format_evidence
 from app.domain.documents import EvidenceChunk
 from app.domain.errors import CitationError, DomainError, WorkflowError
@@ -120,8 +121,9 @@ def _snapshots(
 
 
 def _validate_citations(trace: EvaluationTrace) -> None:
-    if not set(trace.cited_evidence_ids) <= {item.id for item in trace.retrieved_evidence}:
-        raise CitationError("invalid_citation", "answer references unretrieved evidence")
+    inline = validate_citation_tokens(trace.answer, set(trace.cited_evidence_ids), {item.id for item in trace.retrieved_evidence})
+    if set(inline) - set(trace.cited_evidence_ids):
+        raise CitationError("invalid_citation", "inline citation was not declared")
 
 
 def _grounded_messages(question: str, evidence: list[EvidenceChunk]) -> list[ChatMessage]:
@@ -131,7 +133,7 @@ def _grounded_messages(question: str, evidence: list[EvidenceChunk]) -> list[Cha
             "answer_markdown (string) and cited_evidence_ids (array of strings) "
             "containing only supplied Evidence IDs. State limitations "
             "when evidence is absent or conflicting. Cite each evidence-backed statement "
-            "in answer_markdown with the exact token [[cite:{Evidence ID}]], using only "
+            "in answer_markdown with exact tokens such as [[cite:ref_0001]], without curly braces, using only "
             "the declared cited_evidence_ids. Never invent source details."
         )),
         ChatMessage(role="user", content=(
@@ -199,12 +201,15 @@ class LlmRagWorkflow(_DocumentWorkflow):
 
     def __init__(
         self, provider: ChatProvider, retriever: EvidenceRetrieverProtocol,
-        document_mapping: Mapping[str, str], top_k: int = 5,
+        document_mapping: Mapping[str, str], top_k: int = 5, *, max_citation_repairs: int = 0,
     ) -> None:
         super().__init__(document_mapping)
         self.provider = provider
         self.retriever = retriever
         self.top_k = top_k
+        if max_citation_repairs not in (0, 1):
+            raise ValueError("answer citation repairs must be zero or one")
+        self._max_citation_repairs = max_citation_repairs
 
     def _queries(self, trace: EvaluationTrace, question: str) -> list[str]:
         return []
@@ -220,13 +225,27 @@ class LlmRagWorkflow(_DocumentWorkflow):
             round_index=0, queries=list(batch.queries), evidence=list(trace.retrieved_evidence),
         )]
         labels = EvidenceLabels(batch.evidence)
-        answer, metadata = self.provider.generate_structured(
-            _grounded_messages(question, labels.evidence), GroundedAnswer,
-        )
-        _add_metadata(trace, metadata)
-        trace.answer = labels.text(answer.answer_markdown)
-        trace.cited_evidence_ids = [labels.original(identifier) for identifier in answer.cited_evidence_ids]
-        _validate_citations(trace)
+        original = _grounded_messages(question, labels.evidence)
+        messages = original
+        for repair in range(self._max_citation_repairs + 1):
+            answer, metadata = self.provider.generate_structured(messages, GroundedAnswer)
+            metadata = metadata.model_copy(deep=True)
+            metadata.retries += int(repair > 0)
+            _add_metadata(trace, metadata)
+            trace.answer = labels.text(answer.answer_markdown)
+            trace.cited_evidence_ids = [labels.original(identifier) for identifier in answer.cited_evidence_ids]
+            try:
+                _validate_citations(trace)
+                break
+            except CitationError:
+                if repair == self._max_citation_repairs:
+                    raise
+                messages = [*original, ChatMessage(role="assistant", content=answer.model_dump_json()),
+                            ChatMessage(role="user", content=(
+                                "Correct the citation formatting once. Use exact tokens such as [[cite:ref_0001]], "
+                                "without curly braces, and only supplied IDs. Every declared ID must appear "
+                                "in answer_markdown. Check support; do not insert unrelated citations or invent facts."
+                            ))]
 
 
 class SingleAgentRagWorkflow(LlmRagWorkflow):

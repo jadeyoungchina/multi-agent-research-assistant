@@ -131,7 +131,7 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
                 retriever,
                 top_k=active_settings.retrieval_top_k,
             ),
-            researcher=ResearcherAgent(chat),
+            researcher=ResearcherAgent(chat, max_citation_repairs=settings.max_researcher_citation_repairs),
             critic=CriticAgent(
                 chat,
                 max_iterations=active_settings.max_revision_iterations,

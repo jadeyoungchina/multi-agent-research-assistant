@@ -47,6 +47,7 @@ class Settings(BaseSettings):
     retrieval_min_similarity: float = 0.15
     max_query_expansions: int = 4
     max_revision_iterations: int = 2
+    max_researcher_citation_repairs: int = Field(default=1, ge=0, le=1)
     max_writer_citation_repairs: int = Field(default=1, ge=0, le=1)
     max_workflow_steps: int = 24
     worker_count: int = 2

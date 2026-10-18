@@ -1,6 +1,7 @@
 import re
 
 from app.domain.documents import EvidenceChunk
+from app.domain.providers import ProviderMetadata, TokenUsage
 
 
 def format_evidence(evidence: list[EvidenceChunk]) -> str:
@@ -40,7 +41,7 @@ class EvidenceLabels:
         self.evidence = [item.model_copy(update={"id": self.forward.get(item.id, item.id)}, deep=True) for item in evidence]
 
     def original(self, value: str) -> str:
-        candidate = value.strip().removeprefix("Evidence ID: ").strip()
+        candidate = re.sub(r"^(?:Evidence ID:|[Cc]ite:)\s*", "", value.strip()).strip()
         if candidate in self.reverse:
             return self.reverse[candidate]
         if candidate in self.allowed:
@@ -75,3 +76,17 @@ class EvidenceLabels:
             finding.evidence_ids = [translate(identifier) for identifier in finding.evidence_ids]
         result.limitations = [self.text(text, to_provider=to_provider) for text in result.limitations]
         return result
+
+
+def combine_provider_metadata(items: list[ProviderMetadata]) -> ProviderMetadata:
+    combined = items[-1].model_copy(deep=True)
+    combined.usage = TokenUsage(**{
+        field: sum(getattr(item.usage, field) for item in items)
+        for field in TokenUsage.model_fields
+    })
+    combined.latency_ms = sum(item.latency_ms for item in items)
+    combined.retries = sum(item.retries for item in items)
+    combined.attempt_count = sum(item.attempt_count for item in items)
+    combined.attempt_ids = [identifier for item in items for identifier in item.attempt_ids]
+    combined.usage_complete = all(item.usage_complete for item in items)
+    return combined

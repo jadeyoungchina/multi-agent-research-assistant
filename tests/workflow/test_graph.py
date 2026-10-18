@@ -204,7 +204,7 @@ def test_graph_retrieves_three_times_when_critic_exhausts_two_revisions() -> Non
     assert critique.sufficient is False
     assert result["report"]["evidence_sufficient"] is False
     assert result["report"]["limitations"] == [
-        "证据不足：Evidence remains incomplete"
+        "The available documents do not support a complete conclusion; unresolved details remain unconfirmed."
     ]
 
 

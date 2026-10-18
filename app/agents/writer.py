@@ -1,44 +1,22 @@
 from typing import Any
-import re
 
-from app.agents.common import EvidenceLabels
+from app.agents.common import EvidenceLabels, combine_provider_metadata
 from app.agents.prompts import writer_messages
 from app.domain.documents import EvidenceChunk
 from app.domain.errors import CitationError, ProviderError
-from app.domain.providers import ChatMessage, ChatProvider, ProviderMetadata, TokenUsage
+from app.domain.providers import ChatMessage, ChatProvider, ProviderMetadata
 from app.domain.research import Critique, DraftReport, ResearchSynthesis
-from app.workflow.citations import validate_draft_citations
+from app.workflow.citations import validate_draft_citations, report_limitations
 from app.workflow.state import WorkflowState
 
 
 def _preserve_insufficiency(draft: DraftReport, critique: Critique, question: str) -> DraftReport:
-    if critique.sufficient:
+    limitations = report_limitations(draft, critique, question=question)
+    if limitations == draft.limitations:
         return draft
-
-    # Keep the internal critique in workflow state, not in the user's report.
-    reason = ("现有文档不足以支持完整结论；无法确认的部分未作推断。"
-              if re.search(r"[\u4e00-\u9fff]", question)
-              else "The available documents do not support a complete conclusion; unresolved details remain unconfirmed.")
-    if reason in draft.limitations:
-        return draft
-
     updated = draft.model_copy(deep=True)
-    updated.limitations.append(reason)
+    updated.limitations = limitations
     return updated
-
-
-def _combined_metadata(items: list[ProviderMetadata]) -> ProviderMetadata:
-    combined = items[-1].model_copy(deep=True)
-    combined.usage = TokenUsage(**{
-        field: sum(getattr(item.usage, field) for item in items)
-        for field in TokenUsage.model_fields
-    })
-    combined.latency_ms = sum(item.latency_ms for item in items)
-    combined.retries = sum(item.retries for item in items)
-    combined.attempt_count = sum(item.attempt_count for item in items)
-    combined.attempt_ids = [identifier for item in items for identifier in item.attempt_ids]
-    combined.usage_complete = all(item.usage_complete for item in items)
-    return combined
 
 
 class WriterAgent:
@@ -63,7 +41,7 @@ class WriterAgent:
                 if isinstance(error.metadata, ProviderMetadata) and completed:
                     error.metadata = error.metadata.model_copy(deep=True)
                     error.metadata.retries += int(repair > 0)
-                    error.metadata = _combined_metadata([*completed, error.metadata])
+                    error.metadata = combine_provider_metadata([*completed, error.metadata])
                 raise
             metadata = metadata.model_copy(deep=True)
             metadata.retries += int(repair > 0)  # Includes explicit citation repair, separately bounded.
@@ -76,7 +54,7 @@ class WriterAgent:
             except CitationError as error:
                 if repair == self._max_citation_repairs:
                     # Invalid drafts are not committed, but all paid calls count.
-                    error.metadata = _combined_metadata(completed)
+                    error.metadata = combine_provider_metadata(completed)
                     raise
                 messages = [*original, ChatMessage(role="assistant", content=labels.draft(draft, to_provider=True).model_dump_json()),
                             ChatMessage(role="user", content=(

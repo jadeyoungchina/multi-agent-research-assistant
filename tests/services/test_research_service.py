@@ -379,7 +379,7 @@ def test_exhausted_critic_completes_with_persisted_insufficiency(
     assert stored.status == "completed"
     assert stored.evidence_sufficient is False
     assert report.evidence_sufficient is False
-    assert report.limitations == ["证据不足：Evidence remains incomplete"]
+    assert report.limitations == ["The available documents do not support a complete conclusion; unresolved details remain unconfirmed."]
     assert service.get_report(run.id) == report
     assert [event.event_type for event in service.list_events(run.id)].count(
         "finished"

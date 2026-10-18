@@ -17,46 +17,31 @@ _MARKDOWN_SPECIAL = re.compile(r"([\\`*_\[\]{}()#+\-!|])")
 _PAGELESS_SUFFIXES = {".md", ".markdown", ".txt"}
 
 
-def validate_draft_citations(
-    draft: DraftReport, evidence: list[EvidenceChunk]
-) -> list[str]:
-    token_ids = _CITATION_TOKEN.findall(draft.markdown)
-    if _CITATION_FRAGMENT.search(_CITATION_TOKEN.sub("", draft.markdown)):
-        raise CitationError(
-            "malformed_citation_token",
-            "malformed_citation_token: citation tokens must use [[cite:evidence_id]]",
-        )
-
-    valid_ids = {chunk.id for chunk in evidence}
-    declared_ids = {
-        evidence_id
-        for finding in draft.findings
-        for evidence_id in finding.evidence_ids
-    }
-    unknown_ids = sorted((set(token_ids) | declared_ids) - valid_ids)
-    if unknown_ids:
-        raise CitationError(
-            "unknown_evidence_id",
-            f"unknown_evidence_id: {', '.join(unknown_ids)}",
-        )
-
-    missing_ids = sorted(declared_ids - set(token_ids))
-    if missing_ids:
-        raise CitationError(
-            "missing_citation_token",
-            f"missing_citation_token: {', '.join(missing_ids)}",
-        )
+def validate_citation_tokens(markdown: str, declared_ids: set[str], valid_ids: set[str]) -> list[str]:
+    token_ids = _CITATION_TOKEN.findall(markdown)
+    if _CITATION_FRAGMENT.search(_CITATION_TOKEN.sub("", markdown)):
+        raise CitationError("malformed_citation_token", "malformed_citation_token: citations must use exact [[cite:evidence_id]] tokens")
+    if (set(token_ids) | declared_ids) - valid_ids:
+        raise CitationError("unknown_evidence_id", "unknown_evidence_id: citation references unknown evidence")
+    if declared_ids - set(token_ids):
+        raise CitationError("missing_citation_token", "missing_citation_token: declared evidence is absent from the answer")
     return token_ids
 
 
-def _limitations_for(draft: DraftReport, critique: Critique) -> list[str]:
+def validate_draft_citations(draft: DraftReport, evidence: list[EvidenceChunk]) -> list[str]:
+    declared = {identifier for finding in draft.findings for identifier in finding.evidence_ids}
+    return validate_citation_tokens(draft.markdown, declared, {chunk.id for chunk in evidence})
+
+
+def report_limitations(draft: DraftReport, critique: Critique, *, question: str = "") -> list[str]:
     limitations = list(draft.limitations)
     if critique.sufficient:
         return limitations
-
-    reason = critique.reason.strip() or "现有证据未达到充分性要求。"
-    if not any(reason in limitation for limitation in limitations):
-        limitations.append(f"证据不足：{reason}")
+    notice = ("现有文档不足以支持完整结论；无法确认的部分未作推断。"
+              if re.search(r"[\u4e00-\u9fff]", question)
+              else "The available documents do not support a complete conclusion; unresolved details remain unconfirmed.")
+    if notice not in limitations:
+        limitations.append(notice)
     return limitations
 
 
@@ -89,6 +74,7 @@ def validate_and_render_report(
     draft: DraftReport,
     evidence: list[EvidenceChunk],
     critique: Critique,
+    *, question: str = "",
 ) -> ResearchReport:
     del run_id
     token_ids = validate_draft_citations(draft, evidence)
@@ -114,7 +100,7 @@ def validate_and_render_report(
         )
         for evidence_id in ordered_ids
     ]
-    limitations = _limitations_for(draft, critique)
+    limitations = report_limitations(draft, critique, question=question)
 
     sections = [rendered_draft.rstrip(), "", "## 局限"]
     sections.extend(f"- {limitation}" for limitation in limitations)
@@ -140,6 +126,7 @@ class CitationValidatorNode:
             DraftReport.model_validate(state["draft"]),
             [EvidenceChunk.model_validate(item) for item in state["evidence"]],
             Critique.model_validate(state["critique"]),
+            question=state.get("question", ""),
         )
         return {
             "report": report.model_dump(mode="json"),
