@@ -100,6 +100,8 @@ def checkpointed_node(
                 stage,
                 "workflow_stage_failed",
                 exception_type,
+                failure_metadata=(exc.metadata.model_dump(mode="json")
+                                  if isinstance(getattr(exc, "metadata", None), ProviderMetadata) else None),
             )
             logger.error(
                 "workflow_stage_failed",

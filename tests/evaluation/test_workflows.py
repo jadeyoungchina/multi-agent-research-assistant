@@ -285,7 +285,8 @@ def test_multi_agent_copies_persisted_run_and_report_metadata(
     assert (trace.prompt_tokens, trace.completion_tokens, trace.total_tokens, trace.retry_count) == (prompt, completion, total, retries)
     assert trace.evidence_sufficient is (not insufficient)
     assert trace.cited_evidence_ids == [environment.evidence.id]
-    assert f"#citation-{environment.evidence.id}" in trace.answer
+    assert f"[[cite:{environment.evidence.id}]]" in trace.answer
+    assert "## 引用" not in trace.answer
     assert all(call[2] == [environment.mapping["solar-storage.md"]] for call in retriever.calls)
     if insufficient:
         assert "Capacity evidence" in trace.answer

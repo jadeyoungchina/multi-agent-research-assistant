@@ -1,5 +1,3 @@
-from collections.abc import Iterable
-
 from app.agents.prompts import critic_messages
 from app.domain.documents import EvidenceChunk
 from app.domain.providers import ChatProvider
@@ -10,22 +8,6 @@ from app.workflow.state import WorkflowState
 
 _NO_FINDINGS_GAP = "synthesis contains no findings"
 _INVALID_SUPPORT_GAP = "one or more findings lack valid supporting evidence"
-_UNCOVERED_CRITERIA_GAP = (
-    "one or more plan completion criteria are not covered by findings"
-)
-
-
-def _normalize(text: str) -> str:
-    return " ".join(text.casefold().split())
-
-
-def _criteria_are_covered(
-    completion_criteria: Iterable[str], synthesis: ResearchSynthesis
-) -> bool:
-    claims = "\n".join(_normalize(finding.claim) for finding in synthesis.findings)
-    return all(_normalize(criterion) in claims for criterion in completion_criteria)
-
-
 class CriticAgent:
     def __init__(self, provider: ChatProvider, max_iterations: int = 2) -> None:
         self._provider = provider
@@ -50,10 +32,8 @@ class CriticAgent:
             audit_gaps.append(_NO_FINDINGS_GAP)
         if not supported:
             audit_gaps.append(_INVALID_SUPPORT_GAP)
-        if synthesis.findings and not _criteria_are_covered(
-            plan.completion_criteria, synthesis
-        ):
-            audit_gaps.append(_UNCOVERED_CRITERIA_GAP)
+        # Semantic criterion coverage belongs to the critic's evidence-grounded
+        # assessment. Requiring the criterion verbatim rejects valid paraphrases.
 
         critique = llm_critique
         if audit_gaps:

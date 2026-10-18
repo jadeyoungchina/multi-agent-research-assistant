@@ -19,7 +19,7 @@
     "multi_agent_rag"
   ],
   "dataset": {
-    "status": "not_collected",
+    "status": "24_pinned_documents_60_ai_candidates_pending_human_review",
     "document_count_target": {
       "minimum": 20,
       "maximum": 30
@@ -87,7 +87,9 @@
       "document_family",
       "normalization_rule",
       "evidence_location_mapping"
-    ]
+    ],
+    "collected_document_count": 24,
+    "human_approved_count": 0
   },
   "model_plan": {
     "main": {

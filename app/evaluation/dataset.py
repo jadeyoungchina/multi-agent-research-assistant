@@ -54,40 +54,49 @@ def preflight_benchmark_sources(
     identical bytes would share a document ID and cannot represent distinct sources.
     No expected evidence or answer targets are inspected here.
     """
+    return preflight_source_files(
+        [filename for case in cases for filename in case.source_files], corpus_dir,
+        max_upload_file_bytes=max_upload_file_bytes,
+    )
+
+
+def preflight_source_files(
+    filenames: Sequence[str], corpus_dir: Path, *, max_upload_file_bytes: int | None,
+) -> dict[str, BenchmarkSource]:
+    """Validate a candidate pool independently of questions and gold annotations."""
     root = corpus_dir.resolve()
     sources: dict[str, BenchmarkSource] = {}
     filenames_by_digest: dict[str, str] = {}
-    for case in cases:
-        for filename in case.source_files:
-            if filename in sources:
-                continue
-            relative = Path(filename)
-            windows_path = PureWindowsPath(filename)
-            if ".." in relative.parts or ".." in windows_path.parts:
-                raise ValueError("benchmark source path contains parent component")
-            if relative.is_absolute() or windows_path.drive or windows_path.root:
-                raise ValueError("benchmark source must be a confined relative path")
-            path = (root / relative).resolve()
-            if not path.is_relative_to(root):
-                raise ValueError("benchmark source path escapes corpus root")
-            if not path.is_file():
-                raise ValueError("benchmark source does not exist")
-            supported = SUPPORTED.get(path.suffix.casefold())
-            if supported is None:
-                raise ValueError("unsupported benchmark document type")
-            with path.open("rb") as source:
-                content = source.read(max_upload_file_bytes + 1 if max_upload_file_bytes is not None else -1)
-            if max_upload_file_bytes is not None and len(content) > max_upload_file_bytes:
-                raise ValueError("benchmark source exceeds configured size limit")
-            digest = sha256(content).hexdigest()
-            if digest in filenames_by_digest:
-                raise ValueError("ambiguous benchmark source filenames share identical content")
-            filenames_by_digest[digest] = filename
-            try:
-                pages = load_document(content, filename, supported[0])
-            except DocumentError as error:
-                raise ValueError("benchmark source could not be parsed") from error
-            sources[filename] = BenchmarkSource(supported[0], content, "\n".join(page.text for page in pages))
+    for filename in filenames:
+        if filename in sources:
+            continue
+        relative = Path(filename)
+        windows_path = PureWindowsPath(filename)
+        if ".." in relative.parts or ".." in windows_path.parts:
+            raise ValueError("benchmark source path contains parent component")
+        if relative.is_absolute() or windows_path.drive or windows_path.root:
+            raise ValueError("benchmark source must be a confined relative path")
+        path = (root / relative).resolve()
+        if not path.is_relative_to(root):
+            raise ValueError("benchmark source path escapes corpus root")
+        if not path.is_file():
+            raise ValueError("benchmark source does not exist")
+        supported = SUPPORTED.get(path.suffix.casefold())
+        if supported is None:
+            raise ValueError("unsupported benchmark document type")
+        with path.open("rb") as source:
+            content = source.read(max_upload_file_bytes + 1 if max_upload_file_bytes is not None else -1)
+        if max_upload_file_bytes is not None and len(content) > max_upload_file_bytes:
+            raise ValueError("benchmark source exceeds configured size limit")
+        digest = sha256(content).hexdigest()
+        if digest in filenames_by_digest:
+            raise ValueError("ambiguous benchmark source filenames share identical content")
+        filenames_by_digest[digest] = filename
+        try:
+            pages = load_document(content, filename, supported[0])
+        except DocumentError as error:
+            raise ValueError("benchmark source could not be parsed") from error
+        sources[filename] = BenchmarkSource(supported[0], content, "\n".join(page.text for page in pages))
     return sources
 
 

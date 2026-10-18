@@ -14,11 +14,12 @@ from app.config import Settings
 
 from .metrics import AggregateMetrics, CaseScore, aggregate_scores, score_case
 from .models import BenchmarkCase, WorkflowVariant
+from .real_dataset import RealBenchmarkCase
 from .trace import EvaluationTrace
 from .workflows import EvaluationWorkflow, _SAFE_CODES, _error_code, _safe_identifier
 
 
-PROMPT_VERSION = "evaluation-v1"
+PROMPT_VERSION = "evaluation-v2"
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -84,6 +85,10 @@ class ReportMetadata(BaseModel):
     prompt_version: str
     configuration: ProviderConfiguration
     synthetic: bool = True
+    dataset_kind: str = "synthetic_documents_and_questions"
+    references_human_reviewed: bool = False
+    metrics_version: str = "global-first-pass-v2"
+    corpus_manifest_sha256: str | None = None
 
 
 class ReportMetrics(AggregateMetrics):
@@ -130,11 +135,13 @@ def _aggregate(scores: list[CaseScore], traces: list[EvaluationTrace]) -> Report
 
 
 def evaluate_benchmark(
-    cases: Sequence[BenchmarkCase], workflows: Mapping[WorkflowVariant, EvaluationWorkflow], *,
+    cases: Sequence[BenchmarkCase | RealBenchmarkCase], workflows: Mapping[WorkflowVariant, EvaluationWorkflow], *,
     corpus_dir: Path = PROJECT_ROOT / "benchmarks/corpus", settings: Settings | None = None,
     dataset_path: Path | None = None,
     on_trace: Callable[[EvaluationTrace], None] | None = None,
     resume_traces: Mapping[tuple[str, WorkflowVariant], EvaluationTrace] | None = None,
+    candidate_source_files: Sequence[str] | None = None,
+    corpus_manifest_path: Path | None = None,
 ) -> EvaluationReport:
     """Run an identical case matrix, isolating failures and timing every adapter.
 
@@ -143,6 +150,9 @@ def evaluate_benchmark(
     """
     if not cases or not workflows:
         raise ValueError("at least one benchmark case and workflow are required")
+    real = any(isinstance(case, RealBenchmarkCase) for case in cases)
+    if real and (not all(isinstance(case, RealBenchmarkCase) for case in cases) or not candidate_source_files):
+        raise ValueError("real-document cases require an independent, whole-split candidate pool")
     if len({case.id for case in cases}) != len(cases):
         raise ValueError("benchmark case IDs must be unique")
     if any(not isinstance(variant, WorkflowVariant) for variant in workflows):
@@ -158,6 +168,10 @@ def evaluate_benchmark(
         dataset_sha256=sha256(dataset_path.read_bytes()).hexdigest() if dataset_path else None,
         prompt_version=PROMPT_VERSION,
         configuration=configuration,
+        synthetic=not real,
+        dataset_kind="public_documents_ai_authored_questions" if real else "synthetic_documents_and_questions",
+        references_human_reviewed=real and all(case.human_review.status == "approved" for case in cases),
+        corpus_manifest_sha256=sha256(corpus_manifest_path.read_bytes()).hexdigest() if corpus_manifest_path else None,
     )
     traces: list[EvaluationTrace] = []
     scores: list[CaseScore] = []
@@ -168,7 +182,8 @@ def evaluate_benchmark(
             started = perf_counter()
             cached = (resume_traces or {}).get((case.id, variant))
             try:
-                trace = cached if cached is not None else workflows[variant].run(case.id, case.question, list(case.source_files))
+                sources = list(candidate_source_files) if candidate_source_files is not None else list(case.source_files)
+                trace = cached if cached is not None else workflows[variant].run(case.id, case.question, sources)
                 if not isinstance(trace, EvaluationTrace) or trace.case_id != case.id or trace.variant != variant:
                     trace = EvaluationTrace.failed(case.id, variant, "invalid_trace")
                 else:

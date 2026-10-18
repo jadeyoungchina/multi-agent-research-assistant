@@ -8,6 +8,7 @@ class WorkflowState(TypedDict, total=False):
     document_ids: list[str]
     plan: dict[str, Any]
     evidence: list[dict[str, Any]]
+    retrieval_rounds: list[dict[str, Any]]
     synthesis: dict[str, Any]
     critique: dict[str, Any]
     draft: dict[str, Any]

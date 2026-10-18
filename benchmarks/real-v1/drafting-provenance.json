@@ -1,0 +1,114 @@
+{
+  "purpose": "question_drafting_only_not_workflow_evaluation",
+  "tool": "official @deepseek-ai/dsh 0.2.1-rc.2 via tracked supervisor",
+  "mode": "account",
+  "model": "deepseek-flash",
+  "reasoning": "disabled",
+  "human_review": "pending",
+  "task_count": 12,
+  "physical_request_count": 12,
+  "total_cost_cny": null,
+  "price_status": "account_price_not_returned_by_official_catalog",
+  "monetary_cap_enforced": false,
+  "tasks": [
+    {
+      "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+      "input_sha256": "6d2282a63e49beb3c3e5b0fda4888ed7a031975dec2d6751f7b8c1c50812ab85",
+      "response_text_sha256": "7973150dfea12fbb85e465ad4e9311c671ab307b7a52134cc2df3396f0d81b33",
+      "attempt_ids": [
+        "e4bf57d8ef2a47b3b7c738976a1ed7e4"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+      "input_sha256": "9a165cdc0555ca35b3c8e7ea8b8e9ba4536f0725311958c66bc1356efa1067ba",
+      "response_text_sha256": "1360ebbc47b928eb2ed34c05e2eec7ceee25058f5984b082837f174f385801e1",
+      "attempt_ids": [
+        "df5ede5848d94458bd2ce6d18fd817e6"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+      "input_sha256": "b7eb1238dcd5978d71975074712f4ba5d346a57e6299fcc4864aeaa90ea6bfcf",
+      "response_text_sha256": "70a96dd733e7cc9c11abb2fb410270f75e4f83cb3a03a9d1d6a6cc4b4d86d244",
+      "attempt_ids": [
+        "a1c9cfe47bab4640824b5a21348df4ee"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+      "input_sha256": "61c70f8e2c8d100f5fb9dd21cc43682df307c55596246f4a208a9d7726f59794",
+      "response_text_sha256": "b836cd7cb92d24973d726bea9bf6d8ab9c7c0ff5e72ef3a467531f1d22b828dd",
+      "attempt_ids": [
+        "9050c9b3421e49abb6469aa3719fa0b5"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-fastapi-response-57732f336ae7",
+      "input_sha256": "d9cec5d8e065a57c443a0e1502bb2f08046dab2c7d256d7b72301b605a1c24d6",
+      "response_text_sha256": "039bc38207f49e283934182e3cf024e2020cad64a04279648231d6a6a0740c4b",
+      "attempt_ids": [
+        "6ad32277224744a7abdd3c1016363ac2"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+      "input_sha256": "b807134bdeaa81060fbf7c460e759cf88a94f141ae5a58425cf8297d7a09de03",
+      "response_text_sha256": "43c4756311bf8210fa49a21a083fb3cd430ba03c1ab9aeea5ee42a125003e37a",
+      "attempt_ids": [
+        "a57c23455c0045dfb2a2b6a410d4555c"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+      "input_sha256": "ffbffabfa87a7d4c7e4c15083bbac0937db27b5c2dd77c02fe8232275714ca0c",
+      "response_text_sha256": "10eb3986dab4b76d16e001eab0e6c13597c1c9328dd7a7427cd4450ac6ad68dd",
+      "attempt_ids": [
+        "f4d9edf5b0af425fa0232041c36450e0"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+      "input_sha256": "be8fde80d7e56d0a4222b716c365287621f6ab5e18a153755989a88cd116eef9",
+      "response_text_sha256": "1b7febbed9e3560396f6e5e5430884df26858839121cbd0244c0d070aa3af44f",
+      "attempt_ids": [
+        "b77d65dc827741a8a277ed49af2064a5"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-pydantic-fields-a18c4347eae2",
+      "input_sha256": "cc5b824f782161802e493f378ab9511d3acc216487f55fa7f963a8ab5aa1ff9b",
+      "response_text_sha256": "e6e0444d791b708f6193b6e06ebb0991765d01e321a99610ba846889ba28faa2",
+      "attempt_ids": [
+        "5de5fff5a9234a8aaa3d24e99dcbf026"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+      "input_sha256": "9ba843ef1869270e78db254d7fc35db0bff2ec5f49d42cacab5f08055e73ebb7",
+      "response_text_sha256": "55d88ef185953b27fc08b1c218ed32093b4b7749680e77a81e35065278f1b31d",
+      "attempt_ids": [
+        "72736de86b604830b5e2208e054a7d7e"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+      "input_sha256": "dc928de8414b9d5e58b7a42e2b85bba2c23e3a081ebf45d3e51094b69d527c81",
+      "response_text_sha256": "35398673373a409221bd778fc1f07141bfe9c9d629df01bc194b2d63887a5cc7",
+      "attempt_ids": [
+        "b1948fdee06b4c16b135f4d535568914"
+      ]
+    },
+    {
+      "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+      "input_sha256": "9ff9539da5eca08184d582215a7f79a4723b8c9e2d89718778025b0764d74255",
+      "response_text_sha256": "7ebdfd1829a9a302b7d79d862b870c1d8f7e87c3b52ce53f22b8f0f3f5cc0de6",
+      "attempt_ids": [
+        "4ab333fa58e34e2ba2054133cd93764f"
+      ]
+    }
+  ],
+  "prompt_tokens": 64397,
+  "completion_tokens": 11445,
+  "cached_input_tokens": 1280
+}

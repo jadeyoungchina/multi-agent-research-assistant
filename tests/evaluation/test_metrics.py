@@ -73,6 +73,36 @@ def test_grounding_metrics_have_exact_values() -> None:
     assert score.evidence_coverage == 0.5
 
 
+def test_recall_uses_global_top_five_before_any_gold_source_filtering():
+    distractors = [EvidenceSnapshot(id=f"noise-{i}", source_file="other.md", page_number=None,
+                                   chunk_index=i, text="unrelated") for i in range(5)]
+    trace = _trace().model_copy(update={"retrieved_evidence": [*distractors, _trace().retrieved_evidence[0]]})
+    assert score_case(_case(), trace).retrieval_recall_at_5 == 0.0
+
+
+def test_first_pass_and_final_context_are_separate():
+    from app.evaluation.trace import RetrievalRound
+    found = _trace().retrieved_evidence[0]
+    trace = _trace().model_copy(update={"retrieved_evidence": [found], "retrieval_rounds": [
+        RetrievalRound(round_index=0, queries=["initial"], evidence=[]),
+        RetrievalRound(round_index=1, queries=["follow-up"], evidence=[found]),
+    ]})
+    score = score_case(_case(), trace)
+    assert score.retrieval_recall_at_5 == 0
+    assert score.final_context_coverage == score.all_round_evidence_recall == 0.5
+
+
+def test_baseline_and_empty_gold_are_not_in_retrieval_denominator():
+    baseline = _trace().model_copy(update={"variant": WorkflowVariant.BASELINE_LLM})
+    empty_gold = _case().model_copy(update={"expected_evidence": []})
+    scores = [score_case(_case(), baseline), score_case(empty_gold, _trace()), score_case(_case(), _trace())]
+    metrics = aggregate_scores(scores)
+    assert scores[0].retrieval_recall_at_5 is scores[0].citation_id_validity is None
+    assert scores[1].retrieval_recall_at_5 is None
+    assert metrics.metric_denominators["retrieval_recall_at_5"] == 1
+    assert metrics.mean_retrieval_recall_at_5 == 0.5
+
+
 def test_answer_key_point_metrics_use_sentence_f1_and_cjk_tokens() -> None:
     """Scoring must split CJK characters and require the 0.60 coverage threshold."""
     cjk_case = BenchmarkCase(

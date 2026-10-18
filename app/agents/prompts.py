@@ -56,7 +56,10 @@ def critic_messages(
             role="system",
             content=(
                 "Assess whether the synthesis is sufficiently grounded and identify "
-                "gaps or follow-up queries.\n\n"
+                "gaps or follow-up queries. Check every plan completion criterion "
+                "for semantic coverage, accepting faithful paraphrases. If any required "
+                "criterion is unmet, set sufficient=false, name it in evidence_gaps, "
+                "and suggest focused follow_up_queries.\n\n"
                 f"{_GROUNDING_RULES}"
             ),
         ),

@@ -32,6 +32,7 @@ from app.workflow.graph import WorkflowDependencies, build_research_graph
 from .dataset import load_benchmark_cases, validate_benchmark_corpus
 from .budget import BudgetError, BudgetLedger
 from .models import BenchmarkCase, WorkflowVariant
+from .real_dataset import load_real_suite
 from .quality_gate import QualityGateError, enforce_quality_gate
 from .reporters import write_reports
 from .runner import PROJECT_ROOT, PROMPT_VERSION, ProviderConfiguration, corpus_sha256, evaluate_benchmark
@@ -56,6 +57,9 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Evaluate four workflows on the local synthetic benchmark.")
     parser.add_argument("--dataset", type=Path, default=PROJECT_ROOT / "benchmarks/cases.jsonl")
     parser.add_argument("--corpus", type=Path, default=PROJECT_ROOT / "benchmarks/corpus")
+    parser.add_argument("--real-manifest", type=Path, help="public-document corpus manifest; selects real-v1 cases")
+    parser.add_argument("--split", choices=("dev", "test"), default="dev")
+    parser.add_argument("--allow-unreviewed", action="store_true", help="preliminary dev runs only; never mark AI review as human review")
     parser.add_argument("--provider", choices=("fake", "dashscope", "openai", "deepseek"), default="fake")
     parser.add_argument("--embedding-provider", choices=("fake", "dashscope", "openai"))
     parser.add_argument("--chat-model")
@@ -77,6 +81,7 @@ def _build_workflows(
     settings: Settings, cases: list[BenchmarkCase], corpus: Path,
     variants: list[WorkflowVariant], resources: ExitStack,
     ledger: BudgetLedger | None = None,
+    candidate_source_files: list[str] | None = None,
 ) -> dict[WorkflowVariant, EvaluationWorkflow]:
     chat = build_demo_fake_provider() if settings.chat_provider == "fake" else build_chat_provider(settings, ledger=ledger, role="evaluation")
     resources.callback(_close_providers, chat)
@@ -87,7 +92,7 @@ def _build_workflows(
     documents = DocumentRepository(database)
     runs = RunRepository(database)
     document_service = DocumentService(documents, LocalDocumentStore(settings.upload_dir), embeddings, settings)
-    mapping = prepare_benchmark_documents(cases, corpus, document_service)
+    mapping = prepare_benchmark_documents(cases, corpus, document_service, candidate_source_files=candidate_source_files)
     retriever = EvidenceRetriever(
         embeddings, LocalVectorIndex(documents), candidate_k=settings.retrieval_candidate_k,
         rrf_k=settings.retrieval_rrf_k, min_similarity=settings.retrieval_min_similarity,
@@ -125,6 +130,8 @@ def _journal(args, settings, cases):
         "dataset_sha256": sha256(args.dataset.read_bytes()).hexdigest(), "corpus_sha256": corpus_sha256(args.corpus),
         "cases": [case.id for case in cases], "variants": [variant.value for variant in args.variants],
         "prompt_version": PROMPT_VERSION, "ledger": str(args.ledger.resolve()),
+        "candidate_source_files": getattr(args, "candidate_source_files", None),
+        "corpus_manifest_sha256": sha256(args.real_manifest.read_bytes()).hexdigest() if getattr(args, "real_manifest", None) else None,
     }
     # Changes in tracked or untracked source are part of the resume identity.
     source_digest = sha256()
@@ -170,6 +177,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         embedding = args.embedding_provider or ("dashscope" if args.provider == "deepseek" else args.provider)
         paid = args.provider != "fake" or embedding != "fake"
+        args.candidate_source_files = None
         if args.limit is not None and args.limit <= 0:
             raise ValueError("limit must be positive")
         if args.chat_model and args.provider == "fake":
@@ -183,12 +191,26 @@ def main(argv: list[str] | None = None) -> int:
             **({"retrieval_min_similarity": -1.0} if args.provider == "fake" else {}),
         )
         try:
-            cases = load_benchmark_cases(args.dataset)
+            if args.real_manifest:
+                if args.enforce_gate:
+                    raise ValueError("synthetic release thresholds cannot gate real-document quality")
+                if paid and args.split == "test":
+                    raise ValueError("paid test execution requires the later frozen experiment runner")
+                args.dataset = args.real_manifest.parent / f"{args.split}.jsonl"
+                args.corpus = args.real_manifest.parent / "corpus"
+                suite = load_real_suite(
+                    args.real_manifest, args.dataset, args.split,
+                    require_human_review=paid and not args.allow_unreviewed, require_design_counts=True,
+                )
+                cases = suite.cases
+                args.candidate_source_files = suite.candidate_source_files
+            else:
+                cases = load_benchmark_cases(args.dataset)
+                validate_benchmark_corpus(cases, args.corpus, max_upload_file_bytes=settings.max_upload_file_bytes)
             if not cases:
                 raise ValueError("benchmark dataset is empty")
-            validate_benchmark_corpus(cases, args.corpus, max_upload_file_bytes=settings.max_upload_file_bytes)
         except (OSError, ValueError):
-            print("Invalid dataset: check JSONL cases and corpus evidence files.", file=sys.stderr)
+            print("Invalid dataset: check cases, corpus hashes, split, and required human review. Paid test runs require a frozen experiment.", file=sys.stderr)
             return 2
         cases = cases[:args.limit if args.limit is not None else 5 if paid else len(cases)]
         if paid:
@@ -201,10 +223,12 @@ def main(argv: list[str] | None = None) -> int:
             settings = settings.model_copy(update={
                 "data_dir": root, "upload_dir": root / "uploads", "database_path": root / "evaluation.db",
             })
-            workflows = _build_workflows(settings, cases, args.corpus, args.variants, resources, ledger)
+            workflows = _build_workflows(settings, cases, args.corpus, args.variants, resources, ledger,
+                                         candidate_source_files=args.candidate_source_files)
             report = evaluate_benchmark(
                 cases, workflows, corpus_dir=args.corpus, settings=settings, dataset_path=args.dataset,
                 on_trace=on_trace, resume_traces=cached,
+                candidate_source_files=args.candidate_source_files, corpus_manifest_path=args.real_manifest,
             )
             paths = write_reports(report, args.output_dir)
         print(f"Wrote {len(report.traces)} traces to {len(paths)} output files in {args.output_dir}.")

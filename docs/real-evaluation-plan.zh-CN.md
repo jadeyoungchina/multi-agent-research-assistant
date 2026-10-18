@@ -1,6 +1,6 @@
 **真实文档与真实模型评测执行计划 · 2026-10-17**
 
-状态：2026-10-18 已完成阶段 A 与阶段 B，详见 [第一步执行记录](evaluation/step-a-readiness.zh-CN.md)、[第二步实施记录](evaluation/step-b-implementation.md) 与 [机器可读协议草案](../benchmarks/real-v1/protocol.draft.json)。用户已取消先前的 ¥100 金额限制，当前默认只记录用量；DeepSeek 官方 CLI 使用账号登录模式，已完成一次真实代码审查。阶段 C 的真实数据集与指标修正尚未实施。本文原有价格为 2026-10-17 查询的官方报价，未将其套用于账号模式费用。
+状态：2026-10-18 已完成阶段 A、B，以及阶段 C 的数据和指标基础，详见 [第一步执行记录](evaluation/step-a-readiness.zh-CN.md)、[第二步实施记录](evaluation/step-b-implementation.md)、[第三步记录](evaluation/step-c-data-and-metrics.md) 与 [机器可读协议草案](../benchmarks/real-v1/protocol.draft.json)。现有 24 篇固定版本官方文档、60 道 AI 起草并经来源核查的候选题；真人参考答案审核为 0/60，正式评测尚未开始。用户已取消先前的 ¥100 金额限制，当前默认只记录用量；DeepSeek 官方 CLI 使用账号登录模式，账号单价未知时金额留空。本文原有价格为 2026-10-17 查询的官方报价，未将其套用于账号模式费用。
 
 目标：为项目补齐可复现、可审查的真实评测证据，回答多智能体工作流在什么任务上有帮助、代价是多少、在哪里失败。交付标准是实验可信、结果完整、费用可核对；不预设某种架构获胜，也不能预先保证模型效果。
 

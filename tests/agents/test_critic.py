@@ -104,7 +104,10 @@ def test_critic_forces_revision_when_synthesis_has_no_findings() -> None:
 
 def test_critic_forces_revision_when_plan_criteria_are_not_covered() -> None:
     provider = FakeChatProvider(
-        structured_responses=[Critique(sufficient=True, reason="looks good")]
+        structured_responses=[Critique(
+            sufficient=False, reason="required conclusion missing",
+            evidence_gaps=["one or more plan completion criteria are not covered by findings"],
+        )]
     )
 
     update = CriticAgent(provider)(
@@ -116,6 +119,16 @@ def test_critic_forces_revision_when_plan_criteria_are_not_covered() -> None:
     assert critique.evidence_gaps == [
         "one or more plan completion criteria are not covered by findings"
     ]
+
+
+def test_critic_accepts_semantically_covered_paraphrase() -> None:
+    provider = FakeChatProvider(structured_responses=[Critique(sufficient=True, reason="criterion semantically covered")])
+    update = CriticAgent(provider)(state_with(
+        valid_synthesis("The measured array delivers twelve megawatts."),
+        criteria=["Report the solar installation's power rating"],
+    ))
+    assert Critique.model_validate(update["critique"]).sufficient is True
+    assert update["next_stage"] == "writer"
 
 
 def test_critic_preserves_the_llm_verdict_when_evidence_and_criteria_are_valid() -> None:

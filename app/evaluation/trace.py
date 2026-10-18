@@ -32,6 +32,15 @@ class EvidenceSnapshot(BaseModel):
         return value
 
 
+class RetrievalRound(BaseModel):
+    """A single fused ranking; evidence order is preserved before cross-round merging."""
+
+    model_config = ConfigDict(extra="forbid", strict=True)
+    round_index: int = Field(ge=0)
+    queries: list[str]
+    evidence: list[EvidenceSnapshot]
+
+
 class EvaluationTrace(BaseModel):
     """All workflow output needed by the evaluator, excluding gold targets."""
 
@@ -42,6 +51,7 @@ class EvaluationTrace(BaseModel):
     status: Literal["success", "failed"]
     answer: str
     retrieved_evidence: list[EvidenceSnapshot] = Field(default_factory=list)
+    retrieval_rounds: list[RetrievalRound] = Field(default_factory=list)
     cited_evidence_ids: list[str] = Field(default_factory=list)
     latency_ms: int = Field(ge=0)
     prompt_tokens: int = Field(ge=0)

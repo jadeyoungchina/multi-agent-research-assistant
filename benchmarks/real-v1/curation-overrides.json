@@ -1,0 +1,72 @@
+{
+  "fastapi-background/cross_document_synthesis": {
+    "question": "Using the FastAPI 0.112.2 background tasks and lifespan guides, when does lifespan setup run, when does cleanup run, and when are background tasks executed relative to the response?",
+    "evidence": [
+      {"source_file": "fastapi--en--docs--advanced--events.md", "quote": "executed **once**, **before** the application **starts receiving requests**"},
+      {"source_file": "fastapi--en--docs--advanced--events.md", "quote": "right after the `yield`, we unload the model. This code will be executed **after** the application **finishes handling requests**"},
+      {"source_file": "fastapi--en--docs--tutorial--background-tasks.md", "quote": "to be run *after* returning a response"}
+    ]
+  },
+  "fastapi-errors/single_document_fact": {
+    "evidence": [
+      {"source_file": "fastapi--en--docs--tutorial--handling-errors.md", "quote": "that client will receive an HTTP status code of 404 (the \"not found\" error)"},
+      {"source_file": "fastapi--en--docs--tutorial--handling-errors.md", "quote": "\"detail\": \"Item not found\""}
+    ]
+  },
+  "fastapi-errors/cross_document_synthesis": {
+    "question": "In FastAPI 0.112.2, how is the normal response status declared and documented, and how should a utility function terminate a request when a requested item does not exist?",
+    "key_points": [
+      "Declare status_code on the path-operation decorator, not as a path-operation function parameter; FastAPI documents that status in OpenAPI.",
+      "Raise HTTPException with status 404 for the missing item; raising it from a utility terminates the request immediately."
+    ],
+    "evidence": [
+      {"source_file": "fastapi--en--docs--tutorial--response-status-code.md", "quote": "`status_code` is a parameter of the \"decorator\" method (`get`, `post`, etc)."},
+      {"source_file": "fastapi--en--docs--tutorial--response-status-code.md", "quote": "Document it as such in the OpenAPI schema"},
+      {"source_file": "fastapi--en--docs--tutorial--handling-errors.md", "quote": "it will terminate that request right away and send the HTTP error"},
+      {"source_file": "fastapi--en--docs--tutorial--handling-errors.md", "quote": "raise an exception with a status code of `404`"}
+    ]
+  },
+  "pydantic-models/single_document_fact": {
+    "question": "在 pydantic v1.10.17 模型指南的基本用法中，使用 User(id='123') 初始化一个 id: int 的模型后，user.id 的值和类型是什么？",
+    "key_points": ["字符串 '123' 被转换为整数 123，结果为 int 类型。"],
+    "evidence": [
+      {"source_file": "pydantic-v1--usage--models.md", "quote": "assert user.id == 123"},
+      {"source_file": "pydantic-v1--usage--models.md", "quote": "The string '123' has been cast to an int as per the field type"}
+    ]
+  },
+  "pydantic-models/conditions_limits_and_numbers": {
+    "evidence": [
+      {"source_file": "pydantic-v1--usage--models.md", "quote": "The [Config](model_config.md) property `orm_mode` must be set to `True`."},
+      {"source_file": "pydantic-v1--usage--models.md", "quote": "The special constructor `from_orm` must be used to create the model instance."},
+      {"source_file": "pydantic-v1--usage--models.md", "quote": "sub-class of `GetterDict` as the value of `Config.getter_dict`"}
+    ]
+  },
+  "pydantic-dataclasses/version_and_apparent_conflict": {
+    "key_points": [
+      "An extra TypeAdapter is not needed to validate a dataclass already used as a BaseModel field.",
+      "For operations performed directly on a dataclass, the guide recommends wrapping it in TypeAdapter and using its methods."
+    ],
+    "evidence": [
+      {"source_file": "pydantic-v2--concepts--dataclasses.md", "quote": "if you use the dataclass as a field of a `BaseModel` or via FastAPI you don't need a `TypeAdapter`."},
+      {"source_file": "pydantic-v2--concepts--dataclasses.md", "quote": "To perform validation or generate a JSON schema on a Pydantic dataclass"}
+    ]
+  },
+  "pydantic-fields/version_and_apparent_conflict": {
+    "evidence": [
+      {"source_file": "pydantic-v2--concepts--fields.md", "quote": "the `validation_alias` will have priority over `alias` for validation"},
+      {"source_file": "pydantic-v2--concepts--fields.md", "quote": "`serialization_alias` will have priority\n    over `alias` for serialization"}
+    ]
+  },
+  "pydantic-coercion/cross_document_synthesis": {
+    "key_points": [
+      "smart 模式的 exactness 会区分严格校验成功与仅宽松校验成功，严格成功的档位高于宽松成功。",
+      "严格模式通常要求更严格的输入类型，但不同类型和 Python/JSON 输入有各自规则；应按对应条件判断，不能笼统断言一律禁止转换。"
+    ]
+  },
+  "fastapi-middleware/version_and_apparent_conflict": {
+    "question": "In FastAPI 0.112.2, does allowing the wildcard origin \"*\" also allow credentialed browser communication? How must allow_origins be configured when allow_credentials is enabled?"
+  },
+  "fastapi-security/version_and_apparent_conflict": {
+    "question": "在 FastAPI 0.112.2 中，OAuth2PasswordRequestForm 的 scope 表单字段和依赖实例的 scopes 属性分别是什么类型？两处描述为何不冲突？"
+  }
+}

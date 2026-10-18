@@ -12,6 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from app.evaluation.dataset import load_benchmark_cases, validate_benchmark_corpus
+from app.evaluation.real_dataset import validate_real_benchmark
 
 
 LICENSE_SHA256 = "c9877e4d8788a0bb97502348dca8fbd78a6eaa73db0638221b3cb67422d30177"
@@ -121,6 +122,17 @@ def verify_repository(root: Path) -> tuple[list[str], int]:
         validate_benchmark_corpus(cases, root / "benchmarks/corpus")
     except (OSError, UnicodeError, ValueError):
         problems.append("benchmarks: require 30 valid sequential cases and matching tracked corpus evidence phrases")
+
+    try:
+        real_root = root / "benchmarks/real-v1"
+        dev, test = validate_real_benchmark(real_root)
+        required = {"benchmarks/real-v1/" + name for name in ("corpus-manifest.json", "dev.jsonl", "test.jsonl")}
+        required.update("benchmarks/real-v1/" + name for doc in dev.manifest.documents for name in (doc.raw_path, doc.corpus_path))
+        required.update("benchmarks/real-v1/" + item.path for item in dev.manifest.licenses)
+        if not required <= tracked:
+            raise ValueError("real corpus, cases, and licenses must all be tracked")
+    except (OSError, UnicodeError, ValueError):
+        problems.append("real benchmarks: require pinned tracked snapshots, licenses, isolated splits, and 60 source-validated cases")
 
     notice = texts.get("THIRD_PARTY_NOTICES.md", "")
     if UPSTREAM_COMMIT not in notice:
