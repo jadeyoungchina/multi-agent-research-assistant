@@ -8,7 +8,7 @@ from typing import Protocol
 
 from pydantic import BaseModel, Field
 
-from app.agents.common import format_evidence
+from app.agents.common import EvidenceLabels, format_evidence
 from app.domain.documents import EvidenceChunk
 from app.domain.errors import CitationError, DomainError, WorkflowError
 from app.domain.providers import ChatMessage, ChatProvider, ProviderMetadata
@@ -219,12 +219,13 @@ class LlmRagWorkflow(_DocumentWorkflow):
         trace.retrieval_rounds = [RetrievalRound(
             round_index=0, queries=list(batch.queries), evidence=list(trace.retrieved_evidence),
         )]
+        labels = EvidenceLabels(batch.evidence)
         answer, metadata = self.provider.generate_structured(
-            _grounded_messages(question, batch.evidence), GroundedAnswer,
+            _grounded_messages(question, labels.evidence), GroundedAnswer,
         )
         _add_metadata(trace, metadata)
-        trace.answer = answer.answer_markdown
-        trace.cited_evidence_ids = list(answer.cited_evidence_ids)
+        trace.answer = labels.text(answer.answer_markdown)
+        trace.cited_evidence_ids = [labels.original(identifier) for identifier in answer.cited_evidence_ids]
         _validate_citations(trace)
 
 

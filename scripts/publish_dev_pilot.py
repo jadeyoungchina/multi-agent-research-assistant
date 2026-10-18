@@ -46,9 +46,10 @@ def publish(root: Path, output: Path, corrections: Path | None = None):
     corrected = overrides.get("adjudications", {})
     previous = set()
     summaries, publications = {}, []
-    for name in ["initial", "diagnostic", "followup", "calibrated"]:
+    for name in ["initial", "diagnostic", "followup", "calibrated", "final"]:
         run_dir = root / name
         report = EvaluationReport.model_validate_json((run_dir / "results.json").read_text("utf-8"))
+        manifest = json.loads((run_dir / "run-manifest.json").read_text("utf-8"))
         budget = json.loads((run_dir / "budget-summary.json").read_text("utf-8"))
         all_rows = budget["attempts"]
         rows = [row for row in all_rows if row["id"] not in previous]
@@ -79,6 +80,7 @@ def publish(root: Path, output: Path, corrections: Path | None = None):
             variant_summaries[variant.value] = entry
         unassigned = [row for row in rows if row["id"] not in assigned]
         summaries[name] = {"metadata": report.metadata.model_dump(mode="json"), "by_variant": variant_summaries,
+                           "generation_manifest": {key: value for key, value in manifest.items() if key != "ledger"},
                            "shared_index_embedding": usage([row for row in unassigned if row["kind"] == "embedding"]),
                            "unassigned_non_embedding": usage([row for row in unassigned if row["kind"] != "embedding"]),
                            "total": usage(rows),
@@ -89,14 +91,14 @@ def publish(root: Path, output: Path, corrections: Path | None = None):
         path.write_text("".join(trace.model_dump_json() + "\n" for trace in report.traces), "utf-8")
         publications.append({"path": path.name, "sha256": sha256(path.read_bytes()).hexdigest()})
 
-    followup = EvaluationReport.model_validate_json((root / "calibrated/results.json").read_text("utf-8"))
+    followup = EvaluationReport.model_validate_json((root / "final/results.json").read_text("utf-8"))
     if len(followup.traces) != 20 or len({trace.case_id for trace in followup.traces}) != 5:
         raise ValueError("pilot must contain all twenty prespecified units")
     # Judge packets are order-blinded before requests; labels are joined here.
     judgments = []
     for index, trace in enumerate(followup.traces):
         unit = f"answer-{index + 1:03d}"
-        raw = json.loads((root / f"judge-calibrated/{unit}.json").read_text("utf-8"))
+        raw = json.loads((root / f"judge-final/{unit}.json").read_text("utf-8"))
         if raw["case_id"] != trace.case_id or raw["variant"] != trace.variant.value:
             raise ValueError("judge unit mismatch")
         entry = {"unit": unit, "case_id": trace.case_id, "variant": trace.variant.value,
@@ -121,7 +123,7 @@ def publish(root: Path, output: Path, corrections: Path | None = None):
         raise ValueError("unknown adjudication unit")
     for variant in WorkflowVariant:
         entries = [item for item in judgments if item["variant"] == variant.value and item["status"] == "valid_ai_judgment"]
-        target = summaries["calibrated"]["by_variant"][variant.value]
+        target = summaries["final"]["by_variant"][variant.value]
         target["valid_ai_score_count"] = len(entries)
         for metric in ["answer_correctness", "answer_key_point_coverage", "citation_support_rate", "citation_completeness"]:
             values = [item["score"][metric] for item in entries]
@@ -150,7 +152,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         result = publish(args.pilot_root, args.output_dir, args.adjudications)
-        print(json.dumps(result["calibrated"]["by_variant"], ensure_ascii=True, indent=2))
+        print(json.dumps(result["final"]["by_variant"], ensure_ascii=True, indent=2))
         return 0
     except Exception as error:
         print(f"Pilot publication stopped ({type(error).__name__}).", file=sys.stderr)

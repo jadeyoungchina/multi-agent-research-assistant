@@ -44,6 +44,8 @@ def test_strict_schema_transmits_real_field_names_and_closes_nested_objects():
     assert mode["json_schema"]["schema"]["additionalProperties"] is False
     report_schema = _closed_schema(DraftReport)
     assert report_schema["$defs"]["ReportFinding"]["additionalProperties"] is False
+    assert next(iter(report_schema["properties"])) == "markdown"
+    assert "[[cite:ref_0001]]" in report_schema["properties"]["markdown"]["description"]
     assert "default" not in json.dumps(report_schema)
     assert "additionalProperties" not in DraftReport.model_json_schema()
 

@@ -50,3 +50,20 @@ writer citation repair, and exact canonicalization of these formatting variants.
 Canonicalization accepts only an existing full ID/hash; a changed hash is rejected.
 All failed runs and additional repair requests remain in the cost record. Researcher
 rejections now propagate the paid response metadata just as writer rejections do.
+
+The `calibrated` run retained additional citation failures: model-generated long
+hashes were altered, and a writer repeated an uncited Markdown field even after
+feedback. This is not remedied by fuzzy matching or accepting a missing citation.
+The final development rerun (`final`, prompt v5) generates the user-visible
+Markdown field first, describes its citation contract directly in the schema,
+and supplies all RAG stages with short
+request-local labels (`ref_0001`, ...). An exact reversible mapping restores the
+original IDs in state, traces and rendered references. Translation never inserts
+citations into uncited prose, never changes evidence text and rejects unknown
+labels. The writer retains its single bounded correction request. These changes
+are development decisions, and earlier runs are retained rather than pooled into
+a quality estimate. No test questions are used in this process.
+
+A live probe showed that the provider could ignore a conditional `if/then`
+inline-citation schema rule. That attempted constraint was removed before the
+final run. Strict field output therefore never replaces local citation validation.

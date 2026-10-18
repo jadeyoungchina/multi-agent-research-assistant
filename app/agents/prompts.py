@@ -30,8 +30,8 @@ def researcher_messages(
         ChatMessage(
             role="system",
             content=(
-                "Synthesize findings that answer the research question. Copy Evidence IDs exactly, "
-                "including the ev_ prefix; omit the display label 'Evidence ID: '. "
+                "Synthesize findings that answer the research question. Copy Evidence IDs exactly "
+                "(for example ref_0001); omit the display label 'Evidence ID: '. "
                 "If no supplied passage answers the question, findings may be empty; explain the "
                 "missing evidence in unresolved_questions. Never invent placeholder IDs.\n\n"
                 f"{_GROUNDING_RULES}"

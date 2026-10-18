@@ -241,7 +241,20 @@ def test_llm_rag_retrieves_only_original_question_and_counts_embedding_metadata(
     assert trace.cited_evidence_ids == [environment.evidence.id]
     assert trace.retrieved_evidence[0].source_file == "solar-storage.md"
     assert trace.retrieved_evidence[0].text == "The solar capacity is 12 MW."
-    assert environment.evidence.id in provider.calls[0][1][-1].content
+    assert "Evidence ID: ref_0001" in provider.calls[0][1][-1].content
+    assert environment.evidence.id not in provider.calls[0][1][-1].content
+
+
+@pytest.mark.parametrize("variant", [WorkflowVariant.LLM_RAG, WorkflowVariant.SINGLE_AGENT_RAG])
+def test_simple_rag_restores_short_labels_to_persisted_evidence_ids(environment, case, variant):
+    responses = [QueryPlan(queries=[case.question])] if variant == WorkflowVariant.SINGLE_AGENT_RAG else []
+    responses.append(GroundedAnswer(answer_markdown="12 MW [[cite:ref_0001]]", cited_evidence_ids=["ref_0001"]))
+    provider = RecordingChat(structured_responses=responses)
+    cls = LlmRagWorkflow if variant == WorkflowVariant.LLM_RAG else SingleAgentRagWorkflow
+    trace = cls(provider, RecordingRetriever([environment.evidence]), environment.mapping).run(case.id, case.question, case.source_files)
+    assert trace.status == "success"
+    assert trace.cited_evidence_ids == [environment.evidence.id]
+    assert trace.answer == f"12 MW [[cite:{environment.evidence.id}]]"
 
 
 def test_single_agent_expands_then_fuses_and_answers_once(environment, case):
