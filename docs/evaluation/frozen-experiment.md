@@ -53,6 +53,14 @@ block-verdict agreement against the existing **AI** source labels, with valid
 and planned denominators. This gate checks operability, not human agreement or
 proof of semantic reliability. No test question is generated for calibration.
 
+The [recorded calibration](frozen-judge-calibration.json), executed at clean
+commit `38da971`, produced **19/20 valid judgments** and retained one format
+error with both attempts. Key-point agreement with the AI source labels was
+31/34 valid points (36 planned); block-verdict agreement was 64/80 valid blocks
+(89 planned). These are conditional AI agreement counts, not human reliability.
+All 21 physical requests and complete token usage are retained. Account prices
+are unknown, so their monetary total remains null. The structural gate passes.
+
 The primary analysis requires all three generation repeats. It scores executed
 failures as zero, while missing/error judgments remain missing. It averages
 repeats within each question before paired comparisons and reports whole-matrix
