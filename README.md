@@ -192,8 +192,12 @@ remains blocked until the experiment runner and identities are frozen.
 
 The [frozen experiment runner](docs/evaluation/frozen-experiment.md) now implements
 repeat-specific identities, durable interruption handling, separate index/answer/
-judge ledgers and the prespecified paired family analysis. It requires a committed
-freeze and development-only judge calibration before paid held-out generation.
+judge ledgers and the prespecified paired family analysis. The
+[freeze record](benchmarks/real-v1/frozen-experiment.json) binds 257 input files;
+development-only test-schema calibration passed 19/20 judgments, retaining the
+one format error and all 21 requests. Held-out generation/judging has not started.
+Validate with `python scripts/frozen_experiment.py verify`; generation is opt-in
+through `--execute` under that committed identity.
 
 ## Privacy and development
 

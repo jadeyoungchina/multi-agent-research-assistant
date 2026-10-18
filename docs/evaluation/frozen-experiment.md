@@ -1,7 +1,10 @@
 # Frozen held-out experiment runner
 
-The runner, held-out judge and primary analysis are implemented. The calibration
-record and committed freeze are required before paid held-out execution. The
+The runner, held-out judge and primary analysis are implemented and calibrated.
+The [freeze record](../../benchmarks/real-v1/frozen-experiment.json) has identity
+`0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270`.
+It binds 257 input files and the selected configuration before any held-out
+generation or judging. Commit this record before invoking paid execution; the
 development CLI continues to reject paid test runs.
 
 ## Identity and execution

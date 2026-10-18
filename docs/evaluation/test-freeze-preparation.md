@@ -1,10 +1,16 @@
 # Held-out test preparation after the final development regression
 
-**The experiment is not frozen and no held-out answer has been generated or
-judged.** [test-preparation.json](../../benchmarks/real-v1/test-preparation.json)
+This is the historical preparation record: at recording time, **the experiment
+was not frozen and no held-out answer had been generated or judged**.
+The subsequent [freeze record](../../benchmarks/real-v1/frozen-experiment.json)
+now binds the implementation and design; see the [runner documentation](frozen-experiment.md)
+for current commands. Held-out generation and judging have not started.
+[test-preparation.json](../../benchmarks/real-v1/test-preparation.json)
 records the selected generation configuration, proposed analysis and review
 sample before any test outputs. The paid development CLI still rejects test
-execution. This preparation record does not unlock it.
+execution. This preparation record does not unlock it; the separate committed
+freeze is required. Its verification command checks this historical preparation
+status rather than the current experiment's execution state.
 
 ## Choices recorded now
 
