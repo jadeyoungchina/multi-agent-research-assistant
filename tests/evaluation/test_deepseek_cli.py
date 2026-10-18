@@ -39,6 +39,18 @@ def test_recording_only_account_mode_needs_no_price_and_keeps_token_usage(tmp_pa
     assert summary["total_cost_cny"] is None
 
 
+def test_long_judge_output_needs_explicit_cap_and_is_still_bounded(tmp_path):
+    ledger = BudgetLedger(tmp_path / "ledger.db")
+    ledger.set_enforcement(False)
+    bridge = BudgetBridge(ledger, None, mode="account", max_output=6144)
+    bridge.handle("reserve", {"payload": payload() | {"max_tokens": 6144}})
+    with pytest.raises(ValueError):
+        BudgetBridge(ledger, None, mode="account", max_output=8193)
+    default = BudgetBridge(ledger, None, mode="account")
+    with pytest.raises(BudgetError):
+        default.handle("reserve", {"payload": payload() | {"max_tokens": 6144}})
+
+
 def test_prices_must_be_explicit_current_account_cny_records(tmp_path):
     path = tmp_path / "pricing.json"
     today = datetime.now(timezone(timedelta(hours=8))).date()

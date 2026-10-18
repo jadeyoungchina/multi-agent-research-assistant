@@ -70,6 +70,7 @@ def _parser() -> argparse.ArgumentParser:
     selection.add_argument("--limit", type=int, help="first N cases; paid runs default to 5")
     selection.add_argument("--case-ids", help="explicit comma-separated case IDs, selected before any paid requests")
     parser.add_argument("--order-seed", type=int, help="reproducible serial order with balanced variant positions")
+    parser.add_argument("--capture-responses", action="store_true", help="save generated text/schema diagnostics locally; public real corpus only")
     parser.add_argument("--ledger", type=Path, default=Path("artifacts/evaluation/budget/ledger.sqlite"))
     parser.add_argument("--budget-cny", default="100")
     parser.add_argument("--stop-cny", default="90")
@@ -87,8 +88,11 @@ def _build_workflows(
     variants: list[WorkflowVariant], resources: ExitStack,
     ledger: BudgetLedger | None = None,
     candidate_source_files: list[str] | None = None,
+    response_observer=None,
 ) -> dict[WorkflowVariant, EvaluationWorkflow]:
     chat = build_demo_fake_provider() if settings.chat_provider == "fake" else build_chat_provider(settings, ledger=ledger, role="evaluation")
+    if response_observer is not None:
+        chat.response_observer = response_observer
     resources.callback(_close_providers, chat)
     embeddings = build_embedding_provider(settings, ledger=ledger, role="corpus_and_query")
     resources.callback(_close_providers, embeddings)
@@ -139,6 +143,7 @@ def _journal(args, settings, cases):
         "corpus_manifest_sha256": sha256(args.real_manifest.read_bytes()).hexdigest() if getattr(args, "real_manifest", None) else None,
         "ai_reference_review_sha256": sha256(args.ai_reference_review.read_bytes()).hexdigest() if getattr(args, "ai_reference_review", None) else None,
         "order_seed": args.order_seed,
+        "capture_responses": args.capture_responses,
         "execution_order": [f"{case_id}/{variant.value}" for case_id, variant in execution_order(cases, args.variants, args.order_seed)],
     }
     # Changes in tracked or untracked source are part of the resume identity.
@@ -190,6 +195,8 @@ def main(argv: list[str] | None = None) -> int:
         paid = args.provider != "fake" or embedding != "fake"
         args.candidate_source_files = None
         args.ai_reference_review = None
+        if args.capture_responses and (not paid or not args.real_manifest):
+            raise ValueError("response capture requires a paid public-corpus evaluation")
         if args.limit is not None and args.limit <= 0:
             raise ValueError("limit must be positive")
         if args.chat_model and args.provider == "fake":
@@ -238,6 +245,10 @@ def main(argv: list[str] | None = None) -> int:
             ledger = BudgetLedger(args.ledger, total_cny=args.budget_cny, stop_cny=args.stop_cny)
             ledger.set_enforcement(args.enforce_budget)
         cached, on_trace = _journal(args, settings, cases) if paid or args.resume else ({}, None)
+        def capture_response(receipt):
+            with (args.output_dir / "provider-responses.jsonl").open("a", encoding="utf-8") as output:
+                output.write(json.dumps(receipt, ensure_ascii=False) + "\n")
+                output.flush()
         # Disposable database/uploads prevent benchmark runs from touching application data.
         with TemporaryDirectory(prefix="research-evaluation-") as temporary, ExitStack() as resources:
             root = Path(temporary)
@@ -245,7 +256,8 @@ def main(argv: list[str] | None = None) -> int:
                 "data_dir": root, "upload_dir": root / "uploads", "database_path": root / "evaluation.db",
             })
             workflows = _build_workflows(settings, cases, args.corpus, args.variants, resources, ledger,
-                                         candidate_source_files=args.candidate_source_files)
+                                         candidate_source_files=args.candidate_source_files,
+                                         response_observer=capture_response if args.capture_responses else None)
             report = evaluate_benchmark(
                 cases, workflows, corpus_dir=args.corpus, settings=settings, dataset_path=args.dataset,
                 on_trace=on_trace, resume_traces=cached,

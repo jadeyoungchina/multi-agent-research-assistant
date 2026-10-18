@@ -7,10 +7,10 @@ AI review; human review remains pending. The 40 test questions will not be run.
 | Case | Type | Language | Family |
 | --- | --- | --- | --- |
 | REAL-DEV-001 | Single-document fact | Chinese | Pydantic coercion |
-| REAL-DEV-007 | Cross-document synthesis | English | Pydantic validators |
+| REAL-DEV-007 | Cross-document synthesis | English | Pydantic fields and aliases |
 | REAL-DEV-013 | Conditions, limits and numbers | Chinese | FastAPI dependencies |
-| REAL-DEV-019 | Version and apparent conflict | English | FastAPI response models |
-| REAL-DEV-020 | Insufficient corpus evidence | English | FastAPI response models |
+| REAL-DEV-019 | Version and apparent conflict | English | FastAPI errors |
+| REAL-DEV-020 | Insufficient corpus evidence | English | FastAPI errors |
 
 All RAG variants search the same eight-document development pool, independent of
 gold sources. Serial execution uses seed `20261018`: shuffle case blocks and a

@@ -2,6 +2,7 @@ from typing import Any
 
 from app.agents.prompts import writer_messages
 from app.domain.documents import EvidenceChunk
+from app.domain.errors import CitationError
 from app.domain.providers import ChatProvider
 from app.domain.research import Critique, DraftReport, ResearchSynthesis
 from app.workflow.citations import validate_draft_citations
@@ -33,8 +34,14 @@ class WriterAgent:
             writer_messages(state["question"], synthesis, critique, evidence),
             DraftReport,
         )
-        draft = _preserve_insufficiency(draft, critique)
-        validate_draft_citations(draft, evidence)
+        try:
+            draft = _preserve_insufficiency(draft, critique)
+            validate_draft_citations(draft, evidence)
+        except CitationError as error:
+            # A completed model call still costs tokens when its citations fail.
+            # Persist usage through the failed checkpoint without committing a draft.
+            error.metadata = metadata
+            raise
 
         provider_metrics = list(state.get("provider_metrics", []))
         provider_metrics.append(metadata.model_dump(mode="json"))

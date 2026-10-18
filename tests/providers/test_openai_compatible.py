@@ -19,6 +19,20 @@ VALID_CRITIQUE = (
 )
 
 
+def test_opt_in_receipts_capture_invalid_output_without_headers_or_exception_inputs():
+    receipts = []
+    completions = SequencedCompletions([chat_response('{"sufficient":"wrong"}')])
+    provider = OpenAICompatibleChatProvider(chat_client(completions), "dashscope", "qwen3.7-flash", max_retries=0)
+    provider.response_observer = receipts.append
+    with pytest.raises(ProviderError):
+        provider.generate_structured([ChatMessage(role="user", content="public corpus")], Critique)
+    assert len(receipts) == 1
+    assert receipts[0]["schema"] == "Critique"
+    assert receipts[0]["validation_issues"]
+    assert all(set(item) == {"loc", "type"} for item in receipts[0]["validation_issues"])
+    assert set(receipts[0]) == {"attempt_id", "schema", "content", "finish_reason", "validation_issues"}
+
+
 def chat_response(content: Any, *, model: str = "qwen3.7-flash") -> SimpleNamespace:
     return SimpleNamespace(
         choices=[SimpleNamespace(message=SimpleNamespace(content=content))],

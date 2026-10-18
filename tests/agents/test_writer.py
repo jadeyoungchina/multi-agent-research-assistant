@@ -82,8 +82,10 @@ def test_writer_requires_every_declared_finding_id_in_markdown() -> None:
         structured_responses=[draft_with(["ev_good"], "Finding without a citation")]
     )
 
-    with pytest.raises(CitationError, match="missing_citation_token"):
+    with pytest.raises(CitationError, match="missing_citation_token") as caught:
         WriterAgent(provider)(state_with_evidence())
+    assert caught.value.metadata.provider == "fake"
+    assert caught.value.metadata.attempt_count == 1
 
 
 def test_writer_adds_limitation_when_critique_remains_insufficient() -> None:

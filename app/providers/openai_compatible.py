@@ -40,6 +40,9 @@ class OpenAICompatibleChatProvider:
         self.client, self.provider_name, self.model = client, provider_name, model
         self.max_retries, self.max_output_tokens = max_retries, max_output_tokens
         self.ledger, self.role = ledger, role
+        # Explicit diagnostic opt-in for public evaluation corpora only. Receipts
+        # contain generated text and safe schema errors, never headers or Settings.
+        self.response_observer = None
 
     def _payload(self, messages: Sequence[ChatMessage], *, json_mode: bool) -> dict:
         payload: dict[str, Any] = {
@@ -80,6 +83,20 @@ class OpenAICompatibleChatProvider:
                 accounting.record(identifier, getattr(response, "usage", None))
                 received = True
                 content = response.choices[0].message.content
+                if self.response_observer is not None:
+                    issues = []
+                    if schema is not None and isinstance(content, str):
+                        try:
+                            schema.model_validate_json(content)
+                        except ValidationError as validation:
+                            issues = [{"loc": list(item["loc"]), "type": item["type"]}
+                                      for item in validation.errors(include_input=False, include_context=False, include_url=False)]
+                    self.response_observer({
+                        "attempt_id": identifier, "schema": schema.__name__ if schema else None,
+                        "content": content if isinstance(content, str) else None,
+                        "finish_reason": getattr(response.choices[0], "finish_reason", None),
+                        "validation_issues": issues,
+                    })
                 if not isinstance(content, str):
                     raise TypeError("chat response content must be text")
                 if getattr(response.choices[0], "finish_reason", None) == "length":

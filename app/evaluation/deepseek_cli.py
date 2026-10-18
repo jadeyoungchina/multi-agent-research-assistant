@@ -86,7 +86,7 @@ def response_usage(body: str, content_type: str) -> tuple[dict | None, bool]:
 class BudgetBridge:
     def __init__(self, ledger: BudgetLedger, price: Price | None, *, mode: str,
                  max_requests: int = 1, max_output: int = 512, task_cap_cny: str = "0.5"):
-        if not 1 <= max_requests <= 3 or not 1 <= max_output <= 2048:
+        if not 1 <= max_requests <= 3 or not 1 <= max_output <= 8192:
             raise ValueError("CLI limits out of range")
         self.ledger, self.price = ledger, price
         self.accounting = RequestAccounting(ledger, "deepseek-account" if mode == "account" else "deepseek",
