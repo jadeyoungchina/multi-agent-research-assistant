@@ -78,10 +78,15 @@ def test_checkpoint_logs_structured_safe_metadata(
             "model": "fake-chat",
             "latency_ms": 7,
             "retries": 1,
+            "request_kind": "chat",
+            "attempt_count": 1,
+            "attempt_ids": [],
+            "usage_complete": True,
             "usage": {
                 "prompt_tokens": 3,
                 "completion_tokens": 2,
                 "total_tokens": 5,
+                "cached_input_tokens": 0,
             },
             "secret": "must-not-be-logged",
         }
@@ -135,10 +140,15 @@ def test_completed_stage_logs_updated_safe_provider_metrics(
         "model": "fake-chat",
         "latency_ms": 9,
         "retries": 0,
+        "request_kind": "chat",
+        "attempt_count": 1,
+        "attempt_ids": [],
+        "usage_complete": True,
         "usage": {
             "prompt_tokens": 4,
             "completion_tokens": 3,
             "total_tokens": 7,
+            "cached_input_tokens": 0,
         },
     }
 

@@ -154,10 +154,15 @@ def test_critic_calls_the_provider_once_and_appends_its_metadata_once() -> None:
             "model": "fake-chat",
             "latency_ms": update["provider_metrics"][1]["latency_ms"],
             "retries": 0,
+            "request_kind": "chat",
+            "attempt_count": 1,
+            "attempt_ids": [],
+            "usage_complete": True,
             "usage": {
                 "prompt_tokens": 0,
                 "completion_tokens": 0,
                 "total_tokens": 0,
+                "cached_input_tokens": 0,
             },
         },
     ]
