@@ -60,3 +60,23 @@ Before execution, select question 019, multi-agent only, for one further live
 confirmation with the same model, cap, retry/repair limits and seed in a fresh
 `enum-confirmation` directory and separate ledger. Preserve its outcome even if
 it fails; do not pool it with the 80-unit report or the four-unit v7 confirmation.
+
+The [separate v8 confirmation](enum-confirmation.json) succeeded for question 019
+at clean commit `4553429`, retaining the original 4096-token cap and bounded
+repair/retrieval limits. This is **1/1 engineering confirmation**, not a rerun
+of the full development matrix. All researcher responses used supplied labels,
+and final inline citations passed the shared validator. The original v6 and v7
+failures remain published. It still used two critic loops and about 75 seconds;
+the ID constraint does not establish efficient retrieval or semantic entailment.
+
+Validation: 626 offline tests pass, one live test deselected. The 120-trace fake
+release gate, real-document fake pipeline and both original public packets pass.
+Recheck the separate confirmations and their physical receipts with:
+
+```powershell
+.venv/Scripts/python.exe scripts/verify_dev_confirmation.py
+```
+
+Before experiment freeze, repeat development validation with the final common
+rules and settle the remaining output-length/retrieval limits. No held-out run
+or frozen primary comparison is claimed here.

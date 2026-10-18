@@ -146,6 +146,10 @@ Fake benchmark 不支持真实模型质量、速度提升或成本节省的结�
 说明正确性、引用支持、耗时和失败之间的取舍。保留测试集尚未运行。
 使用 `python scripts/verify_full_dev.py` 可离线复算公开分数、哈希和用量。
 
+[后续修复与独立确认](docs/evaluation/post-dev-repairs.md)统一正文引用校验并加入
+请求级证据 ID 枚举。v7 的 3/4 确认结果和 v8 的单题成功均单列保留，
+未覆盖原始开发集数据；正式冻结前仍需按最终规则完成开发回归。
+
 ## 隐私与开发
 
 默认上传目录为 `data/uploads`，数据库为 `data/research_assistant.db`。

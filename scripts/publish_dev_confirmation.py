@@ -1,5 +1,6 @@
 """Publish four targeted engineering confirmations without replacing v6 results."""
 
+import argparse
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -15,15 +16,20 @@ from scripts.publish_full_dev import citation_diagnostic
 
 
 def main():
-    root=ROOT/"artifacts/evaluation/real-v1-dev-followup"
-    reports={name:EvaluationReport.model_validate_json((root/name/"results.json").read_text("utf-8")) for name in ("multi","baselines")}
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--enum",action="store_true",help="publish the separate v8 single-unit confirmation")
+    args=parser.parse_args()
+    root=ROOT/("artifacts/evaluation/real-v1-dev-enum" if args.enum else "artifacts/evaluation/real-v1-dev-followup")
+    reports={name:EvaluationReport.model_validate_json((root/name/"results.json").read_text("utf-8")) for name in (("generation",) if args.enum else ("multi","baselines"))}
     traces=[trace for report in reports.values() for trace in report.traces]
     expected={("REAL-DEV-019","multi_agent_rag"),("REAL-DEV-020","multi_agent_rag"),
               ("REAL-DEV-007","llm_rag"),("REAL-DEV-007","single_agent_rag")}
-    if len(traces)!=4 or {(t.case_id,t.variant.value) for t in traces}!=expected:
+    if args.enum: expected={("REAL-DEV-019","multi_agent_rag")}
+    if len(traces)!=len(expected) or {(t.case_id,t.variant.value) for t in traces}!=expected:
         raise ValueError("targeted matrix differs")
-    if any(report.metadata.git_dirty or report.metadata.prompt_version!="evaluation-v7" for report in reports.values()):
-        raise ValueError("confirmation must use clean v7 source")
+    version="evaluation-v8" if args.enum else "evaluation-v7"
+    if any(report.metadata.git_dirty or report.metadata.prompt_version!=version for report in reports.values()):
+        raise ValueError("confirmation must use the selected clean source")
     if len({report.metadata.git_commit for report in reports.values()})!=1:
         raise ValueError("confirmation source commits differ")
     rows=BudgetLedger(root/"ledger.sqlite").summary()["attempts"]
@@ -42,11 +48,11 @@ def main():
             "checks":checks,"metadata":{name:report.metadata.model_dump(mode="json") for name,report in reports.items()},
             "traces":[trace.model_dump(mode="json") for trace in traces],"request_receipts":receipts,"usage":usage(rows),
             "limits":["The original 80-unit v6 report, three failures and citation-format diagnostics are unchanged.",
-                      "Four selected units cannot establish general reliability, semantic superiority or held-out quality.",
+                      "Selected engineering units cannot establish general reliability, semantic superiority or held-out quality.",
                       "The 4096-token cap remains; truncation is still an explicit failure mode."]}
-    path=ROOT/"docs/evaluation/post-dev-confirmation.json"
+    path=ROOT/"docs/evaluation"/("enum-confirmation.json" if args.enum else "post-dev-confirmation.json")
     path.write_text(json.dumps(packet,ensure_ascii=False,indent=2)+"\n",encoding="utf-8",newline="\n")
-    print(f"Published {packet['successful_units']}/4 successful targeted units; {len(receipts)} physical receipts.")
+    print(f"Published {packet['successful_units']}/{len(expected)} successful targeted units; {len(receipts)} physical receipts.")
 
 
 if __name__=="__main__":

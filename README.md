@@ -171,6 +171,12 @@ support, latency and physical request usage. It also exposes previously uneven
 citation-format validation across workflows. This remains development evidence;
 the held-out comparison has not run. Verify with `python scripts/verify_full_dev.py`.
 
+[Post-development repairs](docs/evaluation/post-dev-repairs.md) add uniform inline
+citation validation and request-specific evidence-ID schemas. Separate targeted
+confirmations retain v7's 3/4 outcome and v8's successful single-case check; they
+do not replace the original run. Full validation with the final rules precedes
+experiment freeze and held-out testing.
+
 ## Privacy and development
 
 Uploads default to `data/uploads`; SQLite defaults to `data/research_assistant.db`.
