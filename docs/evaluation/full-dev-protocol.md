@@ -26,6 +26,14 @@ without copying agent names, completion criteria or revision bookkeeping.
 Other agent behavior, retrieval limits and model settings remain as in the pilot.
 No stopping rule uses gold labels or expected insufficiency.
 
+Before the full run, two saved pilot answers exercised the new judge through
+the real CLI. Both passed structural validation. Source inspection found one
+pure missing-evidence summary mislabeled as factual because it carried a
+citation. The rubric now explicitly explains that citations do not turn scoped
+limitations into domain facts, including in mixed blocks. Original calibration
+responses and this change precede full development generation; their requests
+are preparation costs, separate from the full run.
+
 ## Scoring, fixed before generation
 
 The original `dev.jsonl`, its AI reference audit, and historical pilot scores
