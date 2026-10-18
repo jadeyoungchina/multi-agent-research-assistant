@@ -100,6 +100,9 @@ class BudgetLedger:
             raise ValueError("require 0 < stop <= total <= 100 CNY")
         with self._transaction() as connection:
             connection.execute("CREATE TABLE IF NOT EXISTS policy (id INTEGER PRIMARY KEY CHECK(id=1), total INTEGER, stop INTEGER)")
+            if "enforced" not in {row[1] for row in connection.execute("PRAGMA table_info(policy)")}:
+                connection.execute("ALTER TABLE policy ADD COLUMN enforced INTEGER NOT NULL DEFAULT 1")
+            connection.execute("CREATE TABLE IF NOT EXISTS policy_changes (at TEXT, enforced INTEGER, reason TEXT)")
             connection.execute("""CREATE TABLE IF NOT EXISTS attempts (
                 id TEXT PRIMARY KEY, created_at TEXT NOT NULL,
                 provider TEXT NOT NULL, model TEXT NOT NULL, kind TEXT NOT NULL, role TEXT NOT NULL,
@@ -107,7 +110,7 @@ class BudgetLedger:
                 reserved INTEGER NOT NULL, charged INTEGER NOT NULL DEFAULT 0,
                 state TEXT NOT NULL, outcome TEXT NOT NULL,
                 input_tokens INTEGER, output_tokens INTEGER, cached_tokens INTEGER)""")
-            connection.execute("INSERT OR IGNORE INTO policy VALUES (1, ?, ?)", (total, stop))
+            connection.execute("INSERT OR IGNORE INTO policy (id,total,stop) VALUES (1, ?, ?)", (total, stop))
             stored = connection.execute("SELECT total, stop FROM policy WHERE id=1").fetchone()
             if tuple(stored) != (total, stop):
                 raise BudgetError("budget_policy_mismatch", "reuse the ledger's original budget policy")
@@ -133,28 +136,48 @@ class BudgetLedger:
             FROM attempts""").fetchone()
         return row[0], row[1]
 
+    def is_enforced(self) -> bool:
+        with self._transaction() as connection:
+            return bool(connection.execute("SELECT enforced FROM policy WHERE id=1").fetchone()[0])
+
+    def set_enforcement(self, enabled: bool, reason: str = "explicit_operator_setting") -> None:
+        """Explicit, auditable change; recording-only mode may admit unpriced usage."""
+        _label(reason)
+        with self._transaction() as connection:
+            if enabled and connection.execute("SELECT 1 FROM attempts WHERE price_json='null' LIMIT 1").fetchone():
+                raise BudgetError("budget_unpriced_model", "unpriced usage must be reconciled before enabling a monetary cap")
+            current = bool(connection.execute("SELECT enforced FROM policy WHERE id=1").fetchone()[0])
+            if current != enabled:
+                connection.execute("UPDATE policy SET enforced=? WHERE id=1", (int(enabled),))
+                connection.execute("INSERT INTO policy_changes VALUES (?,?,?)",
+                                   (datetime.now(timezone.utc).isoformat(), int(enabled), reason))
+
     def reserve(self, *, provider: str, model: str, kind: str, role: str,
-                request_hash: str, price: Price, max_input: int, max_output: int) -> str:
+                request_hash: str, price: Price | None, max_input: int, max_output: int) -> str:
         for label in (provider, model, kind, role):
             _label(label)
         if not re.fullmatch(r"[0-9a-f]{64}", request_hash):
             raise ValueError("request hash must be SHA-256")
-        if _count(max_input) > price.max_input_tokens:
+        if _count(max_input) > (price.max_input_tokens if price is not None else 1_000_000):
             raise BudgetError("budget_input_limit", "request exceeds the priced input tier")
-        reserved = price.cost(max_input, _count(max_output))
+        _count(max_output)
+        reserved = price.cost(max_input, max_output) if price is not None else 0
         identifier = uuid4().hex
         with self._transaction() as connection:
-            if connection.execute("SELECT 1 FROM attempts WHERE state='overrun' LIMIT 1").fetchone():
+            enforced = bool(connection.execute("SELECT enforced FROM policy WHERE id=1").fetchone()[0])
+            if enforced and price is None:
+                raise BudgetError("budget_unpriced_model", "price is required when a monetary cap is enabled")
+            if enforced and connection.execute("SELECT 1 FROM attempts WHERE state='overrun' LIMIT 1").fetchone():
                 raise BudgetError("budget_overrun", "provider usage exceeded its reservation; reconcile before continuing")
             charged, pending = self._exposure(connection)
             stop = connection.execute("SELECT stop FROM policy WHERE id=1").fetchone()[0]
-            if charged + pending >= stop or charged + pending + reserved > stop:
+            if enforced and (charged + pending >= stop or charged + pending + reserved > stop):
                 raise BudgetError("budget_exhausted", "budget cannot admit another request")
             connection.execute("""INSERT INTO attempts
                 (id,created_at,provider,model,kind,role,request_hash,price_json,reserved,state,outcome)
                 VALUES (?,?,?,?,?,?,?,?,?,'reserved','in_flight')""", (
                     identifier, datetime.now(timezone.utc).isoformat(), provider, model, kind, role,
-                    request_hash, json.dumps(price.__dict__, sort_keys=True), reserved,
+                    request_hash, json.dumps(price.__dict__ if price is not None else None, sort_keys=True), reserved,
                 ))
         return identifier
 
@@ -165,10 +188,15 @@ class BudgetLedger:
             row = connection.execute("SELECT * FROM attempts WHERE id=?", (identifier,)).fetchone()
             if row is None or row["state"] not in ("reserved", "unknown"):
                 raise BudgetError("budget_attempt_closed", "attempt is absent or already settled")
-            cost = Price(**json.loads(row["price_json"])).cost(input_tokens, output_tokens, cached_tokens)
+            for count in (input_tokens, output_tokens, cached_tokens):
+                _count(count)
+            if cached_tokens > input_tokens:
+                raise ValueError("cached tokens exceed input")
+            price_data = json.loads(row["price_json"])
+            cost = Price(**price_data).cost(input_tokens, output_tokens, cached_tokens) if price_data is not None else 0
             # Actual provider usage is authoritative even when it exceeds our bound.
             # Keep the overrun visible; all subsequent admissions stop.
-            state = "overrun" if cost > row["reserved"] else "settled"
+            state = "unpriced" if price_data is None else "overrun" if cost > row["reserved"] else "settled"
             connection.execute("""UPDATE attempts SET state=?,charged=?,input_tokens=?,
                 output_tokens=?,cached_tokens=?,outcome=? WHERE id=?""",
                 (state, cost, input_tokens, output_tokens, cached_tokens, outcome, identifier))
@@ -178,6 +206,17 @@ class BudgetLedger:
         with self._transaction() as connection:
             connection.execute("UPDATE attempts SET state='unknown',outcome=? WHERE id=? AND state='reserved'",
                                (outcome, identifier))
+
+    def partial_usage(self, identifier: str, *, input_tokens: int | None,
+                      output_tokens: int | None, cached_tokens: int | None) -> None:
+        for value in (input_tokens, output_tokens, cached_tokens):
+            if value is not None:
+                _count(value)
+        with self._transaction() as connection:
+            connection.execute("""UPDATE attempts SET state='unknown',outcome='partial_usage',
+                input_tokens=?,output_tokens=?,cached_tokens=?
+                WHERE id=? AND state IN ('reserved','unknown')""",
+                (input_tokens, output_tokens, cached_tokens, identifier))
 
     def annotate(self, identifier: str, outcome: str) -> None:
         with self._transaction() as connection:
@@ -189,9 +228,13 @@ class BudgetLedger:
             policy = connection.execute("SELECT * FROM policy WHERE id=1").fetchone()
             rows = connection.execute("SELECT * FROM attempts ORDER BY created_at,id").fetchall()
             overrun = any(row["state"] == "overrun" for row in rows)
+            unpriced = sum(row["price_json"] == "null" for row in rows)
             return {
                 "currency": "CNY", "total_cny": cny(policy["total"]), "stop_cny": cny(policy["stop"]),
+                "monetary_cap_enforced": bool(policy["enforced"]),
+                "unpriced_attempt_count": unpriced, "total_cost_cny": None if unpriced or pending else cny(charged),
                 "charged_cny": cny(charged), "reserved_or_unknown_cny": cny(pending),
-                "exposure_cny": cny(charged + pending), "reestimate_required": charged + pending >= amount("70"),
+                "exposure_cny": cny(charged + pending), "reestimate_required": bool(policy["enforced"]) and charged + pending >= amount("70"),
                 "overrun_detected": overrun, "attempts": [dict(row) for row in rows],
+                "policy_changes": [dict(row) for row in connection.execute("SELECT * FROM policy_changes ORDER BY at")],
             }

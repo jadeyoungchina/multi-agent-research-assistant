@@ -95,3 +95,20 @@ def test_actual_overrun_stays_visible_and_blocks_admissions(tmp_path):
     assert ledger.summary()["overrun_detected"]
     with pytest.raises(BudgetError):
         reserve(ledger)
+
+
+def test_recording_only_mode_preserves_unpriced_usage_without_inventing_cost(tmp_path):
+    ledger = BudgetLedger(tmp_path / "ledger.db", total_cny="0.001", stop_cny="0.001")
+    ledger.set_enforcement(False, "user_removed_monetary_cap")
+    identifier = reserve(ledger, provider="deepseek-account", price=None)
+    ledger.settle(identifier, input_tokens=10000, output_tokens=2000)
+    priced = reserve(ledger)
+    ledger.settle(priced, input_tokens=1000, output_tokens=1000)
+    summary = ledger.summary()
+    assert not summary["monetary_cap_enforced"]
+    assert summary["total_cost_cny"] is None and summary["unpriced_attempt_count"] == 1
+    assert summary["attempts"][0]["input_tokens"] == 10000
+    assert summary["attempts"][0]["state"] == "unpriced"
+    assert summary["policy_changes"][0]["reason"] == "user_removed_monetary_cap"
+    with pytest.raises(BudgetError):
+        ledger.set_enforcement(True)

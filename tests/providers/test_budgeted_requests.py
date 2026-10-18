@@ -149,3 +149,28 @@ def test_wrong_region_endpoint_cannot_use_beijing_prices(tmp_path):
     settings = Settings(_env_file=None, dashscope_api_key="local-secret", dashscope_base_url="https://other.example/v1")
     with pytest.raises(BudgetError):
         build_chat_provider(settings, ledger=BudgetLedger(tmp_path / "ledger.db"))
+
+
+def test_partial_usage_retains_known_input_without_releasing_reservation(tmp_path, monkeypatch):
+    partial = response("ok")
+    partial.usage = NS(prompt_tokens=123)
+    chat, _, ledger = provider(tmp_path, [partial], monkeypatch)
+    _, metadata = chat.generate(MESSAGES)
+    assert metadata.usage.prompt_tokens == 123 and not metadata.usage_complete
+    attempt = ledger.summary()["attempts"][0]
+    assert attempt["input_tokens"] == 123 and attempt["output_tokens"] is None
+    assert attempt["state"] == "unknown" and ledger.summary()["total_cost_cny"] is None
+
+
+def test_observed_usage_survives_a_ledger_write_failure(tmp_path, monkeypatch):
+    from app.providers.accounting import RequestAccounting
+    ledger = BudgetLedger(tmp_path / "ledger.db")
+    accounting = RequestAccounting(ledger, "deepseek", "deepseek-flash", "chat", "test")
+    identifier = accounting.reserve({"model": "deepseek-flash", "messages": []}, 100)
+    def fail(*args, **kwargs):
+        raise OSError("simulated storage failure")
+    monkeypatch.setattr(ledger, "settle", fail)
+    with pytest.raises(OSError):
+        accounting.record(identifier, NS(prompt_tokens=10, completion_tokens=20))
+    assert accounting.usage.prompt_tokens == 10 and accounting.usage.completion_tokens == 20
+    assert ledger.summary()["attempts"][0]["state"] == "reserved"

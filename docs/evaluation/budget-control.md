@@ -1,10 +1,17 @@
-**Shared request budget**
+**Shared usage tracking and optional monetary limits**
+
+The current evaluation and helper-task commands record usage without enforcing a
+monetary cap. This follows the user's 2026-10-18 instruction to remove the earlier
+CNY 100 ceiling. Add `--enforce-budget` only when a monetary limit is wanted.
+Policy changes are recorded in the ledger. Unknown account prices do not block
+recording-only CLI tasks: token usage is retained and total cost is `null`.
 
 `app/evaluation/budget.py` implements a local SQLite ledger shared by independent
 provider calls and CLI supervisors. Amounts are integer nano-CNY. Its initial
 policy is persisted: reopening the same file cannot silently increase the limit.
-The default total is CNY 100, with admission stopping at CNY 90 to retain margin
-for uncertain charges. A lower budget can be selected when creating a ledger.
+With enforcement enabled, the initial total is CNY 100, with admission stopping
+at CNY 90. A lower limit can be selected when creating a ledger. In recording-only
+mode these stored thresholds are inactive.
 
 Before network I/O, reserve the full uncached input bound and maximum output.
 The admission transaction includes all completed charges, in-flight reservations
@@ -12,7 +19,9 @@ and unresolved charges from previous processes. It does not expire reservations.
 Each physical attempt has its own row. Record response usage before parsing the
 answer so that invalid JSON still counts. A timeout with no trustworthy usage
 retains its reservation. Actual usage exceeding the bound is recorded and stops
-further admission, including when the overall cap has not yet been reached.
+further admission when enforcement is enabled. Partial usage preserves known
+token fields and marks missing fields as unknown; it does not erase known input
+simply because output usage is absent.
 
 The ledger stores request hashes, provider/model/kind/role labels, price versions
 and token counts. It never stores prompts or authentication headers. Keep the
@@ -57,3 +66,8 @@ The ordinary application factory also disables SDK retries and caps output, but
 the research web application does not attach this experimental shared ledger by
 default. The ledger constrains callers that explicitly use it; merely creating a
 database does not constrain a process that bypasses it.
+
+For text-only helper tasks, the [DeepSeek CLI supervisor](deepseek-cli.md) uses
+the same usage ledger and the existing account login. Output, retries, duration
+and request count remain bounded to make each helper task predictable; these
+operational limits do not impose a monetary budget.

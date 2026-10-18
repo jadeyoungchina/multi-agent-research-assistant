@@ -22,6 +22,7 @@ source cells, and file mappings are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTI
 - Upload/selection UI, report rendering, source excerpts, SSE progress, and polling fallback.
 - DashScope and OpenAI compatible providers; deterministic fake chat and embeddings for offline demonstration and CI.
 - A synthetic [30-case benchmark](benchmarks/cases.jsonl), four workflow variants, and JSON/CSV/Markdown reports.
+- [Per-request usage tracking and evaluation recovery](docs/evaluation/budget-control.md), with [DeepSeek CLI helper tasks](docs/evaluation/deepseek-cli.md).
 
 The application has no internet search, OCR, authentication, multi-tenant access
 control, or distributed queue. Citation validation checks source identity and

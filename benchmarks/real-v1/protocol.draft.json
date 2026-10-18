@@ -7,7 +7,10 @@
   "primary_comparison": {
     "treatment": "multi_agent_rag",
     "control": "single_agent_rag",
-    "outcomes": ["answer_correctness", "incremental_cost_cny"]
+    "outcomes": [
+      "answer_correctness",
+      "incremental_cost_cny"
+    ]
   },
   "variants": [
     "baseline_llm",
@@ -17,29 +20,73 @@
   ],
   "dataset": {
     "status": "not_collected",
-    "document_count_target": {"minimum": 20, "maximum": 30},
-    "document_family_count_target": {"minimum": 10, "maximum": 15},
+    "document_count_target": {
+      "minimum": 20,
+      "maximum": 30
+    },
+    "document_family_count_target": {
+      "minimum": 10,
+      "maximum": 15
+    },
     "question_count": 60,
-    "splits": {"dev": 20, "test": 40},
-    "languages": {"zh": 30, "en": 30},
+    "splits": {
+      "dev": 20,
+      "test": 40
+    },
+    "languages": {
+      "zh": 30,
+      "en": 30
+    },
     "task_types": [
-      {"name": "single_document_fact", "dev": 4, "test": 8},
-      {"name": "cross_document_synthesis", "dev": 4, "test": 8},
-      {"name": "conditions_limits_and_numbers", "dev": 4, "test": 8},
-      {"name": "version_and_apparent_conflict", "dev": 4, "test": 8},
-      {"name": "insufficient_corpus_evidence", "dev": 4, "test": 8}
+      {
+        "name": "single_document_fact",
+        "dev": 4,
+        "test": 8
+      },
+      {
+        "name": "cross_document_synthesis",
+        "dev": 4,
+        "test": 8
+      },
+      {
+        "name": "conditions_limits_and_numbers",
+        "dev": 4,
+        "test": 8
+      },
+      {
+        "name": "version_and_apparent_conflict",
+        "dev": 4,
+        "test": 8
+      },
+      {
+        "name": "insufficient_corpus_evidence",
+        "dev": 4,
+        "test": 8
+      }
     ],
     "per_task_language_counts": {
-      "dev": {"zh": 2, "en": 2},
-      "test": {"zh": 4, "en": 4}
+      "dev": {
+        "zh": 2,
+        "en": 2
+      },
+      "test": {
+        "zh": 4,
+        "en": 4
+      }
     },
     "split_unit": "document_family_and_question_group",
     "gold_visibility": "evaluator_and_judge_only",
     "retrieval_pool": "entire_split_corpus_including_distractors",
     "human_gold_review_required": true,
     "source_manifest_required_fields": [
-      "source_url", "immutable_revision", "retrieved_at", "license",
-      "sha256", "document_family", "normalization_rule", "evidence_location_mapping"
+      "source_url",
+      "immutable_revision",
+      "retrieved_at",
+      "license",
+      "sha256",
+      "document_family",
+      "normalization_rule",
+      "evidence_location_mapping"
     ]
   },
   "model_plan": {
@@ -51,7 +98,10 @@
       "test_repeats": 3,
       "planned_test_traces": 480
     },
-    "embedding": {"provider": "dashscope", "requested_model": "text-embedding-v4"},
+    "embedding": {
+      "provider": "dashscope",
+      "requested_model": "text-embedding-v4"
+    },
     "assistant_tasks": {
       "preferred_interface": "deepseek_official_dsh_cli",
       "command": "dsh",
@@ -62,15 +112,26 @@
       "observed_reasoning_effort": "high",
       "target_reasoning_policy": "off_for_simple_tasks",
       "local_credential_presence_only": true,
-      "network_authentication_verified": false,
-      "paid_calls_require_phase_b_budget_control": true
+      "network_authentication_verified": true,
+      "all_calls_require_usage_tracking": true,
+      "live_validation": {
+        "date": "2026-10-18",
+        "status": "passed",
+        "auth_mode": "account",
+        "requests": 1,
+        "input_tokens": 4448,
+        "output_tokens": 743
+      }
     },
-    "main_output_judge": {"preferred_model": "deepseek-flash", "blind_to_variant": true},
+    "main_output_judge": {
+      "preferred_model": "deepseek-flash",
+      "blind_to_variant": true
+    },
     "optional_replication": {
       "model": "deepseek-flash",
       "test_repeats": 1,
       "planned_test_traces": 160,
-      "execution_condition": "budget_gate_passes_before_replication_starts"
+      "execution_condition": "main_experiment_frozen_and_operational_checks_pass"
     }
   },
   "measurements": {
@@ -108,21 +169,14 @@
   },
   "budget": {
     "currency": "CNY",
-    "total_cap": 100,
-    "allocations": {
-      "preparation_and_cli_assistance": 5,
-      "dev_and_pilot": 10,
-      "main_and_embeddings": 15,
-      "judging_and_review": 25,
-      "optional_replication": 15,
-      "contingency": 30
-    },
-    "reestimate_at_spent_plus_reserved": 70,
-    "stop_new_requests_at_spent_plus_reserved": 90,
-    "unknown_usage_policy": "retain_conservative_reservation_until_reconciled",
+    "monetary_cap_enforced": false,
+    "total_cap": null,
+    "historical_cap_cny": 100,
+    "policy_change_date": "2026-10-18",
+    "policy_change_reason": "user_removed_monetary_cap",
     "all_interfaces_share_ledger": true,
-    "client_reservation_not_guarantee_of_provider_invoice": true,
-    "control_implementation_status": "pending_phase_b"
+    "unknown_price_policy": "record_tokens_and_report_cost_as_null",
+    "control_implementation_status": "implemented_monetary_enforcement_optional"
   },
   "statistics": {
     "repeat_aggregation": "mean_per_question_then_paired_difference",
@@ -136,8 +190,8 @@
     "source_and_dataset_manifests",
     "human_gold_review",
     "candidate_pool_and_metric_corrections",
-    "budgeted_cli_and_provider_paths",
-    "pilot_cost_projection",
+    "tracked_cli_and_provider_paths",
+    "pilot_usage_measurement",
     "judge_calibration",
     "code_commit_and_prompt_hashes",
     "output_caps_and_retry_limits",
@@ -147,8 +201,6 @@
     "current_price_snapshot"
   ],
   "unresolved": [
-    "CLI account-route billing and usage availability versus API-key-route pricing",
-    "CLI request and tool limits and shared budget interception",
     "availability of requested fixed Qwen snapshot",
     "final document selection and license checks",
     "pilot-calibrated inference parameters and judge rubric"

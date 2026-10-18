@@ -120,10 +120,15 @@ def test_checkpoint_logs_structured_safe_metadata(
             "model": "fake-chat",
             "latency_ms": 7,
             "retries": 1,
+            "request_kind": "chat",
+            "attempt_count": 1,
+            "attempt_ids": [],
+            "usage_complete": True,
             "usage": {
                 "prompt_tokens": 3,
                 "completion_tokens": 2,
                 "total_tokens": 5,
+                "cached_input_tokens": 0,
             },
         }
     ]

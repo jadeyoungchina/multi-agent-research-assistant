@@ -28,6 +28,13 @@ python -m app.evaluation.cli --provider dashscope --variants all --output-dir ar
 python -m app.evaluation.cli --provider openai --variants all --output-dir artifacts/evaluation/openai
 ```
 
+Paid-provider commands now default to five cases; pass `--limit 30` to select
+the complete synthetic fixture. Use `--embedding-provider` to configure vectors
+independently, including DeepSeek chat with DashScope embeddings. They record
+usage without a monetary cap by default; `--enforce-budget` opts into a cap.
+See [usage tracking and recovery](evaluation/budget-control.md) and the
+[DeepSeek CLI helper](evaluation/deepseek-cli.md) for the new execution controls.
+
 Real calls require account access and can incur charges. No saved real-provider
 run is cited by this release documentation, so it makes no claim about Qwen or
 OpenAI answer quality, speed, cost, or multi-agent improvement. A live smoke

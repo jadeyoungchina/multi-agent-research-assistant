@@ -20,6 +20,7 @@ Planner → Retriever → Researcher → Critic → Writer → Citation Validato
 - 网页上传、文档选择、报告与原文摘录、SSE 进度和轮询回退。
 - DashScope、OpenAI 兼容接口，以及用于离线演示和 CI 的确定性 fake provider。
 - [30 条合成 benchmark](benchmarks/cases.jsonl)、四种工作流和 JSON/CSV/Markdown 输出。
+- [逐请求用量记录与评测恢复](docs/evaluation/budget-control.md)，以及 [DeepSeek CLI 辅助任务](docs/evaluation/deepseek-cli.md)。
 
 本版本无互联网搜索、OCR、身份认证、多租户隔离或分布式任务队列。
 引用校验验证来源 ID 和格式，不能证明论点真实。Fake 输出用于验证软件流程，

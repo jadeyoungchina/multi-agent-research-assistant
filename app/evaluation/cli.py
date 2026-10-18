@@ -64,6 +64,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--ledger", type=Path, default=Path("artifacts/evaluation/budget/ledger.sqlite"))
     parser.add_argument("--budget-cny", default="100")
     parser.add_argument("--stop-cny", default="90")
+    parser.add_argument("--enforce-budget", action="store_true", help="opt in to monetary limits; otherwise record usage only")
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--variants", type=_variants, default=list(WorkflowVariant))
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/evaluation/fake"))
@@ -192,6 +193,7 @@ def main(argv: list[str] | None = None) -> int:
         cases = cases[:args.limit if args.limit is not None else 5 if paid else len(cases)]
         if paid:
             ledger = BudgetLedger(args.ledger, total_cny=args.budget_cny, stop_cny=args.stop_cny)
+            ledger.set_enforcement(args.enforce_budget)
         cached, on_trace = _journal(args, settings, cases) if paid or args.resume else ({}, None)
         # Disposable database/uploads prevent benchmark runs from touching application data.
         with TemporaryDirectory(prefix="research-evaluation-") as temporary, ExitStack() as resources:
