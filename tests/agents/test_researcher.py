@@ -57,6 +57,7 @@ def test_researcher_rejects_every_unknown_evidence_id(
         ResearcherAgent(provider)(state_with_evidence("ev-valid"))
 
     assert error.value.code == "unknown_evidence_id"
+    assert error.value.metadata.attempt_count == 1
 
 
 def test_researcher_stores_grounded_synthesis_with_supporting_and_conflicting_ids() -> None:
@@ -86,3 +87,17 @@ def test_researcher_stores_grounded_synthesis_with_supporting_and_conflicting_id
         "retrieval",
         "fake",
     ]
+
+
+@pytest.mark.parametrize("label", ["Evidence ID: ev_", ""])
+def test_format_only_id_normalization_requires_an_exact_allowed_hash(label):
+    digest = "a" * 64
+    synthesis = ResearchSynthesis(findings=[Finding(claim="supported", supporting_evidence_ids=[label + digest], confidence="high")])
+    provider = FakeChatProvider(structured_responses=[synthesis])
+    update = ResearcherAgent(provider)(state_with_evidence("ev_" + digest))
+    assert update["synthesis"]["findings"][0]["supporting_evidence_ids"] == ["ev_" + digest]
+    assert synthesis.findings[0].supporting_evidence_ids == [label + digest]
+    invalid = synthesis.model_copy(deep=True)
+    invalid.findings[0].supporting_evidence_ids = [label + "a" * 63 + "b"]
+    with pytest.raises(CitationError):
+        ResearcherAgent(FakeChatProvider(structured_responses=[invalid]))(state_with_evidence("ev_" + digest))

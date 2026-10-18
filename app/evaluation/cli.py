@@ -113,7 +113,7 @@ def _build_workflows(
     graph = build_research_graph(WorkflowDependencies(
         planner=PlannerAgent(chat), retriever=RetrieverAgent(retriever, top_k=5),
         researcher=ResearcherAgent(chat), critic=CriticAgent(chat, max_iterations=settings.max_revision_iterations),
-        writer=WriterAgent(chat), citation_validator=CitationValidatorNode(),
+        writer=WriterAgent(chat, max_citation_repairs=settings.max_writer_citation_repairs), citation_validator=CitationValidatorNode(),
         max_iterations=settings.max_revision_iterations,
         node_wrapper=lambda stage, handler: checkpointed_node(stage, handler, runs),
     ))

@@ -127,3 +127,56 @@ def test_writer_does_not_duplicate_existing_insufficiency_limitation() -> None:
     update = WriterAgent(provider)(state)
 
     assert update["draft"]["limitations"] == ["Evidence remains incomplete."]
+
+
+def test_bounded_citation_repair_uses_feedback_and_accounts_both_responses():
+    class Recording(FakeChatProvider):
+        def generate_structured(self, messages, schema):
+            self.messages = messages
+            return super().generate_structured(messages, schema)
+    provider = Recording(structured_responses=[
+        draft_with(["ev_good"], "Uncited answer"),
+        draft_with(["ev_good"], "Supported result [[cite:ev_good]]"),
+    ])
+    update = WriterAgent(provider, max_citation_repairs=1)(state_with_evidence())
+    assert update["draft"]["markdown"] == "Supported result [[cite:ev_good]]"
+    assert len(update["provider_metrics"]) == 2
+    assert sum(item["attempt_count"] for item in update["provider_metrics"]) == 2
+    assert sum(item["retries"] for item in update["provider_metrics"]) == 1
+    assert "missing_citation_token" in provider.messages[-1].content
+    assert all("gold" not in message.content.casefold() for message in provider.messages)
+
+
+def test_failed_citation_repair_stops_and_preserves_all_usage():
+    provider = FakeChatProvider(structured_responses=[
+        draft_with(["ev_good"], "Uncited answer"), draft_with(["ev_good"], "Still uncited"),
+    ])
+    with pytest.raises(CitationError) as caught:
+        WriterAgent(provider, max_citation_repairs=1)(state_with_evidence())
+    assert caught.value.metadata.attempt_count == 2
+    assert caught.value.metadata.retries == 1
+
+
+def test_provider_failure_during_repair_keeps_the_previous_paid_response():
+    from app.domain.errors import ProviderError
+    from app.domain.providers import ProviderMetadata, TokenUsage
+    class Failing(FakeChatProvider):
+        calls = 0
+        def generate_structured(self, messages, schema):
+            self.calls += 1
+            if self.calls == 2:
+                raise ProviderError("provider_timeout", "safe", metadata=ProviderMetadata(
+                    provider="fake", model="fake-chat", latency_ms=1, usage=TokenUsage(prompt_tokens=7),
+                    attempt_count=1, attempt_ids=["failed-attempt"], usage_complete=False))
+            value, meta = super().generate_structured(messages, schema)
+            meta.usage.prompt_tokens = 5
+            meta.attempt_ids = ["first-attempt"]
+            return value, meta
+    provider = Failing(structured_responses=[draft_with(["ev_good"], "Uncited answer")])
+    with pytest.raises(ProviderError) as caught:
+        WriterAgent(provider, max_citation_repairs=1)(state_with_evidence())
+    assert caught.value.metadata.usage.prompt_tokens == 12
+    assert caught.value.metadata.attempt_count == 2
+    assert caught.value.metadata.attempt_ids == ["first-attempt", "failed-attempt"]
+    assert not caught.value.metadata.usage_complete
+    assert caught.value.metadata.retries == 1

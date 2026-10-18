@@ -20,7 +20,7 @@ from .trace import EvaluationTrace
 from .workflows import EvaluationWorkflow, _SAFE_CODES, _error_code, _safe_identifier
 
 
-PROMPT_VERSION = "evaluation-v3"
+PROMPT_VERSION = "evaluation-v4"
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -46,6 +46,7 @@ class ProviderConfiguration(BaseModel):
     max_workflow_steps: int
     max_output_tokens: int = 2048
     structured_output: str = "json_object"
+    max_writer_citation_repairs: int = 0
 
     @field_validator("provider", "model", "embedding_provider", "embedding_model")
     @classmethod
@@ -74,6 +75,7 @@ class ProviderConfiguration(BaseModel):
             max_workflow_steps=settings.max_workflow_steps,
             max_output_tokens=settings.provider_max_output_tokens,
             structured_output=settings.provider_structured_output,
+            max_writer_citation_repairs=settings.max_writer_citation_repairs,
         )
 
 

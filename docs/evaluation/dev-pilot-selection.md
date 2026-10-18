@@ -40,3 +40,13 @@ After the [initial and diagnostic failures](dev-pilot-initial.md), repeat exactl
 the same selection and seed in a fresh `followup` output directory, adding
 `--structured-output json_schema --max-output-tokens 4096 --capture-responses`.
 This is development tuning, not an independent test. Keep all earlier traces.
+
+The strict-schema follow-up completed with 17/20 successful executions and no
+schema errors. Its three remaining failures came from missing inline writer
+citations and formatting-only researcher ID variants (a removed `ev_` prefix or
+an added `Evidence ID: ` label). A final `calibrated` run uses the same five IDs,
+seed, strict schema, and 4096 cap, with clearer grounding instructions, one bounded
+writer citation repair, and exact canonicalization of these formatting variants.
+Canonicalization accepts only an existing full ID/hash; a changed hash is rejected.
+All failed runs and additional repair requests remain in the cost record. Researcher
+rejections now propagate the paid response metadata just as writer rejections do.

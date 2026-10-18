@@ -30,7 +30,10 @@ def researcher_messages(
         ChatMessage(
             role="system",
             content=(
-                "Synthesize findings that answer the research question.\n\n"
+                "Synthesize findings that answer the research question. Copy Evidence IDs exactly, "
+                "including the ev_ prefix; omit the display label 'Evidence ID: '. "
+                "If no supplied passage answers the question, findings may be empty; explain the "
+                "missing evidence in unresolved_questions. Never invent placeholder IDs.\n\n"
                 f"{_GROUNDING_RULES}"
             ),
         ),
@@ -88,6 +91,8 @@ def writer_messages(
                 "Return a concise JSON DraftReport, with Markdown only inside its markdown string. "
                 "Keep the entire JSON reply under 1200 tokens: at most three short findings, "
                 "a two-sentence summary and a compact Markdown answer. Do not repeat limitations. "
+                "The markdown field is the user-visible answer: citations located only in summary "
+                "or findings.narrative do not count. Put citations directly INSIDE markdown. "
                 "Each finding's evidence_ids must also appear as inline citation tokens in markdown. "
                 "Cite every evidence-backed statement in the summary and findings of markdown "
                 "with the exact token [[cite:{Evidence ID}]]. Do not include filenames, "

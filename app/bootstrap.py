@@ -136,7 +136,7 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
                 chat,
                 max_iterations=active_settings.max_revision_iterations,
             ),
-            writer=WriterAgent(chat),
+            writer=WriterAgent(chat, max_citation_repairs=settings.max_writer_citation_repairs),
             citation_validator=CitationValidatorNode(),
             max_iterations=active_settings.max_revision_iterations,
             node_wrapper=lambda stage, handler: checkpointed_node(
