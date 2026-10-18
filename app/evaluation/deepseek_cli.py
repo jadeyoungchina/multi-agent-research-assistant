@@ -216,9 +216,12 @@ def _patch(mode: str, max_output: int) -> str:
 
 def run_task(prompt: str, *, task_id: str, ledger: BudgetLedger, mode: str = "account",
              price_file: Path | None = None, max_requests: int = 1, max_output: int = 512,
-             task_cap_cny: str = "0.5", timeout: float = 90, entry: Path | None = None) -> dict:
+             task_cap_cny: str = "0.5", timeout: float = 90, entry: Path | None = None,
+             max_prompt_bytes: int = 32000) -> dict:
     price = load_price(price_file, mode, required=ledger.is_enforced())
-    if not re.fullmatch(r"[A-Za-z0-9_.-]{1,100}", task_id) or not 0 < len(prompt.encode("utf-8")) <= 32000:
+    if type(max_prompt_bytes) is not int or not 1 <= max_prompt_bytes <= 131072:
+        raise ValueError("invalid task prompt limit")
+    if not re.fullmatch(r"[A-Za-z0-9_.-]{1,100}", task_id) or not 0 < len(prompt.encode("utf-8")) <= max_prompt_bytes:
         raise ValueError("invalid task id or prompt size")
     if mode not in {"account", "api_key"} or not 1 <= timeout <= 180:
         raise ValueError("invalid CLI mode or deadline")
@@ -235,7 +238,7 @@ def run_task(prompt: str, *, task_id: str, ledger: BudgetLedger, mode: str = "ac
                           max_output=max_output, task_cap_cny=task_cap_cny)
     identity = {"prompt": prompt, "mode": mode, "price": price.__dict__ if price is not None else None,
                 "monetary_cap_enforced": ledger.is_enforced(), "max_requests": max_requests,
-                "max_output": max_output, "task_cap_cny": task_cap_cny,
+                "max_output": max_output, "max_prompt_bytes": max_prompt_bytes, "task_cap_cny": task_cap_cny,
                 "cli_sha256": sha256(cli_entry.read_bytes()).hexdigest(),
                 "guard_sha256": sha256(Path(__file__).with_name("dsh_guard.mjs").read_bytes()).hexdigest(),
                 "supervisor_sha256": sha256(Path(__file__).read_bytes()).hexdigest()}
