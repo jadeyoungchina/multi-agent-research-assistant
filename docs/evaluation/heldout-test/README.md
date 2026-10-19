@@ -1,6 +1,6 @@
 # Frozen held-out experiment: generation checkpoints
 
-Progress recorded at **2026-10-19T13:56:13.732669+00:00** (UTC): **5/480** generation units durably completed.
+Progress recorded at **2026-10-19T14:41:58.723653+00:00** (UTC): **160/480** generation units durably completed.
 
 This page is a committed snapshot, not a live progress indicator. No semantic comparison is claimed at this stage.
 
@@ -10,7 +10,7 @@ The matrix is 40 questions × four workflows × three fresh serial repeats. All 
 
 | Repeat | Completed / planned | Successful executions | Published generation packet |
 | --- | ---: | ---: | --- |
-| 0 | 5/160 | 5 | Pending |
+| 0 | 160/160 | 156 | [Packet](repeat-0/summary.json) |
 | 1 | 0/160 | 0 | Pending |
 | 2 | 0/160 | 0 | Pending |
 
