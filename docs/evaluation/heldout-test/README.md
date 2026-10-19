@@ -1,6 +1,6 @@
 # Frozen held-out experiment: generation checkpoints
 
-Progress recorded at **2026-10-19T14:41:58.723653+00:00** (UTC): **160/480** generation units durably completed.
+Progress recorded at **2026-10-19T15:43:11.816552+00:00** (UTC): **320/480** generation units durably completed.
 
 This page is a committed snapshot, not a live progress indicator. No semantic comparison is claimed at this stage.
 
@@ -11,7 +11,7 @@ The matrix is 40 questions × four workflows × three fresh serial repeats. All 
 | Repeat | Completed / planned | Successful executions | Published generation packet |
 | --- | ---: | ---: | --- |
 | 0 | 160/160 | 156 | [Packet](repeat-0/summary.json) |
-| 1 | 0/160 | 0 | Pending |
+| 1 | 160/160 | 159 | [Packet](repeat-1/summary.json) |
 | 2 | 0/160 | 0 | Pending |
 
 Execution success is a pipeline outcome, not correctness or citation entailment. Failed executions remain retained. Each completed generation packet contains exact answers/evidence, execution order, configuration, performance denominators, safe physical-request receipts and any failure diagnostics. Index setup and answer requests are explicitly separate.

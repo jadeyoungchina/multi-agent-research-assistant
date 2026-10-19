@@ -1,9 +1,9 @@
 {
   "schema_version": "frozen-heldout-progress-v1",
-  "recorded_at_utc": "2026-10-19T14:41:58.723653+00:00",
+  "recorded_at_utc": "2026-10-19T15:43:11.816552+00:00",
   "freeze_id": "0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270",
   "planned_units": 480,
-  "executed_units": 160,
+  "executed_units": 320,
   "repeats": [
     {
       "repeat_index": 0,
@@ -14,10 +14,10 @@
     },
     {
       "repeat_index": 1,
-      "completed_units": 0,
-      "successful_units": 0,
-      "generation_complete": false,
-      "checkpoint_published": false
+      "completed_units": 160,
+      "successful_units": 159,
+      "generation_complete": true,
+      "checkpoint_published": true
     },
     {
       "repeat_index": 2,

@@ -1,0 +1,36 @@
+{
+  "freeze_id": "0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270",
+  "repeat_index": 1,
+  "executed_units": 160,
+  "successful_units": 159,
+  "answer_attempts": 1111,
+  "index_attempts": 30,
+  "generation_complete": true,
+  "semantic_scores_published": false,
+  "publications": [
+    {
+      "path": "failure-diagnostics.json",
+      "sha256": "60317190f000aab51ee172f10d913cd3a97092d4fc8f84e92d118f1503f213a4"
+    },
+    {
+      "path": "metadata.json",
+      "sha256": "3e7b5cb8c8bacbcccca0fd66c0d063f3ee461e76ad63b34af026ac226b660d90"
+    },
+    {
+      "path": "performance.json",
+      "sha256": "77b565bf3e32eb30fe205ae4ef25e57b9116894afc91d01fc83f67e1f8cd6a0c"
+    },
+    {
+      "path": "repeat-manifest.json",
+      "sha256": "c37924293709b1f35819da4c4316f9a8bf97299b72ccf5fa41e9fba56cc7395f"
+    },
+    {
+      "path": "request-usage.jsonl",
+      "sha256": "ec3466f11878347da36501c2f45eca26a50c780f4f0c52e811b47d0442193651"
+    },
+    {
+      "path": "traces.jsonl",
+      "sha256": "f7f6e9dd0ad4b26ed14b41fa06eb4b3d60aceb450b4e349f73c2d0f44ab94221"
+    }
+  ]
+}
