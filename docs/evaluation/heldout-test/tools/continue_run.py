@@ -12,6 +12,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+import urllib.error
 
 ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(ROOT))
@@ -23,6 +24,8 @@ BRANCH = "codex/real-evaluation-foundation"
 REPOSITORY = "jadeyoungchina/multi-agent-research-assistant"
 CONTROL = ROOT / "artifacts/evaluation/frozen-run-control"
 PYTHON = Path(sys.executable)
+CI_MAX_WAIT_SECONDS = 6 * 60 * 60
+CI_POLL_SECONDS = 120
 
 
 def git(*args):
@@ -69,14 +72,24 @@ def wait_existing_generation():
 
 
 def wait_ci(sha):
-    deadline = time.monotonic() + 600
+    deadline = time.monotonic() + CI_MAX_WAIT_SECONDS
     url = f"https://api.github.com/repos/{REPOSITORY}/actions/runs?per_page=30"
     while time.monotonic() < deadline:
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "frozen-experiment-checkpoint"}), timeout=20) as response:
                 runs = json.load(response)["workflow_runs"]
+        except urllib.error.HTTPError as error:
+            # Anonymous API limits can be shared with other local callers.
+            # Back off; HTTP/API unavailability never means CI passed.
+            delay = CI_POLL_SECONDS
+            try:
+                delay = max(delay, int(error.headers.get("Retry-After", "0")))
+            except (TypeError, ValueError):
+                pass
+            time.sleep(min(delay, max(0, deadline - time.monotonic())))
+            continue
         except (OSError, ValueError):
-            time.sleep(15)
+            time.sleep(min(CI_POLL_SECONDS, max(0, deadline - time.monotonic())))
             continue
         current = [r for r in runs if r["head_sha"] == sha and r["event"] in {"push", "pull_request"} and r["name"] == "ci"]
         latest = {event: max((r for r in current if r["event"] == event), key=lambda r: r["id"], default=None)
@@ -86,7 +99,7 @@ def wait_ci(sha):
         if all(r and r["status"] == "completed" and r["conclusion"] == "success" for r in latest.values()):
             return [{"event": event, "run_id": r["id"], "url": r["html_url"], "conclusion": r["conclusion"]}
                     for event, r in latest.items()]
-        time.sleep(15)
+        time.sleep(min(CI_POLL_SECONDS, max(0, deadline - time.monotonic())))
     raise TimeoutError("checkpoint CI not confirmed; preserve results and stop")
 
 
@@ -140,13 +153,39 @@ def publish_initial_analysis(record):
     path.write_text(readme, encoding="utf-8", newline="\n")
 
 
-def execute():
+def validate_prior_repeats(record, start_repeat):
+    if type(start_repeat) is not int or not 0 <= start_repeat < 3:
+        raise ValueError("resume index is outside the frozen matrix")
+    for repeat in range(start_repeat):
+        report = load_repeat(record, RUN, repeat)
+        directory = OUT / f"repeat-{repeat}"
+        packet = json.loads((directory / "summary.json").read_text("utf-8"))
+        if (packet["freeze_id"] != record["freeze_id"] or packet["repeat_index"] != repeat
+                or packet["executed_units"] != 160 or packet["generation_complete"] is not True):
+            raise ValueError("prior published repeat is incomplete or belongs to another freeze")
+        for item in packet["publications"]:
+            path = directory / item["path"]
+            if path.parent != directory or sha256(path.read_bytes()).hexdigest() != item["sha256"]:
+                raise ValueError("prior packet differs from its recorded hashes")
+        traces = [json.loads(line) for line in (directory / "traces.jsonl").read_text("utf-8").splitlines()]
+        if traces != [trace.model_dump(mode="json") for trace in report.traces]:
+            raise ValueError("prior public traces differ from the completed local repeat")
+
+
+def execute(start_repeat=0):
     CONTROL.mkdir(parents=True, exist_ok=True)
     with exclusive_run(CONTROL / ".supervisor.lock"):
         record = check()
         state("starting", supervisor_sha256=sha256(Path(__file__).read_bytes().replace(b"\r\n", b"\n")).hexdigest())
         wait_existing_generation()
-        for repeat in range(3):
+        validate_prior_repeats(record, start_repeat)
+        if start_repeat:
+            sha = git("rev-parse", "HEAD")
+            if git("ls-remote", "origin", f"refs/heads/{BRANCH}").split()[0] != sha:
+                raise ValueError("resume head is not pushed")
+            state("checking_ci", checkpoint_commit=sha, resume_repeat_index=start_repeat)
+            write_json(CONTROL / f"ci-{sha[:7]}.json", wait_ci(sha))
+        for repeat in range(start_repeat, 3):
             check()
             state("generation", repeat_index=repeat)
             command([PYTHON, "-u", "scripts/frozen_experiment.py", "generate", "--execute", "--repeat", str(repeat)], f"generation-repeat-{repeat}.log")
@@ -170,6 +209,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--status", action="store_true")
+    parser.add_argument("--start-repeat", type=int, choices=(0, 1, 2), default=0,
+                        help="resume after verifying earlier complete local/public repeats; never regenerate them")
     args = parser.parse_args()
     if args.status:
         path = CONTROL / "status.json"
@@ -178,9 +219,10 @@ def main():
     try:
         if not args.execute:
             record = check()
+            validate_prior_repeats(record, args.start_repeat)
             print(f"Supervisor preflight passed: {record['freeze_id']}; zero paid calls; no Git mutations.")
         else:
-            execute()
+            execute(args.start_repeat)
         return 0
     except Exception as error:
         if args.execute:

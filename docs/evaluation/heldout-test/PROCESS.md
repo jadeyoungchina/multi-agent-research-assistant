@@ -24,6 +24,22 @@ without interruption. Completed units resume from saved records; an uncertain
 paid unit, modified working tree, wrong branch, failed push or failed/unconfirmed
 CI stops the supervisor. No uncertain paid unit is automatically rerun.
 
+Queued CI is allowed up to six hours, with two-minute polling and HTTP retry
+backoff. A completed failure still stops immediately when observed; queued or
+unreachable CI is never treated as success. The previous ten-minute deadline
+was too short for the observed GitHub runner queue. The deterministic offline
+regression replays a fifteen-minute queue and checks both success and failure
+gates without paid requests:
+
+```powershell
+.venv/Scripts/python.exe docs/evaluation/heldout-test/tools/check_supervisor.py
+```
+
+After a CI-only stop, use `--start-repeat 2` to resume the third repeat only.
+Earlier local reports, public trace identities and packet hashes must match;
+the current remote head and both CI events must pass before new paid work.
+Completed repeats are not republished merely because the supervisor restarts.
+
 Local state and phase logs are under
 `artifacts/evaluation/frozen-run-control/`; raw records remain under
 `artifacts/evaluation/real-v1-test/`. These runtime directories are ignored by
