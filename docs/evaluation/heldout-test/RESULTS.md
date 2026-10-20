@@ -6,6 +6,10 @@ These are exploratory, AI-assisted results on 40 documentation questions across 
 
 [Frozen protocol](../frozen-experiment.md) · [Initial analysis before source review](INITIAL-ANALYSIS.md) · [Audit method](SOURCE-REVIEW-METHOD.md) · [Recomputed analysis](reviewed-analysis.json) · [Summary](reviewed-summary.json) · [Trace-bound decisions](source-adjudications.json) · [Raw source reviews and literal proofs](source-review-records.json) · [All safe receipts](all-request-usage.jsonl)
 
+The [executed analysis notebook](../../../output/jupyter-notebook/real-evaluation-analysis.ipynb)
+recomputes tables and [three figure sets](figures/analysis-tables.json) from the public packet.
+See the [offline reproduction guide](REPRODUCE.md) and [seven selected failure cases](FAILURE-CASES.md).
+
 | Workflow | Successful / 120 | Known three-repeat questions / 40 | Primary quality | Conditional citation support | Conditional citation completeness | Median successful seconds | Answer attempts |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | baseline_llm | 120 | 40 | 0.643 | N/A | N/A | 5.961 | 120 |
@@ -14,6 +18,8 @@ These are exploratory, AI-assisted results on 40 documentation questions across 
 | multi_agent_rag | 115 | 40 | 0.878 | 0.561 | 0.519 | 49.848 | 2070 |
 
 Plain RAG has the highest observed primary quality in this small question set (0.919); multi-agent RAG is 5.8 times slower than single-agent RAG by median successful latency. The prespecified primary comparison is multi-agent versus single-agent, not a claim that multi-agent beats every baseline.
+
+![Quality, latency and physical answer attempts](figures/workflow-comparison.png)
 
 Primary quality averages the three repeats within a question, including executed-failure zeros. A question with a missing successful-answer judgment is excluded and disclosed. Citation metrics condition on applicable, successfully scored answers; baseline citations are N/A. Exact denominators and missingness are in the summary. Structure validity is separate from entailment.
 

@@ -29,6 +29,13 @@ control, or distributed queue. Citation validation checks source identity and
 format; it does not establish that a claim is true. Fake output demonstrates
 the software workflow and is not evidence of real-model research quality.
 
+The [real-document evaluation](docs/evaluation/heldout-test/RESULTS.md) retains
+480 executions across four workflows. Read the [executed analysis notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb),
+[seven failure cases](docs/evaluation/heldout-test/FAILURE-CASES.md) and
+[offline reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md).
+Plain RAG has the highest observed quality on this small dataset; the report
+describes multi-agent tradeoffs and the limits of AI scoring without human validation.
+
 ## Quick start: offline fake providers
 
 Use Python 3.11 (the supported range is 3.11–3.12). Installation needs package
@@ -210,6 +217,17 @@ single-agent RAG. These AI-assisted results do not establish general superiority
 [Chinese findings](docs/evaluation/heldout-observations.zh-CN.md) explain this tradeoff.
 Recompute public identities, original scores, reviewed scores, receipts and statistics:
 `python docs/evaluation/heldout-test/tools/verify_reviewed.py`.
+The [analysis notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb)
+executes seven cells from a fresh kernel, rebuilds the tables from saved decisions
+and traces, and exports [quality/latency/workload](docs/evaluation/heldout-test/figures/workflow-comparison.svg),
+[paired uncertainty](docs/evaluation/heldout-test/figures/paired-quality.svg) and
+[citations/failures](docs/evaluation/heldout-test/figures/citations-and-failures.svg).
+Follow the [reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md) to regenerate
+these figures without model calls. [Seven selected cases](docs/evaluation/heldout-test/FAILURE-CASES.md)
+explain unsupported claims, retrieval misses and unresolved execution failures.
+
+![Held-out quality, successful latency and physical answer attempts](docs/evaluation/heldout-test/figures/workflow-comparison.png)
+
 The [local supervisor](docs/evaluation/heldout-test/PROCESS.md) retains all three
 generation checkpoints and the initial analysis before source review.
 Validate with `python scripts/frozen_experiment.py verify`; generation is opt-in

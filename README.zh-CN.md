@@ -143,12 +143,32 @@ Fake benchmark 不支持真实模型质量、速度提升或成本节省的结�
 完整的[真实开发集评测](docs/evaluation/full-dev/README.md)已覆盖 20 题、
 四条流程共 80 个单元：77 次执行成功、3 次失败；成功答案均有 AI 评分，
 21 份经过 Codex 原文复核，真人评分为 0。[中文发现记录](docs/evaluation/full-dev-observations.zh-CN.md)
-说明正确性、引用支持、耗时和失败之间的取舍。保留测试集尚未运行。
+说明正确性、引用支持、耗时和失败之间的取舍。这是冻结前的开发记录，与下述正式保留测试分别报告。
 使用 `python scripts/verify_full_dev.py` 可离线复算公开分数、哈希和用量。
 
 [后续修复与独立确认](docs/evaluation/post-dev-repairs.md)统一正文引用校验并加入
 请求级证据 ID 枚举。v7 的 3/4 确认结果和 v8 的单题成功均单列保留，
-未覆盖原始开发集数据；正式冻结前仍需按最终规则完成开发回归。
+未覆盖原始开发集数据。后续[最终规则开发回归](docs/evaluation/final-dev/README.md)
+完成 80/80 次执行和 60/60 份 RAG 答案引用结构检查，再冻结正式实验。
+
+[正式保留测试结果](docs/evaluation/heldout-test/RESULTS.md)已完成 40 题、四条流程、
+三次独立生成，共 **480 条执行：473 成功、7 失败**。80 份预定原文抽查、
+17 份额外错误/失败复核及 37 份 Codex 逐项裁定均有公开记录；原始评分、错误和修正分别保留。
+全部成功答案有 AI 评分，真人参考答案审核和答案评分仍为 **0**。
+
+本组主要质量分数为：普通 RAG **0.919**、多智能体 **0.878**、单智能体 **0.821**、
+直接 LLM **0.643**。预定的多智能体减单智能体差值约 **+5.7 个百分点**，
+40/40 问题配对，八个文档家族的探索性 bootstrap 95% 区间约为 **[+1.4, +9.7] 个百分点**。
+多智能体成功执行的中位耗时 49.85 秒，单智能体 8.65 秒，约为其 **5.8 倍**。
+这组小样本 AI 评测不支持普遍架构优越性的结论，详见[中文发现](docs/evaluation/heldout-observations.zh-CN.md)。
+
+[已执行分析 notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb)可从公开记录
+离线重算质量、引用、耗时、请求数和配对统计，生成三组 PNG/SVG 图表及本地 PDF。
+[复现指南](docs/evaluation/heldout-test/REPRODUCE.md)提供完整命令，
+[七个失败和不确定案例](docs/evaluation/heldout-test/FAILURE-CASES.md)解释具体问题。
+未知用量和未核实的账号费用保持未知，未用零替代。
+
+![正式保留测试的质量、成功执行耗时与回答请求数](docs/evaluation/heldout-test/figures/workflow-comparison.png)
 
 ## 隐私与开发
 

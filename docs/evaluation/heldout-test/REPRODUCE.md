@@ -2,6 +2,15 @@
 
 Use a full Git checkout of this branch and Python **3.11**. Git metadata is needed by the frozen-input verifier. No model credentials, DeepSeek login, private local artifacts, saved application database or new generation are needed. Dependency installation requires package downloads; the analysis itself uses only the public packet. No model API is invoked.
 
+Clone with automatic newline conversion disabled, especially on Windows:
+
+```bash
+git clone --config core.autocrlf=false --single-branch --branch codex/real-evaluation-foundation https://github.com/jadeyoungchina/multi-agent-research-assistant.git
+cd multi-agent-research-assistant
+```
+
+The freeze binds exact bytes for all real-v1 inputs. With a global `core.autocrlf=true`, a default Windows checkout converts `benchmarks/real-v1/README.md` to CRLF and the verifier correctly rejects the altered bytes. Use a fresh directory with the command above rather than resetting existing work. A fresh checkout with this setting was verified without a local `.env` or any pre-existing artifacts, using the pinned analysis environment.
+
 From the repository root, create and activate `.venv` as described in the [project README](../../../README.md), then install:
 
 ```bash

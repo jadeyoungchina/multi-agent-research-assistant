@@ -1,5 +1,9 @@
 **Current results:** [source-reviewed held-out report](RESULTS.md). The dated generation snapshot below and initial analysis remain historical records.
 
+**Analysis delivery:** [executed notebook](../../../output/jupyter-notebook/real-evaluation-analysis.ipynb),
+[offline reproduction](REPRODUCE.md), [figures and tables](figures/analysis-tables.json),
+and [seven selected failure cases](FAILURE-CASES.md).
+
 # Frozen held-out experiment: generation checkpoints
 
 Progress recorded at **2026-10-20T10:15:24.633435+00:00** (UTC): **480/480** generation units durably completed.
