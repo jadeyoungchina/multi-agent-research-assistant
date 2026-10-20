@@ -30,8 +30,10 @@ def ledger_rows(path):
     return BudgetLedger(path).summary()["attempts"]
 
 
-def publish():
-    record = validate_freeze()
+def publish(*, require_committed=True):
+    # Offline packet construction may run before a documentation commit. This
+    # never changes the clean-tree guard on paid generation or source review.
+    record = validate_freeze(require_committed=require_committed)
     analysis = json.loads((RUN / "primary-analysis.json").read_text("utf-8"))
     adjudications = json.loads((RUN / "adjudications.json").read_text("utf-8"))
     if (analysis["freeze_id"] != record["freeze_id"] or analysis["executed_units"] != 480
@@ -133,11 +135,15 @@ def publish():
         "[Raw source reviews and literal proofs](source-review-records.json) · [All safe receipts](all-request-usage.jsonl)", "",
         "| Workflow | Successful / 120 | Known three-repeat questions / 40 | Primary quality | Conditional citation support | Conditional citation completeness | Median successful seconds | Answer attempts |",
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
-    for variant, row in table.items():
+    for variant in record['design']['matrix']['variants']:
+        row = table[variant]
         m = row["conditional_semantic_metrics"]
         lines.append(f"| {variant} | {row['successful_executions']} | {row['fully_scored_question_groups']} | {fmt(row['mean_question_primary_quality'])} | "
                      f"{fmt(m['citation_support_rate']['mean'])} | {fmt(m['citation_completeness']['mean'])} | {fmt(row['median_success_latency_seconds'])} | {row['answer_usage']['physical_attempts']} |")
-    lines += ["", "Primary quality averages the three repeats within a question, including executed-failure zeros. A question with a missing successful-answer judgment is excluded and disclosed. "
+    ratio = table['multi_agent_rag']['median_success_latency_seconds'] / table['single_agent_rag']['median_success_latency_seconds']
+    lines += ["", f"Plain RAG has the highest observed primary quality in this small question set ({fmt(table['llm_rag']['mean_question_primary_quality'])}); "
+        f"multi-agent RAG is {ratio:.1f} times slower than single-agent RAG by median successful latency. The prespecified primary comparison is multi-agent versus single-agent, not a claim that multi-agent beats every baseline.", "",
+        "Primary quality averages the three repeats within a question, including executed-failure zeros. A question with a missing successful-answer judgment is excluded and disclosed. "
         "Citation metrics condition on applicable, successfully scored answers; baseline citations are N/A. Exact denominators and missingness are in the summary. Structure validity is separate from entailment.", "",
         f"The prespecified multi-agent minus single-agent difference is **{fmt(p['mean_paired_correctness_difference'])}**, with {p['complete_pairs']}/40 complete question pairs "
         f"and exploratory family-bootstrap 95% interval **{p['family_bootstrap_95_interval']}**. Whole-matrix missing-value bounds: {p['all_question_missing_value_bounds']}.", "",
@@ -149,6 +155,7 @@ def publish():
         "Unknown usage and unverified account prices remain null. Shared index setup and judge/review costs are excluded from the paired incremental answer-cost estimate; dated API estimates are not invoices.", "",
         "Generation packets retain exact answers/evidence: [repeat 0](repeat-0/summary.json), [repeat 1](repeat-1/summary.json), [repeat 2](repeat-2/summary.json). "
         "Failed executions are preserved with safe diagnostics. This completes the delegated AI experiment stage; independent human checking and broader benchmarks remain separate work.", ""]
+    lines += ["Recompute identities, original-judge preservation, all scores, request costs and the frozen paired statistic without paid calls:", "", "```powershell", ".venv/Scripts/python.exe docs/evaluation/heldout-test/tools/verify_reviewed.py", "```", ""]
     (OUT / "RESULTS.md").write_text("\n".join(lines), encoding="utf-8", newline="\n")
     path = OUT / "README.md"
     text = path.read_text("utf-8")

@@ -159,8 +159,8 @@ A [five-question live development pilot](docs/evaluation/dev-pilot/README.md)
 now publishes real Qwen answers, evidence, blinded DeepSeek judgments, explicit
 Codex source adjudications, and physical request receipts. The final 20-unit
 matrix executes successfully after documented fixes; earlier failures are retained.
-These are AI-reviewed development results, with no human scores or held-out
-comparison yet. Recheck the published scores, hashes and costs without API calls:
+These remain AI-reviewed development results, with no human scores; the separate
+held-out comparison is reported below. Recheck scores, hashes and costs without API calls:
 `python scripts/verify_dev_pilot.py`.
 
 The subsequent [complete development run](docs/evaluation/full-dev/README.md)
@@ -169,7 +169,7 @@ answers have AI scores; 21 received explicit Codex source checks. The report
 separates execution reliability, conditional answer quality, citation-block
 support, latency and physical request usage. It also exposes previously uneven
 citation-format validation across workflows. This remains development evidence;
-the held-out comparison has not run. Verify with `python scripts/verify_full_dev.py`.
+it is kept separate from held-out results. Verify with `python scripts/verify_full_dev.py`.
 
 [Post-development repairs](docs/evaluation/post-dev-repairs.md) add uniform inline
 citation validation and request-specific evidence-ID schemas. Separate targeted
@@ -195,12 +195,23 @@ repeat-specific identities, durable interruption handling, separate index/answer
 judge ledgers and the prespecified paired family analysis. The
 [freeze record](benchmarks/real-v1/frozen-experiment.json) binds 257 input files;
 development-only test-schema calibration passed 19/20 judgments, retaining the
-one format error and all 21 requests. Held-out generation started on 2026-10-19;
-[generation checkpoints](docs/evaluation/heldout-test/README.md) record actual
-progress without claiming a completed semantic comparison. The
-[local supervisor](docs/evaluation/heldout-test/PROCESS.md) continues serial
-repeats, publishes each completed repeat and verifies push/PR CI. Initial
-judging and analysis remain preliminary until the source-review sample is checked.
+one format error and all 21 requests. The [held-out results](docs/evaluation/heldout-test/RESULTS.md)
+now retain **480/480 executions: 473 successful, 7 failed**, with three fresh serial
+repeats of 40 questions and four workflows. The 80 prespecified source reviews
+and 17 additional error/failure reviews are complete; raw original judges,
+literal proofs and 37 explicit Codex follow-ups remain separate. All 473
+successful answers have AI scores; human reference/answer reviews remain **0**.
+Plain RAG has the highest observed primary quality (0.919), followed by multi-agent
+RAG (0.878), single-agent RAG (0.821) and the closed-book baseline (0.643).
+The prespecified multi-agent-minus-single-agent difference is +0.057 on 40 paired
+questions, with exploratory eight-family-bootstrap 95% interval [0.014, 0.097].
+Multi-agent median successful latency is 49.85 seconds versus 8.65 seconds for
+single-agent RAG. These AI-assisted results do not establish general superiority.
+[Chinese findings](docs/evaluation/heldout-observations.zh-CN.md) explain this tradeoff.
+Recompute public identities, original scores, reviewed scores, receipts and statistics:
+`python docs/evaluation/heldout-test/tools/verify_reviewed.py`.
+The [local supervisor](docs/evaluation/heldout-test/PROCESS.md) retains all three
+generation checkpoints and the initial analysis before source review.
 Validate with `python scripts/frozen_experiment.py verify`; generation is opt-in
 through `--execute` under that committed identity.
 

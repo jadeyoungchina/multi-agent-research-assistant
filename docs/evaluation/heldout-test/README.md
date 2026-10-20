@@ -1,3 +1,5 @@
+**Current results:** [source-reviewed held-out report](RESULTS.md). The dated generation snapshot below and initial analysis remain historical records.
+
 # Frozen held-out experiment: generation checkpoints
 
 Progress recorded at **2026-10-20T10:15:24.633435+00:00** (UTC): **480/480** generation units durably completed.
