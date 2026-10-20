@@ -1,0 +1,1155 @@
+{
+  "freeze_id": "0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270",
+  "variants": [
+    {
+      "variant": "baseline_llm",
+      "quality_questions": 40,
+      "quality": 0.6430555555555556,
+      "successful": 120,
+      "failed": 0,
+      "median_success_seconds": 5.961,
+      "answer_attempts": 120,
+      "citation_support_rate": {
+        "mean": null,
+        "denominator": 0
+      },
+      "citation_completeness": {
+        "mean": null,
+        "denominator": 0
+      }
+    },
+    {
+      "variant": "llm_rag",
+      "quality_questions": 40,
+      "quality": 0.91875,
+      "successful": 119,
+      "failed": 1,
+      "median_success_seconds": 3.973,
+      "answer_attempts": 248,
+      "citation_support_rate": {
+        "mean": 0.855663430420712,
+        "denominator": 103
+      },
+      "citation_completeness": {
+        "mean": 0.8510787486515642,
+        "denominator": 103
+      }
+    },
+    {
+      "variant": "single_agent_rag",
+      "quality_questions": 40,
+      "quality": 0.8208333333333333,
+      "successful": 119,
+      "failed": 1,
+      "median_success_seconds": 8.646,
+      "answer_attempts": 815,
+      "citation_support_rate": {
+        "mean": 0.7575,
+        "denominator": 100
+      },
+      "citation_completeness": {
+        "mean": 0.7404290429042905,
+        "denominator": 101
+      }
+    },
+    {
+      "variant": "multi_agent_rag",
+      "quality_questions": 40,
+      "quality": 0.8777777777777778,
+      "successful": 115,
+      "failed": 5,
+      "median_success_seconds": 49.848,
+      "answer_attempts": 2070,
+      "citation_support_rate": {
+        "mean": 0.560696881091618,
+        "denominator": 114
+      },
+      "citation_completeness": {
+        "mean": 0.5192925495557075,
+        "denominator": 114
+      }
+    }
+  ],
+  "question_means": [
+    {
+      "case_id": "REAL-TEST-001",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-001",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-001",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-001",
+      "variant": "single_agent_rag",
+      "quality": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-002",
+      "variant": "baseline_llm",
+      "quality": 0.5833333333333334
+    },
+    {
+      "case_id": "REAL-TEST-002",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-002",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-002",
+      "variant": "single_agent_rag",
+      "quality": 0.5833333333333334
+    },
+    {
+      "case_id": "REAL-TEST-003",
+      "variant": "baseline_llm",
+      "quality": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-003",
+      "variant": "llm_rag",
+      "quality": 0.75
+    },
+    {
+      "case_id": "REAL-TEST-003",
+      "variant": "multi_agent_rag",
+      "quality": 0.75
+    },
+    {
+      "case_id": "REAL-TEST-003",
+      "variant": "single_agent_rag",
+      "quality": 0.75
+    },
+    {
+      "case_id": "REAL-TEST-004",
+      "variant": "baseline_llm",
+      "quality": 0.75
+    },
+    {
+      "case_id": "REAL-TEST-004",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-004",
+      "variant": "multi_agent_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-004",
+      "variant": "single_agent_rag",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-005",
+      "variant": "baseline_llm",
+      "quality": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-005",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-005",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-005",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-006",
+      "variant": "baseline_llm",
+      "quality": 0.611111111111111
+    },
+    {
+      "case_id": "REAL-TEST-006",
+      "variant": "llm_rag",
+      "quality": 0.9444444444444444
+    },
+    {
+      "case_id": "REAL-TEST-006",
+      "variant": "multi_agent_rag",
+      "quality": 0.888888888888889
+    },
+    {
+      "case_id": "REAL-TEST-006",
+      "variant": "single_agent_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-007",
+      "variant": "baseline_llm",
+      "quality": 0.2777777777777778
+    },
+    {
+      "case_id": "REAL-TEST-007",
+      "variant": "llm_rag",
+      "quality": 0.7222222222222222
+    },
+    {
+      "case_id": "REAL-TEST-007",
+      "variant": "multi_agent_rag",
+      "quality": 0.2777777777777778
+    },
+    {
+      "case_id": "REAL-TEST-007",
+      "variant": "single_agent_rag",
+      "quality": 0.16666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-008",
+      "variant": "baseline_llm",
+      "quality": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-008",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-008",
+      "variant": "multi_agent_rag",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-008",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-009",
+      "variant": "baseline_llm",
+      "quality": 0.25
+    },
+    {
+      "case_id": "REAL-TEST-009",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-009",
+      "variant": "multi_agent_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-009",
+      "variant": "single_agent_rag",
+      "quality": 0.25
+    },
+    {
+      "case_id": "REAL-TEST-010",
+      "variant": "baseline_llm",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-010",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-010",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-010",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-011",
+      "variant": "baseline_llm",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-011",
+      "variant": "llm_rag",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-011",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-011",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-012",
+      "variant": "baseline_llm",
+      "quality": 0.4166666666666667
+    },
+    {
+      "case_id": "REAL-TEST-012",
+      "variant": "llm_rag",
+      "quality": 0.5833333333333334
+    },
+    {
+      "case_id": "REAL-TEST-012",
+      "variant": "multi_agent_rag",
+      "quality": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-012",
+      "variant": "single_agent_rag",
+      "quality": 0.25
+    },
+    {
+      "case_id": "REAL-TEST-013",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-013",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-013",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-013",
+      "variant": "single_agent_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-014",
+      "variant": "baseline_llm",
+      "quality": 0.75
+    },
+    {
+      "case_id": "REAL-TEST-014",
+      "variant": "llm_rag",
+      "quality": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-014",
+      "variant": "multi_agent_rag",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-014",
+      "variant": "single_agent_rag",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-015",
+      "variant": "baseline_llm",
+      "quality": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-015",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-015",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-015",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-016",
+      "variant": "baseline_llm",
+      "quality": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-016",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-016",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-016",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-017",
+      "variant": "baseline_llm",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-017",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-017",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-017",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-018",
+      "variant": "baseline_llm",
+      "quality": 0.75
+    },
+    {
+      "case_id": "REAL-TEST-018",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-018",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-018",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-019",
+      "variant": "baseline_llm",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-019",
+      "variant": "llm_rag",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-019",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-019",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-020",
+      "variant": "baseline_llm",
+      "quality": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-020",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-020",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-020",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-021",
+      "variant": "baseline_llm",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-021",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-021",
+      "variant": "multi_agent_rag",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-021",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-022",
+      "variant": "baseline_llm",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-022",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-022",
+      "variant": "multi_agent_rag",
+      "quality": 0.8888888888888888
+    },
+    {
+      "case_id": "REAL-TEST-022",
+      "variant": "single_agent_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-023",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-023",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-023",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-023",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-024",
+      "variant": "baseline_llm",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-024",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-024",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-024",
+      "variant": "single_agent_rag",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-025",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-025",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-025",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-025",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-026",
+      "variant": "baseline_llm",
+      "quality": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-026",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-026",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-026",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-027",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-027",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-027",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-027",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-028",
+      "variant": "baseline_llm",
+      "quality": 0.75
+    },
+    {
+      "case_id": "REAL-TEST-028",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-028",
+      "variant": "multi_agent_rag",
+      "quality": 0.75
+    },
+    {
+      "case_id": "REAL-TEST-028",
+      "variant": "single_agent_rag",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-029",
+      "variant": "baseline_llm",
+      "quality": 0.08333333333333333
+    },
+    {
+      "case_id": "REAL-TEST-029",
+      "variant": "llm_rag",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-029",
+      "variant": "multi_agent_rag",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-029",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-030",
+      "variant": "baseline_llm",
+      "quality": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-030",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-030",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-030",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-031",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-031",
+      "variant": "llm_rag",
+      "quality": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-031",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-031",
+      "variant": "single_agent_rag",
+      "quality": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-032",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-032",
+      "variant": "llm_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-032",
+      "variant": "multi_agent_rag",
+      "quality": 0.9444444444444444
+    },
+    {
+      "case_id": "REAL-TEST-032",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-033",
+      "variant": "baseline_llm",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-033",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-033",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-033",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-034",
+      "variant": "baseline_llm",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-034",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-034",
+      "variant": "multi_agent_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-034",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-035",
+      "variant": "baseline_llm",
+      "quality": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-035",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-035",
+      "variant": "multi_agent_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-035",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-036",
+      "variant": "baseline_llm",
+      "quality": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-036",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-036",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-036",
+      "variant": "single_agent_rag",
+      "quality": 0.6666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-037",
+      "variant": "baseline_llm",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-037",
+      "variant": "llm_rag",
+      "quality": 0.9166666666666666
+    },
+    {
+      "case_id": "REAL-TEST-037",
+      "variant": "multi_agent_rag",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-037",
+      "variant": "single_agent_rag",
+      "quality": 0.8333333333333334
+    },
+    {
+      "case_id": "REAL-TEST-038",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-038",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-038",
+      "variant": "multi_agent_rag",
+      "quality": 0.1111111111111111
+    },
+    {
+      "case_id": "REAL-TEST-038",
+      "variant": "single_agent_rag",
+      "quality": 0.3333333333333333
+    },
+    {
+      "case_id": "REAL-TEST-039",
+      "variant": "baseline_llm",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-039",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-039",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-039",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-040",
+      "variant": "baseline_llm",
+      "quality": 0.16666666666666666
+    },
+    {
+      "case_id": "REAL-TEST-040",
+      "variant": "llm_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-040",
+      "variant": "multi_agent_rag",
+      "quality": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-040",
+      "variant": "single_agent_rag",
+      "quality": 1.0
+    }
+  ],
+  "paired_questions": [
+    {
+      "case_id": "REAL-TEST-001",
+      "difference": 0.5
+    },
+    {
+      "case_id": "REAL-TEST-002",
+      "difference": 0.41666666666666663
+    },
+    {
+      "case_id": "REAL-TEST-003",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-004",
+      "difference": -0.25
+    },
+    {
+      "case_id": "REAL-TEST-005",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-006",
+      "difference": 0.22222222222222232
+    },
+    {
+      "case_id": "REAL-TEST-007",
+      "difference": 0.11111111111111113
+    },
+    {
+      "case_id": "REAL-TEST-008",
+      "difference": -0.16666666666666663
+    },
+    {
+      "case_id": "REAL-TEST-009",
+      "difference": 0.41666666666666663
+    },
+    {
+      "case_id": "REAL-TEST-010",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-011",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-012",
+      "difference": 0.25
+    },
+    {
+      "case_id": "REAL-TEST-013",
+      "difference": 0.33333333333333337
+    },
+    {
+      "case_id": "REAL-TEST-014",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-015",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-016",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-017",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-018",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-019",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-020",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-021",
+      "difference": -0.08333333333333337
+    },
+    {
+      "case_id": "REAL-TEST-022",
+      "difference": 0.2222222222222222
+    },
+    {
+      "case_id": "REAL-TEST-023",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-024",
+      "difference": 0.16666666666666663
+    },
+    {
+      "case_id": "REAL-TEST-025",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-026",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-027",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-028",
+      "difference": -0.16666666666666663
+    },
+    {
+      "case_id": "REAL-TEST-029",
+      "difference": -0.08333333333333337
+    },
+    {
+      "case_id": "REAL-TEST-030",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-031",
+      "difference": 1.0
+    },
+    {
+      "case_id": "REAL-TEST-032",
+      "difference": -0.05555555555555558
+    },
+    {
+      "case_id": "REAL-TEST-033",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-034",
+      "difference": -0.33333333333333337
+    },
+    {
+      "case_id": "REAL-TEST-035",
+      "difference": -0.33333333333333337
+    },
+    {
+      "case_id": "REAL-TEST-036",
+      "difference": 0.33333333333333337
+    },
+    {
+      "case_id": "REAL-TEST-037",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-038",
+      "difference": -0.2222222222222222
+    },
+    {
+      "case_id": "REAL-TEST-039",
+      "difference": 0.0
+    },
+    {
+      "case_id": "REAL-TEST-040",
+      "difference": 0.0
+    }
+  ],
+  "primary": {
+    "complete_pairs": 40,
+    "missing_pairs": 0,
+    "mean_paired_correctness_difference": 0.05694444444444444,
+    "all_question_missing_value_bounds": [
+      0.05694444444444444,
+      0.05694444444444444
+    ],
+    "family_bootstrap_95_interval": [
+      0.013888888888888895,
+      0.09722222222222222
+    ],
+    "bootstrap_replicates": 10000,
+    "valid_bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261023,
+    "family_count": 8,
+    "informative_family_count": 8,
+    "interval_interpretation": "exploratory; skip and disclose empty draws; no interval below two informative families",
+    "by_family": {
+      "fastapi-background": {
+        "complete_pairs": 5,
+        "mean_difference": -0.05
+      },
+      "fastapi-middleware": {
+        "complete_pairs": 5,
+        "mean_difference": 0.022222222222222233
+      },
+      "fastapi-response": {
+        "complete_pairs": 5,
+        "mean_difference": 0.061111111111111095
+      },
+      "fastapi-security": {
+        "complete_pairs": 5,
+        "mean_difference": 0.05555555555555554
+      },
+      "pydantic-dataclasses": {
+        "complete_pairs": 5,
+        "mean_difference": 0.0
+      },
+      "pydantic-models": {
+        "complete_pairs": 5,
+        "mean_difference": 0.13333333333333333
+      },
+      "pydantic-serialization": {
+        "complete_pairs": 5,
+        "mean_difference": 0.11666666666666667
+      },
+      "pydantic-validators": {
+        "complete_pairs": 5,
+        "mean_difference": 0.1166666666666667
+      }
+    }
+  },
+  "phase_attempts": {
+    "answer_generation": 3253,
+    "blinded_judging": 500,
+    "index_setup": 90,
+    "source_review": 117
+  },
+  "recorded_usage": {
+    "physical_attempts": 3960,
+    "usage_complete": false,
+    "input_tokens": 7883561,
+    "output_tokens": 622300,
+    "cached_input_tokens": 3310976,
+    "estimated_cost_cny": null,
+    "unknown_usage_attempts": 17
+  },
+  "incremental_answer_cost": {
+    "complete_pairs": 30,
+    "missing_pairs": 10,
+    "mean_difference_cny": "0.00472198888888888888888888889",
+    "family_bootstrap_95_interval": [
+      0.004016782142857143,
+      0.005457695498768473
+    ],
+    "bootstrap_replicates": 10000,
+    "valid_bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261023,
+    "family_count": 8,
+    "informative_family_count": 8,
+    "interval_interpretation": "exploratory; skip and disclose empty draws; no interval below two informative families",
+    "by_family": {
+      "fastapi-background": {
+        "complete_pairs": 4,
+        "mean_difference": 0.004779091666666666
+      },
+      "fastapi-middleware": {
+        "complete_pairs": 3,
+        "mean_difference": 0.003837011111111111
+      },
+      "fastapi-response": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0036779583333333334
+      },
+      "fastapi-security": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0061882
+      },
+      "pydantic-dataclasses": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0032082583333333334
+      },
+      "pydantic-models": {
+        "complete_pairs": 4,
+        "mean_difference": 0.004574783333333333
+      },
+      "pydantic-serialization": {
+        "complete_pairs": 4,
+        "mean_difference": 0.005763625
+      },
+      "pydantic-validators": {
+        "complete_pairs": 3,
+        "mean_difference": 0.0057936555555555555
+      }
+    }
+  },
+  "human_answer_scores": 0
+}

@@ -1,0 +1,10 @@
+# Install after the project's requirements; keep the frozen scientific runtime.
+numpy==1.26.4
+pydantic==2.8.2
+fastapi==0.112.2
+openai==1.43.0
+langgraph==0.2.18
+matplotlib==3.9.4
+nbformat==5.10.4
+nbclient==0.10.2
+ipykernel==6.29.5
