@@ -1,0 +1,31 @@
+[
+  {
+    "case_id": "REAL-TEST-032",
+    "variant": "llm_rag",
+    "trace_sha256": "4dac16dd35072e05a8926fc189a57cd3c25f15d72c56a7cf657dbb4fe2f2b9a9",
+    "error_code": "invalid_citation",
+    "captures": []
+  },
+  {
+    "case_id": "REAL-TEST-038",
+    "variant": "multi_agent_rag",
+    "trace_sha256": "316fa084b6c29bb3765b16621c66a451e387f02880379b26e1c6d8943169daa2",
+    "error_code": "invalid_citation",
+    "captures": [
+      {
+        "attempt_id": "99b39d5843af414f8bc7b9a47347f0be",
+        "schema": "DraftReport",
+        "content": "{\n  \"markdown\": \"# FastAPI 0.112.2 CORSMiddleware Defaults\\n\\nThe default `allow_methods`, `allow_headers`, and `max_age` settings for `CORSMiddleware` in FastAPI 0.112.2 are not specified in the provided documentation. The evidence confirms that FastAPI utilizes Starlette's `CORSMiddleware` [[cite:ref_0001]], but it does not list the specific default parameter values defined in the underlying Starlette implementation. Consequently, the exact default configuration cannot be determined from the available sources.\\n\",\n  \"title\": \"FastAPI 0.112.2 CORSMiddleware Default Settings\",\n  \"summary\": \"The provided evidence does not contain the source code or documentation specifying the default values for `allow_methods`, `allow_headers`, and `max_age` in FastAPI 0.112.2's CORSMiddleware. The documents confirm that FastAPI uses Starlette's CORSMiddleware (ref_0001) but do not list the specific default parameter values defined in the Starlette implementation.\",\n  \"findings\": [\n    {\n      \"heading\": \"Dependency on Starlette\",\n      \"narrative\": \"FastAPI provides CORS middleware as a convenience wrapper around Starlette's implementation [[cite:ref_0001]].\",\n      \"evidence_ids\": [\n       \"ref_0001\"\n      ]\n    },\n    {\n      \"heading\": \"Missing Default Values\",\n      \"narrative\": \"The supplied text explains CORS concepts and usage but omits the specific default arguments for `allow_methods`, `allow_headers`, and `max_age`.\",\n      \"evidence_ids\": [\n       \"ref_0004\"\n      ]\n    },\n    {\n      \"heading\": \"External Reference Only\",\n      \"narrative\": \"Documentation points to external Starlette docs for detailed parameter information rather than listing defaults internally.\",\n      \"evidence_ids\": [\n       \"ref_0003\"\n      ]\n    }\n  ],\n  \"limitations\": [\n    \"The provided evidence does not contain the source code or documentation specifying the default values for `allow_methods`, `allow_headers`, and `max_age` in FastAPI 0.112.2's CORSMiddleware. The documents confirm that FastAPI uses Starlette's CORSMiddleware (ref_0001) but do not list the specific default parameter values defined in the Starlette implementation.\"\n  ]\n}",
+        "finish_reason": "stop",
+        "validation_issues": []
+      },
+      {
+        "attempt_id": "f9fad42a4b1840c5accc2af95085df97",
+        "schema": "DraftReport",
+        "content": "{\n  \"markdown\": \"# FastAPI 0.112.2 CORSMiddleware Defaults\\n\\nThe default `allow_methods`, `allow_headers`, and `max_age` settings for `CORSMiddleware` in FastAPI 0.112.2 are not specified in the provided documentation. The evidence confirms that FastAPI utilizes Starlette's `CORSMiddleware` [[cite:ref_0001]], but it does not list the specific default parameter values defined in the underlying Starlette implementation. Consequently, the exact default configuration cannot be determined from the available sources.\\n\",\n  \"title\": \"FastAPI 0.112.2 CORSMiddleware Default Settings\",\n  \"summary\": \"The provided evidence does not contain the source code or documentation specifying the default values for `allow_methods`, `allow_headers`, and `max_age` in FastAPI 0.112.2's CORSMiddleware. The documents confirm that FastAPI uses Starlette's CORSMiddleware (ref_0001) but do not list the specific default parameter values defined in the Starlette implementation.\",\n  \"findings\": [\n    {\n      \"heading\": \"Dependency on Starlette\",\n      \"narrative\": \"FastAPI provides CORS middleware as a convenience wrapper around Starlette's implementation [[cite:ref_0001]].\",\n      \"evidence_ids\": [\n       \"ref_0001\"\n      ]\n    },\n    {\n      \"heading\": \"Missing Default Values\",\n      \"narrative\": \"The supplied text explains CORS concepts and usage but omits the specific default arguments for `allow_methods`, `allow_headers`, and `max_age` [[cite:ref_0004]].\",\n      \"evidence_ids\": [\n       \"ref_0004\"\n      ]\n    },\n    {\n      \"heading\": \"External Reference Only\",\n      \"narrative\": \"Documentation points to external Starlette docs for detailed parameter information rather than listing defaults internally [[cite:ref_0003]].\",\n      \"evidence_ids\": [\n       \"ref_0003\"\n      ]\n    }\n  ],\n  \"limitations\": [\n    \"The provided evidence does not contain the source code or documentation specifying the default values for `allow_methods`, `allow_headers`, and `max_age` in FastAPI 0.112.2's CORSMiddleware. The documents confirm that FastAPI uses Starlette's CORSMiddleware (ref_0001) but do not list the specific default parameter values defined in the Starlette implementation.\"\n  ]\n}",
+        "finish_reason": "stop",
+        "validation_issues": []
+      }
+    ]
+  }
+]
