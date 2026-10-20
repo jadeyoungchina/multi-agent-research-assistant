@@ -99,7 +99,7 @@ def publish(*, require_committed=True):
             "answer_usage": usage([rows_by_id[i] for i in identifiers]),
             "strict_citation_structure_passes": sum(d["passed"] for d in structural), "structure_denominator": len(structural)}
     initial = json.loads((OUT / "initial-analysis.json").read_text("utf-8"))
-    raw_counts = {status: sum(e["status"] == status for e in audits) for status in {e["status"] for e in audits}}
+    raw_counts = {status: sum(e["status"] == status for e in audits) for status in sorted({e["status"] for e in audits})}
     summary = {"schema_version": "source-reviewed-heldout-publication-v1", "freeze_id": record["freeze_id"],
         "planned_units": 480, "executed_units": 480, "successful_executions": 480-analysis["execution_failures"],
         "execution_failures": analysis["execution_failures"], "missing_successful_judgments": analysis["successful_answers_missing_judgment"],

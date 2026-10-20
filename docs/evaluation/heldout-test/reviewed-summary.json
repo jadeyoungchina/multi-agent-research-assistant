@@ -380,9 +380,9 @@
   "source_review_targets": 97,
   "source_review_extras": 17,
   "raw_source_review_statuses": {
+    "review_error": 18,
     "valid_failure_audit": 7,
-    "valid_source_audit": 72,
-    "review_error": 18
+    "valid_source_audit": 72
   },
   "source_adjudications": 90,
   "source_failure_audits": 7,
