@@ -26,6 +26,11 @@ Planner → Retriever → Researcher → Critic → Writer → Citation Validato
 引用校验验证来源 ID 和格式，不能证明论点真实。Fake 输出用于验证软件流程，
 不能用作真实模型研究质量的证据。
 
+项目展示入口：[英文摘要](docs/portfolio/project-brief.md)、
+[演示说明和真实页面截图](docs/portfolio/demo-guide.md)、
+[三分钟中英讲解与常见追问](docs/portfolio/presentation.zh-CN.md)、
+[技术报告](docs/technical-report.md)。后续人工复核已取消；现有结果继续明确标注为 AI 复核。
+
 ## 离线 fake 快速开始
 
 推荐 Python 3.11，支持范围为 3.11–3.12。安装依赖需要下载软件包；完成安装后，
@@ -42,6 +47,17 @@ Linux/macOS 用 `source .venv/bin/activate` 激活；PowerShell 用
 python -m pip install -r requirements/upstream-requirements.txt
 python -m pip install -r requirements/project-requirements.txt
 ```
+
+一条命令启动已预载入资料的隔离演示：
+
+```bash
+python examples/run_demo.py
+```
+
+打开终端打印的本机地址并勾选两份资料即可开始研究。演示固定使用 fake provider，
+忽略现有 `.env` 和进程配置，数据库保存在独立的 `artifacts/demo/` 会话中。
+加入 `--check` 可执行上传、研究、SSE、引用和持久化检查后退出，详见[演示指南](docs/portfolio/demo-guide.md)。
+下面保留手动配置应用会话的方式。
 
 Bash 启动命令：
 

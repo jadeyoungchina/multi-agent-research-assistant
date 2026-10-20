@@ -114,8 +114,21 @@ conceptual influence. Project-specific engineering includes local storage and
 recovery, provider accounting, API/SSE integration, the browser interface,
 source-preserving retrieval and the frozen evaluation/publication workflow.
 Development and evaluation used Codex and DeepSeek assistance. These artifacts
-document implementation and evidence; they do not establish unaided individual
-authorship or an independently invented multi-agent architecture.
+document implementation and evidence. The contribution map follows file-level
+provenance and separates project-specific engineering from notebook adaptations.
+
+## Demonstration and presentation
+
+Run `python examples/run_demo.py` after installing the project dependencies for
+an isolated, preloaded fake-provider demonstration. Its explicit settings ignore
+the existing environment and use a fresh local database. `--check` exercises
+actual API, workflow, SSE, citation and report-reopen behavior. The optional
+browser helper verifies the real UI and captures source inspection without
+relaxing the application's content security policy.
+
+[Project brief](portfolio/project-brief.md), [demo guide](portfolio/demo-guide.md)
+and [three-minute walkthrough](portfolio/presentation.zh-CN.md) provide a shorter
+review path alongside the implementation and experiment details above.
 
 ## Privacy and unresolved product limits
 

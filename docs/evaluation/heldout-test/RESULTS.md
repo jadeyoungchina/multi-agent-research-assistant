@@ -33,7 +33,7 @@ Source decisions: 39 accepted, 51 corrected; 37 explicit Codex follow-ups. Succe
 
 All phases retain **3960 physical requests**. Index construction, answer generation, original judging and source review are separate in the summary. Unknown usage and unverified account prices remain null. Shared index setup and judge/review costs are excluded from the paired incremental answer-cost estimate; dated API estimates are not invoices.
 
-Generation packets retain exact answers/evidence: [repeat 0](repeat-0/summary.json), [repeat 1](repeat-1/summary.json), [repeat 2](repeat-2/summary.json). Failed executions are preserved with safe diagnostics. This completes the delegated AI experiment stage; independent human checking and broader benchmarks remain separate work.
+Generation packets retain exact answers/evidence: [repeat 0](repeat-0/summary.json), [repeat 1](repeat-1/summary.json), [repeat 2](repeat-2/summary.json). Failed executions are preserved with safe diagnostics. This completes the delegated AI experiment stage. Broader benchmarks are outside this study; subsequent human review is excluded from the current delivery.
 
 Recompute identities, original-judge preservation, all scores, request costs and the frozen paired statistic without paid calls:
 

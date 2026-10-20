@@ -36,6 +36,11 @@ The [real-document evaluation](docs/evaluation/heldout-test/RESULTS.md) retains
 Plain RAG has the highest observed quality on this small dataset; the report
 describes multi-agent tradeoffs and the limits of AI scoring without human validation.
 
+For a short project tour, start with the [English project brief](docs/portfolio/project-brief.md),
+[demonstration and screenshots](docs/portfolio/demo-guide.md),
+[three-minute walkthrough](docs/portfolio/presentation.zh-CN.md) and
+[technical report](docs/technical-report.md).
+
 ## Quick start: offline fake providers
 
 Use Python 3.11 (the supported range is 3.11–3.12). Installation needs package
@@ -53,6 +58,19 @@ Activate with `source .venv/bin/activate` on Linux/macOS, or
 python -m pip install -r requirements/upstream-requirements.txt
 python -m pip install -r requirements/project-requirements.txt
 ```
+
+Launch a preloaded, isolated offline demo with one command:
+
+```bash
+python examples/run_demo.py
+```
+
+Open the printed loopback URL and select both documents. This launcher fixes
+both providers to fake, ignores local credential/environment configuration and
+uses a fresh database under `artifacts/demo/`. `--check` runs the upload, workflow,
+SSE, citation and persistence checks and exits. See the [demo guide](docs/portfolio/demo-guide.md).
+
+For a manually configured application session instead, use the commands below.
 
 In Bash:
 
