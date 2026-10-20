@@ -4,6 +4,8 @@
 
 These are exploratory, AI-assisted results on 40 documentation questions across eight document families, with three fresh repeats. Source checks use the same DeepSeek alias in separate contexts, with explicit Codex follow-ups; they are not independent human validation.
 
+Independent human review is excluded from the current delivery at the user's request (2026-10-20), rather than a pending acceptance step. Human-review counts remain zero. Frozen metadata and historical method notes retain their original status fields as provenance.
+
 [Frozen protocol](../frozen-experiment.md) · [Initial analysis before source review](INITIAL-ANALYSIS.md) · [Audit method](SOURCE-REVIEW-METHOD.md) · [Recomputed analysis](reviewed-analysis.json) · [Summary](reviewed-summary.json) · [Trace-bound decisions](source-adjudications.json) · [Raw source reviews and literal proofs](source-review-records.json) · [All safe receipts](all-request-usage.jsonl)
 
 The [executed analysis notebook](../../../output/jupyter-notebook/real-evaluation-analysis.ipynb)

@@ -34,5 +34,7 @@ FastAPI (`0.112.2`). Their MIT notices are preserved in
 retrieval timestamps, hashes, license associations, and transformations are
 recorded in `benchmarks/real-v1/corpus-manifest.json`. Normalized copies only
 add provenance headers and normalize line endings; no upstream endorsement
-is implied. Dataset questions are separately AI authored and human review
-remains pending; see `benchmarks/real-v1/README.md`.
+is implied. Dataset questions are separately AI authored; human review was not
+performed and is outside the current delivery scope. Frozen dataset metadata
+retains its original status fields; see `benchmarks/real-v1/README.md` and the
+current scope update in `docs/real-evaluation-plan.zh-CN.md`.
