@@ -14,6 +14,52 @@ by Nir Diamant. The upstream custom [LICENSE](LICENSE) restricts commercial use;
 commercial permission must be obtained from the licensor in writing. Attribution,
 source cells, and file mappings are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
+## Project at a glance
+
+- **A working application:** document upload, six workflow stages, saved reports,
+  live progress and source inspection through a local browser interface.
+- **An inspectable comparison:** four workflows, 480 real-model executions,
+  original judgments, explicit AI source reviews and retained failures.
+- **Reproducible engineering:** request-level accounting, resumable experiments,
+  an executed analysis notebook and an isolated original-source reproduction path.
+
+![Inspecting a report citation in the local application](docs/portfolio/images/offline-demo-citation.png)
+
+The screenshot uses deterministic fake providers to demonstrate the interface.
+The real-model results below come from a separate recorded experiment.
+
+## Held-out results
+
+The frozen test covers **40 questions × four workflows × three fresh repeats**:
+**473 successful executions and seven failures**. Primary quality is mean
+AI-scored key-point correctness on a 0–1 scale, averaged within each question
+and then across questions; execution failures count as zero. Latency includes
+successful executions only.
+
+| Workflow | Primary quality | Successful / 120 | Median latency (s) |
+| --- | ---: | ---: | ---: |
+| Direct LLM | 0.643 | 120 | 5.96 |
+| Plain RAG | **0.919** | 119 | **3.97** |
+| Single-agent RAG | 0.821 | 119 | 8.65 |
+| Multi-agent RAG | 0.878 | 115 | 49.85 |
+
+Plain RAG scores highest in this dataset. Multi-agent RAG improves on the
+single-agent workflow by **5.69 percentage points**, with an exploratory
+eight-family-bootstrap 95% interval of **[+1.39, +9.72] pp**, while taking about
+**5.8 times** as long at the median. References and scoring are AI-assisted;
+independent human validation is **zero**. This small public-document study does
+not establish general architectural superiority.
+
+Review the [full results](docs/evaluation/heldout-test/RESULTS.md),
+[executed notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb),
+[seven selected failure cases](docs/evaluation/heldout-test/FAILURE-CASES.md) and
+[offline reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md).
+For implementation decisions and a short project tour, see the
+[English project brief](docs/portfolio/project-brief.md),
+[technical report](docs/technical-report.md),
+[local demo guide](docs/portfolio/demo-guide.md) and
+[three-minute presentation script](docs/portfolio/presentation.zh-CN.md).
+
 ## Features and boundaries
 
 - Local parsing, source-preserving chunks, embeddings, cosine search, and reciprocal rank fusion.
@@ -28,18 +74,6 @@ The application has no internet search, OCR, authentication, multi-tenant access
 control, or distributed queue. Citation validation checks source identity and
 format; it does not establish that a claim is true. Fake output demonstrates
 the software workflow and is not evidence of real-model research quality.
-
-The [real-document evaluation](docs/evaluation/heldout-test/RESULTS.md) retains
-480 executions across four workflows. Read the [executed analysis notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb),
-[seven failure cases](docs/evaluation/heldout-test/FAILURE-CASES.md) and
-[offline reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md).
-Plain RAG has the highest observed quality on this small dataset; the report
-describes multi-agent tradeoffs and the limits of AI scoring without human validation.
-
-For a short project tour, start with the [English project brief](docs/portfolio/project-brief.md),
-[demonstration and screenshots](docs/portfolio/demo-guide.md),
-[three-minute walkthrough](docs/portfolio/presentation.zh-CN.md) and
-[technical report](docs/technical-report.md).
 
 ## Quick start: offline fake providers
 

@@ -19,7 +19,7 @@ def test_health_reports_only_safe_readiness(client) -> None:
     assert response.status_code == 200
     assert response.json() == {
         "status": "ok",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "database_ready": True,
         "providers": {"chat": True, "embedding": True},
     }

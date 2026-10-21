@@ -15,3 +15,7 @@ The runnable demonstration uses deterministic fake providers. The 480-execution
 real-model experiment is separate and uses AI-assisted references and scoring.
 Further human review was excluded from this delivery at the user's request;
 human validation remains zero and is documented as a methodological limitation.
+
+The current presentation is delivered through the bilingual repository README,
+saved figures/screenshots, written materials and the local demonstration.
+Public hosting and a recorded demo video are outside the delivery scope.

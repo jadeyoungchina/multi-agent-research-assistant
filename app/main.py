@@ -53,7 +53,7 @@ def create_app(
 
     application = FastAPI(
         title="Multi-Agent Research Assistant",
-        version="1.0.0",
+        version="1.1.0",
         lifespan=lifespan,
     )
     application.add_middleware(RequestContextMiddleware)

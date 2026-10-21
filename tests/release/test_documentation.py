@@ -1,6 +1,8 @@
 """Release acceptance requirements for the public documentation and CI."""
 
+from datetime import date
 from pathlib import Path
+import tomllib
 
 import pytest
 import yaml
@@ -39,7 +41,10 @@ def test_changelog_starts_with_release() -> None:
     path = ROOT / "CHANGELOG.md"
     assert path.is_file(), "Missing changelog"
     text = path.read_text(encoding="utf-8")
-    assert text.startswith("# 1.0.0 - 2026-09-08")
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    header, release_date = text.splitlines()[0].rsplit(" - ", 1)
+    assert header == f"# {project['project']['version']}"
+    date.fromisoformat(release_date)
 
 
 def test_ci_runs_offline_release_checks_and_uploads_benchmark_even_on_failure() -> None:

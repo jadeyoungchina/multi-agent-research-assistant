@@ -12,6 +12,43 @@ Planner → Retriever → Researcher → Critic → Writer → Citation Validato
 上游自定义 [LICENSE](LICENSE) 限制商业用途，商业使用须事先获得许可人的书面授权。
 作者归属、来源 cell 和逐文件映射见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
+## 项目亮点
+
+- **可运行的完整应用：** 从文档上传、六阶段工作流，到报告保存、实时进度和原文引用查看。
+- **可检查的真实实验：** 四条流程、480 条真实模型执行，公开原始评分、AI 原文复核与失败记录。
+- **可复算的工程实现：** 逐请求记账、实验断点恢复、已执行分析 notebook，以及隔离原始代码的复现入口。
+
+![本地应用中查看报告引用和来源摘录](docs/portfolio/images/offline-demo-citation.png)
+
+截图使用确定性 fake provider 展示软件界面；下面的模型质量结果来自单独保存的真实模型实验。
+
+## 正式保留测试结果
+
+冻结测试覆盖 **40 题 × 四条流程 × 三次独立生成**，共 **473 次执行成功、7 次失败**。
+主要质量指标为 AI 评分的关键点正确性，取值 0–1，先计算同题重复的均值，再对问题取均值；
+执行失败计 0。耗时统计只包括执行成功的记录。
+
+| 流程 | 主要质量分数 | 执行成功 / 120 | 中位耗时（秒） |
+| --- | ---: | ---: | ---: |
+| 直接 LLM | 0.643 | 120 | 5.96 |
+| 普通 RAG | **0.919** | 119 | **3.97** |
+| 单智能体 RAG | 0.821 | 119 | 8.65 |
+| 多智能体 RAG | 0.878 | 115 | 49.85 |
+
+本组普通 RAG 得分最高。多智能体较单智能体高 **5.69 个百分点**，
+八个文档家族的探索性 bootstrap 95% 区间为 **[+1.39, +9.72] 个百分点**，
+但成功执行的中位耗时约为其 **5.8 倍**。参考答案和评分均由 AI 辅助，
+独立真人验证为 **0**；这组小样本公开文档测试不支持普遍架构优越性的结论。
+
+查看[完整结果](docs/evaluation/heldout-test/RESULTS.md)、
+[已执行 notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb)、
+[七个失败和不确定案例](docs/evaluation/heldout-test/FAILURE-CASES.md)及
+[离线复现指南](docs/evaluation/heldout-test/REPRODUCE.md)。
+项目展示入口：[英文摘要](docs/portfolio/project-brief.md)、
+[技术报告](docs/technical-report.md)、
+[本机演示说明](docs/portfolio/demo-guide.md)、
+[三分钟中英讲解稿与常见追问](docs/portfolio/presentation.zh-CN.md)。
+
 ## 已实现能力与边界
 
 - 本地解析、保留来源的切块、embedding、余弦检索和倒数排名融合。
@@ -25,11 +62,6 @@ Planner → Retriever → Researcher → Critic → Writer → Citation Validato
 本版本无互联网搜索、OCR、身份认证、多租户隔离或分布式任务队列。
 引用校验验证来源 ID 和格式，不能证明论点真实。Fake 输出用于验证软件流程，
 不能用作真实模型研究质量的证据。
-
-项目展示入口：[英文摘要](docs/portfolio/project-brief.md)、
-[演示说明和真实页面截图](docs/portfolio/demo-guide.md)、
-[三分钟中英讲解与常见追问](docs/portfolio/presentation.zh-CN.md)、
-[技术报告](docs/technical-report.md)。后续人工复核已取消；现有结果继续明确标注为 AI 复核。
 
 ## 离线 fake 快速开始
 
