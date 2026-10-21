@@ -2,6 +2,21 @@
 
 Use a full Git checkout of this branch and Python **3.11**. Git metadata is needed by the frozen-input verifier. No model credentials, DeepSeek login, private local artifacts, saved application database or new generation are needed. Dependency installation requires package downloads; the analysis itself uses only the public packet. No model API is invoked.
 
+## Product development after the experiment
+
+Product fixes after the experiment use a separate current code revision. The original
+257-input experiment is preserved at commit **`7e0cf6cdf167e112775b1376458b1e7ceff1af1a`**.
+The reproduction launcher checks that the current published result bytes still match
+that snapshot, creates a detached local worktree at the original commit, checks its
+helpers for edits, and runs the original verifier or notebook there. It neither fetches
+models nor regenerates answers. Existing unexpected edits are rejected without reset.
+Regenerated notebook outputs may differ by platform, but notebook cell sources and
+Python analysis helpers must still match the original commit.
+
+The original freeze ID stays `0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270`.
+The direct frozen-run guard remains strict: a changed product tree cannot execute as
+the old experiment. Use the commands below for historical evidence after product fixes.
+
 Clone with automatic newline conversion disabled, especially on Windows:
 
 ```bash
@@ -19,25 +34,36 @@ python -m pip install -r requirements/project-requirements.txt
 python -m pip install -r output/jupyter-notebook/analysis-requirements.txt
 ```
 
-The optional analysis dependency file pins the five frozen scientific packages as well as the notebook and plotting tools. It lives outside the frozen implementation inputs. Generation code, prompts, corpus, reference answers and the freeze record are unchanged.
+The optional analysis dependency file pins the five frozen scientific packages as well as the notebook and plotting tools. It lives outside the frozen implementation inputs. Original generation code, prompts, corpus, reference answers and the freeze record are retained in the pinned reproduction snapshot. Current product fixes are separately identified in Git.
 
 ## Verify saved scientific evidence
 
 ```bash
-python docs/evaluation/heldout-test/tools/verify_reviewed.py
+python docs/evaluation/heldout-test/tools/reproduce_frozen.py
 ```
 
 Expected: **480 traces, 80 sampled + 17 additional AI reviews, 3960 physical receipts, 40 paired questions**, human scoring 0. This verifies the frozen inputs, recorded byte hashes, original-judge retention, source decisions, deterministic scores, available request prices and primary family-bootstrap statistic. Seven execution failures remain in primary quality as zeros; successful answers have no missing judgments. It does not independently prove semantic correctness or bill accuracy.
 
+The reusable worktree is under `artifacts/evaluation/frozen-reproduction/<original-commit>/`.
+The helper uses local Git history, so a shallow checkout missing the original commit must
+first obtain full branch history. No model-provider credential is needed. The original
+`verify_reviewed.py` remains available inside that worktree and validates the exact
+original implementation; it deliberately refuses a modified current product tree.
+
 ## Execute the notebook from a fresh kernel
 
 ```bash
-python docs/evaluation/heldout-test/tools/run_analysis_notebook.py
+python docs/evaluation/heldout-test/tools/reproduce_frozen.py --notebook
 ```
 
-The runner uses the same Python executable for the kernel, executes all **7 code cells** in order, fails on errors or missing embedded plots, closes the kernel, and saves the executed [notebook](../../../output/jupyter-notebook/real-evaluation-analysis.ipynb). Inside the notebook, Python socket connections are disabled before verification and computation. The runner sets the working directory automatically; its own location must still resolve inside this checkout. You can also open the notebook interactively and run all cells with the project environment.
+The runner uses the same Python executable for the kernel, executes all **7 code cells** in order, fails on errors or missing embedded plots, closes the kernel, and prints the executed notebook path inside the isolated worktree. Inside the notebook, Python socket connections are disabled before verification and computation. Recomputed files are written inside that worktree; the current published result packet is read and checked, not overwritten.
 
-Recomputed outputs:
+You can also execute the current, saved [notebook](../../../output/jupyter-notebook/real-evaluation-analysis.ipynb) with
+`python docs/evaluation/heldout-test/tools/run_analysis_notebook.py`. Its first cell selects the
+same original source snapshot before importing the evaluator, and the runner saves the
+executed notebook in the current checkout. Use a fresh kernel for interactive execution.
+
+Recomputed outputs (paths below are relative to the original worktree; links show the committed baseline copies):
 
 | Artifact | Purpose |
 | --- | --- |

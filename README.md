@@ -234,7 +234,7 @@ Multi-agent median successful latency is 49.85 seconds versus 8.65 seconds for
 single-agent RAG. These AI-assisted results do not establish general superiority.
 [Chinese findings](docs/evaluation/heldout-observations.zh-CN.md) explain this tradeoff.
 Recompute public identities, original scores, reviewed scores, receipts and statistics:
-`python docs/evaluation/heldout-test/tools/verify_reviewed.py`.
+`python docs/evaluation/heldout-test/tools/reproduce_frozen.py`.
 The [analysis notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb)
 executes seven cells from a fresh kernel, rebuilds the tables from saved decisions
 and traces, and exports [quality/latency/workload](docs/evaluation/heldout-test/figures/workflow-comparison.svg),
@@ -248,8 +248,9 @@ explain unsupported claims, retrieval misses and unresolved execution failures.
 
 The [local supervisor](docs/evaluation/heldout-test/PROCESS.md) retains all three
 generation checkpoints and the initial analysis before source review.
-Validate with `python scripts/frozen_experiment.py verify`; generation is opt-in
-through `--execute` under that committed identity.
+Historical analysis uses the original `7e0cf6c` source snapshot in an isolated
+worktree, allowing later product fixes to retain reproducible evidence. The
+original frozen-run guard remains strict; see the [reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md).
 
 ## Privacy and development
 

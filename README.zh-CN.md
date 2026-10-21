@@ -184,6 +184,11 @@ Fake benchmark 不支持真实模型质量、速度提升或成本节省的结�
 [七个失败和不确定案例](docs/evaluation/heldout-test/FAILURE-CASES.md)解释具体问题。
 未知用量和未核实的账号费用保持未知，未用零替代。
 
+后续产品修复与原实验分别记录。运行
+`python docs/evaluation/heldout-test/tools/reproduce_frozen.py`
+可在固定的 `7e0cf6c` 原始代码检出中核验旧结果；加入 `--notebook` 可离线重算分析。
+当前公开结果的字节会先与原快照比较，意外修改会被拒绝。
+
 ![正式保留测试的质量、成功执行耗时与回答请求数](docs/evaluation/heldout-test/figures/workflow-comparison.png)
 
 ## 隐私与开发

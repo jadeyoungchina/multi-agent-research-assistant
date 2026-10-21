@@ -38,5 +38,5 @@ Generation packets retain exact answers/evidence: [repeat 0](repeat-0/summary.js
 Recompute identities, original-judge preservation, all scores, request costs and the frozen paired statistic without paid calls:
 
 ```powershell
-.venv/Scripts/python.exe docs/evaluation/heldout-test/tools/verify_reviewed.py
+.venv/Scripts/python.exe docs/evaluation/heldout-test/tools/reproduce_frozen.py
 ```
