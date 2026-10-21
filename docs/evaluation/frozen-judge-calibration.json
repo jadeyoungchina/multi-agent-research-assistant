@@ -1,0 +1,2892 @@
+{
+  "identity": {
+    "kind": "development_only_test_schema_calibration",
+    "human_reviewed": false,
+    "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+    "sources": {
+      "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+      "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+      "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+      "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+      "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+    },
+    "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+    "max_output_tokens": 8192,
+    "max_format_repairs": 1,
+    "minimum_structurally_valid_answers": 16
+  },
+  "planned_answers": 20,
+  "valid_ai_judgments": 19,
+  "judge_errors": 1,
+  "key_point_agreement": {
+    "matched": 31,
+    "valid_denominator": 34,
+    "planned_denominator": 36
+  },
+  "block_verdict_agreement": {
+    "matched": 64,
+    "valid_denominator": 80,
+    "planned_denominator": 89
+  },
+  "comparison_reference": "Codex source-reviewed AI labels, not human truth",
+  "human_reviewed": false,
+  "no_heldout_answers": true,
+  "entries": [
+    {
+      "unit": "answer-021",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-020",
+      "variant": "baseline_llm",
+      "trace_sha256": "ac9d718b1719005988709ff009264c5cdd9a42d872af0285258e51732b2822c7",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-1da515611dbae389d72fd865d13a3c66acd31108",
+            "input_sha256": "26fd58755d7f6a482275ba3b7a0a2c213d7a970e76e0e21751c87a08c36b32aa",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":0,\"reason\":\"Invents microseconds figures; corpus lacks deployment benchmark\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Invents specific microseconds figure without citation\"},{\"index\":1,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Transitional lead-in, no factual claim\"},{\"index\":2,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Factual claim about exception overhead uncited\"},{\"index\":3,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Factual handling claim uncited\"},{\"index\":4,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Factual behavioral claim uncited\"},{\"index\":5,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Invented benchmark overhead figure uncited\"}],\"abstained\":false,\"unsupported_assertion\":true,\"explanation\":\"Answer fabricates latency numbers and benchmark overhead despite no supporting evidence, directly contradicting the reference that no deployment measurement exists.\"}",
+            "attempt_ids": [
+              "b35a3f82ec1c4ca8a0ab1eea1a29bfb7"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 0,
+            "reason": "Invents latency figures instead of noting absent evidence."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Specific unsupported latency claims, no citations."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Transitional connective phrase, no factual assertion."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim about exception overhead, no citation."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim about framework handling, no citation."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim about execution behavior, no citation."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Invented benchmark overhead and production claims, no citations."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer fabricates specific latency and benchmark numbers without any corpus evidence, and never acknowledges the missing deployment-specific measurement."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 0,
+            "reason": "Invents microseconds figures; corpus lacks deployment benchmark"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Invents specific microseconds figure without citation"
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Transitional lead-in, no factual claim"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim about exception overhead uncited"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual handling claim uncited"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual behavioral claim uncited"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Invented benchmark overhead figure uncited"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer fabricates latency numbers and benchmark overhead despite no supporting evidence, directly contradicting the reference that no deployment measurement exists."
+      }
+    },
+    {
+      "unit": "answer-022",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-020",
+      "variant": "single_agent_rag",
+      "trace_sha256": "15718b5d5ecffed469ed9ee793ce17d627da293016a9f73aa261f4343dc34481",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-349420f7d1f907793fe7e1b9d9ee131b33444e31",
+            "input_sha256": "3a6924c7d8a3187eed852b94ca6db05ba249d97e33cd7a8d6a948bcb1f141476",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"States corpus lacks latency data; no number invented\"}],\"blocks\":[{\"index\":0,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Scoped absence statement; cited docs support topic background only\"}],\"abstained\":true,\"unsupported_assertion\":false,\"explanation\":\"Single block scoped limitation declining the measurement; key point fully met, abstention appropriate.\"}",
+            "attempt_ids": [
+              "e5fda6c7f8db48809fe2fc2f55f47842"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states no latency data; invents no number."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Attached passages support classes, handlers and overrides; absence clause scoped."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Correctly declines a production latency number. The single mixed paragraph also describes class differences, handlers and overriding handlers: all supported by its attached handling-errors chunks. Scoped lack-of-metrics clause needs no positive proof of universal absence. abstained true; no invented assertion."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States corpus lacks latency data; no number invented"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped absence statement; cited docs support topic background only"
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "Single block scoped limitation declining the measurement; key point fully met, abstention appropriate."
+      }
+    },
+    {
+      "unit": "answer-023",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-020",
+      "variant": "llm_rag",
+      "trace_sha256": "218611e0f15c80efdc6a45e74dcc2cd75fc46445609d085014dffc4677e3db6b",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-6908078b93562648c1f7353a743bc7a5d76590f4",
+            "input_sha256": "bc67b17e010f2f986c25eaeaab6456895ba64d026c653c8b4a660528a45da696",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"Correctly states no production latency data provided\"}],\"blocks\":[{\"index\":0,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Scoped absence of evidence claim, not domain fact\"}],\"abstained\":true,\"unsupported_assertion\":false,\"explanation\":\"The answer correctly declines to give a latency number because the supplied evidence has no performance data. Block 0 is a scoped missing-evidence statement, not a domain fact, so it is not applicable and needs no citation. No invented figures.\"}",
+            "attempt_ids": [
+              "e569ff8655734f0080cb671f598b974e"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States corpus lacks deployment-specific measurement, no number invented"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Mixed paragraph describes documented class differences and handlers."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Correctly declines a production latency number. Its mixed paragraph describes class differences and handlers, supported by attached handling-errors chunks. Scoped no-metrics clause is not universal absence; key point 2, abstained true, unsupported false."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states no production latency data provided"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped absence of evidence claim, not domain fact"
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "The answer correctly declines to give a latency number because the supplied evidence has no performance data. Block 0 is a scoped missing-evidence statement, not a domain fact, so it is not applicable and needs no citation. No invented figures."
+      }
+    },
+    {
+      "unit": "answer-024",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-020",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "b890e1e0b944f596d4c483b3bc4bfd60e4c22ff535f81e69835dd1bb8e2b1910",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-6b7a1c4afe0a25e32c880e251b12579951df0089",
+            "input_sha256": "3db0016d9705b3c880fbb83caa78c0e0566a958364e20a077158b32d00de90b8",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":1,\"reason\":\"Notes missing data but asserts unmeasured negligible overhead\"}],\"blocks\":[{\"index\":0,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only\"},{\"index\":1,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Inheritance cited; negligible/negligible-overhead claim unsupported\"},{\"index\":2,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Scoped absence statement summary\"},{\"index\":3,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only\"},{\"index\":4,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Inheritance and handler reuse entailed by passages\"},{\"index\":5,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Error mechanism cited; minimal overhead claim not entailed\"},{\"index\":6,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Scoped absence statement\"},{\"index\":7,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Limitation and scoped absence statements\"}],\"abstained\":false,\"unsupported_assertion\":true,\"explanation\":\"Answer declines quantitative figure but asserts unmeasured negligible/minimal latency overhead, contradicting evidence. Inheritance facts are supported. Nonfactual blocks are headings or scoped absence statements.\"}",
+            "attempt_ids": [
+              "663c8e2a2ac040be8f391bb8d5df6d52"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 1,
+            "reason": "Admits no measurement yet asserts negligible overhead, partly reversing conclusion"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Negligible overhead and efficient serialization unsupported by passages"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Mixed summary asserts inheritance and handlers without attached citations."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Inheritance and handler reuse entailed by passages"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Status code use supported; minimal inherent overhead not entailed"
+          },
+          {
+            "index": 6,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped absence statement about measurements"
+          },
+          {
+            "index": 7,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped limitation statement"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: Explicitly says precise measurements are unavailable but also asserts negligible/minimal overhead, efficient serialization and no significant computational cost. No attached passage establishes those performance conclusions: unsupported_assertion true, even though no exact number is invented. Mixed factual block 1 is partial; block 2 contains uncited inheritance/handler facts; block 5 is partial because error responses are documented but minimal overhead is not; block 6 and limitations are scoped absence (N/A). Review other inference in block 4 against attached inheritance/handler reuse text. Do not let correct no-benchmark caveat erase unsupported qualitative performance claims."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 1,
+            "reason": "Notes missing data but asserts unmeasured negligible overhead"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Inheritance cited; negligible/negligible-overhead claim unsupported"
+          },
+          {
+            "index": 2,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped absence statement summary"
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Inheritance and handler reuse entailed by passages"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Error mechanism cited; minimal overhead claim not entailed"
+          },
+          {
+            "index": 6,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped absence statement"
+          },
+          {
+            "index": 7,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Limitation and scoped absence statements"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer declines quantitative figure but asserts unmeasured negligible/minimal latency overhead, contradicting evidence. Inheritance facts are supported. Nonfactual blocks are headings or scoped absence statements."
+      }
+    },
+    {
+      "unit": "answer-029",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-013",
+      "variant": "llm_rag",
+      "trace_sha256": "87f2b39f8bf3f3ddfb0991d0823b04b6a52c0be11eca02b5c81b0b4f92d89140",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-745c4172d118efb8da478f975e480a0a123ef3bb",
+            "input_sha256": "0f50fbedb2ed7953c8810c8ffb5c8f21b44f4ae9e74c276b790a9aa2e9c70deb",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"Default single call per request, cached for dependants, stated\"},{\"index\":1,\"score\":2,\"reason\":\"use_cache=False to force repeated calls, correctly stated\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage states single call and caching\"},{\"index\":1,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage states use_cache=False for fresh calls\"},{\"index\":2,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Asserts Annotated variant exists, no citation\"},{\"index\":3,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Code example lacks citation but matches evidence\"},{\"index\":4,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Asserts non-Annotated variant exists, no citation\"},{\"index\":5,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Code example lacks citation but matches evidence\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Both key points are answered correctly. Blocks 0 and 1 are fully entailed by the cited passage, while the four explanatory and code blocks lack citations despite matching the evidence.\"}",
+            "attempt_ids": [
+              "a621892bcb48444b881128943a655ce9"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States once per request with cached value shared"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Gives use_cache=False to force repeated calls"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails once-per-request caching statement"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails use_cache=False advanced scenario"
+          },
+          {
+            "index": 2,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading introducing example, no factual claim"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Example code from docs but no citation given"
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Transitional prose, no factual assertion"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Example code factual but no citation given"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points answered correctly with supporting citations; code blocks lack citations but content matches reference."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Default single call per request, cached for dependants, stated"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "use_cache=False to force repeated calls, correctly stated"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage states single call and caching"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage states use_cache=False for fresh calls"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Asserts Annotated variant exists, no citation"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Code example lacks citation but matches evidence"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Asserts non-Annotated variant exists, no citation"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Code example lacks citation but matches evidence"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points are answered correctly. Blocks 0 and 1 are fully entailed by the cited passage, while the four explanatory and code blocks lack citations despite matching the evidence."
+      }
+    },
+    {
+      "unit": "answer-030",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-013",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "26ce75c9d593a72aa0d1b4ec5333abf5dc3721462fd41568281c0d892dfe849c",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-ae7c34ae7ec0563da10e264f39a2f7e98d50049a",
+            "input_sha256": "8f73de9f10fb00edab8085af85778e894ae3555ba249500dd488d8be029a8112",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"默认单次调用并缓存分发，完全正确\"},{\"index\":1,\"score\":2,\"reason\":\"需求时用 use_cache=False，正确\"}],\"blocks\":[{\"index\":0,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"仅标题，非事实断言\"},{\"index\":1,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"证据载明单次调用、缓存及分发\"},{\"index\":2,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"证据载明 use_cache=False 参数\"},{\"index\":3,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"仅标题，非事实断言\"},{\"index\":4,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"缓存单次调用有据，效率说法未被直接蕴含\"},{\"index\":5,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"证据支持 use_cache=False 及每次调用\"},{\"index\":6,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"版本有据，Python 3.8+ 适用范围未明确断言\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"两个关键要点均正确覆盖；部分区块含证据未直接支持的解释性表述，但无实质错误或虚构结论。\"}",
+            "attempt_ids": [
+              "b06dfee056fb401c93b70a2b093f13fc"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Default single call with cached result shared; matches."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "use_cache=False enables repeated calls; matches."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Passage states once per request, cached, passed."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Both passages show use_cache=False in Depends."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Passage supports single call and caching."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Passages show use_cache=False disabling cached value."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Snapshot header confirms version; code tabs show 3.8+."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly states default single cached call and use_cache=False override; all factual blocks entailed by cited passages."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "默认单次调用并缓存分发，完全正确"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "需求时用 use_cache=False，正确"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "仅标题，非事实断言"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "证据载明单次调用、缓存及分发"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "证据载明 use_cache=False 参数"
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "仅标题，非事实断言"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "缓存单次调用有据，效率说法未被直接蕴含"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "证据支持 use_cache=False 及每次调用"
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "版本有据，Python 3.8+ 适用范围未明确断言"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "两个关键要点均正确覆盖；部分区块含证据未直接支持的解释性表述，但无实质错误或虚构结论。"
+      }
+    },
+    {
+      "unit": "answer-031",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-013",
+      "variant": "baseline_llm",
+      "trace_sha256": "75625591aa0c9c78de3d918cc1c529009a7b4d71c2e08805d8e9de798d38c263",
+      "status": "judge_error",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-59c27a2b4a54ee6bc14febd922a7a1dbd6941c80",
+            "input_sha256": "e8587d38d20490b1cc15f0d16cde23c37a250408acc8f9dd14265efcc604fb78",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"States default one call with cached reuse\"},{\"index\":1,\"score\":0,\"reason\":\"Attributes multi-call to use_cache=False, not scope\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"True default-once fact, but no citation\"},{\"index\":1,\"requires_citation\":true,\"support\":\"unsupported\",\"reason\":\"Invents scope=call; contradicts documentation\"},{\"index\":2,\"requires_citation\":true,\"support\":\"unsupported\",\"reason\":\"Invents scope parameter for Depends\"},{\"index\":3,\"requires_citation\":true,\"support\":\"unsupported\",\"reason\":\"Code and scope claims contradict documented use_cache behavior\"},{\"index\":4,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only, no domain assertion\"},{\"index\":5,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct default-once fact but uncited\"},{\"index\":6,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct use_cache=False condition but uncited\"},{\"index\":7,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct setting guidance but uncited\"},{\"index\":8,\"requires_citation\":true,\"support\":\"unsupported\",\"reason\":\"Code uses use_cache=False but inline claims misleading\"}],\"abstained\":false,\"unsupported_assertion\":true,\"explanation\":\"Answer initially invents scope=call, then self-corrects to use_cache=False; all factual blocks uncited, with contradictory invented claims in early blocks.\"}",
+            "attempt_ids": [
+              "ed3b2e8d094249b6a25a159427207000"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        },
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-f62d9b88172f005b50bfd6cfb798dc58ad5b4732",
+            "input_sha256": "8fa43637f3b8b83b956eac527a0a6d5b6de88fd3046e35a7d2a7bdefa071e1d8",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"States default one call, cached and reused\"},{\"index\":1,\"score\":2,\"reason\":\"Correctly gives use_cache=False for multiple calls\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct default-once fact, no citation\"},{\"index\":1,\"requires_citation\":true,\"support\":\"unsupported\",\"reason\":\"Invents scope=call; contradicts the documentation\"},{\"index\":2,\"requires_citation\":true,\"support\":\"unsupported\",\"reason\":\"Invents scope parameter on Depends\"},{\"index\":3,\"requires_citation\":true,\"support\":\"unsupported\",\"reason\":\"Code and scope claims contradict documented use_cache behavior\"},{\"index\":4,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only, no domain assertion\"},{\"index\":5,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct default-once fact, no citation\"},{\"index\":6,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct use_cache=False condition, no citation\"},{\"index\":7,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct setting guidance, no citation\"},{\"index\":8,\"requires_citation\":true,\"support\":\"unsupported\",\"reason\":\"Code correct but inline comments claim unverified behavior\"}],\"abstained\":false,\"unsupported_assertion\":true,\"explanation\":\"Answer first invents scope=call, then self-corrects to use_cache=False; all factual blocks are uncited, and early blocks contain contradicted scope claims.\"}",
+            "attempt_ids": [
+              "57cb3ee2995f4d8fb0308ce07e195693"
+            ],
+            "resumed": false
+          },
+          "format_repair": 1
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states called once, result cached and reused"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly names use_cache=False as the condition"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 7,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 8,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: The final explicitly corrected answer states once/request and Depends(use_cache=False), earning both required key points. Unlike the historical baseline, do not miss this final correction. Earlier scope=call/singleton claims and the misleading condition about pure functions/side effects remain unsupported extras; unsupported_assertion true. All factual blocks are uncited. No abstention."
+      },
+      "error_type": "ValueError"
+    },
+    {
+      "unit": "answer-032",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-013",
+      "variant": "single_agent_rag",
+      "trace_sha256": "b099bfc76ac1632c8f485181f2e5b7a9e1fa3e00d2220a5c1c5b1514c55e7c38",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-235cadd40953e01db3b78e22594c38bc4d2fdc7e",
+            "input_sha256": "d760e285f88001dddee4017d783b0cc739f5b62e3e07e6ff574cf9c100aacc1d",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"Default once per request, cached for dependents\"},{\"index\":1,\"score\":2,\"reason\":\"use_cache=False enables repeated calls\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage entails default-once, caching, and use_cache=False\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Single answer block fully matches both reference points and is entailed by its cited passage.\"}",
+            "attempt_ids": [
+              "e9fd2ae8c02e49bba0d14b490df4d4a3"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States single call per request with cached value shared"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly gives use_cache=False for re-invocation"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails once-per-request, caching, and use_cache=False"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly covers both reference points, and its single factual block is fully entailed by the attached sub-dependencies passage."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Default once per request, cached for dependents"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "use_cache=False enables repeated calls"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails default-once, caching, and use_cache=False"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single answer block fully matches both reference points and is entailed by its cited passage."
+      }
+    },
+    {
+      "unit": "answer-037",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-019",
+      "variant": "baseline_llm",
+      "trace_sha256": "fc9effd6ffe7bdee207b303491152b690612a5b6065c6b3bb853f5a93e61d9ea",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-25b321bace527796d5893a4fcf3bbeba4a7dbafd",
+            "input_sha256": "d2ffaae70f96168412b50aaef1e0095dbdd22c91d64e71d228dfa09e9ff4ff71",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"Correctly prescribes raising FastAPI's HTTPException in code.\"},{\"index\":1,\"score\":0,\"reason\":\"Wrong should register FastAPI's handler, contradicting base-class guidance.\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Factual answer assertions with no citations attached.\"},{\"index\":1,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only, no factual claim.\"},{\"index\":2,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Factual rationale uncited; claims about enhancements unsupported.\"},{\"index\":3,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Factual advice uncited and favor's wrong handler choice.\"},{\"index\":4,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only.\"},{\"index\":5,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Code example registers handler for wrong class; uncited.\"},{\"index\":6,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Factual claim of official recommendation uncited and disputed.\"}],\"abstained\":false,\"unsupported_assertion\":true,\"explanation\":\"Raise advice correct, but answer recommends registering FastAPI's HTTPException instead of Starlette's base class; all factual blocks uncited and key registration guidance contradicts reference.\"}",
+            "attempt_ids": [
+              "7adb9589fa544319bb68822fc180da81"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI HTTPException; details optional"
+          },
+          {
+            "index": 1,
+            "score": 0,
+            "reason": "Recommends FastAPI subclass handler, not Starlette base"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: Raise FastAPI is correct (2); registering either/subclass catches both and preference for FastAPI handler reverse Python inheritance and the pinned recommendation (0). Claimed headers-only enhancement conflicts with source stating only detail types differ. unsupported true, abstained false; factual blocks uncited."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly prescribes raising FastAPI's HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 0,
+            "reason": "Wrong should register FastAPI's handler, contradicting base-class guidance."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual answer assertions with no citations attached."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual rationale uncited; claims about enhancements unsupported."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual advice uncited and favor's wrong handler choice."
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Code example registers handler for wrong class; uncited."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim of official recommendation uncited and disputed."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Raise advice correct, but answer recommends registering FastAPI's HTTPException instead of Starlette's base class; all factual blocks uncited and key registration guidance contradicts reference."
+      }
+    },
+    {
+      "unit": "answer-038",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-019",
+      "variant": "single_agent_rag",
+      "trace_sha256": "9dd0401337b8baae08ad54bf5abc96485e6e56da26612e192ae2a7de0b154504",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-52b9f4ae32623bb00afdf69e8a3b5df4a8f82b0d",
+            "input_sha256": "7dff0c67b424c5db756ed6424764a80bb06fcb10072b0f20c36ed8f96b6c68dc",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"Correctly says raise FastAPI's HTTPException in code.\"},{\"index\":1,\"score\":2,\"reason\":\"Correctly registers handler for Starlette base; rationale matches.\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage entails both raise and register guidance.\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Single block fully supported by cited passage; both key points correctly addressed.\"}",
+            "attempt_ids": [
+              "807674f6fc4a42ef91dbe55e14db6693"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI's HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers handler for Starlette base class, explains catching Starlette internals."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage fully entails raise and handler guidance."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single block is cited and fully entailed by the attached passage; both key points answered correctly."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI's HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers handler for Starlette base; rationale matches."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails both raise and register guidance."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single block fully supported by cited passage; both key points correctly addressed."
+      }
+    },
+    {
+      "unit": "answer-039",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-019",
+      "variant": "llm_rag",
+      "trace_sha256": "8e4b5c55ccd2e282e928441cde045997abf8ce2e2f2697c2180ded9b3cabb9e5",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-3d128013ce20f62c3e63b6dabcbdb8ee7b7718e0",
+            "input_sha256": "2663f480c2a4b0998b24fa8bb4f4238d1f81599af1db6fb8f7d0474b10293fe5",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"Correctly states raising FastAPI's HTTPException in code.\"},{\"index\":1,\"score\":2,\"reason\":\"Correctly registers handler for Starlette base class, with rationale.\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage entails all claims verbatim.\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Single block fully supported by cited passage; both key points covered correctly.\"}",
+            "attempt_ids": [
+              "8a289ab43d3245bba587a437d36a59fb"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI HTTPException in code"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers handler for Starlette base class, with rationale"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails all three assertions"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single cited block fully matches reference points and is entailed by the evidence."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states raising FastAPI's HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers handler for Starlette base class, with rationale."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails all claims verbatim."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single block fully supported by cited passage; both key points covered correctly."
+      }
+    },
+    {
+      "unit": "answer-040",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-019",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "91dda206b8b217abceccd18db4a3c88999555e99b7ab2fbefded0cfc8ff7d4ee",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-11655cb1d37e15210004a4c177679c45cd767c93",
+            "input_sha256": "cd40182ca09ed56456be1807216375cbe43b39a9034e9b02ff2893e941a2bb0c",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"States raising FastAPI's HTTPException in code.\"},{\"index\":1,\"score\":2,\"reason\":\"Correctly registers handler for Starlette base class.\"}],\"blocks\":[{\"index\":0,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only.\"},{\"index\":1,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage states both rules directly.\"},{\"index\":2,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Inheritance and detail claims supported; catch wording partly implicit.\"},{\"index\":3,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only.\"},{\"index\":4,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage supports raising FastAPI class and JSON detail.\"},{\"index\":5,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage supports Starlette registration and internal catching.\"},{\"index\":6,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage shows StarletteHTTPException alias import.\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Answer correctly identifies raising FastAPI's HTTPException and registering Starlette's; all blocks align with cited documentation, with one block only partially entailed.\"}",
+            "attempt_ids": [
+              "909ebda170b243a1944374ffd03f4710"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly says register handler for Starlette base class."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Both raise and register guidance entailed."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Inheritance and detail-type distinction entailed."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Raising FastAPI exception and JSON detail entailed."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Class guidance supported; named decorator absent from attached passage."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Alias import entailed; handler usage reasonable."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required points correct (2,2). Inheritance, detail types, base-class coverage and alias are in attached class-difference passage. Block 5 additionally names @app.exception_handler(), which appears earlier in full handling-errors source but not this attached chunk: partial citation support under all-facts rule, rather than borrowing reference_context. Other cited factual blocks supported; heading-only blocks N/A. No fabricated factual assertion or abstention."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States raising FastAPI's HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers handler for Starlette base class."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage states both rules directly."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Inheritance and detail claims supported; catch wording partly implicit."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage supports raising FastAPI class and JSON detail."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage supports Starlette registration and internal catching."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage shows StarletteHTTPException alias import."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly identifies raising FastAPI's HTTPException and registering Starlette's; all blocks align with cited documentation, with one block only partially entailed."
+      }
+    },
+    {
+      "unit": "answer-049",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-001",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "e77415368c2a7a46553da48e3dc8904da749a7ee8d5997f8b8dcaed37ddf1294",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-c4258484e6d8d515119cb5ce4e2eb8b89574b46d",
+            "input_sha256": "02b8c3f6188dcdf6b6b4815a97d784c2088c5f5d3bc591949eb378ab708f54bd",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"States lax coerces '123' to integer 123\"},{\"index\":1,\"score\":2,\"reason\":\"Strict raises ValidationError with valid-integer message\"}],\"blocks\":[{\"index\":0,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Introductory framing, no domain assertion\"},{\"index\":1,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Both citations show coercion of '123' to 123\"},{\"index\":2,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Citations show strict raises valid-integer ValidationError\"},{\"index\":3,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Field(strict=True) supported, but cited excerpt incomplete\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Both key points are correctly answered and supported by the evidence; block 3's claim is only partially entailed by the cited passage.\"}",
+            "attempt_ids": [
+              "f33f3ed61715433bb03ea3493f8d68ef"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states lax coerces '123' to 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states strict raises ValidationError, valid integer message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Mode-dependent validation behavior is a factual assertion without citation."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages show coercion to x=123"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages show ValidationError and message"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Attached chunk shows config strictness and Field(strict=False), not strict=True."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required int-validation facts correct (2,2); faithful Chinese integer-error paraphrase is enough. Block 0 asserts mode-dependent behavior without a citation (uncited). Blocks 1 and 2 supported by attached lax/strict example. Block 3 cites only config-strict/Field(strict=False) override chunk, not the separate Field(strict=True) passage: partial for exact additional API recipe. No fabricated fact or abstention."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States lax coerces '123' to integer 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Strict raises ValidationError with valid-integer message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Introductory framing, no domain assertion"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Both citations show coercion of '123' to 123"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Citations show strict raises valid-integer ValidationError"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Field(strict=True) supported, but cited excerpt incomplete"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points are correctly answered and supported by the evidence; block 3's claim is only partially entailed by the cited passage."
+      }
+    },
+    {
+      "unit": "answer-050",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-001",
+      "variant": "baseline_llm",
+      "trace_sha256": "461d32700358201771e87e979fdbe109563f2328f1a6eb728ca4d6ba16195238",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-677eec1e6a6b7c42129260f9d007657a59cdcc1e",
+            "input_sha256": "f1bce9e499955f07592dd5cf8999de12880994c3e44c4ae828e52070acc85e41",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"Correctly states lax mode coerces string to int\"},{\"index\":1,\"score\":1,\"reason\":\"ValidationError correct; specific message omitted but not reversed\"}],\"blocks\":[{\"index\":0,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Introductory framing, no factual assertion\"},{\"index\":1,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct domain fact but no citation provided\"},{\"index\":2,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct domain fact but no citation provided\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Answer correctly describes lax coercion to 123 and strict ValidationError, but every factual block lacks citations, so all are scored uncited. The specific strict error message is not stated, so key point 1 is partial.\"}",
+            "attempt_ids": [
+              "9f8ce0b6d5714ca4b8281b7160e367c5"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states lax coercion of '123' to 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Rejection because string is not integer faithfully paraphrases error."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Framing heading, not a domain assertion"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required points correct (2,2). Its strict paragraph explains rejection because str is not int; faithful paraphrase earns credit without reproducing English error text. Intro is question setup; factual list blocks uncited (baseline citation metric N/A). No unsupported assertion or abstention."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states lax mode coerces string to int"
+          },
+          {
+            "index": 1,
+            "score": 1,
+            "reason": "ValidationError correct; specific message omitted but not reversed"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Introductory framing, no factual assertion"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Correct domain fact but no citation provided"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Correct domain fact but no citation provided"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly describes lax coercion to 123 and strict ValidationError, but every factual block lacks citations, so all are scored uncited. The specific strict error message is not stated, so key point 1 is partial."
+      }
+    },
+    {
+      "unit": "answer-051",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-001",
+      "variant": "single_agent_rag",
+      "trace_sha256": "a7a63b89ec7f15ecfc6ebfa946a2211437f41fcd29a7c63ee216cccf093a8327",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-91aa9835aa69ee1729b1c127d3dbb69d1902d0c3",
+            "input_sha256": "9870d0402205fbdacd59e9f780dd439d3e91245a64e7dc43945c95ff5f461478",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"Lax mode converts string '123' to int 123\"},{\"index\":1,\"score\":2,\"reason\":\"Strict mode raises ValidationError for valid integer input\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passages state lax coercion example exactly\"},{\"index\":1,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage shows strict mode ValidationError message\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Both blocks correctly restate the documented lax coercion and strict ValidationError, and their citations entail the assertions.\"}",
+            "attempt_ids": [
+              "3db2964e8bce470d9d4bc53ee778fef7"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Lax mode coerces '123' to int 123, correct"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Strict raises ValidationError saying input should be valid integer"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Citations state lax coercion and show x=123 output"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Covered by citation: strict example error message matches"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both blocks are cited correctly, and both key points are fully and accurately answered."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Lax mode converts string '123' to int 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Strict mode raises ValidationError for valid integer input"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages state lax coercion example exactly"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage shows strict mode ValidationError message"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both blocks correctly restate the documented lax coercion and strict ValidationError, and their citations entail the assertions."
+      }
+    },
+    {
+      "unit": "answer-052",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-001",
+      "variant": "llm_rag",
+      "trace_sha256": "2f30a2b29c9a9a6324e4b09a414ae16c05cdeff166eb5bbc245e967bc8384780",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-17be7eb4eb43fe9a08612cf2627e829db1b5423a",
+            "input_sha256": "fb64956d699fe894d1a2e2a18c9c17d752311f8d17e1148523c152a3aeea4f99",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"States lax mode coerces '123' to integer 123\"},{\"index\":1,\"score\":2,\"reason\":\"States strict=True raises ValidationError, invalid integer message\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Cited passage entails both lax coercion and strict error\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Single cited block correctly covers both requested behaviors, fully entailed by attached evidence.\"}",
+            "attempt_ids": [
+              "518a18c0a2cb463ca38187128d35808e"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States lax mode coerces '123' to 123, matching example"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States ValidationError with input-should-be-valid-integer message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage includes both lax and strict example outputs"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "The single answer block restates both documented behaviors accurately and cites the exact example passage that entails both the lax coercion output and the strict ValidationError message."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States lax mode coerces '123' to integer 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States strict=True raises ValidationError, invalid integer message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails both lax coercion and strict error"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single cited block correctly covers both requested behaviors, fully entailed by attached evidence."
+      }
+    },
+    {
+      "unit": "answer-077",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-007",
+      "variant": "llm_rag",
+      "trace_sha256": "a3596fe9882ebaa599323778d917b574bcd6fcf0fa9311b45e14d3c65c6b952e",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-59c08f641fffd8f9972340a43a54974afa92de6c",
+            "input_sha256": "2bf54e11830ac3551ab3757249dcde1a4ace8580ac970636070fbf41e189a03e",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"AliasChoices example matches reference exactly\"},{\"index\":1,\"score\":2,\"reason\":\"Clearly states VSCode ignores validation_alias in signature\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"AliasChoices claim entailed by cited alias example\"},{\"index\":1,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Code asserts behavior but lacks citation IDs\"},{\"index\":2,\"requires_citation\":true,\"support\":\"supported\",\"reason\":\"Citation snippets entail VSCode signature and alias hints\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Both key points covered correctly. Block 1 code example lacks citations; other factual blocks are supported.\"}",
+            "attempt_ids": [
+              "a81b4c40a0e34552b145977ba5fd05ba"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "AliasChoices with validation_alias accepts both names correctly"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode ignores validation_alias; distinguishes runtime from editor"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage shows AliasChoices accepting both names"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Executable example code lacks any citation"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages entail VSCode behavior and alias priority"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly covers both runtime dual-name validation and VSCode not reflecting validation_alias. The code block is uncited but otherwise accurate; factual claims are supported."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "AliasChoices example matches reference exactly"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Clearly states VSCode ignores validation_alias in signature"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "AliasChoices claim entailed by cited alias example"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Code asserts behavior but lacks citation IDs"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Citation snippets entail VSCode signature and alias hints"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points covered correctly. Block 1 code example lacks citations; other factual blocks are supported."
+      }
+    },
+    {
+      "unit": "answer-078",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-007",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "754097df5ca908204cbcd44594a590b574e9323a39c47a6a0f4a58b5080ab4e5",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-d26f8754769f7742685a5072bc9c8cc8fabd4cba",
+            "input_sha256": "4a68bdf99e4bff70d990ee659af9404b8c574b009bbbdd2101bf215855d5acaa",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":2,\"reason\":\"AliasChoices with validation_alias correctly accepts both keys at runtime.\"},{\"index\":1,\"score\":2,\"reason\":\"Correctly distinguishes runtime aliasing from VSCode initializer signature hints.\"}],\"blocks\":[{\"index\":0,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only, no factual assertion.\"},{\"index\":1,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Editor claims cite passages, but multi-key runtime claim chunk lacks both keys.\"},{\"index\":2,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Section heading, no factual assertion.\"},{\"index\":3,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Cited passage shows both choices, but only model_validate demonstrated.\"},{\"index\":4,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Passage lacks explicit warning for using validation_alias alias key.\"},{\"index\":5,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Editor-hint claims partly entailed; runtime-validation claim not fully supported.\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Both key points are correctly addressed. Several factual blocks cite relevant passages but are only partially entailed, notably the claims about multi-key runtime acceptance via instantiation and the warning shown for validation_alias keys. No invented or contradicted conclusions found.\"}",
+            "attempt_ids": [
+              "c1342bd95e19402aadb6bd9e936a2beb"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Cites AliasChoices with both names for validation alias."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode signature ignores validation_alias; suggests alias workaround."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Summary scopes signature distinction and explicitly mentions alias workaround."
+          },
+          {
+            "index": 2,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "AliasChoices example entails both keys accepted."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Citations state validation_alias ignored; alias workaround given."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "AliasChoices statement lacks that source among this block's attached citations."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required points correct. AliasChoices example, validation_alias vs editor distinction and alias/serialization_alias workaround match pinned sources. Cited factual blocks 1,3,4 supported. Block 5 additionally asserts multiple choices via AliasChoices but attaches only fields/alias-metadata chunks, not the AliasChoices chunk used in block 3: partial, no borrowing across blocks. No invented fact or abstention."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "AliasChoices with validation_alias correctly accepts both keys at runtime."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly distinguishes runtime aliasing from VSCode initializer signature hints."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Editor claims cite passages, but multi-key runtime claim chunk lacks both keys."
+          },
+          {
+            "index": 2,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading, no factual assertion."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Cited passage shows both choices, but only model_validate demonstrated."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Passage lacks explicit warning for using validation_alias alias key."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Editor-hint claims partly entailed; runtime-validation claim not fully supported."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points are correctly addressed. Several factual blocks cite relevant passages but are only partially entailed, notably the claims about multi-key runtime acceptance via instantiation and the warning shown for validation_alias keys. No invented or contradicted conclusions found."
+      }
+    },
+    {
+      "unit": "answer-079",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-007",
+      "variant": "baseline_llm",
+      "trace_sha256": "1f284831b706ff89b14bb1cb0eff0071b79ee5f744fda8508318ff3049a4211c",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-88a2a8d49dd7e5f8033803f04082470e491acf54",
+            "input_sha256": "e79431747491b8590bdba290086b0eb402e1969aba86c31aa0de4337cbea25ac",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":1,\"reason\":\"AliasChoices shown in code block 2; cited prose omitted equivalent, no contradiction.\"},{\"index\":1,\"score\":2,\"reason\":\"Correctly says VSCode ignores validation_alias; distinguishes runtime from editor hints.\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct AliasChoices claim but no citation.\"},{\"index\":1,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only.\"},{\"index\":2,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"AliasChoices example matches corpus but uncited and has stray code.\"},{\"index\":3,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading question only.\"},{\"index\":4,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"VSCode claim correct but no citation.\"},{\"index\":5,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Signature claim correct but no citation.\"},{\"index\":6,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Correct but uncited editor-hint claim.\"},{\"index\":7,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Section heading only.\"},{\"index\":8,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Table of runtime/editor claims lacks citation.\"},{\"index\":9,\"requires_citation\":false,\"support\":\"not_applicable\",\"reason\":\"Heading only.\"},{\"index\":10,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Recommendation is factual runtime claim, uncited.\"},{\"index\":11,\"requires_citation\":true,\"support\":\"uncited\",\"reason\":\"Static typing claim correct but uncited.\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Answer reaches the right conclusions but every factual block lacks any citation IDs; one key point only implied by code.\"}",
+            "attempt_ids": [
+              "dbe27127ae8c4f2fbdca7fac9dafe611"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "AliasChoices approach matches documented runtime behavior."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States VSCode ignores validation_alias; workaround omitted but optional."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Question heading, no factual assertion."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 7,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 8,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 9,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 10,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 11,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: Correct final AliasChoices implementation and validation_alias/initializer distinction earn both required points. The preliminary purported correct multiple-alias example sets only a single validation_alias string (and unrelated camelCase sample); this confusing earlier purported solution remains a misleading extra despite the later correct redefinition. unsupported_assertion true; all factual blocks uncited; no abstention. Optional editor workaround is not required."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 1,
+            "reason": "AliasChoices shown in code block 2; cited prose omitted equivalent, no contradiction."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly says VSCode ignores validation_alias; distinguishes runtime from editor hints."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Correct AliasChoices claim but no citation."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "AliasChoices example matches corpus but uncited and has stray code."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading question only."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "VSCode claim correct but no citation."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Signature claim correct but no citation."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Correct but uncited editor-hint claim."
+          },
+          {
+            "index": 7,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only."
+          },
+          {
+            "index": 8,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Table of runtime/editor claims lacks citation."
+          },
+          {
+            "index": 9,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only."
+          },
+          {
+            "index": 10,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Recommendation is factual runtime claim, uncited."
+          },
+          {
+            "index": 11,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Static typing claim correct but uncited."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer reaches the right conclusions but every factual block lacks any citation IDs; one key point only implied by code."
+      }
+    },
+    {
+      "unit": "answer-080",
+      "identity": {
+        "kind": "development_only_test_schema_calibration",
+        "human_reviewed": false,
+        "packet_summary_sha256": "280ce8c1feb087ef994e7564d4b2b58a088c93edd18e17a4df29da837e93c84c",
+        "sources": {
+          "app/evaluation/development.py": "3f698fdedaf7ba16b652140fd03203bf8b366b0e878bd67b2f3dc86c70357089",
+          "app/evaluation/test_judging.py": "072ac45a8cf94b3b87c8f6d71b9f0fed3a45c5ea21d6168dab3891f8701f2bd7",
+          "app/evaluation/deepseek_cli.py": "4d4176a95254a172fb43ebe37e7e9ea4469b2a4d9d987a433f02aa0d91d28e68",
+          "app/evaluation/dsh_guard.mjs": "1d32d59d44bfa1b0dbd4231670599924bddbbba6aec74d7acc109fd8a0248511",
+          "scripts/calibrate_frozen_judge.py": "3e8fd4e74f131b2f5fd3575d7c98fddbcf9348d9c3b42af4634cf858d5e3fd93"
+        },
+        "cli_sha256": "80112efe368efb1a39720c7ada0af00442e5131fb2744edaaff8a3e8bb499e6f",
+        "max_output_tokens": 8192,
+        "max_format_repairs": 1,
+        "minimum_structurally_valid_answers": 16
+      },
+      "case_id": "REAL-DEV-007",
+      "variant": "single_agent_rag",
+      "trace_sha256": "af442096e202a23356865d834c403134f8b154311751f00d3f426e82e348f679",
+      "status": "valid_ai_judgment",
+      "attempts": [
+        {
+          "raw_response": {
+            "task_id": "test-schema-calib-19e7e5ca5ac17ada815a440c1211a0aac0ead4f1",
+            "input_sha256": "55e1348f270710c7acfe80e76d21ed1aa47c0afc3cef05f5b01b68b4f9d3c8f9",
+            "text": "{\"rubric_version\":\"test-block-v2\",\"key_points\":[{\"index\":0,\"score\":1,\"reason\":\"Names validation_alias with populate_by_name, but no AliasChoices shown\"},{\"index\":1,\"score\":2,\"reason\":\"States VSCode ignores validation_alias; alias workaround correct\"}],\"blocks\":[{\"index\":0,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Validation_alias correct; populate_by_name dual-acceptance claim not entailed\"},{\"index\":1,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Core claim supported; 'alias instead' suggestion not entailed\"},{\"index\":2,\"requires_citation\":true,\"support\":\"partial\",\"reason\":\"Runtime vs editor distinction supported; alias-based completion claim not entailed\"}],\"abstained\":false,\"unsupported_assertion\":false,\"explanation\":\"Answers address both points but omit AliasChoices and overstate what citations entail about populate_by_name and alias-based editor hints.\"}",
+            "attempt_ids": [
+              "ed929fa1c62947a6ade81342f167347c"
+            ],
+            "resumed": false
+          },
+          "format_repair": 0
+        }
+      ],
+      "source_reviewed_judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "validation_alias with populate_by_name accepts both names; locally verified."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode initializer ignores validation_alias; alias workaround given."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Attached fields passage covers runtime alias equivalence and populate_by_name."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages state VSCode ignores validation_alias and alias workaround."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Attached fields passage distinguishes runtime aliases from editor hints."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required points correct. validation_alias for fname plus populate_by_name=True is a valid documented-equivalent runtime solution, not a missing AliasChoices requirement. VSCode uses alias rather than validation_alias; optional alias/serialization_alias workaround agrees with fields guide. Attached fields chunks cover runtime alias equivalence, populate_by_name and editor behavior; all three factual blocks supported. No invented assertion or abstention."
+      },
+      "judgment": {
+        "rubric_version": "test-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 1,
+            "reason": "Names validation_alias with populate_by_name, but no AliasChoices shown"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States VSCode ignores validation_alias; alias workaround correct"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Validation_alias correct; populate_by_name dual-acceptance claim not entailed"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Core claim supported; 'alias instead' suggestion not entailed"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Runtime vs editor distinction supported; alias-based completion claim not entailed"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answers address both points but omit AliasChoices and overstate what citations entail about populate_by_name and alias-based editor hints."
+      }
+    }
+  ],
+  "implementation_commit": "38da9712d960c052cc3ff649bf7097631bf26276",
+  "published_at_utc": "2026-10-18T15:25:17.990476+00:00",
+  "usage": {
+    "physical_attempts": 21,
+    "usage_complete": true,
+    "input_tokens": 145083,
+    "output_tokens": 4882,
+    "cached_input_tokens": 68096,
+    "estimated_cost_cny": null,
+    "unknown_usage_attempts": 0
+  },
+  "request_receipts": [
+    {
+      "id": "e5fda6c7f8db48809fe2fc2f55f47842",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:41.452266+00:00",
+      "request_sha256": "bd03c1661ada2adbe02f9e4c87c4ceae5cdc68b1ebaadece1abb681fabf74069",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 3558,
+      "output_tokens": 106,
+      "cached_input_tokens": 512,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "b35a3f82ec1c4ca8a0ab1eea1a29bfb7",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:41.469047+00:00",
+      "request_sha256": "b038f75842b98b64c061b19f9568a162c1c5d3fab54714ae00e9762e231f8e35",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 1442,
+      "output_tokens": 238,
+      "cached_input_tokens": 512,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "e569ff8655734f0080cb671f598b974e",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:41.482561+00:00",
+      "request_sha256": "38521feee7adcab49bb86f929ab14aacd2aff118febcf0e89019d1930e5f8fd1",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 3644,
+      "output_tokens": 135,
+      "cached_input_tokens": 512,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "663c8e2a2ac040be8f391bb8d5df6d52",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:48.030981+00:00",
+      "request_sha256": "da838dd9c7c2f112bed9cab3fc9b72d6a56e057d1a5f8f8d2aece17d00d3f289",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 4247,
+      "output_tokens": 305,
+      "cached_input_tokens": 896,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "a621892bcb48444b881128943a655ce9",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:48.153008+00:00",
+      "request_sha256": "58dc43cb103793ac88e80685ae0c9e4f4dc54e9797d8915b2e7a016ab19101c4",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 5697,
+      "output_tokens": 280,
+      "cached_input_tokens": 768,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "b06dfee056fb401c93b70a2b093f13fc",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:48.456158+00:00",
+      "request_sha256": "58c2440b50d1facd492d80c0b173ec3adf2d43add9a5d58249fdb2dec8b4cbf5",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 6204,
+      "output_tokens": 301,
+      "cached_input_tokens": 768,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "ed3b2e8d094249b6a25a159427207000",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:55.319928+00:00",
+      "request_sha256": "7dcd73a41edf0d528e7f7efdc8857fa78414886b6bc2634c0faab7ca62a993e0",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 4149,
+      "output_tokens": 352,
+      "cached_input_tokens": 2688,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "e9fd2ae8c02e49bba0d14b490df4d4a3",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:55.413347+00:00",
+      "request_sha256": "b7ae9fdcab59803cf4947c3d7c9f4798ed7c74c510ad79bca9b86ceb9bd1decd",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 5417,
+      "output_tokens": 122,
+      "cached_input_tokens": 2688,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "7adb9589fa544319bb68822fc180da81",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:21:56.096941+00:00",
+      "request_sha256": "f06dfd322e275224b463033b102ff910abeaa6d99dcd44caec9b9adf3d52a387",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 4312,
+      "output_tokens": 315,
+      "cached_input_tokens": 768,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "807674f6fc4a42ef91dbe55e14db6693",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:02.163029+00:00",
+      "request_sha256": "34c53cf6f2bd73631fcdc5b71dba5a1d9680f57354d4d4b77cbe9fbe1120f384",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 6002,
+      "output_tokens": 123,
+      "cached_input_tokens": 3584,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "57cb3ee2995f4d8fb0308ce07e195693",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:03.061477+00:00",
+      "request_sha256": "39ba862e4cc9ecccbd3d7a123678203b68433ab2c9c5b5cd70c3f3ec8c985856",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 4544,
+      "output_tokens": 353,
+      "cached_input_tokens": 3840,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "8a289ab43d3245bba587a437d36a59fb",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:03.680581+00:00",
+      "request_sha256": "66e0d8da5e97c67f2e3d6d6d947c3c2340cde9cc2832463a2f17da67914be826",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 6009,
+      "output_tokens": 123,
+      "cached_input_tokens": 3584,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "909ebda170b243a1944374ffd03f4710",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:08.575115+00:00",
+      "request_sha256": "063135a853f1398645cc446a756492a7d5e897f9ad03ee6ed640608111776c98",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 6619,
+      "output_tokens": 291,
+      "cached_input_tokens": 3456,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "f33f3ed61715433bb03ea3493f8d68ef",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:10.273276+00:00",
+      "request_sha256": "3ac36d97f057d396bb34f561d3d1744dbbc09b5e090c98a17cf38e938de72ce8",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 8305,
+      "output_tokens": 220,
+      "cached_input_tokens": 768,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "9f8ce0b6d5714ca4b8281b7160e367c5",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:10.490662+00:00",
+      "request_sha256": "f9f752f24d7a5d20e480f9efdeaea6cf312c572eef29f4cc8e618317dfbb428b",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 5723,
+      "output_tokens": 203,
+      "cached_input_tokens": 768,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "3db2964e8bce470d9d4bc53ee778fef7",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:15.362352+00:00",
+      "request_sha256": "dcc75ed1d095fcfda23b0d563b8b33e9ff22824e48d8d8e44446506d63c376ce",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 8100,
+      "output_tokens": 153,
+      "cached_input_tokens": 5248,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "518a18c0a2cb463ca38187128d35808e",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:17.284010+00:00",
+      "request_sha256": "f47ba13fa8da2c35d9a6fea175b316893e74567daa2f50a4d627ed18063e044a",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 7927,
+      "output_tokens": 124,
+      "cached_input_tokens": 5248,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "a81b4c40a0e34552b145977ba5fd05ba",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:17.620359+00:00",
+      "request_sha256": "5889ceb181bd2035d7f684a25c1b4c6d3c932e4d0b6c095f467c93be12365e47",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 13446,
+      "output_tokens": 181,
+      "cached_input_tokens": 768,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "c1342bd95e19402aadb6bd9e936a2beb",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:21.872250+00:00",
+      "request_sha256": "539a37ac685fabf6b9a0d635ee3ab9c9fb3921912cb91bdc6133514794cd8409",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 14911,
+      "output_tokens": 316,
+      "cached_input_tokens": 10240,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "dbe27127ae8c4f2fbdca7fac9dafe611",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:23.860060+00:00",
+      "request_sha256": "873f5ca4ba782d91b81b2a114aa899d2e3a3f9bad32640b593fba0895a63734a",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 11433,
+      "output_tokens": 432,
+      "cached_input_tokens": 10240,
+      "price": null,
+      "estimated_cost_cny": null
+    },
+    {
+      "id": "ed929fa1c62947a6ade81342f167347c",
+      "provider": "deepseek-account",
+      "model": "deepseek-flash",
+      "kind": "cli",
+      "role": "preparation",
+      "created_at": "2026-10-18T15:22:24.477066+00:00",
+      "request_sha256": "429426992c6798fc149909806c174717bc5df189fa9834985fc9399c6aa25b0c",
+      "state": "unpriced",
+      "outcome": "success",
+      "input_tokens": 13394,
+      "output_tokens": 209,
+      "cached_input_tokens": 10240,
+      "price": null,
+      "estimated_cost_cny": null
+    }
+  ]
+}

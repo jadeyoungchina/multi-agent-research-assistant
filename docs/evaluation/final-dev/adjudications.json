@@ -1,0 +1,1193 @@
+{
+  "schema_version": "codex-development-adjudications-v1",
+  "reviewer_kind": "ai",
+  "human_reviewed": false,
+  "recorded_at_utc": "2026-10-18T11:30:26.227981+00:00",
+  "policy_sha256": "8c70d3e029c4fda1db8515f96e9e9f749c182ddfa8008caab2e208078c4fbb4a",
+  "adjudications": {
+    "answer-002": {
+      "case_id": "REAL-DEV-006",
+      "variant": "baseline_llm",
+      "trace_sha256": "87c30029c4722687b07bcb08fe1d782d7072e9bf44de685f80854e85b1091ef2",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Additional review triggered by judge error. Final statement explicitly says default/default_factory cannot both be specified, satisfying the only-one-default point (2), alongside correctly naming the pair (2). Extra required/default and alias/validation_alias purported exclusivities do not match fields guide; unsupported true. Every factual block is uncited, including false uncited assertions; do not label them unsupported citations.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Names default and default_factory as mutually exclusive"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Explicitly says both defaults cannot be specified together."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: Additional review triggered by judge error. Final statement explicitly says default/default_factory cannot both be specified, satisfying the only-one-default point (2), alongside correctly naming the pair (2). Extra required/default and alias/validation_alias purported exclusivities do not match fields guide; unsupported true. Every factual block is uncited, including false uncited assertions; do not label them unsupported citations."
+      },
+      "source_checked_at_utc": "2026-10-18T11:28:34.658285+00:00",
+      "before_original_judgment_seen": false
+    },
+    "answer-021": {
+      "case_id": "REAL-DEV-020",
+      "variant": "baseline_llm",
+      "trace_sha256": "ac9d718b1719005988709ff009264c5cdd9a42d872af0285258e51732b2822c7",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Invents typical <50 microseconds and less than 0.1% production overhead without measurements. Expected insufficiency point is missing; unsupported_assertion true, abstained false. Its factual blocks are uncited, not citation-supported or citation-unsupported.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 0,
+            "reason": "Invents latency figures instead of noting absent evidence."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Specific unsupported latency claims, no citations."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Transitional connective phrase, no factual assertion."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim about exception overhead, no citation."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim about framework handling, no citation."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Factual claim about execution behavior, no citation."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Invented benchmark overhead and production claims, no citations."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Answer fabricates specific latency and benchmark numbers without any corpus evidence, and never acknowledges the missing deployment-specific measurement."
+      },
+      "source_checked_at_utc": "2026-10-18T11:08:59.059643+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-022": {
+      "case_id": "REAL-DEV-020",
+      "variant": "single_agent_rag",
+      "trace_sha256": "15718b5d5ecffed469ed9ee793ce17d627da293016a9f73aa261f4343dc34481",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Correctly declines a production latency number. The single mixed paragraph also describes class differences, handlers and overriding handlers: all supported by its attached handling-errors chunks. Scoped lack-of-metrics clause needs no positive proof of universal absence. abstained true; no invented assertion.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states no latency data; invents no number."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Attached passages support classes, handlers and overrides; absence clause scoped."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Correctly declines a production latency number. The single mixed paragraph also describes class differences, handlers and overriding handlers: all supported by its attached handling-errors chunks. Scoped lack-of-metrics clause needs no positive proof of universal absence. abstained true; no invented assertion."
+      },
+      "source_checked_at_utc": "2026-10-18T11:08:59.059643+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-023": {
+      "case_id": "REAL-DEV-020",
+      "variant": "llm_rag",
+      "trace_sha256": "218611e0f15c80efdc6a45e74dcc2cd75fc46445609d085014dffc4677e3db6b",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Correctly declines a production latency number. Its mixed paragraph describes class differences and handlers, supported by attached handling-errors chunks. Scoped no-metrics clause is not universal absence; key point 2, abstained true, unsupported false.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States corpus lacks deployment-specific measurement, no number invented"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Mixed paragraph describes documented class differences and handlers."
+          }
+        ],
+        "abstained": true,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Correctly declines a production latency number. Its mixed paragraph describes class differences and handlers, supported by attached handling-errors chunks. Scoped no-metrics clause is not universal absence; key point 2, abstained true, unsupported false."
+      },
+      "source_checked_at_utc": "2026-10-18T11:10:39.774397+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-024": {
+      "case_id": "REAL-DEV-020",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "b890e1e0b944f596d4c483b3bc4bfd60e4c22ff535f81e69835dd1bb8e2b1910",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Explicitly says precise measurements are unavailable but also asserts negligible/minimal overhead, efficient serialization and no significant computational cost. No attached passage establishes those performance conclusions: unsupported_assertion true, even though no exact number is invented. Mixed factual block 1 is partial; block 2 contains uncited inheritance/handler facts; block 5 is partial because error responses are documented but minimal overhead is not; block 6 and limitations are scoped absence (N/A). Review other inference in block 4 against attached inheritance/handler reuse text. Do not let correct no-benchmark caveat erase unsupported qualitative performance claims.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 1,
+            "reason": "Admits no measurement yet asserts negligible overhead, partly reversing conclusion"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Negligible overhead and efficient serialization unsupported by passages"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Mixed summary asserts inheritance and handlers without attached citations."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only"
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Inheritance and handler reuse entailed by passages"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Status code use supported; minimal inherent overhead not entailed"
+          },
+          {
+            "index": 6,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped absence statement about measurements"
+          },
+          {
+            "index": 7,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Scoped limitation statement"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: Explicitly says precise measurements are unavailable but also asserts negligible/minimal overhead, efficient serialization and no significant computational cost. No attached passage establishes those performance conclusions: unsupported_assertion true, even though no exact number is invented. Mixed factual block 1 is partial; block 2 contains uncited inheritance/handler facts; block 5 is partial because error responses are documented but minimal overhead is not; block 6 and limitations are scoped absence (N/A). Review other inference in block 4 against attached inheritance/handler reuse text. Do not let correct no-benchmark caveat erase unsupported qualitative performance claims."
+      },
+      "source_checked_at_utc": "2026-10-18T11:10:39.774397+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-029": {
+      "case_id": "REAL-DEV-013",
+      "variant": "llm_rag",
+      "trace_sha256": "87f2b39f8bf3f3ddfb0991d0823b04b6a52c0be11eca02b5c81b0b4f92d89140",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Both required points correct (once/request cache; Depends use_cache=False). Prose blocks 0 and 1 supported by attached full cache passage. Code blocks 3 and 5 are factual executable examples but have no attached citation; mark uncited despite correct code and earlier prose citations. Intro-only syntax labels are nonfactual headings. No invented assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States once per request with cached value shared"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Gives use_cache=False to force repeated calls"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails once-per-request caching statement"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails use_cache=False advanced scenario"
+          },
+          {
+            "index": 2,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading introducing example, no factual claim"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Example code from docs but no citation given"
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Transitional prose, no factual assertion"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Example code factual but no citation given"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both key points answered correctly with supporting citations; code blocks lack citations but content matches reference."
+      },
+      "source_checked_at_utc": "2026-10-18T11:12:14.574316+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-030": {
+      "case_id": "REAL-DEV-013",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "26ce75c9d593a72aa0d1b4ec5333abf5dc3721462fd41568281c0d892dfe849c",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Both required points correct. Repeated cache, use_cache=False and new call explanations agree with attached sub-dependencies chunks. Header/source excerpt binds FastAPI 0.112.2 and Python 3.8+ variants. Avoiding duplicate computation follows directly from once/request caching, unlike invented measured performance numbers. No unsupported assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Default single call with cached result shared; matches."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "use_cache=False enables repeated calls; matches."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Passage states once per request, cached, passed."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Both passages show use_cache=False in Depends."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Passage supports single call and caching."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Passages show use_cache=False disabling cached value."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Snapshot header confirms version; code tabs show 3.8+."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly states default single cached call and use_cache=False override; all factual blocks entailed by cited passages."
+      },
+      "source_checked_at_utc": "2026-10-18T11:12:14.574316+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-031": {
+      "case_id": "REAL-DEV-013",
+      "variant": "baseline_llm",
+      "trace_sha256": "75625591aa0c9c78de3d918cc1c529009a7b4d71c2e08805d8e9de798d38c263",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "The final explicitly corrected answer states once/request and Depends(use_cache=False), earning both required key points. Unlike the historical baseline, do not miss this final correction. Earlier scope=call/singleton claims and the misleading condition about pure functions/side effects remain unsupported extras; unsupported_assertion true. All factual blocks are uncited. No abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states called once, result cached and reused"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly names use_cache=False as the condition"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 7,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 8,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: The final explicitly corrected answer states once/request and Depends(use_cache=False), earning both required key points. Unlike the historical baseline, do not miss this final correction. Earlier scope=call/singleton claims and the misleading condition about pure functions/side effects remain unsupported extras; unsupported_assertion true. All factual blocks are uncited. No abstention."
+      },
+      "source_checked_at_utc": "2026-10-18T11:13:02.300207+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-032": {
+      "case_id": "REAL-DEV-013",
+      "variant": "single_agent_rag",
+      "trace_sha256": "b099bfc76ac1632c8f485181f2e5b7a9e1fa3e00d2220a5c1c5b1514c55e7c38",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Both required points correct; once/request caching and Depends(use_cache=False) all follow directly from the attached sub-dependencies cache passage. Single factual block supported, no unsupported assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States single call per request with cached value shared"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly gives use_cache=False for re-invocation"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails once-per-request, caching, and use_cache=False"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly covers both reference points, and its single factual block is fully entailed by the attached sub-dependencies passage."
+      },
+      "source_checked_at_utc": "2026-10-18T11:13:02.300207+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-037": {
+      "case_id": "REAL-DEV-019",
+      "variant": "baseline_llm",
+      "trace_sha256": "fc9effd6ffe7bdee207b303491152b690612a5b6065c6b3bb853f5a93e61d9ea",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Raise FastAPI is correct (2); registering either/subclass catches both and preference for FastAPI handler reverse Python inheritance and the pinned recommendation (0). Claimed headers-only enhancement conflicts with source stating only detail types differ. unsupported true, abstained false; factual blocks uncited.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI HTTPException; details optional"
+          },
+          {
+            "index": 1,
+            "score": 0,
+            "reason": "Recommends FastAPI subclass handler, not Starlette base"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 4,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim"
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: Raise FastAPI is correct (2); registering either/subclass catches both and preference for FastAPI handler reverse Python inheritance and the pinned recommendation (0). Claimed headers-only enhancement conflicts with source stating only detail types differ. unsupported true, abstained false; factual blocks uncited."
+      },
+      "source_checked_at_utc": "2026-10-18T11:15:27.460430+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-038": {
+      "case_id": "REAL-DEV-019",
+      "variant": "single_agent_rag",
+      "trace_sha256": "9dd0401337b8baae08ad54bf5abc96485e6e56da26612e192ae2a7de0b154504",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Both required points and superclass-catching explanation correct; all follow directly from attached class-difference/registration passage. One factual block fully supported; no abstention or invented assertion.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI's HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers handler for Starlette base class, explains catching Starlette internals."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage fully entails raise and handler guidance."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single block is cited and fully entailed by the attached passage; both key points answered correctly."
+      },
+      "source_checked_at_utc": "2026-10-18T11:15:27.460430+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-039": {
+      "case_id": "REAL-DEV-019",
+      "variant": "llm_rag",
+      "trace_sha256": "8e4b5c55ccd2e282e928441cde045997abf8ce2e2f2697c2180ded9b3cabb9e5",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Both required points and superclass-catching explanation correct; all follow directly from attached class-difference/registration passage. One factual block fully supported; no abstention or invented assertion.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI HTTPException in code"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly registers handler for Starlette base class, with rationale"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage entails all three assertions"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Single cited block fully matches reference points and is entailed by the evidence."
+      },
+      "source_checked_at_utc": "2026-10-18T11:15:27.460430+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-040": {
+      "case_id": "REAL-DEV-019",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "91dda206b8b217abceccd18db4a3c88999555e99b7ab2fbefded0cfc8ff7d4ee",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Both required points correct (2,2). Inheritance, detail types, base-class coverage and alias are in attached class-difference passage. Block 5 additionally names @app.exception_handler(), which appears earlier in full handling-errors source but not this attached chunk: partial citation support under all-facts rule, rather than borrowing reference_context. Other cited factual blocks supported; heading-only blocks N/A. No fabricated factual assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly says raise FastAPI HTTPException in code."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly says register handler for Starlette base class."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Both raise and register guidance entailed."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Inheritance and detail-type distinction entailed."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Raising FastAPI exception and JSON detail entailed."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Class guidance supported; named decorator absent from attached passage."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Alias import entailed; handler usage reasonable."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required points correct (2,2). Inheritance, detail types, base-class coverage and alias are in attached class-difference passage. Block 5 additionally names @app.exception_handler(), which appears earlier in full handling-errors source but not this attached chunk: partial citation support under all-facts rule, rather than borrowing reference_context. Other cited factual blocks supported; heading-only blocks N/A. No fabricated factual assertion or abstention."
+      },
+      "source_checked_at_utc": "2026-10-18T11:15:27.460430+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-049": {
+      "case_id": "REAL-DEV-001",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "e77415368c2a7a46553da48e3dc8904da749a7ee8d5997f8b8dcaed37ddf1294",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Both required int-validation facts correct (2,2); faithful Chinese integer-error paraphrase is enough. Block 0 asserts mode-dependent behavior without a citation (uncited). Blocks 1 and 2 supported by attached lax/strict example. Block 3 cites only config-strict/Field(strict=False) override chunk, not the separate Field(strict=True) passage: partial for exact additional API recipe. No fabricated fact or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states lax coerces '123' to 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states strict raises ValidationError, valid integer message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Mode-dependent validation behavior is a factual assertion without citation."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages show coercion to x=123"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages show ValidationError and message"
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "Attached chunk shows config strictness and Field(strict=False), not strict=True."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required int-validation facts correct (2,2); faithful Chinese integer-error paraphrase is enough. Block 0 asserts mode-dependent behavior without a citation (uncited). Blocks 1 and 2 supported by attached lax/strict example. Block 3 cites only config-strict/Field(strict=False) override chunk, not the separate Field(strict=True) passage: partial for exact additional API recipe. No fabricated fact or abstention."
+      },
+      "source_checked_at_utc": "2026-10-18T11:17:56.484609+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-050": {
+      "case_id": "REAL-DEV-001",
+      "variant": "baseline_llm",
+      "trace_sha256": "461d32700358201771e87e979fdbe109563f2328f1a6eb728ca4d6ba16195238",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Both required points correct (2,2). Its strict paragraph explains rejection because str is not int; faithful paraphrase earns credit without reproducing English error text. Intro is question setup; factual list blocks uncited (baseline citation metric N/A). No unsupported assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Correctly states lax coercion of '123' to 123"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Rejection because string is not integer faithfully paraphrases error."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Framing heading, not a domain assertion"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required points correct (2,2). Its strict paragraph explains rejection because str is not int; faithful paraphrase earns credit without reproducing English error text. Intro is question setup; factual list blocks uncited (baseline citation metric N/A). No unsupported assertion or abstention."
+      },
+      "source_checked_at_utc": "2026-10-18T11:17:56.484609+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-051": {
+      "case_id": "REAL-DEV-001",
+      "variant": "single_agent_rag",
+      "trace_sha256": "a7a63b89ec7f15ecfc6ebfa946a2211437f41fcd29a7c63ee216cccf093a8327",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Both required points correct, including error-type/message paraphrase. Both factual blocks fully supported by attached strict/lax source example. No unsupported assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Lax mode coerces '123' to int 123, correct"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Strict raises ValidationError saying input should be valid integer"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Citations state lax coercion and show x=123 output"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Covered by citation: strict example error message matches"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Both blocks are cited correctly, and both key points are fully and accurately answered."
+      },
+      "source_checked_at_utc": "2026-10-18T11:17:56.484609+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-052": {
+      "case_id": "REAL-DEV-001",
+      "variant": "llm_rag",
+      "trace_sha256": "2f30a2b29c9a9a6324e4b09a414ae16c05cdeff166eb5bbc245e967bc8384780",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Both required points correct in one factual block; attached strict/lax example entails conversion, ValidationError and integer-versus-string distinction. No unsupported assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "States lax mode coerces '123' to 123, matching example"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States ValidationError with input-should-be-valid-integer message"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage includes both lax and strict example outputs"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "The single answer block restates both documented behaviors accurately and cites the exact example passage that entails both the lax coercion output and the strict ValidationError message."
+      },
+      "source_checked_at_utc": "2026-10-18T11:17:56.484609+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-077": {
+      "case_id": "REAL-DEV-007",
+      "variant": "llm_rag",
+      "trace_sha256": "a3596fe9882ebaa599323778d917b574bcd6fcf0fa9311b45e14d3c65c6b952e",
+      "reviewer_kind": "ai",
+      "action": "accepted",
+      "reason": "Both required points correct: AliasChoices accepts both names, VSCode ignores validation_alias while alias affects signature. Statements about validation precedence and adding alias for editor hints agree with attached fields passages; question does not require preserving serialization behavior in this optional aside. Block 0 and 2 supported, code block 1 uncited. No unsupported assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "AliasChoices with validation_alias accepts both names correctly"
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode ignores validation_alias; distinguishes runtime from editor"
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passage shows AliasChoices accepting both names"
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "Executable example code lacks any citation"
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages entail VSCode behavior and alias priority"
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Answer correctly covers both runtime dual-name validation and VSCode not reflecting validation_alias. The code block is uncited but otherwise accurate; factual claims are supported."
+      },
+      "source_checked_at_utc": "2026-10-18T11:25:10.311715+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-078": {
+      "case_id": "REAL-DEV-007",
+      "variant": "multi_agent_rag",
+      "trace_sha256": "754097df5ca908204cbcd44594a590b574e9323a39c47a6a0f4a58b5080ab4e5",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Both required points correct. AliasChoices example, validation_alias vs editor distinction and alias/serialization_alias workaround match pinned sources. Cited factual blocks 1,3,4 supported. Block 5 additionally asserts multiple choices via AliasChoices but attaches only fields/alias-metadata chunks, not the AliasChoices chunk used in block 3: partial, no borrowing across blocks. No invented fact or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "Cites AliasChoices with both names for validation alias."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode signature ignores validation_alias; suggests alias workaround."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual claim."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Summary scopes signature distinction and explicitly mentions alias workaround."
+          },
+          {
+            "index": 2,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Section heading only."
+          },
+          {
+            "index": 3,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "AliasChoices example entails both keys accepted."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Citations state validation_alias ignored; alias workaround given."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "partial",
+            "reason": "AliasChoices statement lacks that source among this block's attached citations."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required points correct. AliasChoices example, validation_alias vs editor distinction and alias/serialization_alias workaround match pinned sources. Cited factual blocks 1,3,4 supported. Block 5 additionally asserts multiple choices via AliasChoices but attaches only fields/alias-metadata chunks, not the AliasChoices chunk used in block 3: partial, no borrowing across blocks. No invented fact or abstention."
+      },
+      "source_checked_at_utc": "2026-10-18T11:26:41.718551+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-079": {
+      "case_id": "REAL-DEV-007",
+      "variant": "baseline_llm",
+      "trace_sha256": "1f284831b706ff89b14bb1cb0eff0071b79ee5f744fda8508318ff3049a4211c",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Correct final AliasChoices implementation and validation_alias/initializer distinction earn both required points. The preliminary purported correct multiple-alias example sets only a single validation_alias string (and unrelated camelCase sample); this confusing earlier purported solution remains a misleading extra despite the later correct redefinition. unsupported_assertion true; all factual blocks uncited; no abstention. Optional editor workaround is not required.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "AliasChoices approach matches documented runtime behavior."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "States VSCode ignores validation_alias; workaround omitted but optional."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 1,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 3,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Question heading, no factual assertion."
+          },
+          {
+            "index": 4,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 5,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 6,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 7,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 8,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 9,
+            "requires_citation": false,
+            "support": "not_applicable",
+            "reason": "Heading only, no factual assertion."
+          },
+          {
+            "index": 10,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          },
+          {
+            "index": 11,
+            "requires_citation": true,
+            "support": "uncited",
+            "reason": "No attached citation; factual truth is assessed separately."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": true,
+        "explanation": "Codex source adjudication: Correct final AliasChoices implementation and validation_alias/initializer distinction earn both required points. The preliminary purported correct multiple-alias example sets only a single validation_alias string (and unrelated camelCase sample); this confusing earlier purported solution remains a misleading extra despite the later correct redefinition. unsupported_assertion true; all factual blocks uncited; no abstention. Optional editor workaround is not required."
+      },
+      "source_checked_at_utc": "2026-10-18T11:26:41.718551+00:00",
+      "before_original_judgment_seen": true
+    },
+    "answer-080": {
+      "case_id": "REAL-DEV-007",
+      "variant": "single_agent_rag",
+      "trace_sha256": "af442096e202a23356865d834c403134f8b154311751f00d3f426e82e348f679",
+      "reviewer_kind": "ai",
+      "action": "corrected",
+      "reason": "Both required points correct. validation_alias for fname plus populate_by_name=True is a valid documented-equivalent runtime solution, not a missing AliasChoices requirement. VSCode uses alias rather than validation_alias; optional alias/serialization_alias workaround agrees with fields guide. Attached fields chunks cover runtime alias equivalence, populate_by_name and editor behavior; all three factual blocks supported. No invented assertion or abstention.",
+      "judgment": {
+        "rubric_version": "dev-block-v2",
+        "key_points": [
+          {
+            "index": 0,
+            "score": 2,
+            "reason": "validation_alias with populate_by_name accepts both names; locally verified."
+          },
+          {
+            "index": 1,
+            "score": 2,
+            "reason": "Correctly states VSCode initializer ignores validation_alias; alias workaround given."
+          }
+        ],
+        "blocks": [
+          {
+            "index": 0,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Attached fields passage covers runtime alias equivalence and populate_by_name."
+          },
+          {
+            "index": 1,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Cited passages state VSCode ignores validation_alias and alias workaround."
+          },
+          {
+            "index": 2,
+            "requires_citation": true,
+            "support": "supported",
+            "reason": "Attached fields passage distinguishes runtime aliases from editor hints."
+          }
+        ],
+        "abstained": false,
+        "unsupported_assertion": false,
+        "explanation": "Codex source adjudication: Both required points correct. validation_alias for fname plus populate_by_name=True is a valid documented-equivalent runtime solution, not a missing AliasChoices requirement. VSCode uses alias rather than validation_alias; optional alias/serialization_alias workaround agrees with fields guide. Attached fields chunks cover runtime alias equivalence, populate_by_name and editor behavior; all three factual blocks supported. No invented assertion or abstention."
+      },
+      "source_checked_at_utc": "2026-10-18T11:26:41.718551+00:00",
+      "before_original_judgment_seen": true
+    }
+  },
+  "execution_failure_audits": {},
+  "runtime_check": {
+    "pydantic_version": "2.8.2",
+    "first_name": {
+      "first_name": "Ada"
+    },
+    "fname": {
+      "first_name": "Ada"
+    }
+  }
+}

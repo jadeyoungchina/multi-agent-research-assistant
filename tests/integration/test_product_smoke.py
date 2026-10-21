@@ -10,6 +10,23 @@ from app.main import create_app
 from app.domain.runs import RunEvent
 
 
+def test_default_entrypoint_uses_loaded_settings(tmp_path, monkeypatch):
+    """The documented app.main:app entry does not inject an explicit container."""
+    settings = Settings(
+        _env_file=None, app_env="test", data_dir=tmp_path,
+        upload_dir=tmp_path / "uploads", database_path=tmp_path / "default.db",
+        chat_provider="fake", embedding_provider="fake", retrieval_min_similarity=-1,
+        max_researcher_citation_repairs=0, max_writer_citation_repairs=0,
+    )
+    monkeypatch.setattr("app.bootstrap.get_settings", lambda: settings)
+    with TestClient(create_app()) as client:
+        assert client.get("/health").status_code == 200
+        assert client.app.state.settings is settings
+        response = client.post("/api/documents", files=[
+            ("files", ("startup.txt", b"Startup uses the loaded configuration.", "text/plain"))])
+        assert response.status_code == 201
+
+
 def _workflow_events(sse_payload: str) -> list[RunEvent]:
     """Decode complete workflow frames and reject malformed stream boundaries."""
     assert sse_payload.endswith("\n\n")

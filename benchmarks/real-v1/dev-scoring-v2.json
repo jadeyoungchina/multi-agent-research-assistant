@@ -1,0 +1,21 @@
+{
+  "schema_version": "dev-scoring-clarifications-v2",
+  "base_dev_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+  "scope": "Development semantic scoring only. Questions, retrieval gold, original references and the historical pilot remain unchanged. Prepared after the five-question pilot and before the full development run; never applied to held-out cases.",
+  "clarifications": {
+    "REAL-DEV-007": {
+      "reason": "The question permits documented equivalent implementations; the original key prescribed only one.",
+      "answer_key_points": [
+        "Accept both first_name and fname at runtime, using Field(validation_alias=AliasChoices('first_name', 'fname')) or another documented equivalent, such as alias='fname' with populate_by_name=True. Do not require the exact reference implementation.",
+        "VSCode does not use validation_alias in its initializer signature although Pydantic applies it at runtime. Distinguish runtime validation from editor hints; any optional editor workaround must agree with the fields guide."
+      ]
+    },
+    "REAL-DEV-019": {
+      "reason": "The question asks which classes to raise and register, not an import alias or all detail-field differences.",
+      "answer_key_points": [
+        "Raise FastAPI's HTTPException in application code. JSON-able detail is optional context, not required for full credit on this point.",
+        "Register the handler for Starlette's HTTPException, the base class, so exceptions raised by Starlette internals or extensions are also caught. A particular import alias is optional."
+      ]
+    }
+  }
+}

@@ -94,7 +94,7 @@ def test_factory_passes_exact_provider_configuration(
             base_url_field: f"https://{provider_value}.example.test/v1",
             model_field: f"{provider_value}-model",
             "provider_timeout_seconds": 12.5,
-            "provider_max_retries": 4,
+            "provider_max_retries": 2,
         }
     )
 
@@ -106,6 +106,7 @@ def test_factory_passes_exact_provider_configuration(
             "api_key": f"{provider_value}-secret",
             "base_url": f"https://{provider_value}.example.test/v1",
             "timeout": 12.5,
+            "max_retries": 0,
         }
     ]
     assert provider.provider_name == provider_value
@@ -114,7 +115,7 @@ def test_factory_passes_exact_provider_configuration(
         assert provider.model == f"{provider_value}-model"
     else:
         assert provider.model_name == f"{provider_value}-model"
-    assert provider.max_retries == 4
+    assert provider.max_retries == 2
 
 
 @pytest.mark.parametrize(

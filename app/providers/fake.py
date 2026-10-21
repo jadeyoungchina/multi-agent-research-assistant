@@ -122,7 +122,7 @@ class DemoFakeChatProvider:
             payload = dict(queries=[question])
         elif set(schema.model_fields) == {"answer_markdown", "cited_evidence_ids"}:
             payload = dict(
-                answer_markdown="\n".join(text for _, text in evidence) or "No supplied evidence.",
+                answer_markdown="\n".join(f"{self._literal_markdown(text)} [[cite:{identifier}]]" for identifier, text in evidence) or "No supplied evidence.",
                 cited_evidence_ids=[evidence_id for evidence_id, _ in evidence],
             )
         else:

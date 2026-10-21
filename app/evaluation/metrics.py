@@ -29,9 +29,12 @@ class CaseScore(BaseModel):
     variant: WorkflowVariant
     success: bool
     error_code: str | None = None
-    retrieval_recall_at_5: float = Field(ge=0.0, le=1.0)
-    citation_precision: float = Field(ge=0.0, le=1.0)
-    evidence_coverage: float = Field(ge=0.0, le=1.0)
+    retrieval_recall_at_5: float | None = Field(ge=0.0, le=1.0)
+    citation_precision: float | None = Field(ge=0.0, le=1.0, description="Deprecated alias of citation_id_validity; not semantic precision")
+    citation_id_validity: float | None = Field(default=None, ge=0.0, le=1.0)
+    evidence_coverage: float | None = Field(ge=0.0, le=1.0)
+    final_context_coverage: float | None = Field(default=None, ge=0.0, le=1.0)
+    all_round_evidence_recall: float | None = Field(default=None, ge=0.0, le=1.0)
     answer_key_point_f1: float = Field(ge=0.0, le=1.0)
     answer_key_point_coverage: float = Field(ge=0.0, le=1.0)
     latency_ms: int = Field(ge=0)
@@ -52,9 +55,13 @@ class AggregateMetrics(BaseModel):
     failure_count: int = Field(ge=0)
     success_rate: float = Field(ge=0.0, le=1.0)
     failure_rate: float = Field(ge=0.0, le=1.0)
-    mean_retrieval_recall_at_5: float = Field(ge=0.0, le=1.0)
-    mean_citation_precision: float = Field(ge=0.0, le=1.0)
-    mean_evidence_coverage: float = Field(ge=0.0, le=1.0)
+    mean_retrieval_recall_at_5: float | None = Field(ge=0.0, le=1.0)
+    mean_citation_precision: float | None = Field(ge=0.0, le=1.0)
+    mean_citation_id_validity: float | None = Field(default=None, ge=0.0, le=1.0)
+    mean_evidence_coverage: float | None = Field(ge=0.0, le=1.0)
+    mean_final_context_coverage: float | None = Field(default=None, ge=0.0, le=1.0)
+    mean_all_round_evidence_recall: float | None = Field(default=None, ge=0.0, le=1.0)
+    metric_denominators: dict[str, int] = Field(default_factory=dict)
     mean_answer_key_point_f1: float = Field(ge=0.0, le=1.0)
     mean_answer_key_point_coverage: float = Field(ge=0.0, le=1.0)
     mean_latency_ms: float = Field(ge=0.0)
@@ -72,8 +79,10 @@ def score_case(case: BenchmarkCase, trace: EvaluationTrace) -> CaseScore:
     if trace.case_id != case.id:
         raise ValueError(f"trace case_id {trace.case_id!r} does not match benchmark case {case.id!r}")
     success = trace.status == "success"
+    first_pass = trace.retrieval_rounds[0].evidence if trace.retrieval_rounds else trace.retrieved_evidence
+    all_rounds = [item for batch in trace.retrieval_rounds for item in batch.evidence] or trace.retrieved_evidence
     if success:
-        retrieval_recall_at_5 = _retrieval_recall_at_5(case.expected_evidence, trace.retrieved_evidence)
+        retrieval_recall_at_5 = _retrieval_recall_at_5(case.expected_evidence, first_pass)
         citation_precision = _citation_precision(trace.cited_evidence_ids, trace.retrieved_evidence)
         evidence_coverage = _evidence_coverage(
             case.expected_evidence, trace.cited_evidence_ids, trace.retrieved_evidence
@@ -81,12 +90,24 @@ def score_case(case: BenchmarkCase, trace: EvaluationTrace) -> CaseScore:
         answer_key_point_f1, answer_key_point_coverage = _answer_key_point_metrics(
             case.answer_key_points, trace.answer
         )
+        final_context_coverage = _coverage(case.expected_evidence, trace.retrieved_evidence)
+        all_round_evidence_recall = _coverage(case.expected_evidence, all_rounds)
     else:
         retrieval_recall_at_5 = 0.0
         citation_precision = 0.0
         evidence_coverage = 0.0
         answer_key_point_f1 = 0.0
         answer_key_point_coverage = 0.0
+        final_context_coverage = 0.0
+        all_round_evidence_recall = 0.0
+
+    if trace.variant == WorkflowVariant.BASELINE_LLM:
+        retrieval_recall_at_5 = citation_precision = evidence_coverage = None
+        final_context_coverage = all_round_evidence_recall = None
+    elif not case.expected_evidence:
+        # No gold evidence is an abstention task, never a zero-recall observation.
+        retrieval_recall_at_5 = evidence_coverage = None
+        final_context_coverage = all_round_evidence_recall = None
 
     return CaseScore(
         case_id=case.id,
@@ -95,7 +116,10 @@ def score_case(case: BenchmarkCase, trace: EvaluationTrace) -> CaseScore:
         error_code=trace.error_code,
         retrieval_recall_at_5=retrieval_recall_at_5,
         citation_precision=citation_precision,
+        citation_id_validity=citation_precision,
         evidence_coverage=evidence_coverage,
+        final_context_coverage=final_context_coverage,
+        all_round_evidence_recall=all_round_evidence_recall,
         answer_key_point_f1=answer_key_point_f1,
         answer_key_point_coverage=answer_key_point_coverage,
         latency_ms=trace.latency_ms,
@@ -152,7 +176,14 @@ def aggregate_scores(scores: list[CaseScore]) -> AggregateMetrics:
         failure_rate=failure_count / count,
         mean_retrieval_recall_at_5=_mean(scores, "retrieval_recall_at_5"),
         mean_citation_precision=_mean(scores, "citation_precision"),
+        mean_citation_id_validity=_mean(scores, "citation_id_validity"),
         mean_evidence_coverage=_mean(scores, "evidence_coverage"),
+        mean_final_context_coverage=_mean(scores, "final_context_coverage"),
+        mean_all_round_evidence_recall=_mean(scores, "all_round_evidence_recall"),
+        metric_denominators={field: sum(getattr(score, field) is not None for score in scores) for field in (
+            "retrieval_recall_at_5", "citation_id_validity", "evidence_coverage",
+            "final_context_coverage", "all_round_evidence_recall",
+        )},
         mean_answer_key_point_f1=_mean(scores, "answer_key_point_f1"),
         mean_answer_key_point_coverage=_mean(scores, "answer_key_point_coverage"),
         mean_latency_ms=_mean(scores, "latency_ms"),
@@ -169,10 +200,7 @@ def aggregate_scores(scores: list[CaseScore]) -> AggregateMetrics:
 def _retrieval_recall_at_5(
     expectations: list[EvidenceExpectation], evidence: list[EvidenceSnapshot]
 ) -> float:
-    correct_source_evidence = [
-        snapshot for snapshot in evidence if snapshot.source_file in {item.source_file for item in expectations}
-    ][:5]
-    return _coverage(expectations, correct_source_evidence)
+    return _coverage(expectations, evidence[:5])
 
 
 def _citation_precision(cited_ids: list[str], evidence: list[EvidenceSnapshot]) -> float:
@@ -224,5 +252,6 @@ def _token_f1(expected: str, actual: str) -> float:
     return 2 * overlap / (sum(expected_tokens.values()) + sum(actual_tokens.values()))
 
 
-def _mean(scores: list[CaseScore], field: str) -> float:
-    return sum(getattr(score, field) for score in scores) / len(scores)
+def _mean(scores: list[CaseScore], field: str) -> float | None:
+    values = [getattr(score, field) for score in scores if getattr(score, field) is not None]
+    return sum(values) / len(values) if values else None

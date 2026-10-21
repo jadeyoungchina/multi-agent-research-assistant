@@ -12,6 +12,43 @@ Planner → Retriever → Researcher → Critic → Writer → Citation Validato
 上游自定义 [LICENSE](LICENSE) 限制商业用途，商业使用须事先获得许可人的书面授权。
 作者归属、来源 cell 和逐文件映射见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
+## 项目亮点
+
+- **可运行的完整应用：** 从文档上传、六阶段工作流，到报告保存、实时进度和原文引用查看。
+- **可检查的真实实验：** 四条流程、480 条真实模型执行，公开原始评分、AI 原文复核与失败记录。
+- **可复算的工程实现：** 逐请求记账、实验断点恢复、已执行分析 notebook，以及隔离原始代码的复现入口。
+
+![本地应用中查看报告引用和来源摘录](docs/portfolio/images/offline-demo-citation.png)
+
+截图使用确定性 fake provider 展示软件界面；下面的模型质量结果来自单独保存的真实模型实验。
+
+## 正式保留测试结果
+
+冻结测试覆盖 **40 题 × 四条流程 × 三次独立生成**，共 **473 次执行成功、7 次失败**。
+主要质量指标为 AI 评分的关键点正确性，取值 0–1，先计算同题重复的均值，再对问题取均值；
+执行失败计 0。耗时统计只包括执行成功的记录。
+
+| 流程 | 主要质量分数 | 执行成功 / 120 | 中位耗时（秒） |
+| --- | ---: | ---: | ---: |
+| 直接 LLM | 0.643 | 120 | 5.96 |
+| 普通 RAG | **0.919** | 119 | **3.97** |
+| 单智能体 RAG | 0.821 | 119 | 8.65 |
+| 多智能体 RAG | 0.878 | 115 | 49.85 |
+
+本组普通 RAG 得分最高。多智能体较单智能体高 **5.69 个百分点**，
+八个文档家族的探索性 bootstrap 95% 区间为 **[+1.39, +9.72] 个百分点**，
+但成功执行的中位耗时约为其 **5.8 倍**。参考答案和评分均由 AI 辅助，
+独立真人验证为 **0**；这组小样本公开文档测试不支持普遍架构优越性的结论。
+
+查看[完整结果](docs/evaluation/heldout-test/RESULTS.md)、
+[已执行 notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb)、
+[七个失败和不确定案例](docs/evaluation/heldout-test/FAILURE-CASES.md)及
+[离线复现指南](docs/evaluation/heldout-test/REPRODUCE.md)。
+项目展示入口：[英文摘要](docs/portfolio/project-brief.md)、
+[技术报告](docs/technical-report.md)、
+[本机演示说明](docs/portfolio/demo-guide.md)、
+[三分钟中英讲解稿与常见追问](docs/portfolio/presentation.zh-CN.md)。
+
 ## 已实现能力与边界
 
 - 本地解析、保留来源的切块、embedding、余弦检索和倒数排名融合。
@@ -20,6 +57,7 @@ Planner → Retriever → Researcher → Critic → Writer → Citation Validato
 - 网页上传、文档选择、报告与原文摘录、SSE 进度和轮询回退。
 - DashScope、OpenAI 兼容接口，以及用于离线演示和 CI 的确定性 fake provider。
 - [30 条合成 benchmark](benchmarks/cases.jsonl)、四种工作流和 JSON/CSV/Markdown 输出。
+- [逐请求用量记录与评测恢复](docs/evaluation/budget-control.md)，以及 [DeepSeek CLI 辅助任务](docs/evaluation/deepseek-cli.md)。
 
 本版本无互联网搜索、OCR、身份认证、多租户隔离或分布式任务队列。
 引用校验验证来源 ID 和格式，不能证明论点真实。Fake 输出用于验证软件流程，
@@ -41,6 +79,17 @@ Linux/macOS 用 `source .venv/bin/activate` 激活；PowerShell 用
 python -m pip install -r requirements/upstream-requirements.txt
 python -m pip install -r requirements/project-requirements.txt
 ```
+
+一条命令启动已预载入资料的隔离演示：
+
+```bash
+python examples/run_demo.py
+```
+
+打开终端打印的本机地址并勾选两份资料即可开始研究。演示固定使用 fake provider，
+忽略现有 `.env` 和进程配置，数据库保存在独立的 `artifacts/demo/` 会话中。
+加入 `--check` 可执行上传、研究、SSE、引用和持久化检查后退出，详见[演示指南](docs/portfolio/demo-guide.md)。
+下面保留手动配置应用会话的方式。
 
 Bash 启动命令：
 
@@ -138,6 +187,46 @@ python -m app.evaluation.cli --provider fake --variants all --output-dir artifac
 `multi_agent_rag`，另外三种工作流用于对照。生成结果不提交 Git，CI 以 artifact 保存。
 指标定义、门槛、真实模型命令和限制见[实验说明](docs/experiments.md)。
 Fake benchmark 不支持真实模型质量、速度提升或成本节省的结论。
+
+完整的[真实开发集评测](docs/evaluation/full-dev/README.md)已覆盖 20 题、
+四条流程共 80 个单元：77 次执行成功、3 次失败；成功答案均有 AI 评分，
+21 份经过 Codex 原文复核，真人评分为 0。[中文发现记录](docs/evaluation/full-dev-observations.zh-CN.md)
+说明正确性、引用支持、耗时和失败之间的取舍。这是冻结前的开发记录，与下述正式保留测试分别报告。
+使用 `python scripts/verify_full_dev.py` 可离线复算公开分数、哈希和用量。
+
+[后续修复与独立确认](docs/evaluation/post-dev-repairs.md)统一正文引用校验并加入
+请求级证据 ID 枚举。v7 的 3/4 确认结果和 v8 的单题成功均单列保留，
+未覆盖原始开发集数据。后续[最终规则开发回归](docs/evaluation/final-dev/README.md)
+完成 80/80 次执行和 60/60 份 RAG 答案引用结构检查，再冻结正式实验。
+
+[正式保留测试结果](docs/evaluation/heldout-test/RESULTS.md)已完成 40 题、四条流程、
+三次独立生成，共 **480 条执行：473 成功、7 失败**。80 份预定原文抽查、
+17 份额外错误/失败复核及 37 份 Codex 逐项裁定均有公开记录；原始评分、错误和修正分别保留。
+全部成功答案有 AI 评分，真人参考答案审核和答案评分仍为 **0**。
+
+本组主要质量分数为：普通 RAG **0.919**、多智能体 **0.878**、单智能体 **0.821**、
+直接 LLM **0.643**。预定的多智能体减单智能体差值约 **+5.7 个百分点**，
+40/40 问题配对，八个文档家族的探索性 bootstrap 95% 区间约为 **[+1.4, +9.7] 个百分点**。
+多智能体成功执行的中位耗时 49.85 秒，单智能体 8.65 秒，约为其 **5.8 倍**。
+这组小样本 AI 评测不支持普遍架构优越性的结论，详见[中文发现](docs/evaluation/heldout-observations.zh-CN.md)。
+
+[已执行分析 notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb)可从公开记录
+离线重算质量、引用、耗时、请求数和配对统计，生成三组 PNG/SVG 图表及本地 PDF。
+[复现指南](docs/evaluation/heldout-test/REPRODUCE.md)提供完整命令，
+[七个失败和不确定案例](docs/evaluation/heldout-test/FAILURE-CASES.md)解释具体问题。
+未知用量和未核实的账号费用保持未知，未用零替代。
+
+后续产品修复与原实验分别记录。运行
+`python docs/evaluation/heldout-test/tools/reproduce_frozen.py`
+可在固定的 `7e0cf6c` 原始代码检出中核验旧结果；加入 `--notebook` 可离线重算分析。
+当前公开结果的字节会先与原快照比较，意外修改会被拒绝。
+
+[实验后的启动修复与验收](docs/engineering/post-evaluation-maintenance.md)
+记录普通 Uvicorn 入口的回归检查。可运行
+`python docs/engineering/tools/check_default_startup.py`
+启动独立的 fake 配置进程，通过真实 HTTP 检查上传、研究、引用和 SSE，完成后自动停止。
+
+![正式保留测试的质量、成功执行耗时与回答请求数](docs/evaluation/heldout-test/figures/workflow-comparison.png)
 
 ## 隐私与开发
 

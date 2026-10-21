@@ -12,6 +12,7 @@ class TokenUsage(BaseModel):
     prompt_tokens: int = 0
     completion_tokens: int = 0
     total_tokens: int = 0
+    cached_input_tokens: int = 0
 
 
 class ProviderMetadata(BaseModel):
@@ -20,6 +21,10 @@ class ProviderMetadata(BaseModel):
     latency_ms: int
     retries: int = 0
     usage: TokenUsage = Field(default_factory=TokenUsage)
+    request_kind: str = "chat"
+    attempt_count: int = 1
+    attempt_ids: list[str] = Field(default_factory=list)
+    usage_complete: bool = True
 
 
 T = TypeVar("T", bound=BaseModel)

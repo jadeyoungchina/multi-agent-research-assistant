@@ -18,11 +18,20 @@ def _markdown(report: EvaluationReport) -> str:
     metadata = report.metadata
     variants = list(WorkflowVariant)
     lines = [
-        "# Synthetic benchmark evaluation", "",
+        "# Synthetic benchmark evaluation" if metadata.synthetic else "# Public-document preliminary evaluation", "",
         "A single run does not establish a general conclusion. Repeat real-provider runs "
         "with the same dataset, corpus, configuration, and prompts before making quality claims.", "",
         "Fake results verify the software pipeline only. Fake token counts are zero because "
         "no model is called; they are not estimates of real token usage.", "",
+        f"Dataset kind: {metadata.dataset_kind}. Human references approved: {metadata.references_human_reviewed}.", "",
+        f"AI references reviewed: {metadata.references_ai_reviewed}. AI review SHA-256: {metadata.ai_reference_review_sha256 or 'not supplied'}.", "",
+        "Metrics v2: recall@5 uses the first retrieval round's global ranking. "
+        "Final context coverage and all-round recall are reported separately. "
+        "citation_precision is a deprecated alias of citation_id_validity: it checks IDs, "
+        "not whether a passage supports a claim. Answer token F1 and phrase coverage "
+        "are lexical diagnostics, not semantic correctness. None means not applicable; "
+        "metric_denominators records applicable trace counts. Semantic scoring requires "
+        "the separate blinded judge and human calibration.", "",
         f"Run time (UTC): {metadata.run_at_utc.isoformat()}", "",
         f"Git commit: `{metadata.git_commit}` (dirty worktree: {metadata.git_dirty})", "",
         f"Corpus SHA-256: `{metadata.corpus_sha256}`", "",

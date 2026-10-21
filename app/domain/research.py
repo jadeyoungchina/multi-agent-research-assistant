@@ -52,11 +52,18 @@ class ReportFinding(BaseModel):
 
 
 class DraftReport(BaseModel):
+    # Generate the user-visible answer before redundant summary/finding fields.
+    # Provider schema constraints do not replace deterministic citation validation.
+    markdown: str = Field(description=(
+        "The complete user-visible answer in Markdown. Every evidence-backed claim must "
+        "have an exact inline [[cite:EvidenceID]] token HERE, for example [[cite:ref_0001]]. "
+        "Every evidence_id declared in findings must also occur as a citation token here. "
+        "Citations only in summary or narrative do not count. Never add unsupported claims."
+    ))
     title: str
     summary: str
     findings: list[ReportFinding]
     limitations: list[str] = Field(default_factory=list)
-    markdown: str
 
 
 class Citation(BaseModel):

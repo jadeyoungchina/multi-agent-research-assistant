@@ -1,4 +1,4 @@
-# Technical report: v1.0.0
+# Technical report: implementation and real-document evaluation
 
 The delivered application turns local documents and a question into a persisted
 research report with inspectable evidence. The design favors explicit state,
@@ -19,9 +19,10 @@ writing, and citation rendering. The tradeoff is an in-memory scan of selected
 document vectors on each search, appropriate for small local corpora rather than
 large-scale retrieval. Chat and embeddings have separate provider settings.
 
-The Critic's deterministic checks prevent unsupported evidence references from
-being accepted as sufficient. A bounded revision loop and graph recursion limit
-prevent endless research. Literal matching of completion criteria is deliberately
+The Critic combines model judgments with deterministic evidence-ID checks and
+completion-criteria matching. These checks catch structural inconsistencies;
+they do not establish that a passage entails a claim. A bounded revision loop
+and graph recursion limit prevent endless research. Literal matching is deliberately
 simple and may mark a semantically good answer insufficient. The writer retains
 insufficiency in report limitations instead of silently claiming completion.
 
@@ -47,14 +48,101 @@ use Node.js 22, also configured by CI. CI runs Python 3.11 with
 fake providers and blank keys, and uploads generated fake benchmark evidence.
 Dependency installation downloads packages; CI makes no live model calls.
 
-No fixed pass count or performance table is embedded here: use the current
-command output, CI logs, and generated `results.json`/`report.md` for a specific
-revision. Benchmark thresholds are declared acceptance criteria, and the 30
-cases are a synthetic fixture rather than a representative research population.
-The four variants share inputs but have different orchestration. Their fake
-results cannot support claims that multiple agents improve real-model quality.
-[Experiments](experiments.md) documents scoring, source-filtered recall, lexical
-answer metrics, cost exclusions, and the limits of those measurements.
+Benchmark thresholds are declared acceptance criteria, and the 30 cases are a
+synthetic regression fixture rather than a representative research population.
+Fake results check software behavior and cannot establish real-model answer
+quality. [Experiments](experiments.md) separates those metrics from the real study.
+
+## Real-document experiment
+
+The separate [held-out packet](evaluation/heldout-test/RESULTS.md) uses pinned
+Pydantic/FastAPI documentation, AI-authored questions and trace-bound AI scoring.
+Twenty development questions supported calibration; 40 questions from eight other
+document families form the held-out comparison. All three RAG workflows search
+the same 16-document test candidate pool, with answer keys kept outside workflow
+inputs. A 257-input freeze binds implementation, configuration, reference data,
+three serial execution orders, the review sample and statistics before generation.
+
+The generation model is `qwen3.7-flash-2026-07-15`; embeddings use
+`text-embedding-v4`. The 40 x 4 x 3 matrix records **480 executions: 473 successful
+and seven failed**. Primary quality averages three repeats within each question,
+including executed-failure zeros, before aggregating 40 question means.
+
+| Workflow | Primary quality | Successful / 120 | Median successful seconds | Physical answer attempts |
+| --- | ---: | ---: | ---: | ---: |
+| Direct LLM | 0.643 | 120 | 5.961 | 120 |
+| Plain RAG | 0.919 | 119 | 3.973 | 248 |
+| Single-agent RAG | 0.821 | 119 | 8.646 | 815 |
+| Multi-agent RAG | 0.878 | 115 | 49.848 | 2070 |
+
+The prespecified multi-minus-single correctness difference is **+5.69 percentage
+points**, with 40 complete paired questions and exploratory family-bootstrap 95%
+interval **[+1.39, +9.72] pp** (10,000 draws; seed 20261023). Plain RAG has the highest
+observed quality overall; multi-agent median successful latency is about 5.8 times
+single-agent. More orchestration therefore does not produce an overall winner on
+this task set. Citation structure validity also differs from semantic support:
+multi-agent conditional support is 0.561 over 114 applicable successful answers,
+versus 0.856 over 103 for plain RAG. These are descriptive, conditional means.
+
+Original judging and source proposals use the same DeepSeek alias in separate
+contexts. The 80 prespecified source checks plus 17 extra error/failure checks
+are complete; 37 explicit Codex follow-ups compare problematic judgments against
+saved answers and source passages. The original analysis and 15 original judge
+errors remain visible alongside corrections. The source-audit procedure followed
+the initial aggregate analysis, and correlated reviewer errors remain possible.
+Human validation counts are zero; the user excluded subsequent human review from
+this delivery. That scope decision does not change the study's limitations.
+
+All **3960 physical requests** are retained across indexing, answer generation,
+initial judging and source review. Seventeen requests have unknown usage and
+DeepSeek account prices are unverified, so total charges remain null. The paired
+incremental answer-cost estimate covers only 30/40 question pairs and excludes
+indexing and judging/review. Serial execution on one machine, public documents
+possibly seen in pretraining and eight document families limit inference.
+
+The [executed notebook](../output/jupyter-notebook/real-evaluation-analysis.ipynb)
+recomputes the public packet without model calls. The [reproduction guide](evaluation/heldout-test/REPRODUCE.md)
+documents dependencies and exact-byte checkout settings, while [seven selected
+cases](evaluation/heldout-test/FAILURE-CASES.md) explain unsupported claims,
+retrieval misses, partial answers and unresolved execution failures.
+
+## Product maintenance after the study
+
+The ordinary Uvicorn entry was subsequently found to read repair limits from a
+nullable settings argument after loading effective configuration. The
+[startup repair and regression](engineering/post-evaluation-maintenance.md)
+correct that composition path. A real-process HTTP check now verifies health,
+upload, all six workflow stages, the report, citations and SSE in an isolated
+fake-provider profile. This is software acceptance evidence, not a new model result.
+
+The original experiment and analysis use the pinned `7e0cf6c` source snapshot.
+The reproduction launcher compares current public result bytes with that snapshot
+and runs original code in a detached worktree. Current application changes are
+therefore separate from the published study, while its freeze guard stays strict.
+
+## Contribution boundaries
+
+The [upstream audit](upstream-analysis.md) and [notices](../THIRD_PARTY_NOTICES.md)
+identify adapted Planner/graph, intake and trace/metric material separately from
+conceptual influence. Project-specific engineering includes local storage and
+recovery, provider accounting, API/SSE integration, the browser interface,
+source-preserving retrieval and the frozen evaluation/publication workflow.
+Development and evaluation used Codex and DeepSeek assistance. These artifacts
+document implementation and evidence. The contribution map follows file-level
+provenance and separates project-specific engineering from notebook adaptations.
+
+## Demonstration and presentation
+
+Run `python examples/run_demo.py` after installing the project dependencies for
+an isolated, preloaded fake-provider demonstration. Its explicit settings ignore
+the existing environment and use a fresh local database. `--check` exercises
+actual API, workflow, SSE, citation and report-reopen behavior. The optional
+browser helper verifies the real UI and captures source inspection without
+relaxing the application's content security policy.
+
+[Project brief](portfolio/project-brief.md), [demo guide](portfolio/demo-guide.md)
+and [three-minute walkthrough](portfolio/presentation.zh-CN.md) provide a shorter
+review path alongside the implementation and experiment details above.
 
 ## Privacy and unresolved product limits
 

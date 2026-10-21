@@ -8,7 +8,8 @@ from typing import Protocol
 
 from pydantic import BaseModel, Field
 
-from app.agents.common import format_evidence
+from app.workflow.citations import validate_citation_tokens
+from app.agents.common import EvidenceLabels, format_evidence, generate_grounded
 from app.domain.documents import EvidenceChunk
 from app.domain.errors import CitationError, DomainError, WorkflowError
 from app.domain.providers import ChatMessage, ChatProvider, ProviderMetadata
@@ -17,9 +18,9 @@ from app.retrieval.contracts import EvidenceRetrieverProtocol
 from app.services.documents import DocumentService
 from app.services.research import ResearchService
 
-from .dataset import preflight_benchmark_sources
+from .dataset import preflight_benchmark_sources, preflight_source_files
 from .models import BenchmarkCase, WorkflowVariant
-from .trace import EvaluationTrace, EvidenceSnapshot
+from .trace import EvaluationTrace, EvidenceSnapshot, RetrievalRound
 
 
 class QueryPlan(BaseModel):
@@ -37,6 +38,7 @@ class EvaluationWorkflow(Protocol):
 
 def prepare_benchmark_documents(
     cases: Sequence[BenchmarkCase], corpus_dir: Path, document_service: DocumentService,
+    *, candidate_source_files: Sequence[str] | None = None,
 ) -> dict[str, str]:
     """Preflight confined sources, then ingest each resolved file once.
 
@@ -44,7 +46,9 @@ def prepare_benchmark_documents(
     Ingestion costs are shared setup costs, excluded from per-workflow traces.
     Distinct benchmark filenames sharing a document ID are ambiguous and rejected.
     """
-    sources = preflight_benchmark_sources(
+    sources = preflight_source_files(
+        candidate_source_files, corpus_dir, max_upload_file_bytes=document_service.settings.max_upload_file_bytes,
+    ) if candidate_source_files is not None else preflight_benchmark_sources(
         cases, corpus_dir, max_upload_file_bytes=document_service.settings.max_upload_file_bytes,
     )
     sources_by_document: dict[str, str] = {}
@@ -68,6 +72,8 @@ _SAFE_CODES = frozenset({
     "invalid_stored_embedding", "embedding_dimension_mismatch",
     "run_not_found", "run_failed", "report_not_persisted",
     "workflow_failed", "workflow_stage_failed", "invalid_citation",
+    "provider_embedding_failed", "provider_output_truncated",
+    "budget_exhausted", "budget_overrun", "budget_input_limit", "budget_unpriced_model",
 })
 
 
@@ -94,7 +100,9 @@ def _add_metadata(trace: EvaluationTrace, metadata: ProviderMetadata) -> None:
     trace.completion_tokens += max(0, metadata.usage.completion_tokens)
     trace.total_tokens += max(0, metadata.usage.total_tokens)
     trace.retry_count += max(0, metadata.retries)
-    trace.model_calls += 1
+    trace.model_calls += metadata.attempt_count
+    trace.attempt_ids.extend(metadata.attempt_ids)
+    trace.usage_complete = trace.usage_complete and metadata.usage_complete
     trace.provider = _safe_identifier(metadata.provider)
     trace.model = _safe_identifier(metadata.model)
 
@@ -113,8 +121,9 @@ def _snapshots(
 
 
 def _validate_citations(trace: EvaluationTrace) -> None:
-    if not set(trace.cited_evidence_ids) <= {item.id for item in trace.retrieved_evidence}:
-        raise CitationError("invalid_citation", "answer references unretrieved evidence")
+    inline = validate_citation_tokens(trace.answer, set(trace.cited_evidence_ids), {item.id for item in trace.retrieved_evidence})
+    if set(inline) - set(trace.cited_evidence_ids):
+        raise CitationError("invalid_citation", "inline citation was not declared")
 
 
 def _grounded_messages(question: str, evidence: list[EvidenceChunk]) -> list[ChatMessage]:
@@ -123,7 +132,9 @@ def _grounded_messages(question: str, evidence: list[EvidenceChunk]) -> list[Cha
             "Answer using only the supplied evidence. Return a JSON object with "
             "answer_markdown (string) and cited_evidence_ids (array of strings) "
             "containing only supplied Evidence IDs. State limitations "
-            "when evidence is absent or conflicting. Never invent source details."
+            "when evidence is absent or conflicting. Cite each evidence-backed statement "
+            "in answer_markdown with exact tokens such as [[cite:ref_0001]], without curly braces, using only "
+            "the declared cited_evidence_ids. Never invent source details."
         )),
         ChatMessage(role="user", content=(
             f"Question:\n{question}\n\nSupplied evidence:\n{format_evidence(evidence)}"
@@ -142,6 +153,8 @@ class _Workflow:
             trace.status = "success"
             trace.error_code = None
         except Exception as error:
+            if self.variant != WorkflowVariant.MULTI_AGENT_RAG and isinstance(getattr(error, "metadata", None), ProviderMetadata):
+                _add_metadata(trace, error.metadata)
             trace.status = "failed"
             trace.error_code = _error_code(error)
         trace.latency_ms = max(0, int((perf_counter() - started) * 1000))
@@ -188,12 +201,15 @@ class LlmRagWorkflow(_DocumentWorkflow):
 
     def __init__(
         self, provider: ChatProvider, retriever: EvidenceRetrieverProtocol,
-        document_mapping: Mapping[str, str], top_k: int = 5,
+        document_mapping: Mapping[str, str], top_k: int = 5, *, max_citation_repairs: int = 0,
     ) -> None:
         super().__init__(document_mapping)
         self.provider = provider
         self.retriever = retriever
         self.top_k = top_k
+        if max_citation_repairs not in (0, 1):
+            raise ValueError("answer citation repairs must be zero or one")
+        self._max_citation_repairs = max_citation_repairs
 
     def _queries(self, trace: EvaluationTrace, question: str) -> list[str]:
         return []
@@ -205,13 +221,31 @@ class LlmRagWorkflow(_DocumentWorkflow):
         for metadata in batch.provider_metrics:
             _add_metadata(trace, metadata)
         trace.retrieved_evidence = _snapshots(batch.evidence, self._sources_by_document)
-        answer, metadata = self.provider.generate_structured(
-            _grounded_messages(question, batch.evidence), GroundedAnswer,
-        )
-        _add_metadata(trace, metadata)
-        trace.answer = answer.answer_markdown
-        trace.cited_evidence_ids = list(answer.cited_evidence_ids)
-        _validate_citations(trace)
+        trace.retrieval_rounds = [RetrievalRound(
+            round_index=0, queries=list(batch.queries), evidence=list(trace.retrieved_evidence),
+        )]
+        labels = EvidenceLabels(batch.evidence)
+        original = _grounded_messages(question, labels.evidence)
+        messages = original
+        for repair in range(self._max_citation_repairs + 1):
+            answer, metadata = generate_grounded(self.provider, messages, GroundedAnswer, [item.id for item in labels.evidence])
+            metadata = metadata.model_copy(deep=True)
+            metadata.retries += int(repair > 0)
+            _add_metadata(trace, metadata)
+            trace.answer = labels.text(answer.answer_markdown)
+            trace.cited_evidence_ids = [labels.original(identifier) for identifier in answer.cited_evidence_ids]
+            try:
+                _validate_citations(trace)
+                break
+            except CitationError:
+                if repair == self._max_citation_repairs:
+                    raise
+                messages = [*original, ChatMessage(role="assistant", content=answer.model_dump_json()),
+                            ChatMessage(role="user", content=(
+                                "Correct the citation formatting once. Use exact tokens such as [[cite:ref_0001]], "
+                                "without curly braces, and only supplied IDs. Every declared ID must appear "
+                                "in answer_markdown. Check support; do not insert unrelated citations or invent facts."
+                            ))]
 
 
 class SingleAgentRagWorkflow(LlmRagWorkflow):
@@ -257,14 +291,25 @@ class MultiAgentRagWorkflow(_DocumentWorkflow):
             stored = service.get_run(run.id)
             _copy_run_metadata(trace, stored)
             state = service.runs.get_state(run.id)
+            metrics = [ProviderMetadata.model_validate(item) for item in state.get("provider_metrics", [])]
+            trace.attempt_ids = [identifier for metric in metrics for identifier in metric.attempt_ids]
+            trace.usage_complete = all(metric.usage_complete for metric in metrics)
             trace.retrieved_evidence = _snapshots(
                 [EvidenceChunk.model_validate(item) for item in state.get("evidence", [])],
                 self._sources_by_document,
             )
+            trace.retrieval_rounds = [RetrievalRound(
+                round_index=index, queries=list(item["queries"]),
+                evidence=_snapshots([EvidenceChunk.model_validate(value) for value in item["evidence"]], self._sources_by_document),
+            ) for index, item in enumerate(state.get("retrieval_rounds", []))]
         report = service.get_report(run.id)
         if report is None:
             raise WorkflowError("report_not_persisted", "research report was not persisted")
-        trace.answer = report.markdown
+        # Score the authored answer, excluding the renderer's copied source
+        # excerpts and bibliography, which can otherwise inflate answer coverage.
+        trace.answer = state.get("draft", {}).get("markdown", report.markdown)
+        if report.limitations:
+            trace.answer += "\n\nLimitations:\n" + "\n".join(report.limitations)
         trace.cited_evidence_ids = [citation.evidence_id for citation in report.citations]
         _validate_citations(trace)
         if stored.status != "completed":

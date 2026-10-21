@@ -86,7 +86,7 @@ def test_retriever_combines_queries_once_and_keeps_highest_scored_evidence() -> 
     assert len(retriever.calls) == 1
     assert retriever.calls[0] == RetrievalCall(
         question="question",
-        expansions=["agreement", "conflict", "follow up"],
+        expansions=["follow up", "agreement", "conflict"],
         document_ids=["doc"],
         top_k=6,
     )
@@ -100,3 +100,29 @@ def test_retriever_combines_queries_once_and_keeps_highest_scored_evidence() -> 
         "planner",
         "fake",
     ]
+
+
+def test_followup_survives_the_real_query_expansion_limit():
+    from app.retrieval.retriever import EvidenceRetriever
+
+    class Embeddings:
+        queries = []
+        def embed_query(self, query):
+            self.queries.append(query)
+            return [1.0], ProviderMetadata(provider="fake", model="fake-hash", latency_ms=0)
+
+    class Index:
+        def search(self, *args, **kwargs):
+            return []
+
+    embeddings = Embeddings()
+    retriever = EvidenceRetriever(embeddings, Index(), max_query_expansions=4)
+    state = initial_state("run", "question", ["doc"])
+    state["plan"] = ResearchPlan(objective="research", subquestions=["detail"],
+                                 search_queries=["old1", "old2", "old3", "old4"],
+                                 completion_criteria=["answer detail"]).model_dump(mode="json")
+    state["critique"] = Critique(sufficient=False, reason="missing", follow_up_queries=["new specific gap"]).model_dump(mode="json")
+    update = RetrieverAgent(retriever, top_k=5)(state)
+    assert "new specific gap" in embeddings.queries
+    assert "old4" not in embeddings.queries
+    assert update["retrieval_rounds"][0]["queries"] == embeddings.queries

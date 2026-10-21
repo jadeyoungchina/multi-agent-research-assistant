@@ -26,3 +26,15 @@ not copied notebook expression. The repository verifier checks each explicitly
 `adapted` target against the pinned commit. The known upstream contributor for
 the pinned snapshot is Nir Diamant; the audit does not assert additional
 notebook-specific authors without evidence.
+
+The `benchmarks/real-v1/raw` directory additionally contains 24 unmodified
+public documentation snapshots from Pydantic (`v1.10.17`, `v2.8.2`) and
+FastAPI (`0.112.2`). Their MIT notices are preserved in
+`benchmarks/real-v1/licenses/`. Exact upstream commits, per-file URLs,
+retrieval timestamps, hashes, license associations, and transformations are
+recorded in `benchmarks/real-v1/corpus-manifest.json`. Normalized copies only
+add provenance headers and normalize line endings; no upstream endorsement
+is implied. Dataset questions are separately AI authored; human review was not
+performed and is outside the current delivery scope. Frozen dataset metadata
+retains its original status fields; see `benchmarks/real-v1/README.md` and the
+current scope update in `docs/real-evaluation-plan.zh-CN.md`.

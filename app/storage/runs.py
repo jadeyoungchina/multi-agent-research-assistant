@@ -226,7 +226,7 @@ class RunRepository:
                     prompt,
                     completion,
                     total,
-                    len(provider_metrics),
+                    sum(int(metric.get("attempt_count", 1)) for metric in provider_metrics),
                     retries,
                     evidence_sufficient,
                     json.dumps(state, ensure_ascii=False),
@@ -270,14 +270,23 @@ class RunRepository:
         stage: str,
         code: str,
         message: str,
+        failure_metadata: dict | None = None,
     ) -> RunEvent:
-        del state
+        del state  # Never commit a partially mutated business state.
         now = _now()
         with self._database.transaction() as connection:
+            row = connection.execute("SELECT state_json FROM research_runs WHERE id=?", (run_id,)).fetchone()
+            saved = json.loads(row["state_json"])
+            if failure_metadata is not None:
+                saved["provider_metrics"] = [*saved.get("provider_metrics", []), failure_metadata]
+            metrics = saved.get("provider_metrics", [])
+            prompt, completion, total, retries = self._aggregate_metrics(metrics)
             connection.execute(
                 "UPDATE research_runs SET status = 'failed', error_code = ?, "
-                "error_message = ?, updated_at = ? WHERE id = ?",
-                (code, message, now, run_id),
+                "error_message = ?, updated_at = ?, state_json = ?, prompt_tokens = ?, "
+                "completion_tokens = ?, total_tokens = ?, retry_count = ?, model_call_count = ? WHERE id = ?",
+                (code, message, now, json.dumps(saved, ensure_ascii=False), prompt, completion, total, retries,
+                 sum(int(metric.get("attempt_count", 1)) for metric in metrics), run_id),
             )
             return self._insert_event(
                 connection,

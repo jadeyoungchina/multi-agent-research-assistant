@@ -1,0 +1,521 @@
+{
+  "schema_version": "source-reviewed-heldout-publication-v1",
+  "freeze_id": "0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270",
+  "planned_units": 480,
+  "executed_units": 480,
+  "successful_executions": 473,
+  "execution_failures": 7,
+  "missing_successful_judgments": [],
+  "human_reference_reviews": 0,
+  "human_answer_scores": 0,
+  "by_variant": {
+    "single_agent_rag": {
+      "planned_executions": 120,
+      "successful_executions": 119,
+      "execution_failures": 1,
+      "known_primary_units": 120,
+      "fully_scored_question_groups": 40,
+      "mean_question_primary_quality": 0.8208333333333333,
+      "valid_successful_semantic_scores": 119,
+      "conditional_semantic_metrics": {
+        "answer_correctness": {
+          "mean": 0.8277310924369747,
+          "denominator": 119
+        },
+        "answer_key_point_coverage": {
+          "mean": 0.7829131652661064,
+          "denominator": 119
+        },
+        "citation_support_rate": {
+          "mean": 0.7575,
+          "denominator": 100
+        },
+        "citation_completeness": {
+          "mean": 0.7404290429042905,
+          "denominator": 101
+        },
+        "correct_abstention": {
+          "mean": 0.9166666666666666,
+          "denominator": 24
+        },
+        "false_abstention": {
+          "mean": 0.09473684210526316,
+          "denominator": 95
+        },
+        "unsupported_assertion": {
+          "mean": 0.1092436974789916,
+          "denominator": 119
+        }
+      },
+      "median_success_latency_seconds": 8.646,
+      "latency_denominator": 119,
+      "answer_usage": {
+        "physical_attempts": 815,
+        "usage_complete": false,
+        "input_tokens": 286425,
+        "output_tokens": 33641,
+        "cached_input_tokens": 8064,
+        "estimated_cost_cny": null,
+        "unknown_usage_attempts": 7
+      },
+      "strict_citation_structure_passes": 119,
+      "structure_denominator": 119
+    },
+    "llm_rag": {
+      "planned_executions": 120,
+      "successful_executions": 119,
+      "execution_failures": 1,
+      "known_primary_units": 120,
+      "fully_scored_question_groups": 40,
+      "mean_question_primary_quality": 0.91875,
+      "valid_successful_semantic_scores": 119,
+      "conditional_semantic_metrics": {
+        "answer_correctness": {
+          "mean": 0.9264705882352942,
+          "denominator": 119
+        },
+        "answer_key_point_coverage": {
+          "mean": 0.9047619047619048,
+          "denominator": 119
+        },
+        "citation_support_rate": {
+          "mean": 0.855663430420712,
+          "denominator": 103
+        },
+        "citation_completeness": {
+          "mean": 0.8510787486515642,
+          "denominator": 103
+        },
+        "correct_abstention": {
+          "mean": 0.9166666666666666,
+          "denominator": 24
+        },
+        "false_abstention": {
+          "mean": 0.031578947368421054,
+          "denominator": 95
+        },
+        "unsupported_assertion": {
+          "mean": 0.05042016806722689,
+          "denominator": 119
+        }
+      },
+      "median_success_latency_seconds": 3.973,
+      "latency_denominator": 119,
+      "answer_usage": {
+        "physical_attempts": 248,
+        "usage_complete": false,
+        "input_tokens": 253013,
+        "output_tokens": 23526,
+        "cached_input_tokens": 8448,
+        "estimated_cost_cny": null,
+        "unknown_usage_attempts": 4
+      },
+      "strict_citation_structure_passes": 119,
+      "structure_denominator": 119
+    },
+    "baseline_llm": {
+      "planned_executions": 120,
+      "successful_executions": 120,
+      "execution_failures": 0,
+      "known_primary_units": 120,
+      "fully_scored_question_groups": 40,
+      "mean_question_primary_quality": 0.6430555555555556,
+      "valid_successful_semantic_scores": 120,
+      "conditional_semantic_metrics": {
+        "answer_correctness": {
+          "mean": 0.6430555555555556,
+          "denominator": 120
+        },
+        "answer_key_point_coverage": {
+          "mean": 0.5722222222222222,
+          "denominator": 120
+        },
+        "citation_support_rate": {
+          "mean": null,
+          "denominator": 0
+        },
+        "citation_completeness": {
+          "mean": null,
+          "denominator": 0
+        },
+        "correct_abstention": {
+          "mean": 0.125,
+          "denominator": 24
+        },
+        "false_abstention": {
+          "mean": 0,
+          "denominator": 96
+        },
+        "unsupported_assertion": {
+          "mean": 0.55,
+          "denominator": 120
+        }
+      },
+      "median_success_latency_seconds": 5.961,
+      "latency_denominator": 120,
+      "answer_usage": {
+        "physical_attempts": 120,
+        "usage_complete": true,
+        "input_tokens": 8043,
+        "output_tokens": 49567,
+        "cached_input_tokens": 0,
+        "estimated_cost_cny": "0.0412622",
+        "unknown_usage_attempts": 0
+      },
+      "strict_citation_structure_passes": 0,
+      "structure_denominator": 0
+    },
+    "multi_agent_rag": {
+      "planned_executions": 120,
+      "successful_executions": 115,
+      "execution_failures": 5,
+      "known_primary_units": 120,
+      "fully_scored_question_groups": 40,
+      "mean_question_primary_quality": 0.8777777777777778,
+      "valid_successful_semantic_scores": 115,
+      "conditional_semantic_metrics": {
+        "answer_correctness": {
+          "mean": 0.9159420289855073,
+          "denominator": 115
+        },
+        "answer_key_point_coverage": {
+          "mean": 0.8884057971014493,
+          "denominator": 115
+        },
+        "citation_support_rate": {
+          "mean": 0.560696881091618,
+          "denominator": 114
+        },
+        "citation_completeness": {
+          "mean": 0.5192925495557075,
+          "denominator": 114
+        },
+        "correct_abstention": {
+          "mean": 0.9130434782608695,
+          "denominator": 23
+        },
+        "false_abstention": {
+          "mean": 0.010869565217391304,
+          "denominator": 92
+        },
+        "unsupported_assertion": {
+          "mean": 0.12173913043478261,
+          "denominator": 115
+        }
+      },
+      "median_success_latency_seconds": 49.848,
+      "latency_denominator": 115,
+      "answer_usage": {
+        "physical_attempts": 2070,
+        "usage_complete": false,
+        "input_tokens": 2023574,
+        "output_tokens": 301697,
+        "cached_input_tokens": 68224,
+        "estimated_cost_cny": null,
+        "unknown_usage_attempts": 6
+      },
+      "strict_citation_structure_passes": 115,
+      "structure_denominator": 115
+    }
+  },
+  "primary": {
+    "complete_pairs": 40,
+    "missing_pairs": 0,
+    "mean_paired_correctness_difference": 0.05694444444444444,
+    "all_question_missing_value_bounds": [
+      0.05694444444444444,
+      0.05694444444444444
+    ],
+    "family_bootstrap_95_interval": [
+      0.013888888888888895,
+      0.09722222222222222
+    ],
+    "bootstrap_replicates": 10000,
+    "valid_bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261023,
+    "family_count": 8,
+    "informative_family_count": 8,
+    "interval_interpretation": "exploratory; skip and disclose empty draws; no interval below two informative families",
+    "by_family": {
+      "fastapi-background": {
+        "complete_pairs": 5,
+        "mean_difference": -0.05
+      },
+      "fastapi-middleware": {
+        "complete_pairs": 5,
+        "mean_difference": 0.022222222222222233
+      },
+      "fastapi-response": {
+        "complete_pairs": 5,
+        "mean_difference": 0.061111111111111095
+      },
+      "fastapi-security": {
+        "complete_pairs": 5,
+        "mean_difference": 0.05555555555555554
+      },
+      "pydantic-dataclasses": {
+        "complete_pairs": 5,
+        "mean_difference": 0.0
+      },
+      "pydantic-models": {
+        "complete_pairs": 5,
+        "mean_difference": 0.13333333333333333
+      },
+      "pydantic-serialization": {
+        "complete_pairs": 5,
+        "mean_difference": 0.11666666666666667
+      },
+      "pydantic-validators": {
+        "complete_pairs": 5,
+        "mean_difference": 0.1166666666666667
+      }
+    }
+  },
+  "initial_primary": {
+    "complete_pairs": 34,
+    "missing_pairs": 6,
+    "mean_paired_correctness_difference": 0.042483660130718956,
+    "all_question_missing_value_bounds": [
+      0.03888888888888889,
+      0.09722222222222222
+    ],
+    "family_bootstrap_95_interval": [
+      -0.0034750224014336788,
+      0.08249158249158249
+    ],
+    "bootstrap_replicates": 10000,
+    "valid_bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261023,
+    "family_count": 8,
+    "informative_family_count": 8,
+    "interval_interpretation": "exploratory; skip and disclose empty draws; no interval below two informative families",
+    "by_family": {
+      "fastapi-background": {
+        "complete_pairs": 5,
+        "mean_difference": -0.06666666666666665
+      },
+      "fastapi-middleware": {
+        "complete_pairs": 4,
+        "mean_difference": 0.10416666666666666
+      },
+      "fastapi-response": {
+        "complete_pairs": 5,
+        "mean_difference": 0.061111111111111095
+      },
+      "fastapi-security": {
+        "complete_pairs": 5,
+        "mean_difference": 0.05555555555555554
+      },
+      "pydantic-dataclasses": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0
+      },
+      "pydantic-models": {
+        "complete_pairs": 4,
+        "mean_difference": 0.08333333333333334
+      },
+      "pydantic-serialization": {
+        "complete_pairs": 4,
+        "mean_difference": 0.125
+      },
+      "pydantic-validators": {
+        "complete_pairs": 3,
+        "mean_difference": -0.0185185185185185
+      }
+    }
+  },
+  "incremental_answer_cost": {
+    "complete_pairs": 30,
+    "missing_pairs": 10,
+    "mean_difference_cny": "0.00472198888888888888888888889",
+    "family_bootstrap_95_interval": [
+      0.004016782142857143,
+      0.005457695498768473
+    ],
+    "bootstrap_replicates": 10000,
+    "valid_bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261023,
+    "family_count": 8,
+    "informative_family_count": 8,
+    "interval_interpretation": "exploratory; skip and disclose empty draws; no interval below two informative families",
+    "by_family": {
+      "fastapi-background": {
+        "complete_pairs": 4,
+        "mean_difference": 0.004779091666666666
+      },
+      "fastapi-middleware": {
+        "complete_pairs": 3,
+        "mean_difference": 0.003837011111111111
+      },
+      "fastapi-response": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0036779583333333334
+      },
+      "fastapi-security": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0061882
+      },
+      "pydantic-dataclasses": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0032082583333333334
+      },
+      "pydantic-models": {
+        "complete_pairs": 4,
+        "mean_difference": 0.004574783333333333
+      },
+      "pydantic-serialization": {
+        "complete_pairs": 4,
+        "mean_difference": 0.005763625
+      },
+      "pydantic-validators": {
+        "complete_pairs": 3,
+        "mean_difference": 0.0057936555555555555
+      }
+    }
+  },
+  "source_review_sample": {
+    "required_answers": 80,
+    "completed": 80
+  },
+  "source_review_targets": 97,
+  "source_review_extras": 17,
+  "raw_source_review_statuses": {
+    "review_error": 18,
+    "valid_failure_audit": 7,
+    "valid_source_audit": 72
+  },
+  "source_adjudications": 90,
+  "source_failure_audits": 7,
+  "accepted": 39,
+  "corrected": 51,
+  "codex_followups": 37,
+  "phase_usage": {
+    "repeat-0/answer_generation": {
+      "physical_attempts": 1086,
+      "usage_complete": false,
+      "input_tokens": 868325,
+      "output_tokens": 139859,
+      "cached_input_tokens": 24576,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 2
+    },
+    "repeat-0/index_setup": {
+      "physical_attempts": 30,
+      "usage_complete": true,
+      "input_tokens": 69480,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.03474",
+      "unknown_usage_attempts": 0
+    },
+    "repeat-0/blinded_judging": {
+      "physical_attempts": 168,
+      "usage_complete": true,
+      "input_tokens": 1348014,
+      "output_tokens": 44235,
+      "cached_input_tokens": 699392,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 0
+    },
+    "repeat-1/answer_generation": {
+      "physical_attempts": 1111,
+      "usage_complete": false,
+      "input_tokens": 883637,
+      "output_tokens": 137678,
+      "cached_input_tokens": 25216,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 11
+    },
+    "repeat-1/index_setup": {
+      "physical_attempts": 30,
+      "usage_complete": true,
+      "input_tokens": 69480,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.03474",
+      "unknown_usage_attempts": 0
+    },
+    "repeat-1/blinded_judging": {
+      "physical_attempts": 166,
+      "usage_complete": true,
+      "input_tokens": 1301729,
+      "output_tokens": 42381,
+      "cached_input_tokens": 897280,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 0
+    },
+    "repeat-2/answer_generation": {
+      "physical_attempts": 1056,
+      "usage_complete": false,
+      "input_tokens": 819093,
+      "output_tokens": 130894,
+      "cached_input_tokens": 34944,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 4
+    },
+    "repeat-2/index_setup": {
+      "physical_attempts": 30,
+      "usage_complete": true,
+      "input_tokens": 69480,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "estimated_cost_cny": "0.03474",
+      "unknown_usage_attempts": 0
+    },
+    "repeat-2/blinded_judging": {
+      "physical_attempts": 166,
+      "usage_complete": true,
+      "input_tokens": 1330595,
+      "output_tokens": 43878,
+      "cached_input_tokens": 934656,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 0
+    },
+    "source_review": {
+      "physical_attempts": 117,
+      "usage_complete": true,
+      "input_tokens": 1123728,
+      "output_tokens": 83375,
+      "cached_input_tokens": 694912,
+      "estimated_cost_cny": null,
+      "unknown_usage_attempts": 0
+    }
+  },
+  "all_recorded_usage": {
+    "physical_attempts": 3960,
+    "usage_complete": false,
+    "input_tokens": 7883561,
+    "output_tokens": 622300,
+    "cached_input_tokens": 3310976,
+    "estimated_cost_cny": null,
+    "unknown_usage_attempts": 17
+  },
+  "same_judge_and_source_reviewer_alias": true,
+  "independent_human_validation": false,
+  "limitations": [
+    "AI-authored references and AI scoring; no human validation",
+    "same DeepSeek alias can induce correlated errors",
+    "only eight document families; exploratory family-bootstrap interval",
+    "public docs may be in model pretraining",
+    "serial runs on one machine; latency is exploratory",
+    "unknown API usage/charges stay unknown; estimates are not invoices"
+  ],
+  "publications": [
+    {
+      "path": "reviewed-analysis.json",
+      "sha256": "81ebb352de8ef6e2c26bf1a9f831fd6f353176f9a0b434d20f623855aaf6af9c"
+    },
+    {
+      "path": "source-adjudications.json",
+      "sha256": "3be33cb85360f2db49754d8f0e16dcae428c71ac112fa66008aacbd43ed33bda"
+    },
+    {
+      "path": "source-review-records.json",
+      "sha256": "f79aa10fe0445654ed9ca2e09bb265b8f9521057f18948e7c5093a3add87aea9"
+    },
+    {
+      "path": "all-request-usage.jsonl",
+      "sha256": "9652be829e5c5aab4932b4782a0f6134e15307435f47ae231fce1bd63a7b0f82"
+    }
+  ]
+}

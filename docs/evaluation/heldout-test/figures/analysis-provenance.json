@@ -1,0 +1,127 @@
+{
+  "freeze_id": "0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270",
+  "analysis_code_sha256": "967961c94a5bf7e69d366bdea63b0ab54c44aa083cbeebd2676250c12d49b44b",
+  "inputs": [
+    {
+      "path": "docs/evaluation/heldout-test/all-request-usage.jsonl",
+      "sha256": "9652be829e5c5aab4932b4782a0f6134e15307435f47ae231fce1bd63a7b0f82"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/initial-analysis-summary.json",
+      "sha256": "fd103373803d9b88eb4d216887339a562c375ed97906370a90ed12a286f66d65"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/initial-analysis.json",
+      "sha256": "2693344fdd29124f62317957db2e82c1e1c237d28ebbe2cbad9c619154c0ded6"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/judge-request-usage.jsonl",
+      "sha256": "e5f5237d369a15a65be6d008cac599c67a8b65481ccbf9c97a1d35994a20c115"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/progress.json",
+      "sha256": "bf99fa9ea3675b2315c50128ba028835e33ca235b06c3a02441e364454388a53"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-0/failure-diagnostics.json",
+      "sha256": "b14c6cce489c9589f87197cf80c76a63ca9a203baad3478eba3c69b51c216934"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-0/metadata.json",
+      "sha256": "adc3c30101f5e02678597bf5cc6f50493bece30c26abc70b1543ba0edd2aa162"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-0/performance.json",
+      "sha256": "6402dcc868bfe8cef4c14d9180213175fb664b9644358fb10eec80836232931f"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-0/repeat-manifest.json",
+      "sha256": "c8ac5cbd37e7264bfaccccfb459ac686d53a13298b3adeea88afc95f6523a51c"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-0/request-usage.jsonl",
+      "sha256": "0eeb8c81470ca1bb3f29d3a705c4b40b181c245804a3485593b6acf063b7215c"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-0/summary.json",
+      "sha256": "09ecb4b75943a1429896c2e22de9104bfbf557f12a01c44e162d0f56439c67a7"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-0/traces.jsonl",
+      "sha256": "9b02e27fc7eb8a480e565cf57c1bbb184de25d4bc12c59aff2b2872a667b575c"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-1/failure-diagnostics.json",
+      "sha256": "60317190f000aab51ee172f10d913cd3a97092d4fc8f84e92d118f1503f213a4"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-1/metadata.json",
+      "sha256": "3e7b5cb8c8bacbcccca0fd66c0d063f3ee461e76ad63b34af026ac226b660d90"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-1/performance.json",
+      "sha256": "77b565bf3e32eb30fe205ae4ef25e57b9116894afc91d01fc83f67e1f8cd6a0c"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-1/repeat-manifest.json",
+      "sha256": "c37924293709b1f35819da4c4316f9a8bf97299b72ccf5fa41e9fba56cc7395f"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-1/request-usage.jsonl",
+      "sha256": "ec3466f11878347da36501c2f45eca26a50c780f4f0c52e811b47d0442193651"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-1/summary.json",
+      "sha256": "60a0931a7ca4d710d8015ecab8d8260a2677a000d1ab5c60aeafacb93e681465"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-1/traces.jsonl",
+      "sha256": "f7f6e9dd0ad4b26ed14b41fa06eb4b3d60aceb450b4e349f73c2d0f44ab94221"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-2/failure-diagnostics.json",
+      "sha256": "83efe4256b2488b4f32303b2148f8f148f3e36329596f5c4c141b193f2490b63"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-2/metadata.json",
+      "sha256": "dd7327bf3ee6e25759ef72c9f1f9e741aa465df54cb90859a94b32b1cd6b89c7"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-2/performance.json",
+      "sha256": "c7e4d2f42a9fc34cc4fbf96ba35a27f2fe03937bd9b2f659520be9484445b105"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-2/repeat-manifest.json",
+      "sha256": "7feeb107e1a1400f43008559730dd1a812b038fcf93325121d9a8afbcdef7e60"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-2/request-usage.jsonl",
+      "sha256": "1f9b3a71dd0368eebf026a4079d3b43e60b8987b07f0dbd2c485951715007a09"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-2/summary.json",
+      "sha256": "2831f565338969dad1e9e42c27a128244a5550aacd2e2486492e5cc469e610e9"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/repeat-2/traces.jsonl",
+      "sha256": "7b0581d5dc5518bf7b5a6948ee32254b5e96635f098fa5e3c71a4728aae5524c"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/reviewed-analysis.json",
+      "sha256": "81ebb352de8ef6e2c26bf1a9f831fd6f353176f9a0b434d20f623855aaf6af9c"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/reviewed-summary.json",
+      "sha256": "7102e07c61ffb34b4f0124e61c24c0b0c7331b4bff3b77b3f340322bbb85ffc2"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/source-adjudications.json",
+      "sha256": "3be33cb85360f2db49754d8f0e16dcae428c71ac112fa66008aacbd43ed33bda"
+    },
+    {
+      "path": "docs/evaluation/heldout-test/source-review-records.json",
+      "sha256": "f79aa10fe0445654ed9ca2e09bb265b8f9521057f18948e7c5093a3add87aea9"
+    }
+  ],
+  "reproduction": "Numerical tables are reproducible. Figure bytes may vary across rendering-library/platform versions."
+}

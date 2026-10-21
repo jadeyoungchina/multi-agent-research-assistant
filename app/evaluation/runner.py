@@ -5,7 +5,9 @@ from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 import subprocess
+import random
 from time import perf_counter
+from typing import Callable
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -13,11 +15,12 @@ from app.config import Settings
 
 from .metrics import AggregateMetrics, CaseScore, aggregate_scores, score_case
 from .models import BenchmarkCase, WorkflowVariant
+from .real_dataset import RealBenchmarkCase
 from .trace import EvaluationTrace
 from .workflows import EvaluationWorkflow, _SAFE_CODES, _error_code, _safe_identifier
 
 
-PROMPT_VERSION = "evaluation-v1"
+PROMPT_VERSION = "evaluation-v8"
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -41,6 +44,10 @@ class ProviderConfiguration(BaseModel):
     max_query_expansions: int
     max_critic_loops: int
     max_workflow_steps: int
+    max_output_tokens: int = 2048
+    structured_output: str = "json_object"
+    max_researcher_citation_repairs: int = 0
+    max_writer_citation_repairs: int = 0
 
     @field_validator("provider", "model", "embedding_provider", "embedding_model")
     @classmethod
@@ -67,6 +74,10 @@ class ProviderConfiguration(BaseModel):
             max_query_expansions=settings.max_query_expansions,
             max_critic_loops=settings.max_revision_iterations,
             max_workflow_steps=settings.max_workflow_steps,
+            max_output_tokens=settings.provider_max_output_tokens,
+            structured_output=settings.provider_structured_output,
+            max_researcher_citation_repairs=settings.max_researcher_citation_repairs,
+            max_writer_citation_repairs=settings.max_writer_citation_repairs,
         )
 
 
@@ -81,6 +92,15 @@ class ReportMetadata(BaseModel):
     prompt_version: str
     configuration: ProviderConfiguration
     synthetic: bool = True
+    dataset_kind: str = "synthetic_documents_and_questions"
+    references_human_reviewed: bool = False
+    references_ai_reviewed: bool = False
+    ai_reference_review_sha256: str | None = None
+    metrics_version: str = "global-first-pass-v2"
+    corpus_manifest_sha256: str | None = None
+    order_seed: int | None = None
+    execution_order: list[str] = Field(default_factory=list)
+    setup_latency_ms: int | None = Field(default=None, ge=0)
 
 
 class ReportMetrics(AggregateMetrics):
@@ -95,6 +115,8 @@ class EvaluationReport(BaseModel):
     scores: list[CaseScore]
     aggregate: ReportMetrics
     by_variant: dict[WorkflowVariant, ReportMetrics]
+    planned_trace_count: int = 0
+    execution_complete: bool = True
 
 
 def corpus_sha256(corpus_dir: Path) -> str:
@@ -124,10 +146,37 @@ def _aggregate(scores: list[CaseScore], traces: list[EvaluationTrace]) -> Report
     )
 
 
+def execution_order(cases, variants, seed: int | None = None):
+    """Serial case blocks with balanced variant positions in each complete cycle.
+
+    With no seed the legacy sorted order is retained. Seeded runs randomize the
+    case order and base variant permutation, then rotate that permutation.
+    """
+    case_ids = sorted(case.id for case in cases)
+    ordered = [variant for variant in WorkflowVariant if variant in variants]
+    if seed is not None:
+        generator = random.Random(seed)
+        generator.shuffle(case_ids)
+        generator.shuffle(ordered)
+    return [
+        (case_id, variant)
+        for index, case_id in enumerate(case_ids)
+        for variant in (ordered[index % len(ordered):] + ordered[:index % len(ordered)]
+                        if seed is not None else ordered)
+    ]
+
+
 def evaluate_benchmark(
-    cases: Sequence[BenchmarkCase], workflows: Mapping[WorkflowVariant, EvaluationWorkflow], *,
+    cases: Sequence[BenchmarkCase | RealBenchmarkCase], workflows: Mapping[WorkflowVariant, EvaluationWorkflow], *,
     corpus_dir: Path = PROJECT_ROOT / "benchmarks/corpus", settings: Settings | None = None,
     dataset_path: Path | None = None,
+    on_trace: Callable[[EvaluationTrace], None] | None = None,
+    resume_traces: Mapping[tuple[str, WorkflowVariant], EvaluationTrace] | None = None,
+    candidate_source_files: Sequence[str] | None = None,
+    corpus_manifest_path: Path | None = None,
+    ai_reference_review_path: Path | None = None,
+    order_seed: int | None = None,
+    setup_latency_ms: int | None = None,
 ) -> EvaluationReport:
     """Run an identical case matrix, isolating failures and timing every adapter.
 
@@ -136,6 +185,15 @@ def evaluate_benchmark(
     """
     if not cases or not workflows:
         raise ValueError("at least one benchmark case and workflow are required")
+    real = any(isinstance(case, RealBenchmarkCase) for case in cases)
+    if ai_reference_review_path is not None:
+        from .reference_review import reference_digest, validate_ai_reference_review
+        audit = validate_ai_reference_review(ai_reference_review_path.parent.parent)
+        accepted = {entry["id"]: entry["reference_sha256"] for entry in audit["reviews"]}
+        if not real or any(accepted.get(case.id) != reference_digest(case) for case in cases):
+            raise ValueError("AI review does not match these reference cases")
+    if real and (not all(isinstance(case, RealBenchmarkCase) for case in cases) or not candidate_source_files):
+        raise ValueError("real-document cases require an independent, whole-split candidate pool")
     if len({case.id for case in cases}) != len(cases):
         raise ValueError("benchmark case IDs must be unique")
     if any(not isinstance(variant, WorkflowVariant) for variant in workflows):
@@ -151,30 +209,49 @@ def evaluate_benchmark(
         dataset_sha256=sha256(dataset_path.read_bytes()).hexdigest() if dataset_path else None,
         prompt_version=PROMPT_VERSION,
         configuration=configuration,
+        synthetic=not real,
+        dataset_kind="public_documents_ai_authored_questions" if real else "synthetic_documents_and_questions",
+        references_human_reviewed=real and all(case.human_review.status == "approved" for case in cases),
+        references_ai_reviewed=ai_reference_review_path is not None,
+        ai_reference_review_sha256=sha256(ai_reference_review_path.read_bytes()).hexdigest() if ai_reference_review_path else None,
+        corpus_manifest_sha256=sha256(corpus_manifest_path.read_bytes()).hexdigest() if corpus_manifest_path else None,
+        order_seed=order_seed,
+        setup_latency_ms=setup_latency_ms,
+        execution_order=[f"{case_id}/{variant.value}" for case_id, variant in execution_order(cases, workflows, order_seed)],
     )
     traces: list[EvaluationTrace] = []
     scores: list[CaseScore] = []
     variants = [variant for variant in WorkflowVariant if variant in workflows]
-    for case in sorted(cases, key=lambda item: item.id):
-        for variant in variants:
-            started = perf_counter()
-            try:
-                trace = workflows[variant].run(case.id, case.question, list(case.source_files))
-                if not isinstance(trace, EvaluationTrace) or trace.case_id != case.id or trace.variant != variant:
-                    trace = EvaluationTrace.failed(case.id, variant, "invalid_trace")
-                else:
-                    trace = EvaluationTrace.model_validate(trace.model_dump()).model_copy(deep=True)
-            except Exception as error:
-                trace = EvaluationTrace.failed(case.id, variant, _error_code(error))
+    halted = False
+    by_id = {case.id: case for case in cases}
+    for case_id, variant in execution_order(cases, workflows, order_seed):
+        case = by_id[case_id]
+        started = perf_counter()
+        cached = (resume_traces or {}).get((case.id, variant))
+        try:
+            sources = list(candidate_source_files) if candidate_source_files is not None else list(case.source_files)
+            trace = cached if cached is not None else workflows[variant].run(case.id, case.question, sources)
+            if not isinstance(trace, EvaluationTrace) or trace.case_id != case.id or trace.variant != variant:
+                trace = EvaluationTrace.failed(case.id, variant, "invalid_trace")
+            else:
+                trace = EvaluationTrace.model_validate(trace.model_dump()).model_copy(deep=True)
+        except Exception as error:
+            trace = EvaluationTrace.failed(case.id, variant, _error_code(error))
+        if cached is None:
             trace.latency_ms = max(0, int((perf_counter() - started) * 1000))
-            trace.provider = _safe_identifier(trace.provider) or configuration.provider
-            trace.model = _safe_identifier(trace.model) or configuration.model
-            if trace.status == "success":
-                trace.error_code = None
-            elif trace.error_code not in _SAFE_CODES | {"invalid_trace"}:
-                trace.error_code = "workflow_failed"
-            traces.append(trace)
-            scores.append(score_case(case, trace))
+        trace.provider = _safe_identifier(trace.provider) or configuration.provider
+        trace.model = _safe_identifier(trace.model) or configuration.model
+        if trace.status == "success":
+            trace.error_code = None
+        elif trace.error_code not in _SAFE_CODES | {"invalid_trace"}:
+            trace.error_code = "workflow_failed"
+        traces.append(trace)
+        scores.append(score_case(case, trace))
+        if on_trace is not None and cached is None:
+            on_trace(trace)
+        if trace.error_code in {"budget_exhausted", "budget_overrun", "budget_input_limit", "budget_unpriced_model"}:
+            halted = True
+            break
     return EvaluationReport(
         metadata=metadata, traces=traces, scores=scores, aggregate=_aggregate(scores, traces),
         by_variant={
@@ -184,4 +261,6 @@ def evaluate_benchmark(
             )
             for variant in variants
         },
+        planned_trace_count=len(cases) * len(workflows),
+        execution_complete=not halted and len(traces) == len(cases) * len(workflows),
     )

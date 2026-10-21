@@ -207,7 +207,7 @@ def test_validator_preserves_insufficiency_after_revision_limit() -> None:
 
     assert report.evidence_sufficient is False
     assert report.limitations == [
-        "证据不足：The revision limit was reached before evidence became sufficient."
+        "The available documents do not support a complete conclusion; unresolved details remain unconfirmed."
     ]
     assert "## 局限" in report.markdown
     assert f"- {report.limitations[0]}" in report.markdown

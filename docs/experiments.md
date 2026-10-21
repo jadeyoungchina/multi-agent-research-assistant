@@ -1,5 +1,19 @@
 # Experiments and reproducibility
 
+The [frozen real-document experiment](evaluation/heldout-test/RESULTS.md) is complete:
+40 questions, four workflows and three repeats yield 480 recorded executions
+(473 successful, seven failed), with AI source review and no human scoring.
+The [executed notebook](../output/jupyter-notebook/real-evaluation-analysis.ipynb)
+rebuilds the public tables and three figure sets without model calls. Follow the
+[reproduction guide](evaluation/heldout-test/REPRODUCE.md), inspect the
+[selected failure cases](evaluation/heldout-test/FAILURE-CASES.md), or read the
+[Chinese findings](evaluation/heldout-observations.zh-CN.md).
+
+The remainder of this page describes the **synthetic regression fixture** and
+its original metric definitions. The real-document study has separate source-based
+semantic scoring, candidate pools and frozen paired statistics; do not mix its
+quality scores with synthetic token-overlap metrics.
+
 The versioned [dataset](../benchmarks/cases.jsonl) contains 30 synthetic cases
 over six fictional [source files](../benchmarks/corpus). Counts describe fixture
 structure, not measured model quality. Every case names its sources, expected
@@ -28,12 +42,18 @@ python -m app.evaluation.cli --provider dashscope --variants all --output-dir ar
 python -m app.evaluation.cli --provider openai --variants all --output-dir artifacts/evaluation/openai
 ```
 
-Real calls require account access and can incur charges. No saved real-provider
-run is cited by this release documentation, so it makes no claim about Qwen or
-OpenAI answer quality, speed, cost, or multi-agent improvement. A live smoke
-test, when separately recorded, establishes connectivity for its configuration;
-it does not establish benchmark quality. Save separate timestamped output
-directories for repeated real runs before drawing any comparison.
+Paid-provider commands now default to five cases; pass `--limit 30` to select
+the complete synthetic fixture. Use `--embedding-provider` to configure vectors
+independently, including DeepSeek chat with DashScope embeddings. They record
+usage without a monetary cap by default; `--enforce-budget` opts into a cap.
+See [usage tracking and recovery](evaluation/budget-control.md) and the
+[DeepSeek CLI helper](evaluation/deepseek-cli.md) for the new execution controls.
+
+Real calls require account access and can incur charges. The separately saved
+real-document study above reports observed Qwen results under its frozen design;
+these synthetic commands do not reproduce that study. A connectivity smoke test
+does not establish benchmark quality. Save separate timestamped output directories
+for new experiments and retain their failures before drawing comparisons.
 
 ## Four implementations
 

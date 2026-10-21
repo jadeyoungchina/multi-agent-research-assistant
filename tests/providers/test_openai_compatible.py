@@ -19,6 +19,63 @@ VALID_CRITIQUE = (
 )
 
 
+@pytest.mark.parametrize("kind", ["researcher", "writer", "answer"])
+@pytest.mark.parametrize("empty", [False, True])
+def test_grounded_request_binds_only_supplied_ids_without_mutating_model(kind, empty):
+    from app.domain.research import ResearchSynthesis, DraftReport
+    from app.evaluation.workflows import GroundedAnswer
+    schemas = {"researcher": (ResearchSynthesis, {"findings": []}, "Finding", "supporting_evidence_ids"),
+               "writer": (DraftReport, {"markdown": "Insufficient evidence.", "title": "Answer", "summary": "None", "findings": []}, "ReportFinding", "evidence_ids"),
+               "answer": (GroundedAnswer, {"answer_markdown": "Insufficient evidence.", "cited_evidence_ids": []}, None, "cited_evidence_ids")}
+    schema, response, definition, field = schemas[kind]
+    original = schema.model_json_schema()
+    completions = SequencedCompletions([chat_response(json.dumps(response))])
+    provider = OpenAICompatibleChatProvider(chat_client(completions), "dashscope", "qwen3.7-flash", structured_output="json_schema")
+    ids = [] if empty else ["ref_0001", "ref_0002"]
+    provider.generate_grounded([ChatMessage(role="user", content="Public evidence")], schema, evidence_ids=ids)
+    document = completions.calls[0]["response_format"]["json_schema"]["schema"]
+    node = document["$defs"][definition] if definition else document
+    array = node["properties"][field]
+    if empty:
+        assert array["maxItems"] == 0 and "enum" not in array["items"]
+    else:
+        assert array["items"]["enum"] == ids
+        assert '"enum": ["ref_0001", "ref_0002"]' in completions.calls[0]["messages"][-1]["content"]
+    assert original == schema.model_json_schema()
+    assert document["additionalProperties"] is False
+
+
+def test_opt_in_receipts_capture_invalid_output_without_headers_or_exception_inputs():
+    receipts = []
+    completions = SequencedCompletions([chat_response('{"sufficient":"wrong"}')])
+    provider = OpenAICompatibleChatProvider(chat_client(completions), "dashscope", "qwen3.7-flash", max_retries=0)
+    provider.response_observer = receipts.append
+    with pytest.raises(ProviderError):
+        provider.generate_structured([ChatMessage(role="user", content="public corpus")], Critique)
+    assert len(receipts) == 1
+    assert receipts[0]["schema"] == "Critique"
+    assert receipts[0]["validation_issues"]
+    assert all(set(item) == {"loc", "type"} for item in receipts[0]["validation_issues"])
+    assert set(receipts[0]) == {"attempt_id", "schema", "content", "finish_reason", "validation_issues"}
+
+
+def test_strict_schema_transmits_real_field_names_and_closes_nested_objects():
+    from app.domain.research import DraftReport
+    from app.providers.openai_compatible import _closed_schema
+    completions = SequencedCompletions([chat_response(VALID_CRITIQUE)])
+    provider = OpenAICompatibleChatProvider(chat_client(completions), "dashscope", "qwen3.7-flash", structured_output="json_schema")
+    provider.generate_structured([ChatMessage(role="user", content="review")], Critique)
+    mode = completions.calls[0]["response_format"]
+    assert mode["type"] == "json_schema" and mode["json_schema"]["strict"] is True
+    assert mode["json_schema"]["schema"]["additionalProperties"] is False
+    report_schema = _closed_schema(DraftReport)
+    assert report_schema["$defs"]["ReportFinding"]["additionalProperties"] is False
+    assert next(iter(report_schema["properties"])) == "markdown"
+    assert "[[cite:ref_0001]]" in report_schema["properties"]["markdown"]["description"]
+    assert "default" not in json.dumps(report_schema)
+    assert "additionalProperties" not in DraftReport.model_json_schema()
+
+
 def chat_response(content: Any, *, model: str = "qwen3.7-flash") -> SimpleNamespace:
     return SimpleNamespace(
         choices=[SimpleNamespace(message=SimpleNamespace(content=content))],
@@ -130,7 +187,7 @@ def test_openai_structured_completion_omits_dashscope_thinking_control() -> None
     assert "extra_body" not in completions.calls[0]
 
 
-def test_unstructured_dashscope_completion_keeps_default_thinking_behavior() -> None:
+def test_unstructured_dashscope_completion_uses_same_non_thinking_mode_as_agents() -> None:
     completions = SequencedCompletions([chat_response("answer")])
     provider = OpenAICompatibleChatProvider(
         client=chat_client(completions),
@@ -141,7 +198,8 @@ def test_unstructured_dashscope_completion_keeps_default_thinking_behavior() -> 
 
     provider.generate([ChatMessage(role="user", content="question")])
 
-    assert "extra_body" not in completions.calls[0]
+    assert completions.calls[0]["extra_body"] == {"enable_thinking": False}
+    assert completions.calls[0]["max_tokens"] == 2048
 
 
 def test_chat_retries_twice_before_success(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -390,7 +448,7 @@ def test_embedding_retries_exponentially(monkeypatch: pytest.MonkeyPatch) -> Non
     delays: list[float] = []
     monkeypatch.setattr("app.providers.openai_compatible.sleep", delays.append)
     embeddings = SequencedEmbeddings(
-        [RuntimeError("one"), RuntimeError("two"), embedding_response()]
+        [TimeoutError("one"), TimeoutError("two"), embedding_response()]
     )
     provider = OpenAICompatibleEmbeddingProvider(
         client=SimpleNamespace(embeddings=embeddings),

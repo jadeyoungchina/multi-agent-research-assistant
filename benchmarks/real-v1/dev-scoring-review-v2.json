@@ -1,0 +1,33 @@
+{
+  "schema_version": "dev-scoring-review-v2",
+  "review_kind": "ai",
+  "human_reviewed": false,
+  "policy_sha256": "8c70d3e029c4fda1db8515f96e9e9f749c182ddfa8008caab2e208078c4fbb4a",
+  "deepseek_raw_response": {
+    "task_id": "dev-clarifications-a518e9b552a9c749ff52",
+    "input_sha256": "0fbe6b53f47c076feccc9a1829fb714925ddd07a75efa5367e3c80e315b735d0",
+    "text": "{\"approved\":false,\"checks\":[{\"id\":\"REAL-DEV-007-alias-choices\",\"supported\":true,\"reason\":\"The alias guide confirms AliasChoices lets validation_alias accept a choice of aliases, e.g. AliasChoices('first_name', 'fname'), and that both input names validate.\"},{\"id\":\"REAL-DEV-007-equivalent-impl\",\"supported\":true,\"reason\":\"The fields guide says Pydantic treats alias and validation_alias the same when creating model instances, and shows populate_by_name=True allowing the field name at runtime. So alias='fname' with populate_by_name=True is a documented-equivalent route to accepting both names at runtime.\"},{\"id\":\"REAL-DEV-007-vscode\",\"supported\":true,\"reason\":\"Fields guide lines ~218-219: VSCode does not use validation_alias in the class initializer signature, although Pydantic applies it at runtime. The editor-hint limitation and the runtime/editor distinction are correct. The suggested workaround (using alias + serialization_alias) is also documented.\"},{\"id\":\"REAL-DEV-019-raise-fastapi\",\"supported\":true,\"reason\":\"The docs say to keep raising FastAPI's HTTPException in your code, and that FastAPI's version accepts any JSON-able detail (any JSON-able value for the 'detail' parameter).\"},{\"id\":\"REAL-DEV-019-register-starlette-base\",\"supported\":true,\"reason\":\"The docs say to register the handler for Starlette's HTTPException, so Starlette internals, extensions, or plug-ins that raise it are caught. The question is limited to which class to raise and which class to register, and the clarification says this.\"},{\"id\":\"REAL-DEV-019-import-alias-optional\",\"supported\":true,\"reason\":\"The docs present 'from starlette.exceptions import HTTPException as StarletteHTTPException' only as a way to have both classes in the same code. Nothing makes the alias required, so treating it as optional is within document scope.\"}],\"concerns\":[\"REAL-DEV-007, minor: the docs do not directly show that Field(alias='fname') with populate_by_name=True lets the field accept both 'fname' and 'first_name'. This is inferred from 'Pydantic treats alias and validation_alias the same' plus the populate_by_name behavior. The inference is reasonable, but the docs never show it in one example.\",\"REAL-DEV-007, caution: with alias='fname', serialization also uses 'fname' by default, while AliasChoices used only for validation_alias does not change the serialized name. At runtime the two paths are not fully identical outside validation, so any wording about equivalence should stay limited to runtime validation input.\",\"REAL-DEV-007, editor claim: the docs only show the alias+serialization_alias workaround for making VSCode use the validation alias. The clarification's 'any optional editor workaround must agree with the fields guide' is vague, but not contradicted.\",\"REAL-DEV-019, detail wording: the docs say FastAPI's HTTPException 'accepts any JSON-able data for the detail field'. Calling that optional context rather than a difference is consistent, but the docs' stated difference between the two classes is exactly this. Treating it as not required for this question is a scoping choice, not a doc-supported fact.\",\"Overall: no outright factual contradiction with the pinned docs was found. The approval is false only because these items are inference or scoping choices, not explicit doc statements.\"]}",
+    "attempt_ids": [
+      "5d7374351aa1440a819cf3b25e610bf5"
+    ],
+    "resumed": false
+  },
+  "codex_disposition": "accepted_with_scope_clarification",
+  "reason": "All six source checks are supported. DeepSeek declined blanket approval because some wording is inference or a scoring-scope decision, not because of a factual contradiction. The alternative is explicitly limited to validation input; serialization behavior is not claimed equivalent. Local Pydantic 2.8.2 verifies both names and distinguishes default model_dump from by_alias=True. Optional detail/import context is a declared scoring choice aligned with the exact question. Historical references and pilot scores remain unchanged.",
+  "runtime_check": {
+    "pydantic": "2.8.2",
+    "both_input_names_accepted": true,
+    "default_dump": {
+      "first_name": "Ada"
+    },
+    "by_alias_dump": {
+      "fname": "Ada"
+    }
+  },
+  "usage": {
+    "physical_requests": 1,
+    "input_tokens": 13716,
+    "output_tokens": 760,
+    "estimated_cost_cny": null
+  }
+}

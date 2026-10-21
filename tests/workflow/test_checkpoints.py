@@ -67,6 +67,30 @@ def test_failed_stage_keeps_previous_state_and_stores_only_exception_type(
     assert stored.error_message == "WorkflowError"
 
 
+def test_failed_provider_attempts_are_counted_without_committing_partial_business_state(repository):
+    from app.domain.errors import ProviderError
+    from app.domain.providers import ProviderMetadata, TokenUsage
+
+    metadata = ProviderMetadata(provider="fake", model="fake-chat", latency_ms=1,
+                                attempt_count=2, attempt_ids=["failed-1", "failed-2"], retries=1,
+                                usage=TokenUsage(prompt_tokens=12, completion_tokens=3, total_tokens=15),
+                                usage_complete=False)
+
+    def handler(state):
+        state["draft"] = {"uncommitted": "partial response"}
+        raise ProviderError("provider_invalid_response", "private diagnostic", metadata=metadata)
+
+    with pytest.raises(ProviderError):
+        checkpointed_node("writer", handler, repository)(initial_state("run", "question", ["doc"]))
+    saved = repository.get_state("run")
+    assert "draft" not in saved
+    assert saved["provider_metrics"][-1]["attempt_ids"] == ["failed-1", "failed-2"]
+    run = repository.get("run")
+    assert run.model_call_count == 2
+    assert (run.prompt_tokens, run.completion_tokens, run.total_tokens, run.retry_count) == (12, 3, 15, 1)
+    assert "private diagnostic" not in run.model_dump_json()
+
+
 def test_checkpoint_logs_structured_safe_metadata(
     repository: RunRepository,
     caplog: pytest.LogCaptureFixture,
@@ -78,10 +102,15 @@ def test_checkpoint_logs_structured_safe_metadata(
             "model": "fake-chat",
             "latency_ms": 7,
             "retries": 1,
+            "request_kind": "chat",
+            "attempt_count": 1,
+            "attempt_ids": [],
+            "usage_complete": True,
             "usage": {
                 "prompt_tokens": 3,
                 "completion_tokens": 2,
                 "total_tokens": 5,
+                "cached_input_tokens": 0,
             },
             "secret": "must-not-be-logged",
         }
@@ -115,10 +144,15 @@ def test_checkpoint_logs_structured_safe_metadata(
             "model": "fake-chat",
             "latency_ms": 7,
             "retries": 1,
+            "request_kind": "chat",
+            "attempt_count": 1,
+            "attempt_ids": [],
+            "usage_complete": True,
             "usage": {
                 "prompt_tokens": 3,
                 "completion_tokens": 2,
                 "total_tokens": 5,
+                "cached_input_tokens": 0,
             },
         }
     ]
@@ -135,10 +169,15 @@ def test_completed_stage_logs_updated_safe_provider_metrics(
         "model": "fake-chat",
         "latency_ms": 9,
         "retries": 0,
+        "request_kind": "chat",
+        "attempt_count": 1,
+        "attempt_ids": [],
+        "usage_complete": True,
         "usage": {
             "prompt_tokens": 4,
             "completion_tokens": 3,
             "total_tokens": 7,
+            "cached_input_tokens": 0,
         },
     }
 

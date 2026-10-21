@@ -1,0 +1,18 @@
+# Byte-addressed corpus snapshots must retain upstream bytes on every platform.
+benchmarks/real-v1/raw/** -text -whitespace
+benchmarks/real-v1/corpus/** -text -whitespace
+benchmarks/real-v1/licenses/** -text
+benchmarks/real-v1/*.json text eol=lf
+benchmarks/real-v1/*.jsonl text eol=lf
+benchmarks/real-v1/review/** text eol=lf
+docs/evaluation/dev-pilot/*.json text eol=lf
+docs/evaluation/dev-pilot/*.jsonl text eol=lf
+docs/evaluation/full-dev/*.json text eol=lf
+docs/evaluation/full-dev/*.jsonl text eol=lf
+docs/evaluation/post-dev-confirmation.json text eol=lf
+docs/evaluation/enum-confirmation.json text eol=lf
+
+docs/evaluation/final-dev/*.json text eol=lf
+docs/evaluation/final-dev/*.jsonl text eol=lf
+
+docs/evaluation/frozen-judge-calibration.json text eol=lf

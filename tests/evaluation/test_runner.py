@@ -63,6 +63,21 @@ def test_runner_produces_sorted_identical_case_variant_matrix(cases, workflows):
     assert all(metrics.score_count == 2 for metrics in report.by_variant.values())
 
 
+def test_seeded_order_balances_positions_and_is_actually_executed(workflows):
+    from app.evaluation.runner import evaluate_benchmark, execution_order
+
+    cases = load_benchmark_cases(Path("benchmarks/cases.jsonl"))[:4]
+    expected = execution_order(cases, workflows, 20261018)
+    assert expected == execution_order(list(reversed(cases)), dict(reversed(list(workflows.items()))), 20261018)
+    assert expected != execution_order(cases, workflows, 42)
+    assert len(set(expected)) == 16
+    for position in range(4):
+        assert {expected[block * 4 + position][1] for block in range(4)} == set(WorkflowVariant)
+    report = evaluate_benchmark(cases, workflows, order_seed=20261018)
+    assert [(trace.case_id, trace.variant) for trace in report.traces] == expected
+    assert report.metadata.execution_order == [f"{case_id}/{variant.value}" for case_id, variant in expected]
+
+
 def test_one_failure_does_not_abort_remaining_runs(cases, workflows):
     from app.evaluation.runner import evaluate_benchmark
 

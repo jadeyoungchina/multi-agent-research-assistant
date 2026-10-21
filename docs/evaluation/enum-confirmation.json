@@ -1,0 +1,1067 @@
+{
+  "schema_version": "targeted-dev-confirmation-v1",
+  "purpose": "Engineering confirmation selected after v6 failures; not independent accuracy repeats.",
+  "generation_commit": "4553429e846cface3529ea6ccda4c9d7b565be90",
+  "human_reviewed": false,
+  "semantic_scoring_performed": false,
+  "successful_units": 1,
+  "checks": [
+    {
+      "case_id": "REAL-DEV-019",
+      "variant": "multi_agent_rag",
+      "status": "success",
+      "error_code": null,
+      "trace_sha256": "963927a18ae7b4c4bdb413fe9760b161359e0de386fd36469795f460a38536a7",
+      "citation_diagnostic": {
+        "applicable": true,
+        "syntax_valid": true,
+        "unknown_ids": [],
+        "declared_ids_missing_inline": [],
+        "passed": true
+      }
+    }
+  ],
+  "metadata": {
+    "generation": {
+      "run_at_utc": "2026-10-18T10:45:35.431991Z",
+      "git_commit": "4553429e846cface3529ea6ccda4c9d7b565be90",
+      "git_dirty": false,
+      "corpus_sha256": "ead382f55ca44d02e915f233141821c2b65ee8ed708c1fa7a1329a4c56b407e7",
+      "dataset_sha256": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+      "prompt_version": "evaluation-v8",
+      "configuration": {
+        "provider": "dashscope",
+        "model": "qwen3.7-flash-2026-07-15",
+        "embedding_provider": "dashscope",
+        "embedding_model": "text-embedding-v4",
+        "timeout_seconds": 60.0,
+        "max_retries": 2,
+        "chunk_size": 1200,
+        "chunk_overlap": 200,
+        "retrieval_top_k": 5,
+        "retrieval_candidate_k": 20,
+        "retrieval_rrf_k": 60,
+        "retrieval_min_similarity": 0.15,
+        "max_query_expansions": 4,
+        "max_critic_loops": 2,
+        "max_workflow_steps": 24,
+        "max_output_tokens": 4096,
+        "structured_output": "json_schema",
+        "max_researcher_citation_repairs": 1,
+        "max_writer_citation_repairs": 1
+      },
+      "synthetic": false,
+      "dataset_kind": "public_documents_ai_authored_questions",
+      "references_human_reviewed": false,
+      "references_ai_reviewed": true,
+      "ai_reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+      "metrics_version": "global-first-pass-v2",
+      "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+      "order_seed": 20261018,
+      "execution_order": [
+        "REAL-DEV-019/multi_agent_rag"
+      ],
+      "setup_latency_ms": 48030
+    }
+  },
+  "traces": [
+    {
+      "case_id": "REAL-DEV-019",
+      "variant": "multi_agent_rag",
+      "status": "success",
+      "answer": "# FastAPI HTTPException Usage\n\nIn FastAPI 0.112.2, you should raise **FastAPI's** `HTTPException` in your route logic and register exception handlers for **Starlette's** `HTTPException` [[cite:ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972]].\n\n## Summary\nFastAPI's `HTTPException` inherits from Starlette's but allows JSON-able data in the `detail` field, whereas Starlette's only accepts strings [[cite:ev_226f562d35a40b228b6568540b8dc38c83807845b84f26ada28b99e9016d341c]]. Developers should continue raising FastAPI's exception in code to leverage this flexibility, while registering handlers for Starlette's exception to ensure coverage of internal Starlette errors [[cite:ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972]].\n\n## Findings\n1. **Raising Exceptions**: Use FastAPI's `HTTPException` in application code because it supports complex JSON details, unlike Starlette's string-only constraint [[cite:ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972]][[cite:ev_226f562d35a40b228b6568540b8dc38c83807845b84f26ada28b99e9016d341c]].\n2. **Handler Registration**: Register custom handlers for Starlette's `HTTPException` (imported as `StarletteHTTPException`) to catch both FastAPI-raised exceptions and those from Starlette internals or plugins [[cite:ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972]].\n3. **Reusability**: Default FastAPI exception handlers can be imported and reused within custom handlers to maintain consistent error formatting [[cite:ev_dae2c8ca2a81b51656b49c1e6ff64dd81c9a168555e10b2e026b0ead83f43935]].\n\nLimitations:\nThe available documents do not support a complete conclusion; unresolved details remain unconfirmed.",
+      "retrieved_evidence": [
+        {
+          "id": "ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 8,
+          "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+        },
+        {
+          "id": "ev_dae2c8ca2a81b51656b49c1e6ff64dd81c9a168555e10b2e026b0ead83f43935",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 9,
+          "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+        },
+        {
+          "id": "ev_495bcbacdb2e07c63d11dcc5074f59b17100255385aa9bcce8cc00eb2b3dec19",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 3,
+          "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+        },
+        {
+          "id": "ev_5e372a68f309c3902b4ee8994d6ae7f56bbb715c2f95eec95385d5d50e6daf80",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 0,
+          "text": "Snapshot repository: fastapi/fastapi\nSnapshot version: 0.112.2\nSnapshot source: https://github.com/fastapi/fastapi/blob/d00af00d3f15e9a963e2f1baf8f9b4c8357f6f66/docs/en/docs/tutorial/handling-errors.md\n\n---\n\n# Handling Errors\n\nThere are many situations in which you need to notify an error to a client that is using your API.\n\nThis client could be a browser with a frontend, a code from someone else, an IoT device, etc.\n\nYou could need to tell the client that:\n\n* The client doesn't have enough privileges for that operation.\n* The client doesn't have access to that resource.\n* The item the client was trying to access doesn't exist.\n* etc.\n\nIn these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499).\n\nThis is similar to the 200 HTTP status codes (from 200 to 299). Those \"200\" status codes mean that somehow there was a \"success\" in the request.\n\nThe status codes in the 400 range mean that there was an error from the client.\n\nRemember all those **\"404 Not Found\"** errors (and jokes)?\n\n## Use `HTTPException`\n\nTo return HTTP responses with errors to the client you use `HTTPException`.\n\n### Import `HTTPException`\n\n```Python hl_lines=\"1\""
+        },
+        {
+          "id": "ev_6b073d044799248f20aade4984d46cc8ffad7a529a5c4e46327eb64a9f4d7050",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 4,
+          "text": "will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.requests import Request` and `from starlette.responses import JSONResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette. The same with `Request`.\n\n///\n\n## Override the default exception handlers\n\n**FastAPI** has some default exception handlers.\n\nThese handlers are in charge of returning the default JSON responses when you `raise` an `HTTPException` and when the request has invalid data.\n\nYou can override these exception handlers with your own.\n\n### Override request validation exceptions\n\nWhen a request contains invalid data, **FastAPI** internally raises a `RequestValidationError`.\n\nAnd it also includes a default exception handler for it.\n\nTo override it, import the `RequestValidationError` and use it with `@app.exception_handler(RequestValidationError)` to decorate the exception handler.\n\nThe exception handler"
+        },
+        {
+          "id": "ev_226f562d35a40b228b6568540b8dc38c83807845b84f26ada28b99e9016d341c",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 7,
+          "text": "1  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette.\n\n///\n\n### Use the `RequestValidationError` body\n\nThe `RequestValidationError` contains the `body` it received with invalid data.\n\nYou could use it while developing your app to log the body and debug it, return it to the user, etc.\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial005.py!}\n```\n\nNow try sending an invalid item like:\n\n```JSON\n{\n  \"title\": \"towel\",\n  \"size\": \"XL\"\n}\n```\n\nYou will receive a response telling you that the data is invalid containing the received body:\n\n```JSON hl_lines=\"12-15\"\n{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"body\",\n        \"size\"\n      ],\n      \"msg\": \"value is not a valid integer\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own"
+        },
+        {
+          "id": "ev_855b88b306ee5d5c632c6184d72b3636743af44fcaf8889d21c0bc34d843e7ba",
+          "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+          "page_number": null,
+          "chunk_index": 6,
+          "text": "'s <a href=\"https://docs.pydantic.dev/latest/concepts/models/#error-handling\" class=\"external-link\" target=\"_blank\">`ValidationError`</a>.\n\n**FastAPI** uses it so that, if you use a Pydantic model in `response_model`, and your data has an error, you will see the error in your log.\n\nBut the client/user will not see it. Instead, the client will receive an \"Internal Server Error\" with a HTTP status code `500`.\n\nIt should be this way because if you have a Pydantic `ValidationError` in your *response* or anywhere in your code (not in the client's *request*), it's actually a bug in your code.\n\nAnd while you fix it, your clients/users shouldn't have access to internal information about the error, as that could expose a security vulnerability.\n\n### Override the `HTTPException` error handler\n\nThe same way, you can override the `HTTPException` handler.\n\nFor example, you could want to return a plain text response instead of JSON for these errors:\n\n```Python hl_lines=\"3-4  9-11  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same"
+        }
+      ],
+      "retrieval_rounds": [
+        {
+          "round_index": 0,
+          "queries": [
+            "In FastAPI 0.112.2, FastAPI's HTTPException inherits from Starlette's, so which should be raised in code, and which should be registered in an exception handler?",
+            "FastAPI 0.112.2 HTTPException inheritance Starlette",
+            "FastAPI raise Starlette HTTPException vs FastAPI HTTPException",
+            "FastAPI custom exception handler Starlette HTTPException",
+            "site:fastapi.tiangolo.com HTTPException best practices"
+          ],
+          "evidence": [
+            {
+              "id": "ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 8,
+              "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+            },
+            {
+              "id": "ev_dae2c8ca2a81b51656b49c1e6ff64dd81c9a168555e10b2e026b0ead83f43935",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 9,
+              "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+            },
+            {
+              "id": "ev_5e372a68f309c3902b4ee8994d6ae7f56bbb715c2f95eec95385d5d50e6daf80",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 0,
+              "text": "Snapshot repository: fastapi/fastapi\nSnapshot version: 0.112.2\nSnapshot source: https://github.com/fastapi/fastapi/blob/d00af00d3f15e9a963e2f1baf8f9b4c8357f6f66/docs/en/docs/tutorial/handling-errors.md\n\n---\n\n# Handling Errors\n\nThere are many situations in which you need to notify an error to a client that is using your API.\n\nThis client could be a browser with a frontend, a code from someone else, an IoT device, etc.\n\nYou could need to tell the client that:\n\n* The client doesn't have enough privileges for that operation.\n* The client doesn't have access to that resource.\n* The item the client was trying to access doesn't exist.\n* etc.\n\nIn these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499).\n\nThis is similar to the 200 HTTP status codes (from 200 to 299). Those \"200\" status codes mean that somehow there was a \"success\" in the request.\n\nThe status codes in the 400 range mean that there was an error from the client.\n\nRemember all those **\"404 Not Found\"** errors (and jokes)?\n\n## Use `HTTPException`\n\nTo return HTTP responses with errors to the client you use `HTTPException`.\n\n### Import `HTTPException`\n\n```Python hl_lines=\"1\""
+            },
+            {
+              "id": "ev_495bcbacdb2e07c63d11dcc5074f59b17100255385aa9bcce8cc00eb2b3dec19",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 3,
+              "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+            },
+            {
+              "id": "ev_855b88b306ee5d5c632c6184d72b3636743af44fcaf8889d21c0bc34d843e7ba",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 6,
+              "text": "'s <a href=\"https://docs.pydantic.dev/latest/concepts/models/#error-handling\" class=\"external-link\" target=\"_blank\">`ValidationError`</a>.\n\n**FastAPI** uses it so that, if you use a Pydantic model in `response_model`, and your data has an error, you will see the error in your log.\n\nBut the client/user will not see it. Instead, the client will receive an \"Internal Server Error\" with a HTTP status code `500`.\n\nIt should be this way because if you have a Pydantic `ValidationError` in your *response* or anywhere in your code (not in the client's *request*), it's actually a bug in your code.\n\nAnd while you fix it, your clients/users shouldn't have access to internal information about the error, as that could expose a security vulnerability.\n\n### Override the `HTTPException` error handler\n\nThe same way, you can override the `HTTPException` handler.\n\nFor example, you could want to return a plain text response instead of JSON for these errors:\n\n```Python hl_lines=\"3-4  9-11  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same"
+            }
+          ]
+        },
+        {
+          "round_index": 1,
+          "queries": [
+            "In FastAPI 0.112.2, FastAPI's HTTPException inherits from Starlette's, so which should be raised in code, and which should be registered in an exception handler?",
+            "FastAPI 0.112.2 HTTPException inheritance Starlette",
+            "FastAPI raise Starlette HTTPException vs FastAPI HTTPException",
+            "FastAPI custom exception handler Starlette HTTPException",
+            "site:fastapi.tiangolo.com HTTPException best practices"
+          ],
+          "evidence": [
+            {
+              "id": "ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 8,
+              "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+            },
+            {
+              "id": "ev_dae2c8ca2a81b51656b49c1e6ff64dd81c9a168555e10b2e026b0ead83f43935",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 9,
+              "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+            },
+            {
+              "id": "ev_5e372a68f309c3902b4ee8994d6ae7f56bbb715c2f95eec95385d5d50e6daf80",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 0,
+              "text": "Snapshot repository: fastapi/fastapi\nSnapshot version: 0.112.2\nSnapshot source: https://github.com/fastapi/fastapi/blob/d00af00d3f15e9a963e2f1baf8f9b4c8357f6f66/docs/en/docs/tutorial/handling-errors.md\n\n---\n\n# Handling Errors\n\nThere are many situations in which you need to notify an error to a client that is using your API.\n\nThis client could be a browser with a frontend, a code from someone else, an IoT device, etc.\n\nYou could need to tell the client that:\n\n* The client doesn't have enough privileges for that operation.\n* The client doesn't have access to that resource.\n* The item the client was trying to access doesn't exist.\n* etc.\n\nIn these cases, you would normally return an **HTTP status code** in the range of **400** (from 400 to 499).\n\nThis is similar to the 200 HTTP status codes (from 200 to 299). Those \"200\" status codes mean that somehow there was a \"success\" in the request.\n\nThe status codes in the 400 range mean that there was an error from the client.\n\nRemember all those **\"404 Not Found\"** errors (and jokes)?\n\n## Use `HTTPException`\n\nTo return HTTP responses with errors to the client you use `HTTPException`.\n\n### Import `HTTPException`\n\n```Python hl_lines=\"1\""
+            },
+            {
+              "id": "ev_495bcbacdb2e07c63d11dcc5074f59b17100255385aa9bcce8cc00eb2b3dec19",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 3,
+              "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+            },
+            {
+              "id": "ev_855b88b306ee5d5c632c6184d72b3636743af44fcaf8889d21c0bc34d843e7ba",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 6,
+              "text": "'s <a href=\"https://docs.pydantic.dev/latest/concepts/models/#error-handling\" class=\"external-link\" target=\"_blank\">`ValidationError`</a>.\n\n**FastAPI** uses it so that, if you use a Pydantic model in `response_model`, and your data has an error, you will see the error in your log.\n\nBut the client/user will not see it. Instead, the client will receive an \"Internal Server Error\" with a HTTP status code `500`.\n\nIt should be this way because if you have a Pydantic `ValidationError` in your *response* or anywhere in your code (not in the client's *request*), it's actually a bug in your code.\n\nAnd while you fix it, your clients/users shouldn't have access to internal information about the error, as that could expose a security vulnerability.\n\n### Override the `HTTPException` error handler\n\nThe same way, you can override the `HTTPException` handler.\n\nFor example, you could want to return a plain text response instead of JSON for these errors:\n\n```Python hl_lines=\"3-4  9-11  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same"
+            }
+          ]
+        },
+        {
+          "round_index": 2,
+          "queries": [
+            "In FastAPI 0.112.2, FastAPI's HTTPException inherits from Starlette's, so which should be raised in code, and which should be registered in an exception handler?",
+            "Does the official documentation explicitly state that registering a handler for FastAPI's HTTPException is discouraged or less preferred than registering for Starlette's?",
+            "Are there any scenarios where registering a handler specifically for FastAPI's HTTPException is recommended over Starlette's?",
+            "FastAPI 0.112.2 HTTPException inheritance Starlette",
+            "FastAPI raise Starlette HTTPException vs FastAPI HTTPException"
+          ],
+          "evidence": [
+            {
+              "id": "ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 8,
+              "text": "er\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own `HTTPException`.\n\nAnd **FastAPI**'s `HTTPException` error class inherits from Starlette's `HTTPException` error class.\n\nThe only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.\n\nSo, you can keep raising **FastAPI**'s `HTTPException` as normally in your code.\n\nBut when you register an exception handler, you should register it for Starlette's `HTTPException`.\n\nThis way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.\n\nIn this example, to be able to have both `HTTPException`s in the same code, Starlette's exceptions is renamed to `StarletteHTTPException`:\n\n```Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception"
+            },
+            {
+              "id": "ev_dae2c8ca2a81b51656b49c1e6ff64dd81c9a168555e10b2e026b0ead83f43935",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 9,
+              "text": "Python\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n```\n\n### Reuse **FastAPI**'s exception handlers\n\nIf you want to use the exception along with the same default exception handlers from  **FastAPI**, You can import and reuse the default exception handlers from `fastapi.exception_handlers`:\n\n```Python hl_lines=\"2-5  15  21\"\n{!../../../docs_src/handling_errors/tutorial006.py!}\n```\n\nIn this example you are just `print`ing the error with a very expressive message, but you get the idea. You can use the exception and then just reuse the default exception handlers."
+            },
+            {
+              "id": "ev_495bcbacdb2e07c63d11dcc5074f59b17100255385aa9bcce8cc00eb2b3dec19",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 3,
+              "text": "to the HTTP error. For example, for some types of security.\n\nYou probably won't need to use it directly in your code.\n\nBut in case you needed it for an advanced scenario, you can add custom headers:\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial002.py!}\n```\n\n## Install custom exception handlers\n\nYou can add custom exception handlers with <a href=\"https://www.starlette.io/exceptions/\" class=\"external-link\" target=\"_blank\">the same exception utilities from Starlette</a>.\n\nLet's say you have a custom exception `UnicornException` that you (or a library you use) might `raise`.\n\nAnd you want to handle this exception globally with FastAPI.\n\nYou could add a custom exception handler with `@app.exception_handler()`:\n\n```Python hl_lines=\"5-7  13-18  24\"\n{!../../../docs_src/handling_errors/tutorial003.py!}\n```\n\nHere, if you request `/unicorns/yolo`, the *path operation* will `raise` a `UnicornException`.\n\nBut it will be handled by the `unicorn_exception_handler`.\n\nSo, you will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou"
+            },
+            {
+              "id": "ev_6b073d044799248f20aade4984d46cc8ffad7a529a5c4e46327eb64a9f4d7050",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 4,
+              "text": "will receive a clean error, with an HTTP status code of `418` and a JSON content of:\n\n```JSON\n{\"message\": \"Oops! yolo did something. There goes a rainbow...\"}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.requests import Request` and `from starlette.responses import JSONResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette. The same with `Request`.\n\n///\n\n## Override the default exception handlers\n\n**FastAPI** has some default exception handlers.\n\nThese handlers are in charge of returning the default JSON responses when you `raise` an `HTTPException` and when the request has invalid data.\n\nYou can override these exception handlers with your own.\n\n### Override request validation exceptions\n\nWhen a request contains invalid data, **FastAPI** internally raises a `RequestValidationError`.\n\nAnd it also includes a default exception handler for it.\n\nTo override it, import the `RequestValidationError` and use it with `@app.exception_handler(RequestValidationError)` to decorate the exception handler.\n\nThe exception handler"
+            },
+            {
+              "id": "ev_226f562d35a40b228b6568540b8dc38c83807845b84f26ada28b99e9016d341c",
+              "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+              "page_number": null,
+              "chunk_index": 7,
+              "text": "1  22\"\n{!../../../docs_src/handling_errors/tutorial004.py!}\n```\n\n/// note | \"Technical Details\"\n\nYou could also use `from starlette.responses import PlainTextResponse`.\n\n**FastAPI** provides the same `starlette.responses` as `fastapi.responses` just as a convenience for you, the developer. But most of the available responses come directly from Starlette.\n\n///\n\n### Use the `RequestValidationError` body\n\nThe `RequestValidationError` contains the `body` it received with invalid data.\n\nYou could use it while developing your app to log the body and debug it, return it to the user, etc.\n\n```Python hl_lines=\"14\"\n{!../../../docs_src/handling_errors/tutorial005.py!}\n```\n\nNow try sending an invalid item like:\n\n```JSON\n{\n  \"title\": \"towel\",\n  \"size\": \"XL\"\n}\n```\n\nYou will receive a response telling you that the data is invalid containing the received body:\n\n```JSON hl_lines=\"12-15\"\n{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"body\",\n        \"size\"\n      ],\n      \"msg\": \"value is not a valid integer\",\n      \"type\": \"type_error.integer\"\n    }\n  ],\n  \"body\": {\n    \"title\": \"towel\",\n    \"size\": \"XL\"\n  }\n}\n```\n\n#### FastAPI's `HTTPException` vs Starlette's `HTTPException`\n\n**FastAPI** has its own"
+            }
+          ]
+        }
+      ],
+      "cited_evidence_ids": [
+        "ev_c09dbc7cef49e4038aace468b2684a652c61423d8b01b56c7e29f100f03c6972",
+        "ev_226f562d35a40b228b6568540b8dc38c83807845b84f26ada28b99e9016d341c",
+        "ev_dae2c8ca2a81b51656b49c1e6ff64dd81c9a168555e10b2e026b0ead83f43935"
+      ],
+      "latency_ms": 75338,
+      "prompt_tokens": 21278,
+      "completion_tokens": 4601,
+      "total_tokens": 25879,
+      "model_calls": 23,
+      "retry_count": 0,
+      "attempt_ids": [
+        "4ef0b5e91c374de2a0d0d548720ec19c",
+        "b1c0c0158e8645a9bd14b4ff7309e997",
+        "76def6791c374f4f8df9547c85fc5aab",
+        "1fb6be8acf0f4a15ace4abf051d27b70",
+        "bea8c588f38248b0986c27d7853bcdd9",
+        "97009b43ba56451b8da23d48e8f5d295",
+        "004f8b8467634cb5b2b65b37f481717d",
+        "54c6c68da8274b7fb98534328f3cfdd2",
+        "a5b1834e0ba549bd804fdfa8e2d92994",
+        "547af3921d1847249d31c9e5f5f02598",
+        "af95ffc7fd3440b397da9b4c4077f2f1",
+        "4ce5d91363e847abb1fb3d92111a1f6c",
+        "2e92f7ccac2a4b03ab707ec08d1bc320",
+        "7b2cc64ad31e4be695f38c7856fa873d",
+        "f078e805cae04653b358e64bb7bb897e",
+        "b11ff08d455b495cb0e8734c25d8e5c0",
+        "6271434ab17f4eadb333727c734e9c2e",
+        "e81df90d171040de99917744f64c545e",
+        "6f545039324f426998d760946dec6a82",
+        "afd1a06d976c4847a1f67f89f61b0216",
+        "58d40a8f84ec4b14be32edfcc64669bb",
+        "f5ba88f7bc0244a8abaa1cc949e49bbc",
+        "5acafdf81b664411ab60e4dc996db4d5"
+      ],
+      "usage_complete": true,
+      "critic_loops": 2,
+      "evidence_sufficient": false,
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "error_code": null
+    }
+  ],
+  "request_receipts": [
+    {
+      "id": "55491ac3d0d74cb8a2dc28ea43203245",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "69eccbc80fcfd6c434dbad97929b8950f15a67caad1e7856aea2c12115b12487",
+      "input_tokens": 3199,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015995"
+    },
+    {
+      "id": "43b004d953614bb095346c1790e544ca",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "2aa02a9031395d807614022c13766b1bd42450f3fa5a85c472110c4561c009ff",
+      "input_tokens": 1348,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000674"
+    },
+    {
+      "id": "207171bea457486396e1e6aae8f9681e",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "c1fb4451a64da0606e93687f079713a2a504d064213530ba4eb4770e22b687f3",
+      "input_tokens": 2979,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0014895"
+    },
+    {
+      "id": "fa428f59a53a497ea676a08908f503d0",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5dda73c1d6732499233131b3ed2eab3d1aff66d0f346e1235fd4f319497d1613",
+      "input_tokens": 2985,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0014925"
+    },
+    {
+      "id": "7b1bfbd112a349ae8e6fbd483aa8ee26",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "cc83c04afac923b23dfad87a63dc89ea13df602bcf9d37bffdeb7104ff2c204a",
+      "input_tokens": 569,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0002845"
+    },
+    {
+      "id": "c1bec0882e344f39b75fd99411f4934a",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "c6d64692d60197af1e75ebf8533754eb2bcec9dd873e6d631fa2ea469be60c17",
+      "input_tokens": 3021,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015105"
+    },
+    {
+      "id": "851a0c1fbf3f4f0fa46aaa4b5c69dfee",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "ce0deda07a42000d802b57f72139b8fb2dee4000c82bd4b3c8af32cae72a9187",
+      "input_tokens": 3009,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015045"
+    },
+    {
+      "id": "00cfd879a0d3405a99674d23ce023193",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "55fb77702b45c61b1e411cd9d576efe77d58001a2b24a5e115d28064475c4f35",
+      "input_tokens": 1030,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000515"
+    },
+    {
+      "id": "4e07faff8ee5491f8b142ed647a4a755",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "61415a1f1a51da94174e4e26d6100848b3db6b354fd5a978bd3213ab10cc4b2c",
+      "input_tokens": 2144,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.001072"
+    },
+    {
+      "id": "3468378439a041f183ac53d3588d86fb",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "25384e290bb4b0f1212ba1758779123e5fcf350431030d4317e85f234e301642",
+      "input_tokens": 3089,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0015445"
+    },
+    {
+      "id": "b04d0c4b8b4e4727b66839033dfa33ff",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "01591067acf1cf80d852356cbaa87f0b6c1b676b30cdee3c9bc3f8ae4172a9fc",
+      "input_tokens": 494,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000247"
+    },
+    {
+      "id": "cce3a5511313444a93d8ec527a34251c",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "0f25549da5425db1fd0a0fb254af43fb5de35321e85e8385771885052b227f4f",
+      "input_tokens": 1862,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000931"
+    },
+    {
+      "id": "6a7ce7fd97b040ad8a5a1d86d6b94988",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "cd7eb46f022c8925bf6a12ac21f3a6675123646f6a25fe6c307865e53c187fa4",
+      "input_tokens": 2784,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.001392"
+    },
+    {
+      "id": "d7a5e6a793ac4c43aae0031f5a22cf06",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "22673fa4aa857689cf3525fe7589462d005b67a7976fcfbeea9196fe515deed8",
+      "input_tokens": 1257,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0006285"
+    },
+    {
+      "id": "4ef0b5e91c374de2a0d0d548720ec19c",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "130651938702c09abe3c0b923b21b3c89fc3f2bd4ed4c18482e4f4210f68f208",
+      "input_tokens": 246,
+      "output_tokens": 444,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0004044"
+    },
+    {
+      "id": "b1c0c0158e8645a9bd14b4ff7309e997",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5433e51e69fbff7608b72174cde1db34bf5a6758cb64e7fa8dfef89c9a26c383",
+      "input_tokens": 42,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000021"
+    },
+    {
+      "id": "76def6791c374f4f8df9547c85fc5aab",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "08f8bc8025d49a8dfd79f489cfc6ff7d1fd6d29e37cb0ffe29d790bd2fc6b0d0",
+      "input_tokens": 16,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000008"
+    },
+    {
+      "id": "1fb6be8acf0f4a15ace4abf051d27b70",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "994265fb6078ea21942fee7d63e2f0f0374167ff548dea846647254ee3ab6f92",
+      "input_tokens": 13,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000065"
+    },
+    {
+      "id": "bea8c588f38248b0986c27d7853bcdd9",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "bba361c8e8b9cd35991caeb08b4651885ddc39d65e29af090e2d7637d23f8d5b",
+      "input_tokens": 10,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000005"
+    },
+    {
+      "id": "97009b43ba56451b8da23d48e8f5d295",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "487b95cb70cf9d8e780fb8ad05b4a2485f8686ba6aa22d9764d7de7350cbb4cf",
+      "input_tokens": 13,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000065"
+    },
+    {
+      "id": "004f8b8467634cb5b2b65b37f481717d",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5f429a693d8b8cd875bb98877690fcd393585605d52376c31010273f272210da",
+      "input_tokens": 2537,
+      "output_tokens": 450,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0008674"
+    },
+    {
+      "id": "54c6c68da8274b7fb98534328f3cfdd2",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "6ab8e3180b6d01721132e4a77ddf0b6fcebdf0df913c7d99814f605e3d65cd82",
+      "input_tokens": 2780,
+      "output_tokens": 1018,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0013704"
+    },
+    {
+      "id": "a5b1834e0ba549bd804fdfa8e2d92994",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5433e51e69fbff7608b72174cde1db34bf5a6758cb64e7fa8dfef89c9a26c383",
+      "input_tokens": 42,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000021"
+    },
+    {
+      "id": "547af3921d1847249d31c9e5f5f02598",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "08f8bc8025d49a8dfd79f489cfc6ff7d1fd6d29e37cb0ffe29d790bd2fc6b0d0",
+      "input_tokens": 16,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000008"
+    },
+    {
+      "id": "af95ffc7fd3440b397da9b4c4077f2f1",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "994265fb6078ea21942fee7d63e2f0f0374167ff548dea846647254ee3ab6f92",
+      "input_tokens": 13,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000065"
+    },
+    {
+      "id": "4ce5d91363e847abb1fb3d92111a1f6c",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "bba361c8e8b9cd35991caeb08b4651885ddc39d65e29af090e2d7637d23f8d5b",
+      "input_tokens": 10,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000005"
+    },
+    {
+      "id": "2e92f7ccac2a4b03ab707ec08d1bc320",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "487b95cb70cf9d8e780fb8ad05b4a2485f8686ba6aa22d9764d7de7350cbb4cf",
+      "input_tokens": 13,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000065"
+    },
+    {
+      "id": "7b2cc64ad31e4be695f38c7856fa873d",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5f429a693d8b8cd875bb98877690fcd393585605d52376c31010273f272210da",
+      "input_tokens": 2537,
+      "output_tokens": 381,
+      "cached_input_tokens": 2176,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0008122"
+    },
+    {
+      "id": "f078e805cae04653b358e64bb7bb897e",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "2495ada413e30e73cfd7afe89ac8f3689634ac608e87b4b5b151a2d249df1d75",
+      "input_tokens": 2711,
+      "output_tokens": 735,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0011302"
+    },
+    {
+      "id": "b11ff08d455b495cb0e8734c25d8e5c0",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5433e51e69fbff7608b72174cde1db34bf5a6758cb64e7fa8dfef89c9a26c383",
+      "input_tokens": 42,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000021"
+    },
+    {
+      "id": "6271434ab17f4eadb333727c734e9c2e",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5d1ccabc29e5e8ffbdec384d66220eb02fbe677e58340141528ed3c5dc8d65ec",
+      "input_tokens": 29,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000145"
+    },
+    {
+      "id": "e81df90d171040de99917744f64c545e",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "b0e0f034571928d354ab185f3eb001720fe419736d34a537f682f7390bd9ec9b",
+      "input_tokens": 23,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000115"
+    },
+    {
+      "id": "6f545039324f426998d760946dec6a82",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "08f8bc8025d49a8dfd79f489cfc6ff7d1fd6d29e37cb0ffe29d790bd2fc6b0d0",
+      "input_tokens": 16,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.000008"
+    },
+    {
+      "id": "afd1a06d976c4847a1f67f89f61b0216",
+      "provider": "dashscope",
+      "model": "text-embedding-v4",
+      "kind": "embedding",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "994265fb6078ea21942fee7d63e2f0f0374167ff548dea846647254ee3ab6f92",
+      "input_tokens": 13,
+      "output_tokens": 0,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.5",
+        "input": "0.5",
+        "max_input_tokens": 1000000,
+        "output": "0",
+        "version": "2026-10-17-beijing"
+      },
+      "estimated_cost_cny": "0.0000065"
+    },
+    {
+      "id": "58d40a8f84ec4b14be32edfcc64669bb",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "110c7f6cbe13f0a95fece43c216f8bb2e4f7518e4a737faae2f00d4be9a2ebf9",
+      "input_tokens": 3244,
+      "output_tokens": 486,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0010376"
+    },
+    {
+      "id": "f5ba88f7bc0244a8abaa1cc949e49bbc",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "5308907e819b326d099fa7e33c61053ce8faac96ec465fbb1bd232e22fcbb551",
+      "input_tokens": 3491,
+      "output_tokens": 405,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0010222"
+    },
+    {
+      "id": "5acafdf81b664411ab60e4dc996db4d5",
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "kind": "chat",
+      "state": "settled",
+      "outcome": "success",
+      "request_sha256": "36eaa5e8b7bd365d6541145ecf692888c3ae4f3db253823dd256f4d2aecbf39b",
+      "input_tokens": 3421,
+      "output_tokens": 682,
+      "cached_input_tokens": 0,
+      "price": {
+        "cached_input": "0.2",
+        "input": "0.2",
+        "max_input_tokens": 32000,
+        "output": "0.8",
+        "version": "2026-10-17-beijing-le32k"
+      },
+      "estimated_cost_cny": "0.0012298"
+    }
+  ],
+  "usage": {
+    "physical_attempts": 37,
+    "usage_complete": true,
+    "input_tokens": 51048,
+    "output_tokens": 4601,
+    "cached_input_tokens": 2176,
+    "estimated_cost_cny": "0.0229147",
+    "unknown_usage_attempts": 0
+  },
+  "limits": [
+    "The original 80-unit v6 report, three failures and citation-format diagnostics are unchanged.",
+    "Selected engineering units cannot establish general reliability, semantic superiority or held-out quality.",
+    "The 4096-token cap remains; truncation is still an explicit failure mode."
+  ]
+}

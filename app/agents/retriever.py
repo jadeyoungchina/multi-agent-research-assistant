@@ -28,8 +28,8 @@ class RetrieverAgent:
             else None
         )
         expansions = [
-            *plan.search_queries,
             *(critique.follow_up_queries if critique is not None else []),
+            *plan.search_queries,
         ]
         batch = self.retriever.retrieve(
             state["question"], expansions, state["document_ids"], self.top_k
@@ -49,6 +49,10 @@ class RetrieverAgent:
         )
         return {
             "evidence": [item.model_dump(mode="json") for item in merged_evidence],
+            "retrieval_rounds": [
+                *state.get("retrieval_rounds", []),
+                {"queries": list(batch.queries), "evidence": [item.model_dump(mode="json") for item in batch.evidence]},
+            ],
             "next_stage": "researcher",
             "provider_metrics": [
                 *state.get("provider_metrics", []),

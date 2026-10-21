@@ -1,0 +1,45 @@
+{
+  "unknown_latency_retry_units": [],
+  "by_variant": {
+    "all": {
+      "latency_retry_denominator": 160,
+      "unknown_measurements": 0,
+      "mean_latency_ms": 14832.53125,
+      "p50_latency_ms": 6532,
+      "p95_latency_ms": 55141,
+      "mean_retry_count": 0.05
+    },
+    "baseline_llm": {
+      "latency_retry_denominator": 40,
+      "unknown_measurements": 0,
+      "mean_latency_ms": 6505.825,
+      "p50_latency_ms": 5343,
+      "p95_latency_ms": 17381,
+      "mean_retry_count": 0
+    },
+    "llm_rag": {
+      "latency_retry_denominator": 40,
+      "unknown_measurements": 0,
+      "mean_latency_ms": 5413,
+      "p50_latency_ms": 3448,
+      "p95_latency_ms": 7045,
+      "mean_retry_count": 0.05
+    },
+    "single_agent_rag": {
+      "latency_retry_denominator": 40,
+      "unknown_measurements": 0,
+      "mean_latency_ms": 7299.025,
+      "p50_latency_ms": 6451,
+      "p95_latency_ms": 12971,
+      "mean_retry_count": 0.1
+    },
+    "multi_agent_rag": {
+      "latency_retry_denominator": 40,
+      "unknown_measurements": 0,
+      "mean_latency_ms": 40112.275,
+      "p50_latency_ms": 42033,
+      "p95_latency_ms": 63134,
+      "mean_retry_count": 0.05
+    }
+  }
+}

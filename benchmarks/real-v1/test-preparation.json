@@ -1,0 +1,251 @@
+{
+  "schema_version": "test-freeze-preparation-v1",
+  "status": "not_frozen_no_test_execution",
+  "recorded_date": "2026-10-18",
+  "generation_candidate": {
+    "code_commit": "c293dc02979af4b95a9d37f458480eaf66f3c56c",
+    "source_sha256": "7af1dc58467bc76a678538e8cbb3dc32ae38afaee9c29c4b7becee88a31e469f",
+    "prompt_version": "evaluation-v8",
+    "configuration": {
+      "provider": "dashscope",
+      "model": "qwen3.7-flash-2026-07-15",
+      "embedding_provider": "dashscope",
+      "embedding_model": "text-embedding-v4",
+      "timeout_seconds": 60.0,
+      "max_retries": 2,
+      "chunk_size": 1200,
+      "chunk_overlap": 200,
+      "retrieval_top_k": 5,
+      "retrieval_candidate_k": 20,
+      "retrieval_rrf_k": 60,
+      "retrieval_min_similarity": 0.15,
+      "max_query_expansions": 4,
+      "max_critic_loops": 2,
+      "max_workflow_steps": 24,
+      "max_output_tokens": 4096,
+      "structured_output": "json_schema",
+      "max_researcher_citation_repairs": 1,
+      "max_writer_citation_repairs": 1
+    },
+    "temperature": 0,
+    "thinking_enabled": false
+  },
+  "dataset_sha256": "debd1716177707e77b59908f1a49048ffd050227ff61394b99c59e6ce387cd04",
+  "reference_review_sha256": "7f9f72c8e7945cec634041895f238219e968a0902b1af01bf91b353f14b34670",
+  "matrix": {
+    "test_questions": 40,
+    "variants": [
+      "baseline_llm",
+      "llm_rag",
+      "single_agent_rag",
+      "multi_agent_rag"
+    ],
+    "independent_repeats": 3,
+    "planned_units": 480,
+    "repeat_order_seeds": [
+      20261019,
+      20261020,
+      20261021
+    ],
+    "generation_concurrency": 1,
+    "fresh_generated_answers": true
+  },
+  "primary_comparison": {
+    "treatment": "multi_agent_rag",
+    "control": "single_agent_rag",
+    "quality": "mean normalized reference-key-point score per question across three repeats, then paired question difference",
+    "incremental_cost": "paired per-question answer request cost, excluding separately reported shared setup and judge costs; unknown charges stay null",
+    "executed_failure_quality": 0,
+    "judge_failure": "missing, never quality zero; primary paired analysis requires all three known repeats for both variants; disclose exclusions and missing-value sensitivity bounds",
+    "unexecuted": "separate incomplete status, never successful or scored execution"
+  },
+  "statistics": {
+    "resampling_unit": "test document family",
+    "clusters": 8,
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261023,
+    "confidence_level": 0.95,
+    "interval": "two-sided percentile interval, exploratory with few families",
+    "report_family_differences": true,
+    "trace_rows_are_not_independent_questions": true
+  },
+  "judge": {
+    "interface": "official DeepSeek dsh CLI",
+    "rubric": "same exhaustive answer-block and key-point rules as dev-block-v2; no development-only reference overlay on test",
+    "blinded_fields": [
+      "workflow",
+      "provider",
+      "generation model",
+      "cost",
+      "latency"
+    ],
+    "max_output_tokens": 8192,
+    "max_format_repairs": 1,
+    "raw_outputs_retained": true,
+    "human_scores": 0,
+    "human_agreement_established": false,
+    "frozen_test_judge_implementation": "pending"
+  },
+  "source_review_sample": {
+    "repeat_index": 0,
+    "seed": 20261022,
+    "selection_rule": "seeded draws of two questions per task-type/language stratum; first draw covering every test document family; no answer content used",
+    "accepted_draw": 1,
+    "question_groups": 20,
+    "answers": 80,
+    "metadata": [
+      {
+        "id": "REAL-TEST-002",
+        "question_group": "REAL-TEST-002",
+        "family": "pydantic-models",
+        "question_type": "cross_document_synthesis",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-003",
+        "question_group": "REAL-TEST-003",
+        "family": "pydantic-models",
+        "question_type": "conditions_limits_and_numbers",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-004",
+        "question_group": "REAL-TEST-004",
+        "family": "pydantic-models",
+        "question_type": "version_and_apparent_conflict",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-005",
+        "question_group": "REAL-TEST-005",
+        "family": "pydantic-models",
+        "question_type": "insufficient_corpus_evidence",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-006",
+        "question_group": "REAL-TEST-006",
+        "family": "pydantic-validators",
+        "question_type": "single_document_fact",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-007",
+        "question_group": "REAL-TEST-007",
+        "family": "pydantic-validators",
+        "question_type": "cross_document_synthesis",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-009",
+        "question_group": "REAL-TEST-009",
+        "family": "pydantic-validators",
+        "question_type": "version_and_apparent_conflict",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-010",
+        "question_group": "REAL-TEST-010",
+        "family": "pydantic-validators",
+        "question_type": "insufficient_corpus_evidence",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-012",
+        "question_group": "REAL-TEST-012",
+        "family": "pydantic-serialization",
+        "question_type": "cross_document_synthesis",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-014",
+        "question_group": "REAL-TEST-014",
+        "family": "pydantic-serialization",
+        "question_type": "version_and_apparent_conflict",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-015",
+        "question_group": "REAL-TEST-015",
+        "family": "pydantic-serialization",
+        "question_type": "insufficient_corpus_evidence",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-016",
+        "question_group": "REAL-TEST-016",
+        "family": "pydantic-dataclasses",
+        "question_type": "single_document_fact",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-021",
+        "question_group": "REAL-TEST-021",
+        "family": "fastapi-response",
+        "question_type": "single_document_fact",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-023",
+        "question_group": "REAL-TEST-023",
+        "family": "fastapi-response",
+        "question_type": "conditions_limits_and_numbers",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-028",
+        "question_group": "REAL-TEST-028",
+        "family": "fastapi-background",
+        "question_type": "conditions_limits_and_numbers",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-029",
+        "question_group": "REAL-TEST-029",
+        "family": "fastapi-background",
+        "question_type": "version_and_apparent_conflict",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-030",
+        "question_group": "REAL-TEST-030",
+        "family": "fastapi-background",
+        "question_type": "insufficient_corpus_evidence",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-031",
+        "question_group": "REAL-TEST-031",
+        "family": "fastapi-security",
+        "question_type": "single_document_fact",
+        "language": "zh"
+      },
+      {
+        "id": "REAL-TEST-037",
+        "question_group": "REAL-TEST-037",
+        "family": "fastapi-middleware",
+        "question_type": "cross_document_synthesis",
+        "language": "en"
+      },
+      {
+        "id": "REAL-TEST-038",
+        "question_group": "REAL-TEST-038",
+        "family": "fastapi-middleware",
+        "question_type": "conditions_limits_and_numbers",
+        "language": "en"
+      }
+    ],
+    "reviewer_kind": "ai",
+    "human_review_status": "pending; never imputed from AI review",
+    "additional_error_reviews": "separate from the prespecified sample"
+  },
+  "remaining_before_paid_test": [
+    "freeze validated runner and test judge hashes",
+    "bind each repeat and resume to immutable configuration/data/source identity",
+    "attribute setup/query requests explicitly across resumed processes",
+    "offline proof of no duplicate paid completed units and no gold leakage",
+    "commit final freeze record before first held-out request"
+  ],
+  "optional_cross_model_replication": "excluded from this main execution stage; requires its own protocol before generating its answers",
+  "no_heldout_answers_generated": true
+}

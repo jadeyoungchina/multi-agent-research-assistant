@@ -1,0 +1,163 @@
+{
+  "schema_version": "frozen-primary-analysis-v1",
+  "freeze_id": "0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270",
+  "planned_units": 480,
+  "executed_units": 480,
+  "execution_failures": 7,
+  "successful_answers_missing_judgment": [
+    "r0-answer-051",
+    "r0-answer-074",
+    "r0-answer-090",
+    "r0-answer-112",
+    "r0-answer-122",
+    "r0-answer-157",
+    "r1-answer-015",
+    "r1-answer-016",
+    "r1-answer-071",
+    "r1-answer-141",
+    "r1-answer-151",
+    "r2-answer-027",
+    "r2-answer-101",
+    "r2-answer-108",
+    "r2-answer-146"
+  ],
+  "human_scores": 0,
+  "primary": {
+    "complete_pairs": 34,
+    "missing_pairs": 6,
+    "mean_paired_correctness_difference": 0.042483660130718956,
+    "all_question_missing_value_bounds": [
+      0.03888888888888889,
+      0.09722222222222222
+    ],
+    "family_bootstrap_95_interval": [
+      -0.0034750224014336788,
+      0.08249158249158249
+    ],
+    "bootstrap_replicates": 10000,
+    "valid_bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261023,
+    "family_count": 8,
+    "informative_family_count": 8,
+    "interval_interpretation": "exploratory; skip and disclose empty draws; no interval below two informative families",
+    "by_family": {
+      "fastapi-background": {
+        "complete_pairs": 5,
+        "mean_difference": -0.06666666666666665
+      },
+      "fastapi-middleware": {
+        "complete_pairs": 4,
+        "mean_difference": 0.10416666666666666
+      },
+      "fastapi-response": {
+        "complete_pairs": 5,
+        "mean_difference": 0.061111111111111095
+      },
+      "fastapi-security": {
+        "complete_pairs": 5,
+        "mean_difference": 0.05555555555555554
+      },
+      "pydantic-dataclasses": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0
+      },
+      "pydantic-models": {
+        "complete_pairs": 4,
+        "mean_difference": 0.08333333333333334
+      },
+      "pydantic-serialization": {
+        "complete_pairs": 4,
+        "mean_difference": 0.125
+      },
+      "pydantic-validators": {
+        "complete_pairs": 3,
+        "mean_difference": -0.0185185185185185
+      }
+    }
+  },
+  "incremental_answer_cost": {
+    "complete_pairs": 30,
+    "missing_pairs": 10,
+    "mean_difference_cny": "0.00472198888888888888888888889",
+    "family_bootstrap_95_interval": [
+      0.004016782142857143,
+      0.005457695498768473
+    ],
+    "bootstrap_replicates": 10000,
+    "valid_bootstrap_replicates": 10000,
+    "bootstrap_seed": 20261023,
+    "family_count": 8,
+    "informative_family_count": 8,
+    "interval_interpretation": "exploratory; skip and disclose empty draws; no interval below two informative families",
+    "by_family": {
+      "fastapi-background": {
+        "complete_pairs": 4,
+        "mean_difference": 0.004779091666666666
+      },
+      "fastapi-middleware": {
+        "complete_pairs": 3,
+        "mean_difference": 0.003837011111111111
+      },
+      "fastapi-response": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0036779583333333334
+      },
+      "fastapi-security": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0061882
+      },
+      "pydantic-dataclasses": {
+        "complete_pairs": 4,
+        "mean_difference": 0.0032082583333333334
+      },
+      "pydantic-models": {
+        "complete_pairs": 4,
+        "mean_difference": 0.004574783333333333
+      },
+      "pydantic-serialization": {
+        "complete_pairs": 4,
+        "mean_difference": 0.005763625
+      },
+      "pydantic-validators": {
+        "complete_pairs": 3,
+        "mean_difference": 0.0057936555555555555
+      }
+    }
+  },
+  "phase_costs": {
+    "repeat-0": {
+      "answer_attempts": 1086,
+      "answer_cost_cny": null,
+      "index_attempts": 30,
+      "index_cost_cny": "0.03474",
+      "judge_attempts": 168,
+      "judge_cost_cny": null
+    },
+    "repeat-1": {
+      "answer_attempts": 1111,
+      "answer_cost_cny": null,
+      "index_attempts": 30,
+      "index_cost_cny": "0.03474",
+      "judge_attempts": 166,
+      "judge_cost_cny": null
+    },
+    "repeat-2": {
+      "answer_attempts": 1056,
+      "answer_cost_cny": null,
+      "index_attempts": 30,
+      "index_cost_cny": "0.03474",
+      "judge_attempts": 166,
+      "judge_cost_cny": null
+    }
+  },
+  "known_judge_attempts": 500,
+  "judge_attempts": 500,
+  "judge_cost_cny": null,
+  "missing_judge_ledgers": [],
+  "source_reviews": 0,
+  "execution_failure_audits": 0,
+  "review_sample_completion": {
+    "required_answers": 80,
+    "completed": 0
+  }
+}

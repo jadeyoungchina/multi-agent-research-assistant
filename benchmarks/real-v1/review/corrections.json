@@ -1,0 +1,4571 @@
+{
+  "schema_version": "ai-reference-corrections-v1",
+  "adjudicator": "Codex (AI)",
+  "changes": [
+    {
+      "id": "REAL-DEV-001",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-001",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "pydantic-coercion",
+        "question_group": "REAL-DEV-001",
+        "question": "在 Pydantic v2.8.2 的严格模式文档中，model_validate 默认（lax）模式如何处理 {'x': '123'} 传入 int 字段？开启 strict=True 后结果有何不同？",
+        "answer_key_points": [
+          "lax 模式下字符串 '123' 会被强制转换为整数 123",
+          "strict=True 时抛出 ValidationError，提示 Input should be a valid integer"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "MyModel.model_validate({'x': '123'}, strict=True)  # strict mode",
+            "start_line": 35,
+            "end_line": 35
+          },
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "By default, Pydantic will attempt to coerce values to the desired type when possible.",
+            "start_line": 10,
+            "end_line": 10
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-001",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "pydantic-coercion",
+        "question_group": "REAL-DEV-001",
+        "question": "在 Pydantic v2.8.2 的严格模式文档中，model_validate 默认（lax）模式如何处理 {'x': '123'} 传入 int 字段？开启 strict=True 后结果有何不同？",
+        "answer_key_points": [
+          "lax 模式下字符串 '123' 会被强制转换为整数 123",
+          "strict=True 时抛出 ValidationError，提示 Input should be a valid integer"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "For example, you can pass the string `\"123\"` as the input to an `int` field, and it will be converted to `123`.",
+            "start_line": 11,
+            "end_line": 11
+          },
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "MyModel.model_validate({'x': '123'}, strict=True)  # strict mode",
+            "start_line": 35,
+            "end_line": 35
+          },
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "Input should be a valid integer [type=int_type, input_value='123', input_type=str]",
+            "start_line": 41,
+            "end_line": 41
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-002",
+      "fields_changed": [
+        "question",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-002",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-coercion",
+        "question_group": "REAL-DEV-002",
+        "question": "在 Pydantic v2.8.2 中，智能模式（smart）判定 union 最佳匹配时，哪种评估维度与严格模式直接相关？请结合严格模式文档和 unions 文档说明。",
+        "answer_key_points": [
+          "smart 模式的 exactness 会区分严格校验成功与仅宽松校验成功，严格成功的档位高于宽松成功。",
+          "严格模式通常要求更严格的输入类型，但不同类型和 Python/JSON 输入有各自规则；应按对应条件判断，不能笼统断言一律禁止转换。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "Validation would have succeeded in [`strict` mode](../concepts/strict_mode.md)",
+            "start_line": 128,
+            "end_line": 128
+          },
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "only the instances of the exact types are accepted",
+            "start_line": 56,
+            "end_line": 56
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-002",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-coercion",
+        "question_group": "REAL-DEV-002",
+        "question": "在 Pydantic v2.8.2 中，smart union 的哪种匹配评分维度与严格模式直接相关？结合严格模式文档说明，为什么还需区分输入类型以及 Python/JSON 校验方式？",
+        "answer_key_points": [
+          "smart 模式的 exactness 会区分严格校验成功与仅宽松校验成功，严格成功的档位高于宽松成功。",
+          "严格模式通常要求更严格的输入类型，但不同类型和 Python/JSON 输入有各自规则；应按对应条件判断，不能笼统断言一律禁止转换。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "For `exactness`, Pydantic scores a match of a union member into one of the following three groups (from highest score to lowest score):\n\n    - An exact type match, for example an `int` input to a `float | int` union validation is an exact type match for the `int` member\n    - Validation would have succeeded in [`strict` mode](../concepts/strict_mode.md)\n    - Validation would have succeeded in lax mode",
+            "start_line": 125,
+            "end_line": 129
+          },
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "For most types, when validating data from python in strict mode, only the instances of the exact types are accepted.",
+            "start_line": 56,
+            "end_line": 56
+          },
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "Note that we are looser when validating data from JSON in strict mode. For example, when validating a `UUID` field,\ninstances of `str` will be accepted when validating from JSON, but not from python:",
+            "start_line": 60,
+            "end_line": 61
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-003",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-003",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-coercion",
+        "question_group": "REAL-DEV-003",
+        "question": "在 Pydantic v2.8.2 中，对 UUID 字段启用严格模式时，从 Python 校验和从 JSON 校验分别接受什么类型输入？",
+        "answer_key_points": [
+          "从 Python 严格校验时，str 输入不被接受，会报 is_instance_of 错误",
+          "从 JSON 严格校验时，str 输入仍被接受并转为 UUID"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "Note that we are looser when validating data from JSON in strict mode.",
+            "start_line": 60,
+            "end_line": 60
+          },
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "instances of `str` will be accepted when validating from JSON, but not from python",
+            "start_line": 61,
+            "end_line": 61
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-003",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-coercion",
+        "question_group": "REAL-DEV-003",
+        "question": "在 Pydantic v2.8.2 中，对 UUID 字段启用严格模式时，从 Python 校验和从 JSON 校验分别接受什么类型输入？",
+        "answer_key_points": [
+          "从 Python 严格校验时，要求 UUID 实例，字符串输入不被接受。",
+          "从 JSON 严格校验时，UUID 字符串仍可被接受并转换为 UUID。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "Note that we are looser when validating data from JSON in strict mode. For example, when validating a `UUID` field,\ninstances of `str` will be accepted when validating from JSON, but not from python:",
+            "start_line": 60,
+            "end_line": 61
+          },
+          {
+            "source_file": "pydantic-v2--concepts--strict_mode.md",
+            "contains": "'msg': 'Input should be an instance of UUID',",
+            "start_line": 93,
+            "end_line": 93
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-004",
+      "fields_changed": [
+        "question",
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-004",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-coercion",
+        "question_group": "REAL-DEV-004",
+        "question": "在 Pydantic v2.8.2 的 unions 文档中，left_to_right 模式按成员顺序取首个成功结果，而 smart 模式也会逐一尝试成员，但两者对同一输入的选择可能不同，原因是什么？",
+        "answer_key_points": [
+          "left_to_right 直接采用第一个成功匹配的结果",
+          "smart 模式会继续比较所有成功匹配，按有效字段数和 exactness 选最优；v2.8.0 起加入字段计数指标"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "the first successful validation is accepted as input",
+            "start_line": 37,
+            "end_line": 37
+          },
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "the union member with the highest count is considered the best match",
+            "start_line": 119,
+            "end_line": 119
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-004",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-coercion",
+        "question_group": "REAL-DEV-004",
+        "question": "在 Pydantic v2.8.2 中，对按 int、str 顺序声明的联合类型校验字符串 '456'，left_to_right 和 smart 分别得到什么类型？两种结果为什么不矛盾？",
+        "answer_key_points": [
+          "left_to_right 在默认宽松校验下先尝试 int，字符串 '456' 可转换为整数，因此返回 int 类型的 456。",
+          "smart 对此类普通类型优先选择精确类型匹配，因此保留字符串 '456'；精确匹配成功后会立即返回，不会一律比较全部成员。",
+          "差异来自所选联合校验模式的匹配策略，而不是同一模式下的矛盾。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "With this approach, validation is attempted against each member of the union in their order they're defined, and the first successful validation is accepted as input.",
+            "start_line": 37,
+            "end_line": 37
+          },
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "id: Union[int, str] = Field(union_mode='left_to_right')",
+            "start_line": 80,
+            "end_line": 80
+          },
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "print(User(id='456'))  # (2)\n#> id=456",
+            "start_line": 85,
+            "end_line": 86
+          },
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "- An exact type match, for example an `int` input to a `float | int` union validation is an exact type match for the `int` member",
+            "start_line": 127,
+            "end_line": 127
+          },
+          {
+            "source_file": "pydantic-v2--concepts--unions.md",
+            "contains": "- If validation succeeds with an exact type match, that member is returned immediately and following members will not be attempted.",
+            "start_line": 146,
+            "end_line": 146
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-coercion-92e3ccac1be3",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-007",
+      "fields_changed": [
+        "question",
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-007",
+        "split": "dev",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-fields",
+        "question_group": "REAL-DEV-007",
+        "question": "In Pydantic v2.8.2, why is validation_alias more flexible than alias, and what extra alias types does the alias concepts page say it accepts?",
+        "answer_key_points": [
+          "alias must be a str, while validation_alias may be an AliasPath or AliasChoices.",
+          "The fields page also lists validation_alias as a dedicated way to define an alias.",
+          "AliasPath reaches nested paths, and AliasChoices offers fallback names."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--alias.md",
+            "contains": "* `validation_alias` on the [`Field`][pydantic.fields.Field]\n    * can be an instance of `str`",
+            "start_line": 13,
+            "end_line": 14
+          },
+          {
+            "source_file": "pydantic-v2--concepts--alias.md",
+            "contains": "[`AliasPath`][pydantic.aliases.AliasPath], or [`AliasChoices`][pydantic.aliases.AliasChoices]",
+            "start_line": 14,
+            "end_line": 14
+          },
+          {
+            "source_file": "pydantic-v2--concepts--fields.md",
+            "contains": "* `Field(..., validation_alias='foo')`",
+            "start_line": 75,
+            "end_line": 75
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-fields-a18c4347eae2",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-007",
+        "split": "dev",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-fields",
+        "question_group": "REAL-DEV-007",
+        "question": "In Pydantic v2.8.2, how can a first_name field accept both 'first_name' and 'fname' during validation, and will VSCode's initializer signature reflect a validation_alias? Explain runtime validation versus editor hints.",
+        "answer_key_points": [
+          "Use Field(validation_alias=AliasChoices('first_name', 'fname')) to allow either input name.",
+          "The fields guide says VSCode does not use validation_alias in the class initializer signature, even though Pydantic applies the alias at runtime."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--alias.md",
+            "contains": "`AliasChoices` is used to specify a choice of aliases. For example:",
+            "start_line": 53,
+            "end_line": 53
+          },
+          {
+            "source_file": "pydantic-v2--concepts--alias.md",
+            "contains": "first_name: str = Field(validation_alias=AliasChoices('first_name', 'fname'))",
+            "start_line": 60,
+            "end_line": 60
+          },
+          {
+            "source_file": "pydantic-v2--concepts--fields.md",
+            "contains": "Even though Pydantic treats `alias` and `validation_alias` the same when creating model instances, VSCode will not\n    use the `validation_alias` in the class initializer signature. If you want VSCode to use the `validation_alias`",
+            "start_line": 218,
+            "end_line": 219
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-fields-a18c4347eae2",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-008",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-008",
+        "split": "dev",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-fields",
+        "question_group": "REAL-DEV-008",
+        "question": "In Pydantic v2.8.2, how do alias_priority values 1 and 2 affect whether a field alias is overridden by the configured alias generator?",
+        "answer_key_points": [
+          "alias_priority=2 keeps the alias from being overridden.",
+          "alias_priority=1 allows the alias generator to override the alias."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--alias.md",
+            "contains": "`alias_priority=2` the alias will *not* be overridden by the alias generator.",
+            "start_line": 202,
+            "end_line": 202
+          },
+          {
+            "source_file": "pydantic-v2--concepts--alias.md",
+            "contains": "`alias_priority=1` the alias *will* be overridden by the alias generator.",
+            "start_line": 203,
+            "end_line": 203
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-fields-a18c4347eae2",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-008",
+        "split": "dev",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-fields",
+        "question_group": "REAL-DEV-008",
+        "question": "In Pydantic v2.8.2, how do alias_priority values 1 and 2 affect whether a field alias is overridden by the configured alias generator?",
+        "answer_key_points": [
+          "alias_priority=2 keeps the alias from being overridden.",
+          "alias_priority=1 allows the alias generator to override the alias."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--alias.md",
+            "contains": "* `alias_priority=2` the alias will *not* be overridden by the alias generator.",
+            "start_line": 202,
+            "end_line": 202
+          },
+          {
+            "source_file": "pydantic-v2--concepts--alias.md",
+            "contains": "* `alias_priority=1` the alias *will* be overridden by the alias generator.",
+            "start_line": 203,
+            "end_line": 203
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-fields-a18c4347eae2",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-009",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-009",
+        "split": "dev",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-fields",
+        "question_group": "REAL-DEV-009",
+        "question": "In Pydantic v2.8.2, Field(alias=...), validation_alias and serialization_alias seem to overlap; how is precedence resolved when they are combined?",
+        "answer_key_points": [
+          "validation_alias takes priority over alias for validation.",
+          "serialization_alias takes priority over alias for serialization."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--fields.md",
+            "contains": "the `validation_alias` will have priority over `alias` for validation",
+            "start_line": 151,
+            "end_line": 151
+          },
+          {
+            "source_file": "pydantic-v2--concepts--fields.md",
+            "contains": "`serialization_alias` will have priority\n    over `alias` for serialization",
+            "start_line": 151,
+            "end_line": 152
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-fields-a18c4347eae2",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-009",
+        "split": "dev",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-fields",
+        "question_group": "REAL-DEV-009",
+        "question": "In Pydantic v2.8.2, Field(alias=...), validation_alias and serialization_alias seem to overlap; how is precedence resolved when they are combined?",
+        "answer_key_points": [
+          "When alias and validation_alias are supplied together, validation_alias takes priority for validation.",
+          "When alias and serialization_alias are supplied together, serialization_alias takes priority for serialization."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--fields.md",
+            "contains": "In case you use `alias` together with `validation_alias` or `serialization_alias` at the same time,\n    the `validation_alias` will have priority over `alias` for validation, and `serialization_alias` will have priority\n    over `alias` for serialization.",
+            "start_line": 150,
+            "end_line": 152
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-fields-a18c4347eae2",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-011",
+      "fields_changed": [
+        "question",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-011",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "fastapi-dependencies",
+        "question_group": "REAL-DEV-011",
+        "question": "在 FastAPI 0.112.2 的依赖文档中，依据 tutorial001 的例子，common_parameters 依赖期望哪些查询参数（名称、类型和默认值）？",
+        "answer_key_points": [
+          "可选查询参数 q，类型 str",
+          "可选查询参数 skip，类型 int，默认 0",
+          "可选查询参数 limit，类型 int，默认 100"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "An optional query parameter `q` that is a `str`.",
+            "start_line": 104,
+            "end_line": 104
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "An optional query parameter `limit` that is an `int`, and by default is `100`.",
+            "start_line": 106,
+            "end_line": 106
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-011",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "fastapi-dependencies",
+        "question_group": "REAL-DEV-011",
+        "question": "在 FastAPI 0.112.2 的依赖章节对 common_parameters 的文字说明中，列出了哪些可选查询参数及类型？skip、limit 的数值默认值分别是多少？",
+        "answer_key_points": [
+          "可选查询参数 q，类型 str",
+          "可选查询参数 skip，类型 int，默认 0",
+          "可选查询参数 limit，类型 int，默认 100"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "* An optional query parameter `q` that is a `str`.\n* An optional query parameter `skip` that is an `int`, and by default is `0`.\n* An optional query parameter `limit` that is an `int`, and by default is `100`.",
+            "start_line": 104,
+            "end_line": 106
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-012",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-012",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-dependencies",
+        "question_group": "REAL-DEV-012",
+        "question": "在 FastAPI 0.112.2 中，依赖注入既可以写成普通函数形式的依赖，也可以有子依赖。结合依赖章节和子依赖章节，如何理解依赖函数的声明方式以及子依赖的解析过程？",
+        "answer_key_points": [
+          "依赖是可接收与路径操作函数相同参数的函数，通过 Depends 声明而非直接调用",
+          "依赖可在自身参数中再声明子依赖，FastAPI 会先解析子依赖再调用外层依赖",
+          "路径操作函数只需声明最外层依赖，嵌套层级由 FastAPI 自动处理"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "It is just a function that can take all the same parameters that a *path operation function* can take:",
+            "start_line": 38,
+            "end_line": 38
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "But **FastAPI** will know that it has to solve `query_extractor` first, to pass the results of that to `query_or_cookie_extractor` while calling it.",
+            "start_line": 198,
+            "end_line": 198
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-012",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-dependencies",
+        "question_group": "REAL-DEV-012",
+        "question": "在 FastAPI 0.112.2 中，依赖注入既可以写成普通函数形式的依赖，也可以有子依赖。结合依赖章节和子依赖章节，如何理解依赖函数的声明方式以及子依赖的解析过程？",
+        "answer_key_points": [
+          "依赖是可接收与路径操作函数相同参数的函数，通过 Depends 声明而非直接调用",
+          "依赖可在自身参数中再声明子依赖，FastAPI 会先解析子依赖再调用外层依赖",
+          "路径操作函数只需声明最外层依赖，嵌套层级由 FastAPI 自动处理"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "It is just a function that can take all the same parameters that a *path operation function* can take:",
+            "start_line": 38,
+            "end_line": 38
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "But **FastAPI** will know that it has to solve `query_extractor` first, to pass the results of that to `query_or_cookie_extractor` while calling it.",
+            "start_line": 198,
+            "end_line": 198
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "You only give `Depends` a single parameter.",
+            "start_line": 232,
+            "end_line": 232
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "Notice that we are only declaring one dependency in the *path operation function*, the `query_or_cookie_extractor`.",
+            "start_line": 196,
+            "end_line": 196
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-013",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-013",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-dependencies",
+        "question_group": "REAL-DEV-013",
+        "question": "在 FastAPI 0.112.2 中，同一依赖被多次声明时默认调用几次？在什么条件下改为多次调用，如何设置？",
+        "answer_key_points": [
+          "默认同一请求内该子依赖只调用一次，结果存入缓存供各依赖方使用",
+          "若确实需要每步重新调用，可设置 use_cache=False"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "**FastAPI** will know to call that sub-dependency only once per request.",
+            "start_line": 215,
+            "end_line": 215
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "you can set the parameter `use_cache=False` when using `Depends`:",
+            "start_line": 219,
+            "end_line": 219
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-013",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-dependencies",
+        "question_group": "REAL-DEV-013",
+        "question": "在 FastAPI 0.112.2 中，同一依赖被多次声明时默认调用几次？在什么条件下改为多次调用，如何设置？",
+        "answer_key_points": [
+          "默认同一请求内该子依赖只调用一次，结果存入缓存供各依赖方使用",
+          "若确实需要每步重新调用，可设置 use_cache=False"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "If one of your dependencies is declared multiple times for the same *path operation*, for example, multiple dependencies have a common sub-dependency, **FastAPI** will know to call that sub-dependency only once per request.",
+            "start_line": 215,
+            "end_line": 215
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "In an advanced scenario where you know you need the dependency to be called at every step (possibly multiple times) in the same request instead of using the \"cached\" value, you can set the parameter `use_cache=False` when using `Depends`:",
+            "start_line": 219,
+            "end_line": 219
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "And it will save the returned value in a <abbr title=\"A utility/system to store computed/generated values, to reuse them instead of computing them again.\">\"cache\"</abbr> and pass it to all the \"dependants\" that need it in that specific request, instead of calling the dependency multiple times for the same request.",
+            "start_line": 217,
+            "end_line": 217
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-014",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-014",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-dependencies",
+        "question_group": "REAL-DEV-014",
+        "question": "在 FastAPI 0.112.2 文档中，一方面示例提示尽量使用 Annotated 版本，另一方面仓库中同时保留了非 Annotated 的 Depends 写法。应如何理解二者关系？",
+        "answer_key_points": [
+          "Annotated 写法是推荐形式，但非 Annotated 写法仍作为示例保留",
+          "两种写法都属于当前版本的示例，不构成版本差异",
+          "文档建议优先使用 Annotated 版本"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "Prefer to use the `Annotated` version if possible.",
+            "start_line": 68,
+            "end_line": 68
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "async def needy_dependency(fresh_value: str = Depends(get_value, use_cache=False)):",
+            "start_line": 239,
+            "end_line": 239
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-014",
+        "split": "dev",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-dependencies",
+        "question_group": "REAL-DEV-014",
+        "question": "在 FastAPI 0.112.2 文档中，一方面示例提示尽量使用 Annotated 版本，另一方面仓库中同时保留了非 Annotated 的 Depends 写法。应如何理解二者关系？",
+        "answer_key_points": [
+          "固定版本文档保留 Annotated 和 non-Annotated 示例，并建议尽可能使用 Annotated 写法。",
+          "0.112.2 文档中同时展示的两种声明形式是可供选择的写法，不代表互相冲突的 API。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "Prefer to use the `Annotated` version if possible.",
+            "start_line": 68,
+            "end_line": 68
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+            "contains": "FastAPI added support for `Annotated` (and started recommending it) in version 0.95.0.",
+            "start_line": 112,
+            "end_line": 112
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+            "contains": "//// tab | Python 3.8+ non-Annotated",
+            "start_line": 230,
+            "end_line": 230
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-dependencies-849b7855ef3c",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-016",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-016",
+        "split": "dev",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "fastapi-errors",
+        "question_group": "REAL-DEV-016",
+        "question": "In FastAPI 0.112.2, what JSON body does a client receive when a path operation raises HTTPException with status 404 and detail 'Item not found'?",
+        "answer_key_points": [
+          "The response status code is 404.",
+          "The JSON body is {\"detail\": \"Item not found\"}."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "that client will receive an HTTP status code of 404 (the \"not found\" error)",
+            "start_line": 64,
+            "end_line": 64
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "\"detail\": \"Item not found\"",
+            "start_line": 68,
+            "end_line": 68
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-016",
+        "split": "dev",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "fastapi-errors",
+        "question_group": "REAL-DEV-016",
+        "question": "In FastAPI 0.112.2, what JSON body does a client receive when a path operation raises HTTPException with status 404 and detail 'Item not found'?",
+        "answer_key_points": [
+          "The response status code is 404.",
+          "The JSON body is {\"detail\": \"Item not found\"}."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "But if the client requests `http://example.com/items/bar` (a non-existent `item_id` `\"bar\"`), that client will receive an HTTP status code of 404 (the \"not found\" error), and a JSON response of:",
+            "start_line": 64,
+            "end_line": 64
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "\"detail\": \"Item not found\"",
+            "start_line": 68,
+            "end_line": 68
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-017",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-017",
+        "split": "dev",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-errors",
+        "question_group": "REAL-DEV-017",
+        "question": "In FastAPI 0.112.2, how is the normal response status declared and documented, and how should a utility function terminate a request when a requested item does not exist?",
+        "answer_key_points": [
+          "Declare status_code on the path-operation decorator, not as a path-operation function parameter; FastAPI documents that status in OpenAPI.",
+          "Raise HTTPException with status 404 for the missing item; raising it from a utility terminates the request immediately."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-status-code.md",
+            "contains": "`status_code` is a parameter of the \"decorator\" method (`get`, `post`, etc).",
+            "start_line": 23,
+            "end_line": 23
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-status-code.md",
+            "contains": "Document it as such in the OpenAPI schema",
+            "start_line": 38,
+            "end_line": 38
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "it will terminate that request right away and send the HTTP error",
+            "start_line": 44,
+            "end_line": 44
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "raise an exception with a status code of `404`",
+            "start_line": 48,
+            "end_line": 48
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-017",
+        "split": "dev",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-errors",
+        "question_group": "REAL-DEV-017",
+        "question": "In FastAPI 0.112.2, how is the normal response status declared and documented, and how should a utility function terminate a request when a requested item does not exist?",
+        "answer_key_points": [
+          "Declare status_code on the path-operation decorator, not as a path-operation function parameter; FastAPI documents that status in OpenAPI.",
+          "Raise HTTPException with status 404 for the missing item; raising it from a utility terminates the request immediately."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-status-code.md",
+            "contains": "Notice that `status_code` is a parameter of the \"decorator\" method (`get`, `post`, etc). Not of your *path operation function*, like all the parameters and body.",
+            "start_line": 23,
+            "end_line": 23
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-status-code.md",
+            "contains": "It will:\n\n* Return that status code in the response.\n* Document it as such in the OpenAPI schema (and so, in the user interfaces):",
+            "start_line": 35,
+            "end_line": 38
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "This also means that if you are inside a utility function that you are calling inside of your *path operation function*, and you raise the `HTTPException` from inside of that utility function, it won't run the rest of the code in the *path operation function*, it will terminate that request right away and send the HTTP error from the `HTTPException` to the client.",
+            "start_line": 44,
+            "end_line": 44
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "In this example, when the client requests an item by an ID that doesn't exist, raise an exception with a status code of `404`:",
+            "start_line": 48,
+            "end_line": 48
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-018",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-018",
+        "split": "dev",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-errors",
+        "question_group": "REAL-DEV-018",
+        "question": "In FastAPI 0.112.2, which HTTP status code does the client receive when a Pydantic model error occurs in response_model data, and why is the error hidden?",
+        "answer_key_points": [
+          "The client receives a 500 Internal Server Error.",
+          "The error appears only in the log.",
+          "Internal error details could expose a security vulnerability."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "the client will receive an \"Internal Server Error\" with a HTTP status code `500`",
+            "start_line": 185,
+            "end_line": 185
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "as that could expose a security vulnerability",
+            "start_line": 189,
+            "end_line": 189
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-018",
+        "split": "dev",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-errors",
+        "question_group": "REAL-DEV-018",
+        "question": "In FastAPI 0.112.2, which HTTP status code does the client receive when a Pydantic model error occurs in response_model data, and why is the error hidden?",
+        "answer_key_points": [
+          "The client receives a 500 Internal Server Error.",
+          "The error appears only in the log.",
+          "Internal error details could expose a security vulnerability."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "**FastAPI** uses it so that, if you use a Pydantic model in `response_model`, and your data has an error, you will see the error in your log.",
+            "start_line": 183,
+            "end_line": 183
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "But the client/user will not see it. Instead, the client will receive an \"Internal Server Error\" with a HTTP status code `500`.",
+            "start_line": 185,
+            "end_line": 185
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "And while you fix it, your clients/users shouldn't have access to internal information about the error, as that could expose a security vulnerability.",
+            "start_line": 189,
+            "end_line": 189
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-DEV-019",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-019",
+        "split": "dev",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-errors",
+        "question_group": "REAL-DEV-019",
+        "question": "In FastAPI 0.112.2, FastAPI's HTTPException inherits from Starlette's, so which should be raised in code, and which should be registered in an exception handler?",
+        "answer_key_points": [
+          "Raise FastAPI's HTTPException in code; it accepts any JSON-able detail.",
+          "Register the handler for Starlette's HTTPException so Starlette's internal raises are caught.",
+          "The renamed import is StarletteHTTPException."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "while Starlette's `HTTPException` only accepts strings for it",
+            "start_line": 255,
+            "end_line": 255
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "you should register it for Starlette's `HTTPException`",
+            "start_line": 259,
+            "end_line": 259
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-DEV-019",
+        "split": "dev",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-errors",
+        "question_group": "REAL-DEV-019",
+        "question": "In FastAPI 0.112.2, FastAPI's HTTPException inherits from Starlette's, so which should be raised in code, and which should be registered in an exception handler?",
+        "answer_key_points": [
+          "Raise FastAPI's HTTPException in code; it accepts any JSON-able detail.",
+          "Register the handler for Starlette's HTTPException so Starlette's internal raises are caught.",
+          "The renamed import is StarletteHTTPException."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "The only difference is that **FastAPI**'s `HTTPException` accepts any JSON-able data for the `detail` field, while Starlette's `HTTPException` only accepts strings for it.",
+            "start_line": 255,
+            "end_line": 255
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "But when you register an exception handler, you should register it for Starlette's `HTTPException`.",
+            "start_line": 259,
+            "end_line": 259
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "This way, if any part of Starlette's internal code, or a Starlette extension or plug-in, raises a Starlette `HTTPException`, your handler will be able to catch and handle it.",
+            "start_line": 261,
+            "end_line": 261
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--handling-errors.md",
+            "contains": "from starlette.exceptions import HTTPException as StarletteHTTPException",
+            "start_line": 266,
+            "end_line": 266
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-errors-720dc56a8dfe",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-001",
+      "fields_changed": [
+        "question",
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-001",
+        "split": "test",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "pydantic-models",
+        "question_group": "REAL-TEST-001",
+        "question": "在 pydantic v1.10.17 模型指南的基本用法中，使用 User(id='123') 初始化一个 id: int 的模型后，user.id 的值和类型是什么？",
+        "answer_key_points": [
+          "字符串 '123' 被转换为整数 123，结果为 int 类型。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "assert user.id == 123",
+            "start_line": 47,
+            "end_line": 47
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "The string '123' has been cast to an int as per the field type",
+            "start_line": 53,
+            "end_line": 53
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-001",
+        "split": "test",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "pydantic-models",
+        "question_group": "REAL-TEST-001",
+        "question": "在 pydantic v1.10.17 模型指南中，__fields_set__ 记录什么？基本用法示例中为什么结果是 {'id'}，而不包含有默认值的 name？",
+        "answer_key_points": [
+          "__fields_set__ 记录初始化模型时明确设置过的字段名称。",
+          "示例只显式传入 id，name 使用默认值，因此该集合为 {'id'}，不包含 name。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "`__fields_set__`\n: Set of names of fields which were set when the model instance was initialised",
+            "start_line": 111,
+            "end_line": 112
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "user = User(id='123')",
+            "start_line": 41,
+            "end_line": 41
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "assert user.__fields_set__ == {'id'}",
+            "start_line": 59,
+            "end_line": 59
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "`name` wasn't set when user was initialised, so it has the default value",
+            "start_line": 57,
+            "end_line": 57
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-002",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-002",
+        "split": "test",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-models",
+        "question_group": "REAL-TEST-002",
+        "question": "pydantic v1.10.17 和 v2.8.2 文档对“验证”与输入输出关系的共同表述是什么？两个版本是如何定义模型与 BaseModel 的关系的？",
+        "answer_key_points": [
+          "两个版本都强调：保证输出模型的类型与约束，而不保证输入数据",
+          "两个版本都把模型定义为继承 BaseModel 的类"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "pydantic* guarantees the types and constraints of the output model, not the input data.",
+            "start_line": 20,
+            "end_line": 20
+          },
+          {
+            "source_file": "pydantic-v2--concepts--models.md",
+            "contains": "Pydantic guarantees the types and constraints of the output, not the input data.",
+            "start_line": 42,
+            "end_line": 42
+          },
+          {
+            "source_file": "pydantic-v2--concepts--models.md",
+            "contains": "Models are simply classes which inherit from",
+            "start_line": 10,
+            "end_line": 10
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-002",
+        "split": "test",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-models",
+        "question_group": "REAL-TEST-002",
+        "question": "pydantic v1.10.17 和 v2.8.2 文档对“验证”与输入输出关系的共同表述是什么？两个版本是如何定义模型与 BaseModel 的关系的？",
+        "answer_key_points": [
+          "两个版本都强调对输出模型的类型和约束作保证，而不是保证原始输入数据本身符合这些类型。",
+          "两个版本都用继承 BaseModel 的类来定义模型。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "In other words, *pydantic* guarantees the types and constraints of the output model, not the input data.",
+            "start_line": 20,
+            "end_line": 20
+          },
+          {
+            "source_file": "pydantic-v2--concepts--models.md",
+            "contains": "types and constraints. Pydantic guarantees the types and constraints of the output, not the input data.",
+            "start_line": 42,
+            "end_line": 42
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "(models are simply classes which inherit from `BaseModel`).",
+            "start_line": 8,
+            "end_line": 8
+          },
+          {
+            "source_file": "pydantic-v2--concepts--models.md",
+            "contains": "One of the primary ways of defining schema in Pydantic is via models. Models are simply classes which inherit from\n[`pydantic.BaseModel`][pydantic.main.BaseModel] and define fields as annotated attributes.",
+            "start_line": 10,
+            "end_line": 11
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-003",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-003",
+        "split": "test",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-models",
+        "question_group": "REAL-TEST-003",
+        "question": "在 pydantic v1.10.17 中，通过 from_orm 从任意类实例创建模型，需要满足哪些条件？数据绑定如何自定义？",
+        "answer_key_points": [
+          "必须设置 orm_mode 为 True，并使用 from_orm 构造实例",
+          "可设置 Config.getter_dict 为自定义的 GetterDict 子类来定制处理方式"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "The [Config](model_config.md) property `orm_mode` must be set to `True`.",
+            "start_line": 134,
+            "end_line": 134
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "The special constructor `from_orm` must be used to create the model instance.",
+            "start_line": 135,
+            "end_line": 135
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "sub-class of `GetterDict` as the value of `Config.getter_dict`",
+            "start_line": 166,
+            "end_line": 166
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-003",
+        "split": "test",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-models",
+        "question_group": "REAL-TEST-003",
+        "question": "在 pydantic v1.10.17 中，通过 from_orm 从任意类实例创建模型，需要满足哪些条件？数据绑定如何自定义？",
+        "answer_key_points": [
+          "对任意类实例或 ORM 对象，需设置 orm_mode=True，并通过 from_orm 构造模型实例。",
+          "处理这些类实例时，可用 Config.getter_dict 指定自定义 GetterDict 子类，以定制字典式属性访问。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "1. The [Config](model_config.md) property `orm_mode` must be set to `True`.",
+            "start_line": 134,
+            "end_line": 134
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "2. The special constructor `from_orm` must be used to create the model instance.",
+            "start_line": 135,
+            "end_line": 135
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "Arbitrary classes are processed by *pydantic* using the `GetterDict` class (see",
+            "start_line": 163,
+            "end_line": 163
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "provide a dictionary-like interface to any class. You can customise how this works by setting your own",
+            "start_line": 165,
+            "end_line": 165
+          },
+          {
+            "source_file": "pydantic-v1--usage--models.md",
+            "contains": "sub-class of `GetterDict` as the value of `Config.getter_dict` (see [config](model_config.md)).",
+            "start_line": 166,
+            "end_line": 166
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-004",
+      "fields_changed": [
+        "question",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-004",
+        "split": "test",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-models",
+        "question_group": "REAL-TEST-004",
+        "question": "pydantic v2.8.2 中 model_dump() 与 dict(user) 在嵌套模型上的行为有何差异？结合 model.dump 与 dict(user) 的示例，如何理解二者返回值的对比？",
+        "answer_key_points": [
+          "model_dump() 会递归地把嵌套模型转换为 dict，而 dict(user) 不会递归转换",
+          "在扁平模型示例中，两者返回相同的字段字典"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--models.md",
+            "contains": "assert user.model_dump() == {'id': 123, 'name': 'Jane Doe'}",
+            "start_line": 106,
+            "end_line": 106
+          },
+          {
+            "source_file": "pydantic-v2--concepts--models.md",
+            "contains": "(Note that `dict(user)` will not recursively convert nested models into dicts, but `.model_dump()` will.)",
+            "start_line": 110,
+            "end_line": 110
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-004",
+        "split": "test",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-models",
+        "question_group": "REAL-TEST-004",
+        "question": "pydantic v2.8.2 中 .model_dump() 与 dict(user) 在嵌套模型上的行为有何差异？在文档的扁平模型示例中二者如何提供字段字典？",
+        "answer_key_points": [
+          "model_dump() 会递归地把嵌套模型转换为 dict，而 dict(user) 不会递归转换",
+          "在扁平模型示例中，两者返回相同的字段字典"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--models.md",
+            "contains": "Either `.model_dump()` or `dict(user)` will provide a dict of fields, but `.model_dump()` can take numerous other\narguments. (Note that `dict(user)` will not recursively convert nested models into dicts, but `.model_dump()` will.)",
+            "start_line": 109,
+            "end_line": 110
+          },
+          {
+            "source_file": "pydantic-v2--concepts--models.md",
+            "contains": "assert user.model_dump() == {'id': 123, 'name': 'Jane Doe'}",
+            "start_line": 106,
+            "end_line": 106
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-models-67b3cfa5d37b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-006",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-006",
+        "split": "test",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "pydantic-validators",
+        "question_group": "REAL-TEST-006",
+        "question": "In Pydantic v1.10.17, which signature arguments can a `validator`-decorated function receive, and which exception types should it raise?",
+        "answer_key_points": [
+          "First argument is the class; second is the field value; optional names must match exactly.",
+          "Accepted extras are `values`, `config`, `field`, and `**kwargs`.",
+          "Validators must return the parsed value or raise ValueError, TypeError, or AssertionError."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "validators are \"class methods\", so the first argument value they receive is the `UserModel` class",
+            "start_line": 13,
+            "end_line": 13
+          },
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "validators should either return the parsed value or raise a `ValueError`, `TypeError`, or `AssertionError`",
+            "start_line": 21,
+            "end_line": 21
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-006",
+        "split": "test",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "pydantic-validators",
+        "question_group": "REAL-TEST-006",
+        "question": "In Pydantic v1.10.17, which signature arguments can a `validator`-decorated function receive, and which exception types should it raise?",
+        "answer_key_points": [
+          "First argument is the class; second is the field value; optional names must match exactly.",
+          "Accepted extras are `values`, `config`, `field`, and `**kwargs`.",
+          "Validators must return the parsed value or raise ValueError, TypeError, or AssertionError."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "* validators are \"class methods\", so the first argument value they receive is the `UserModel` class, not an instance\n  of `UserModel`.",
+            "start_line": 13,
+            "end_line": 14
+          },
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "* the second argument is always the field value to validate; it can be named as you please",
+            "start_line": 15,
+            "end_line": 15
+          },
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "* you can also add any subset of the following arguments to the signature (the names **must** match):\n  * `values`: a dict containing the name-to-value mapping of any previously-validated fields\n  * `config`: the model config\n  * `field`: the field being validated. Type of object is `pydantic.fields.ModelField`.\n  * `**kwargs`: if provided, this will include the arguments above not explicitly listed in the signature",
+            "start_line": 16,
+            "end_line": 20
+          },
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "* validators should either return the parsed value or raise a `ValueError`, `TypeError`, or `AssertionError`",
+            "start_line": 21,
+            "end_line": 21
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-007",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-007",
+        "split": "test",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-validators",
+        "question_group": "REAL-TEST-007",
+        "question": "How do Pydantic v1.10.17 and v2.8.2 each address validators that must run when a field's default value is used?",
+        "answer_key_points": [
+          "v1: validators are skipped when a value is not supplied unless `always=True` is set.",
+          "v2: defaults skip validators unless `Field(validate_default=True)` is set; this approximates v1 `always=True`.",
+          "v2 recommends a `model_validator(mode='before')` as generally preferable."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "by default validators are not called for fields when a value is not supplied.",
+            "start_line": 62,
+            "end_line": 62
+          },
+          {
+            "source_file": "pydantic-v2--concepts--validators.md",
+            "contains": "You can force them to run with `Field(validate_default=True)`.",
+            "start_line": 275,
+            "end_line": 275
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-007",
+        "split": "test",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-validators",
+        "question_group": "REAL-TEST-007",
+        "question": "How do Pydantic v1.10.17 and v2.8.2 each address validators that must run when a field's default value is used?",
+        "answer_key_points": [
+          "v1: validators are skipped when a value is not supplied unless `always=True` is set.",
+          "v2: defaults skip validators unless `Field(validate_default=True)` is set; this approximates v1 `always=True`.",
+          "v2 recommends a `model_validator(mode='before')` as generally preferable."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "For performance reasons, by default validators are not called for fields when a value is not supplied.\nHowever there are situations where it may be useful or required to always call the validator, e.g.\nto set a dynamic default value.",
+            "start_line": 62,
+            "end_line": 64
+          },
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "You'll often want to use this together with `pre`, since otherwise with `always=True`",
+            "start_line": 68,
+            "end_line": 68
+          },
+          {
+            "source_file": "pydantic-v2--concepts--validators.md",
+            "contains": "Validators won't run when the default value is used.\nThis applies both to `@field_validator` validators and `Annotated` validators.\nYou can force them to run with `Field(validate_default=True)`. Setting `validate_default` to `True` has the closest behavior to using `always=True` in `validator` in Pydantic v1. However, you are generally better off using a `@model_validator(mode='before')` where the function is called before the inner validator is called.",
+            "start_line": 273,
+            "end_line": 275
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-008",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-008",
+        "split": "test",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-validators",
+        "question_group": "REAL-TEST-008",
+        "question": "According to Pydantic v2.8.2's `Annotated` validator docs, how many `PlainValidator` instances may a single annotation use, and in what order are validators run?",
+        "answer_key_points": [
+          "Only one PlainValidator is allowed because it calls no inner validators.",
+          "Validation runs right to left through before/wrap validators, then left to right through after validators."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--validators.md",
+            "contains": "Order of validation metadata within `Annotated` matters.\nValidation goes from right to left and back.",
+            "start_line": 139,
+            "end_line": 140
+          },
+          {
+            "source_file": "pydantic-v2--concepts--validators.md",
+            "contains": "but only one `PlainValidator` since a plain validator\nwill not call any inner validators.",
+            "start_line": 75,
+            "end_line": 76
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-008",
+        "split": "test",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-validators",
+        "question_group": "REAL-TEST-008",
+        "question": "According to Pydantic v2.8.2's `Annotated` validator docs, how many `PlainValidator` instances may a single annotation use, and in what order are validators run?",
+        "answer_key_points": [
+          "Only one PlainValidator is allowed because it calls no inner validators.",
+          "Validation runs right to left through before/wrap validators, then left to right through after validators."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--validators.md",
+            "contains": "You can use multiple before, after, or `mode='wrap'` validators, but only one `PlainValidator` since a plain validator\nwill not call any inner validators.",
+            "start_line": 75,
+            "end_line": 76
+          },
+          {
+            "source_file": "pydantic-v2--concepts--validators.md",
+            "contains": "That is, it goes from right to left running all \"before\" validators (or calling into \"wrap\" validators), then left to right back out calling all \"after\" validators.",
+            "start_line": 141,
+            "end_line": 141
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-009",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-009",
+        "split": "test",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-validators",
+        "question_group": "REAL-TEST-009",
+        "question": "Compare how Pydantic v1.10.17 validators and Pydantic v2.8.2 `@field_validator` validators are declared with respect to class methods.",
+        "answer_key_points": [
+          "v1 states validators are class methods whose first argument is the model class.",
+          "v2's example stacks `@classmethod` under `@field_validator` on the same function."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "validators are \"class methods\", so the first argument value they receive is the `UserModel` class",
+            "start_line": 13,
+            "end_line": 13
+          },
+          {
+            "source_file": "pydantic-v2--concepts--validators.md",
+            "contains": "    @field_validator('x', 'y')\n    @classmethod",
+            "start_line": 288,
+            "end_line": 289
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-009",
+        "split": "test",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-validators",
+        "question_group": "REAL-TEST-009",
+        "question": "Compare how Pydantic v1.10.17 validators and Pydantic v2.8.2 `@field_validator` validators are declared with respect to class methods.",
+        "answer_key_points": [
+          "v1 describes validators as class methods whose first argument is the model class.",
+          "v2 also describes field validators as class methods, recommending @classmethod below @field_validator for proper type checking."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--validators.md",
+            "contains": "* validators are \"class methods\", so the first argument value they receive is the `UserModel` class, not an instance\n  of `UserModel`.",
+            "start_line": 13,
+            "end_line": 14
+          },
+          {
+            "source_file": "pydantic-v2--concepts--validators.md",
+            "contains": "* `@field_validator`s are \"class methods\", so the first argument value they receive is the `UserModel` class, not an instance of `UserModel`. We recommend you use the `@classmethod` decorator on them below the `@field_validator` decorator to get proper type checking.",
+            "start_line": 379,
+            "end_line": 379
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-validators-88aa3b409af8",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-011",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-011",
+        "split": "test",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "pydantic-serialization",
+        "question_group": "REAL-TEST-011",
+        "question": "在 pydantic v1.10.17 的导出文档中，model.json() 的 encoder 参数会被传递到哪个函数？",
+        "answer_key_points": [
+          "encoder 作为 default 参数传给 json.dumps()，默认使用内置自定义编码器",
+          "**dumps_kwargs 也转发给 json.dumps()，例如 indent"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--exporting_models.md",
+            "contains": "`encoder`: a custom encoder function passed to the `default` argument of `json.dumps()`",
+            "start_line": 73,
+            "end_line": 73
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-011",
+        "split": "test",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "pydantic-serialization",
+        "question_group": "REAL-TEST-011",
+        "question": "在 pydantic v1.10.17 的导出文档中，model.json() 的 encoder 参数会被传递到哪个函数？",
+        "answer_key_points": [
+          "encoder 作为 default 参数传给 json.dumps()，默认使用内置自定义编码器。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--exporting_models.md",
+            "contains": "* `encoder`: a custom encoder function passed to the `default` argument of `json.dumps()`; defaults to a custom",
+            "start_line": 73,
+            "end_line": 73
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-012",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-012",
+        "split": "test",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-serialization",
+        "question_group": "REAL-TEST-012",
+        "question": "pydantic v1.10.17 与 v2.8.2 在把模型转换为字典、且子模型被递归转换时，各自声明的主入口是什么？",
+        "answer_key_points": [
+          "v1 的 model.dict() 与 v2 的 model.model_dump() 都描述为转换模型为字典的主要方式，子模型递归转为字典",
+          "两份文档对 dict(model) 的说明一致：返回原始字段值，子模型不转字典"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--exporting_models.md",
+            "contains": "This is the primary way of converting a model to a dictionary. Sub-models will be recursively converted to dictionaries.",
+            "start_line": 12,
+            "end_line": 12
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "With this approach the raw field values are returned, so\nsub-models will not be converted to dictionaries.",
+            "start_line": 151,
+            "end_line": 152
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-012",
+        "split": "test",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-serialization",
+        "question_group": "REAL-TEST-012",
+        "question": "pydantic v1.10.17 与 v2.8.2 在把模型转换为字典、且子模型被递归转换时，各自声明的主入口是什么？",
+        "answer_key_points": [
+          "v1 的 model.dict() 与 v2 的 model.model_dump() 都描述为转换模型为字典的主要方式，子模型递归转为字典",
+          "两份文档对 dict(model) 的说明一致：返回原始字段值，子模型不转字典"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v1--usage--exporting_models.md",
+            "contains": "## `model.dict(...)`",
+            "start_line": 10,
+            "end_line": 10
+          },
+          {
+            "source_file": "pydantic-v1--usage--exporting_models.md",
+            "contains": "This is the primary way of converting a model to a dictionary. Sub-models will be recursively converted to dictionaries.",
+            "start_line": 12,
+            "end_line": 12
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "## `model.model_dump(...)` <a name=\"model_dump\"></a>",
+            "start_line": 23,
+            "end_line": 23
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "This is the primary way of converting a model to a dictionary. Sub-models will be recursively converted to dictionaries.",
+            "start_line": 28,
+            "end_line": 28
+          },
+          {
+            "source_file": "pydantic-v1--usage--exporting_models.md",
+            "contains": "iterate over a model's field using `for field_name, value in model:`. With this approach the raw field values are\nreturned, so sub-models will not be converted to dictionaries.",
+            "start_line": 34,
+            "end_line": 35
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "fields using `for field_name, field_value in model:`. With this approach the raw field values are returned, so\nsub-models will not be converted to dictionaries.",
+            "start_line": 151,
+            "end_line": 152
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-013",
+      "fields_changed": [
+        "question",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-013",
+        "split": "test",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-serialization",
+        "question_group": "REAL-TEST-013",
+        "question": "在 pydantic v2.8.2 中，使用 @field_serializer 时如何让单个序列化器作用于所有字段？有没有示例说明默认的 when_used 值？",
+        "answer_key_points": [
+          "可以用特殊值 '*' 把单个序列化器应用于所有字段",
+          "PlainSerializer 与 WrapSerializer 的 when_used 默认为 'always'"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "A single serializer can also be called on all fields by passing the special value '*'",
+            "start_line": 234,
+            "end_line": 234
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "Defaults to 'always'.",
+            "start_line": 243,
+            "end_line": 243
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-013",
+        "split": "test",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-serialization",
+        "question_group": "REAL-TEST-013",
+        "question": "在 pydantic v2.8.2 中，如何让一个 @field_serializer 作用于所有字段？另外，PlainSerializer 与 WrapSerializer 的 when_used 参数默认值是什么？",
+        "answer_key_points": [
+          "可以用特殊值 '*' 把单个序列化器应用于所有字段",
+          "PlainSerializer 与 WrapSerializer 的 when_used 默认为 'always'"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "A single serializer can also be called on all fields by passing the special value '*' to the [`@field_serializer`][pydantic.functional_serializers.field_serializer] decorator.",
+            "start_line": 234,
+            "end_line": 234
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "In addition, [`PlainSerializer`][pydantic.functional_serializers.PlainSerializer] and\n[`WrapSerializer`][pydantic.functional_serializers.WrapSerializer] enable you to use a function to modify the output of serialization.\n\nBoth serializers accept optional arguments including:",
+            "start_line": 236,
+            "end_line": 239
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "- `when_used` specifies when this serializer should be used. Accepts a string with values 'always',\n    'unless-none', 'json', and 'json-unless-none'. Defaults to 'always'.",
+            "start_line": 242,
+            "end_line": 243
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-014",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-014",
+        "split": "test",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-serialization",
+        "question_group": "REAL-TEST-014",
+        "question": "在 pydantic v2.8.2 中，dict(model) 与 model.model_dump() 对 RootModel 的输出是否相同？文档同时如何描述 dict 与迭代及 model_dump 对子模型的处理？",
+        "answer_key_points": [
+          "dict(model) 与迭代返回原始字段值，子模型不转字典；但 RootModel 会被转成带 'root' 键的字典",
+          "model_dump() 对 RootModel 及其子类直接输出 root 字段值，不外包字典"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "Note also that [`RootModel`](models.md#rootmodel-and-custom-root-types) _does_ get converted to a dictionary with the key `'root'`.",
+            "start_line": 181,
+            "end_line": 181
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "and its subclasses will have the `root` field value dumped directly, without a wrapping dictionary",
+            "start_line": 32,
+            "end_line": 32
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-014",
+        "split": "test",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-serialization",
+        "question_group": "REAL-TEST-014",
+        "question": "在 pydantic v2.8.2 中，dict(model) 与 model.model_dump() 对 RootModel 的输出是否相同？文档同时如何描述 dict 与迭代及 model_dump 对子模型的处理？",
+        "answer_key_points": [
+          "dict(model) 与迭代返回原始字段值，子模型不转字典；但 RootModel 会被转成带 'root' 键的字典",
+          "model_dump() 对 RootModel 及其子类直接输出 root 字段值，不外包字典"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "fields using `for field_name, field_value in model:`. With this approach the raw field values are returned, so\nsub-models will not be converted to dictionaries.",
+            "start_line": 151,
+            "end_line": 152
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "Note also that [`RootModel`](models.md#rootmodel-and-custom-root-types) _does_ get converted to a dictionary with the key `'root'`.",
+            "start_line": 181,
+            "end_line": 181
+          },
+          {
+            "source_file": "pydantic-v2--concepts--serialization.md",
+            "contains": "The one exception to sub-models being converted to dictionaries is that [`RootModel`](models.md#rootmodel-and-custom-root-types)\n    and its subclasses will have the `root` field value dumped directly, without a wrapping dictionary. This is also\n    done recursively.",
+            "start_line": 31,
+            "end_line": 33
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-serialization-053c06fdf80b",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-016",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-016",
+        "split": "test",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "pydantic-dataclasses",
+        "question_group": "REAL-TEST-016",
+        "question": "According to the Pydantic v2.8.2 dataclasses guide, what extra keyword argument does pydantic.dataclasses.dataclass accept compared with the standard decorator?",
+        "answer_key_points": [
+          "It accepts one extra keyword argument, `config`.",
+          "`config` has the same meaning as model_config / ConfigDict."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "arguments are the same as the standard decorator, except one extra",
+            "start_line": 109,
+            "end_line": 109
+          },
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "keyword argument `config` which has the same meaning as",
+            "start_line": 110,
+            "end_line": 110
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-016",
+        "split": "test",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "pydantic-dataclasses",
+        "question_group": "REAL-TEST-016",
+        "question": "According to the Pydantic v2.8.2 dataclasses guide, what extra keyword argument does pydantic.dataclasses.dataclass accept compared with the standard decorator?",
+        "answer_key_points": [
+          "It accepts one extra keyword argument, `config`.",
+          "`config` has the same meaning as model_config / ConfigDict."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "`pydantic.dataclasses.dataclass`'s arguments are the same as the standard decorator, except one extra\nkeyword argument `config` which has the same meaning as [model_config][pydantic.config.ConfigDict].",
+            "start_line": 109,
+            "end_line": 110
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-017",
+      "fields_changed": [
+        "question",
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-017",
+        "split": "test",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-dataclasses",
+        "question_group": "REAL-TEST-017",
+        "question": "In Pydantic v2.8.2, how can JSON schema be generated for a Pydantic dataclass, and why is TypeAdapter used for this instead of BaseModel-style methods?",
+        "answer_key_points": [
+          "Wrap the dataclass with TypeAdapter and call its json_schema() method.",
+          "TypeAdapter provides validation, serialization, and JSON schema generation for types without such methods, such as dataclasses."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "you should now wrap the dataclass",
+            "start_line": 50,
+            "end_line": 50
+          },
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "with a [`TypeAdapter`][pydantic.type_adapter.TypeAdapter] and make use of its methods.",
+            "start_line": 51,
+            "end_line": 51
+          },
+          {
+            "source_file": "pydantic-v2--concepts--type_adapter.md",
+            "contains": "which can be used for type validation, serialization, and JSON schema generation",
+            "start_line": 14,
+            "end_line": 14
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-017",
+        "split": "test",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "pydantic-dataclasses",
+        "question_group": "REAL-TEST-017",
+        "question": "In Pydantic v2.8.2, how should a standalone Pydantic dataclass be wrapped to validate data or generate JSON schema, and what adapter reuse policy does the TypeAdapter guide recommend for a loop?",
+        "answer_key_points": [
+          "Wrap the dataclass with TypeAdapter and use the adapter's methods for validation or JSON schema generation.",
+          "Create an adapter for a given type once and reuse it in loops: analyzing the type and constructing the core schema has non-trivial overhead."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "To perform validation or generate a JSON schema on a Pydantic dataclass, you should now wrap the dataclass\nwith a [`TypeAdapter`][pydantic.type_adapter.TypeAdapter] and make use of its methods.",
+            "start_line": 50,
+            "end_line": 51
+          },
+          {
+            "source_file": "pydantic-v2--concepts--type_adapter.md",
+            "contains": "When creating an instance of `TypeAdapter`, the provided type must be analyzed and converted into a pydantic-core\n    schema. This comes with some non-trivial overhead, so it is recommended to create a `TypeAdapter` for a given type\n    just once and reuse it in loops or other performance-critical code.",
+            "start_line": 100,
+            "end_line": 102
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-018",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-018",
+        "split": "test",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-dataclasses",
+        "question_group": "REAL-TEST-018",
+        "question": "In Pydantic v2.8.2, what return type does TypeAdapter.dump_json produce, and why does it differ from BaseModel.model_dump_json?",
+        "answer_key_points": [
+          "dump_json returns a bytes object.",
+          "model_dump_json returns a str; the str behavior was kept for backwards compatibility, while TypeAdapter returns bytes."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--type_adapter.md",
+            "contains": "`TypeAdapter`'s `dump_json` methods returns a `bytes` object",
+            "start_line": 56,
+            "end_line": 56
+          },
+          {
+            "source_file": "pydantic-v2--concepts--type_adapter.md",
+            "contains": "so this behavior is retained in V2 for backwards compatibility.",
+            "start_line": 57,
+            "end_line": 57
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-018",
+        "split": "test",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "pydantic-dataclasses",
+        "question_group": "REAL-TEST-018",
+        "question": "In Pydantic v2.8.2, what return type does TypeAdapter.dump_json produce, and why does it differ from BaseModel.model_dump_json?",
+        "answer_key_points": [
+          "dump_json returns a bytes object.",
+          "model_dump_json returns a str; the str behavior was kept for backwards compatibility, while TypeAdapter returns bytes."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--type_adapter.md",
+            "contains": "`TypeAdapter`'s `dump_json` methods returns a `bytes` object, unlike the corresponding method for `BaseModel`, `model_dump_json`, which returns a `str`.",
+            "start_line": 56,
+            "end_line": 56
+          },
+          {
+            "source_file": "pydantic-v2--concepts--type_adapter.md",
+            "contains": "The reason for this discrepancy is that in V1, model dumping returned a str type, so this behavior is retained in V2 for backwards compatibility.",
+            "start_line": 57,
+            "end_line": 57
+          },
+          {
+            "source_file": "pydantic-v2--concepts--type_adapter.md",
+            "contains": "Hence, for the new `TypeAdapter` class in V2, the return type is simply `bytes`, which can easily be coerced to a `str` type if desired.",
+            "start_line": 59,
+            "end_line": 59
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-019",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-019",
+        "split": "test",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-dataclasses",
+        "question_group": "REAL-TEST-019",
+        "question": "In Pydantic v2.8.2, is a TypeAdapter needed to validate a Pydantic dataclass used as a BaseModel field, given that the dataclasses guide recommends a TypeAdapter for validation?",
+        "answer_key_points": [
+          "An extra TypeAdapter is not needed to validate a dataclass already used as a BaseModel field.",
+          "For operations performed directly on a dataclass, the guide recommends wrapping it in TypeAdapter and using its methods."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "if you use the dataclass as a field of a `BaseModel` or via FastAPI you don't need a `TypeAdapter`.",
+            "start_line": 203,
+            "end_line": 203
+          },
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "To perform validation or generate a JSON schema on a Pydantic dataclass",
+            "start_line": 50,
+            "end_line": 50
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-019",
+        "split": "test",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "pydantic-dataclasses",
+        "question_group": "REAL-TEST-019",
+        "question": "In Pydantic v2.8.2, is a TypeAdapter needed to validate a Pydantic dataclass used as a BaseModel field, given that the dataclasses guide recommends a TypeAdapter for validation?",
+        "answer_key_points": [
+          "An extra TypeAdapter is not needed to validate a dataclass already used as a BaseModel field.",
+          "For direct validation or JSON schema generation on a Pydantic dataclass, wrap it in TypeAdapter and use the adapter's methods."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "Note that, if you use the dataclass as a field of a `BaseModel` or via FastAPI you don't need a `TypeAdapter`.",
+            "start_line": 203,
+            "end_line": 203
+          },
+          {
+            "source_file": "pydantic-v2--concepts--dataclasses.md",
+            "contains": "To perform validation or generate a JSON schema on a Pydantic dataclass, you should now wrap the dataclass\nwith a [`TypeAdapter`][pydantic.type_adapter.TypeAdapter] and make use of its methods.",
+            "start_line": 50,
+            "end_line": 51
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-pydantic-dataclasses-0863dbc1480f",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-022",
+      "fields_changed": [
+        "question",
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-022",
+        "split": "test",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-response",
+        "question_group": "REAL-TEST-022",
+        "question": "在 FastAPI 0.112.2 中，若路径操作函数只依赖返回值处理响应数据，要使返回的额外字段（如密码）被自动过滤，应依赖 FastAPI 的哪种机制？",
+        "answer_key_points": [
+          "普通返回数据默认经 jsonable_encoder 转换后放入 JSONResponse",
+          "是否过滤取决于是否声明返回类型或 response_model，而非直接返回 Response",
+          "直接返回 Response 会绕过过滤、校验与转换"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "It will **limit and filter** the output data to what is defined in the return type.",
+            "start_line": 47,
+            "end_line": 47
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--response-directly.md",
+            "contains": "It won't do any data conversion with Pydantic models, it won't convert the contents to any type, etc.",
+            "start_line": 31,
+            "end_line": 31
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-response-57732f336ae7",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-022",
+        "split": "test",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-response",
+        "question_group": "REAL-TEST-022",
+        "question": "结合 FastAPI 0.112.2 的响应模型与直接返回响应文档，普通返回值默认如何转换并封装为响应？如何自动过滤密码等额外字段，直接返回 Response 又有何不同？",
+        "answer_key_points": [
+          "普通返回值默认由 jsonable_encoder 转换成 JSON 兼容数据，再放入 JSONResponse。",
+          "通过声明返回类型或 response_model 指定输出模型，FastAPI 会过滤未在输出模型中声明的字段。",
+          "直接返回 Response 时 FastAPI 原样传递，不执行通常的转换和响应模型处理。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--advanced--response-directly.md",
+            "contains": "By default, **FastAPI** would automatically convert that return value to JSON using the `jsonable_encoder` explained in [JSON Compatible Encoder](../tutorial/encoder.md){.internal-link target=_blank}.",
+            "start_line": 11,
+            "end_line": 11
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--response-directly.md",
+            "contains": "Then, behind the scenes, it would put that JSON-compatible data (e.g. a `dict`) inside of a `JSONResponse` that would be used to send the response to the client.",
+            "start_line": 13,
+            "end_line": 13
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "FastAPI will use this return type to:\n\n* **Validate** the returned data.",
+            "start_line": 37,
+            "end_line": 39
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "FastAPI will use this `response_model` to do all the data documentation, validation, etc. and also to **convert and filter the output data** to its type declaration.",
+            "start_line": 100,
+            "end_line": 100
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "So, **FastAPI** will take care of filtering out all the data that is not declared in the output model (using Pydantic).",
+            "start_line": 242,
+            "end_line": 242
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--response-directly.md",
+            "contains": "And when you return a `Response`, **FastAPI** will pass it directly.",
+            "start_line": 29,
+            "end_line": 29
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-response-57732f336ae7",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-023",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-023",
+        "split": "test",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-response",
+        "question_group": "REAL-TEST-023",
+        "question": "在 FastAPI 0.112.2 中，当路径操作同时声明了返回类型注解和 response_model 参数时，哪一方生效？另外，如何禁用为该路径操作创建响应模型？",
+        "answer_key_points": [
+          "response_model 优先，FastAPI 以其为准",
+          "可用 response_model=None 禁用创建响应模型"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "If you declare both a return type and a `response_model`, the `response_model` will take priority and be used by FastAPI.",
+            "start_line": 112,
+            "end_line": 112
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "You can also use `response_model=None` to disable creating a response model for that *path operation*",
+            "start_line": 116,
+            "end_line": 116
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-response-57732f336ae7",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-023",
+        "split": "test",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-response",
+        "question_group": "REAL-TEST-023",
+        "question": "在 FastAPI 0.112.2 中，当路径操作同时声明了返回类型注解和 response_model 参数时，哪一方生效？另外，如何禁用为该路径操作创建响应模型？",
+        "answer_key_points": [
+          "response_model 优先，FastAPI 以其为准",
+          "可用 response_model=None 禁用创建响应模型"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "If you declare both a return type and a `response_model`, the `response_model` will take priority and be used by FastAPI.",
+            "start_line": 112,
+            "end_line": 112
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "You can also use `response_model=None` to disable creating a response model for that *path operation*, you might need to do it if you are adding type annotations for things that are not valid Pydantic fields, you will see an example of that in one of the sections below.",
+            "start_line": 116,
+            "end_line": 116
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-response-57732f336ae7",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-024",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-024",
+        "split": "test",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-response",
+        "question_group": "REAL-TEST-024",
+        "question": "在 FastAPI 0.112.2 中，文档一说明返回类型会校验数据、无效时返回服务器错误，文档二说明直接返回 Response 时数据不校验；这两者描述冲突吗？各自的适用条件是什么？",
+        "answer_key_points": [
+          "并不冲突：前者针对由 FastAPI 处理返回值的常规情形",
+          "直接返回 Response 时被快速放过，故不校验、不转换"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "it will return a server error instead of returning incorrect data.",
+            "start_line": 40,
+            "end_line": 40
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--response-directly.md",
+            "contains": "When you return a `Response` directly its data is not validated, converted (serialized), nor documented automatically.",
+            "start_line": 71,
+            "end_line": 71
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-response-57732f336ae7",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-024",
+        "split": "test",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-response",
+        "question_group": "REAL-TEST-024",
+        "question": "在 FastAPI 0.112.2 中，文档一说明返回类型会校验数据、无效时返回服务器错误，文档二说明直接返回 Response 时数据不校验；这两者描述冲突吗？各自的适用条件是什么？",
+        "answer_key_points": [
+          "并不冲突：常规返回数据根据声明的返回类型或响应模型进行校验，返回不合要求的数据代表应用错误。",
+          "直接返回 Response 时 FastAPI 原样传递，该返回数据不会被自动校验、转换或生成对应文档。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "* **Validate** the returned data.",
+            "start_line": 39,
+            "end_line": 39
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "If the data is invalid (e.g. you are missing a field)",
+            "start_line": 40,
+            "end_line": 40
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "it means that *your* app code is broken, not returning what it should",
+            "start_line": 40,
+            "end_line": 40
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--response-model.md",
+            "contains": "it will return a server error instead of returning incorrect data.",
+            "start_line": 40,
+            "end_line": 40
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--response-directly.md",
+            "contains": "And when you return a `Response`, **FastAPI** will pass it directly.",
+            "start_line": 29,
+            "end_line": 29
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--response-directly.md",
+            "contains": "When you return a `Response` directly its data is not validated, converted (serialized), nor documented automatically.",
+            "start_line": 71,
+            "end_line": 71
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-response-57732f336ae7",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-026",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-026",
+        "split": "test",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "fastapi-background",
+        "question_group": "REAL-TEST-026",
+        "question": "In FastAPI 0.112.2, where does the class BackgroundTasks that you import from fastapi actually come from, and why is it re-exported?",
+        "answer_key_points": [
+          "BackgroundTasks comes directly from starlette.background.",
+          "FastAPI re-exports it so users avoid accidentally importing BackgroundTask (no s) from starlette.background."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--background-tasks.md",
+            "contains": "The class `BackgroundTasks` comes directly from",
+            "start_line": 126,
+            "end_line": 126
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--background-tasks.md",
+            "contains": "avoid accidentally importing the alternative `BackgroundTask` (without the `s` at the end)",
+            "start_line": 128,
+            "end_line": 128
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-026",
+        "split": "test",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "fastapi-background",
+        "question_group": "REAL-TEST-026",
+        "question": "In FastAPI 0.112.2, where does the class BackgroundTasks that you import from fastapi actually come from, and why is it re-exported?",
+        "answer_key_points": [
+          "BackgroundTasks comes directly from starlette.background.",
+          "FastAPI re-exports it so users avoid accidentally importing BackgroundTask (no s) from starlette.background."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--background-tasks.md",
+            "contains": "The class `BackgroundTasks` comes directly from <a href=\"https://www.starlette.io/background/\" class=\"external-link\" target=\"_blank\">`starlette.background`</a>.",
+            "start_line": 126,
+            "end_line": 126
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--background-tasks.md",
+            "contains": "It is imported/included directly into FastAPI so that you can import it from `fastapi` and avoid accidentally importing the alternative `BackgroundTask` (without the `s` at the end) from `starlette.background`.",
+            "start_line": 128,
+            "end_line": 128
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-027",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-027",
+        "split": "test",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-background",
+        "question_group": "REAL-TEST-027",
+        "question": "Using the FastAPI 0.112.2 background tasks and lifespan guides, when does lifespan setup run, when does cleanup run, and when are background tasks executed relative to the response?",
+        "answer_key_points": [
+          "Lifespan code before yield runs once before the app starts accepting requests; code after yield runs at shutdown.",
+          "Background tasks run after the response is returned."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "executed **once**, **before** the application **starts receiving requests**",
+            "start_line": 9,
+            "end_line": 9
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "right after the `yield`, we unload the model. This code will be executed **after** the application **finishes handling requests**",
+            "start_line": 45,
+            "end_line": 45
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--background-tasks.md",
+            "contains": "to be run *after* returning a response",
+            "start_line": 9,
+            "end_line": 9
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-027",
+        "split": "test",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-background",
+        "question_group": "REAL-TEST-027",
+        "question": "Using the FastAPI 0.112.2 background tasks and lifespan guides, when does lifespan setup run, when does cleanup run, and when are background tasks executed relative to the response?",
+        "answer_key_points": [
+          "Lifespan setup runs once before the application starts receiving requests; code after yield runs after handling requests, just before shutdown.",
+          "Background tasks run after returning a response."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "You can define logic (code) that should be executed before the application **starts up**. This means that this code will be executed **once**, **before** the application **starts receiving requests**.",
+            "start_line": 9,
+            "end_line": 9
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "And then, right after the `yield`, we unload the model. This code will be executed **after** the application **finishes handling requests**, right before the *shutdown*. This could, for example, release resources like memory or a GPU.",
+            "start_line": 45,
+            "end_line": 45
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--background-tasks.md",
+            "contains": "You can define background tasks to be run *after* returning a response.",
+            "start_line": 9,
+            "end_line": 9
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-028",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-028",
+        "split": "test",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-background",
+        "question_group": "REAL-TEST-028",
+        "question": "In the FastAPI 0.112.2 lifespan docs, which conditions are given for lifespan handlers and for 'startup' event handlers to complete before the application accepts requests?",
+        "answer_key_points": [
+          "Lifespan logic runs once, before the app starts receiving requests.",
+          "The app won't accept requests until all startup handlers finish."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "executed **once**, **before** the application **starts receiving requests**",
+            "start_line": 9,
+            "end_line": 9
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "won't start receiving requests until all the `startup` event handlers have completed",
+            "start_line": 129,
+            "end_line": 129
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-028",
+        "split": "test",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-background",
+        "question_group": "REAL-TEST-028",
+        "question": "In the FastAPI 0.112.2 lifespan docs, which conditions are given for lifespan handlers and for 'startup' event handlers to complete before the application accepts requests?",
+        "answer_key_points": [
+          "Lifespan logic runs once, before the app starts receiving requests.",
+          "The app won't accept requests until all startup handlers finish."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "You can define logic (code) that should be executed before the application **starts up**. This means that this code will be executed **once**, **before** the application **starts receiving requests**.",
+            "start_line": 9,
+            "end_line": 9
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "And your application won't start receiving requests until all the `startup` event handlers have completed.",
+            "start_line": 129,
+            "end_line": 129
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-029",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-029",
+        "split": "test",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-background",
+        "question_group": "REAL-TEST-029",
+        "question": "In FastAPI 0.112.2, when an app uses the lifespan parameter and also registers startup/shutdown event handlers, what happens, and why is there an apparent conflict?",
+        "answer_key_points": [
+          "Lifespan is recommended, but it is all lifespan or all events, not both.",
+          "Registration is possible, but startup/shutdown handlers are not called when lifespan is provided."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "handlers will no longer be called. It's all `lifespan` or all events, not both.",
+            "start_line": 105,
+            "end_line": 105
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "You can define event handlers (functions) that need to be executed",
+            "start_line": 113,
+            "end_line": 113
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-029",
+        "split": "test",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-background",
+        "question_group": "REAL-TEST-029",
+        "question": "In FastAPI 0.112.2, when an app uses the lifespan parameter and also registers startup/shutdown event handlers, what happens, and why is there an apparent conflict?",
+        "answer_key_points": [
+          "The recommended approach is lifespan; providing it means startup and shutdown event handlers are not called.",
+          "The apparent conflict arises because the guide also documents the deprecated event-based alternative: choose lifespan or events, not both."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "## Alternative Events (deprecated)",
+            "start_line": 101,
+            "end_line": 101
+          },
+          {
+            "source_file": "fastapi--en--docs--advanced--events.md",
+            "contains": "The recommended way to handle the *startup* and *shutdown* is using the `lifespan` parameter of the `FastAPI` app as described above. If you provide a `lifespan` parameter, `startup` and `shutdown` event handlers will no longer be called. It's all `lifespan` or all events, not both.",
+            "start_line": 105,
+            "end_line": 105
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-background-c56cfe57d066",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-031",
+      "fields_changed": [
+        "answer_key_points"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-031",
+        "split": "test",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "fastapi-security",
+        "question_group": "REAL-TEST-031",
+        "question": "在 FastAPI 0.112.2 的《Security - First Steps》教程中，当 OAuth2PasswordBearer 在请求中找不到 Authorization 头时，会如何处理？",
+        "answer_key_points": [
+          "直接返回 401 UNAUTHORIZED 错误，无需自行检查 token 是否存在",
+          "依赖函数执行时保证 token 参数是 str"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--first-steps.md",
+            "contains": "If it doesn't see an `Authorization` header, or the value doesn't have a `Bearer ` token, it will respond with a 401 status code error (`UNAUTHORIZED`) directly.",
+            "start_line": 281,
+            "end_line": 281
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-031",
+        "split": "test",
+        "language": "zh",
+        "question_type": "single_document_fact",
+        "family": "fastapi-security",
+        "question_group": "REAL-TEST-031",
+        "question": "在 FastAPI 0.112.2 的《Security - First Steps》教程中，当 OAuth2PasswordBearer 在请求中找不到 Authorization 头时，会如何处理？",
+        "answer_key_points": [
+          "直接返回 401 UNAUTHORIZED 错误，无需另行检查 token 是否存在。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--first-steps.md",
+            "contains": "If it doesn't see an `Authorization` header, or the value doesn't have a `Bearer ` token, it will respond with a 401 status code error (`UNAUTHORIZED`) directly.",
+            "start_line": 281,
+            "end_line": 281
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-032",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-032",
+        "split": "test",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-security",
+        "question_group": "REAL-TEST-032",
+        "question": "结合 FastAPI 0.112.2 的《Security - First Steps》与《Simple OAuth2 with Password and Bearer》，OAuth2PasswordBearer 的 tokenUrl 与 OAuth2PasswordRequestForm 的字段，如何共同构成从前端获取 token 再到用 Bearer 头调用接口的流程？",
+        "answer_key_points": [
+          "tokenUrl 声明客户端提交 username/password 换取 token 的 URL",
+          "请求体须为表单，字段名固定为 username 和 password，不能是 JSON",
+          "之后前端在 Authorization 头中携带 Bearer 加 token"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--first-steps.md",
+            "contains": "This parameter contains the URL that the client (the frontend running in the user's browser) will use to send the `username` and `password` in order to get a token.",
+            "start_line": 167,
+            "end_line": 167
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "The spec also states that the `username` and `password` must be sent as form data (so, no JSON here).",
+            "start_line": 25,
+            "end_line": 25
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-032",
+        "split": "test",
+        "language": "zh",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-security",
+        "question_group": "REAL-TEST-032",
+        "question": "结合 FastAPI 0.112.2 的《Security - First Steps》与《Simple OAuth2 with Password and Bearer》，OAuth2PasswordBearer 的 tokenUrl 与 OAuth2PasswordRequestForm 的字段，如何共同构成从前端获取 token 再到用 Bearer 头调用接口的流程？",
+        "answer_key_points": [
+          "tokenUrl 声明客户端提交 username/password 换取 token 的 URL",
+          "请求体须为表单，字段名固定为 username 和 password，不能是 JSON",
+          "之后前端在 Authorization 头中携带 Bearer 加 token"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--first-steps.md",
+            "contains": "When we create an instance of the `OAuth2PasswordBearer` class we pass in the `tokenUrl` parameter. This parameter contains the URL that the client (the frontend running in the user's browser) will use to send the `username` and `password` in order to get a token.",
+            "start_line": 167,
+            "end_line": 167
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--first-steps.md",
+            "contains": "This parameter doesn't create that endpoint / *path operation*, but declares that the URL `/token` will be the one that the client should use to get the token. That information is used in OpenAPI, and then in the interactive API documentation systems.",
+            "start_line": 209,
+            "end_line": 209
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "The spec also states that the `username` and `password` must be sent as form data (so, no JSON here).",
+            "start_line": 25,
+            "end_line": 25
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "And the spec says that the fields have to be named like that. So `user-name` or `email` wouldn't work.",
+            "start_line": 17,
+            "end_line": 17
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--first-steps.md",
+            "contains": "* So, to authenticate with our API, it sends a header `Authorization` with a value of `Bearer ` plus the token.",
+            "start_line": 146,
+            "end_line": 146
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-033",
+      "fields_changed": [
+        "answer_key_points"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-033",
+        "split": "test",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-security",
+        "question_group": "REAL-TEST-033",
+        "question": "在 FastAPI 0.112.2 中，如果启用 OAuth2PasswordRequestFormStrict 而不是 OAuth2PasswordRequestForm，针对 grant_type 字段会发生什么变化？",
+        "answer_key_points": [
+          "OAuth2PasswordRequestForm 不强制 grant_type 为 password",
+          "若需强制校验，应改用 OAuth2PasswordRequestFormStrict"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "The OAuth2 spec actually *requires* a field `grant_type` with a fixed value of `password`, but `OAuth2PasswordRequestForm` doesn't enforce it.",
+            "start_line": 122,
+            "end_line": 122
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "If you need to enforce it, use `OAuth2PasswordRequestFormStrict` instead of `OAuth2PasswordRequestForm`.",
+            "start_line": 124,
+            "end_line": 124
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-033",
+        "split": "test",
+        "language": "zh",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-security",
+        "question_group": "REAL-TEST-033",
+        "question": "在 FastAPI 0.112.2 中，如果启用 OAuth2PasswordRequestFormStrict 而不是 OAuth2PasswordRequestForm，针对 grant_type 字段会发生什么变化？",
+        "answer_key_points": [
+          "OAuth2PasswordRequestForm 不强制 grant_type 为 password",
+          "改用 OAuth2PasswordRequestFormStrict 后，会强制要求 grant_type 为规范指定的固定值 password。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "The OAuth2 spec actually *requires* a field `grant_type` with a fixed value of `password`, but `OAuth2PasswordRequestForm` doesn't enforce it.",
+            "start_line": 122,
+            "end_line": 122
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "If you need to enforce it, use `OAuth2PasswordRequestFormStrict` instead of `OAuth2PasswordRequestForm`.",
+            "start_line": 124,
+            "end_line": 124
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-034",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-034",
+        "split": "test",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-security",
+        "question_group": "REAL-TEST-034",
+        "question": "在 FastAPI 0.112.2 中，OAuth2PasswordRequestForm 的 scope 表单字段和依赖实例的 scopes 属性分别是什么类型？两处描述为何不冲突？",
+        "answer_key_points": [
+          "表单字段是 scope（单数），为空格分隔的长字符串",
+          "依赖实例上提供的是 scopes 属性，即拆分后的字符串列表"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "The form field name is `scope` (in singular), but it is actually a long string with \"scopes\" separated by spaces.",
+            "start_line": 31,
+            "end_line": 31
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "it will have a `scopes` attribute with the actual list of strings for each scope sent.",
+            "start_line": 147,
+            "end_line": 147
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-034",
+        "split": "test",
+        "language": "zh",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-security",
+        "question_group": "REAL-TEST-034",
+        "question": "在 FastAPI 0.112.2 中，OAuth2PasswordRequestForm 的 scope 表单字段和依赖实例的 scopes 属性分别是什么类型？两处描述为何不冲突？",
+        "answer_key_points": [
+          "输入表单字段 scope（单数）是可选的、以空格分隔的字符串。",
+          "OAuth2PasswordRequestForm 接收该输入后，在实例的 scopes 属性上提供拆分后的字符串列表，因此输入形式与解析后的属性并不冲突。"
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "The form field name is `scope` (in singular), but it is actually a long string with \"scopes\" separated by spaces.",
+            "start_line": 31,
+            "end_line": 31
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "The instance of the dependency class `OAuth2PasswordRequestForm` won't have an attribute `scope` with the long string separated by spaces, instead, it will have a `scopes` attribute with the actual list of strings for each scope sent.",
+            "start_line": 147,
+            "end_line": 147
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+            "contains": "* An optional `scope` field as a big string, composed of strings separated by spaces.",
+            "start_line": 117,
+            "end_line": 117
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-security-fbef7c8045b5",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-036",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-036",
+        "split": "test",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "fastapi-middleware",
+        "question_group": "REAL-TEST-036",
+        "question": "In FastAPI 0.112.2, what does the tutorial say runs after middleware when an endpoint has dependencies with `yield` and also has background tasks?",
+        "answer_key_points": [
+          "The exit code of dependencies with `yield` runs after the middleware.",
+          "Background tasks run after all the middleware."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--middleware.md",
+            "contains": "the exit code will run *after* the middleware.",
+            "start_line": 22,
+            "end_line": 22
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-036",
+        "split": "test",
+        "language": "en",
+        "question_type": "single_document_fact",
+        "family": "fastapi-middleware",
+        "question_group": "REAL-TEST-036",
+        "question": "In FastAPI 0.112.2, what does the tutorial say runs after middleware when an endpoint has dependencies with `yield` and also has background tasks?",
+        "answer_key_points": [
+          "The exit code of dependencies with `yield` runs after the middleware.",
+          "Background tasks run after all the middleware."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--middleware.md",
+            "contains": "If you have dependencies with `yield`, the exit code will run *after* the middleware.",
+            "start_line": 22,
+            "end_line": 22
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--middleware.md",
+            "contains": "If there were any background tasks (documented later), they will run *after* all the middleware.",
+            "start_line": 24,
+            "end_line": 24
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-037",
+      "fields_changed": [
+        "answer_key_points",
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-037",
+        "split": "test",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-middleware",
+        "question_group": "REAL-TEST-037",
+        "question": "In FastAPI 0.112.2, how do the middleware guide and the CORS guide together tell a developer to register CORS and make a custom response header visible to browser clients?",
+        "answer_key_points": [
+          "The CORS guide has you add `CORSMiddleware` to the FastAPI app as a middleware.",
+          "The middleware guide says custom headers visible to browsers go in CORS config via `expose_headers`."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--middleware.md",
+            "contains": "you need to add them to your CORS configurations",
+            "start_line": 48,
+            "end_line": 48
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "You can configure it in your **FastAPI** application using the `CORSMiddleware`.",
+            "start_line": 43,
+            "end_line": 43
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-037",
+        "split": "test",
+        "language": "en",
+        "question_type": "cross_document_synthesis",
+        "family": "fastapi-middleware",
+        "question_group": "REAL-TEST-037",
+        "question": "In FastAPI 0.112.2, how do the middleware guide and the CORS guide together tell a developer to register CORS and make a custom response header visible to browser clients?",
+        "answer_key_points": [
+          "Import CORSMiddleware, create the allowed-origins list, and add the middleware to the FastAPI application.",
+          "To expose custom response headers to browser clients, configure the CORS expose_headers parameter."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--middleware.md",
+            "contains": "using the parameter `expose_headers`",
+            "start_line": 48,
+            "end_line": 48
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--middleware.md",
+            "contains": "you need to add them to your CORS configurations",
+            "start_line": 48,
+            "end_line": 48
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "* Import `CORSMiddleware`.",
+            "start_line": 45,
+            "end_line": 45
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "* Create a list of allowed origins (as strings).",
+            "start_line": 46,
+            "end_line": 46
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "* Add it as a \"middleware\" to your **FastAPI** application.",
+            "start_line": 47,
+            "end_line": 47
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-038",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-038",
+        "split": "test",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-middleware",
+        "question_group": "REAL-TEST-038",
+        "question": "In FastAPI 0.112.2, what are the default `allow_methods`, `allow_headers`, and `max_age` settings for `CORSMiddleware`?",
+        "answer_key_points": [
+          "`allow_methods` defaults to `['GET']`.",
+          "`allow_headers` defaults to `[]`.",
+          "`max_age` defaults to `600` seconds."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "Defaults to `['GET']`.",
+            "start_line": 65,
+            "end_line": 65
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "Defaults to `600`.",
+            "start_line": 69,
+            "end_line": 69
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-038",
+        "split": "test",
+        "language": "en",
+        "question_type": "conditions_limits_and_numbers",
+        "family": "fastapi-middleware",
+        "question_group": "REAL-TEST-038",
+        "question": "In FastAPI 0.112.2, what are the default `allow_methods`, `allow_headers`, and `max_age` settings for `CORSMiddleware`?",
+        "answer_key_points": [
+          "`allow_methods` defaults to `['GET']`.",
+          "`allow_headers` defaults to `[]`.",
+          "`max_age` defaults to `600` seconds."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "* `allow_methods` - A list of HTTP methods that should be allowed for cross-origin requests. Defaults to `['GET']`. You can use `['*']` to allow all standard methods.",
+            "start_line": 65,
+            "end_line": 65
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "* `allow_headers` - A list of HTTP request headers that should be supported for cross-origin requests. Defaults to `[]`. You can use `['*']` to allow all headers. The `Accept`, `Accept-Language`, `Content-Language` and `Content-Type` headers are always allowed for <a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#simple_requests\" class=\"external-link\" rel=\"noopener\" target=\"_blank\">simple CORS requests</a>.",
+            "start_line": 66,
+            "end_line": 66
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "* `max_age` - Sets a maximum time in seconds for browsers to cache CORS responses. Defaults to `600`.",
+            "start_line": 69,
+            "end_line": 69
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    },
+    {
+      "id": "REAL-TEST-039",
+      "fields_changed": [
+        "expected_evidence"
+      ],
+      "before": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-039",
+        "split": "test",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-middleware",
+        "question_group": "REAL-TEST-039",
+        "question": "In FastAPI 0.112.2, does allowing the wildcard origin \"*\" also allow credentialed browser communication? How must allow_origins be configured when allow_credentials is enabled?",
+        "answer_key_points": [
+          "With wildcard `\"*\"`, credential-involving communication (cookies, auth headers) is excluded.",
+          "For `allow_credentials`, `allow_origins` cannot be `['*']`; origins must be explicit."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "excluding everything that involves credentials",
+            "start_line": 37,
+            "end_line": 37
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "origins must be specified.",
+            "start_line": 67,
+            "end_line": 67
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      },
+      "after": {
+        "schema_version": "real-case-v1",
+        "id": "REAL-TEST-039",
+        "split": "test",
+        "language": "en",
+        "question_type": "version_and_apparent_conflict",
+        "family": "fastapi-middleware",
+        "question_group": "REAL-TEST-039",
+        "question": "In FastAPI 0.112.2, does allowing the wildcard origin \"*\" also allow credentialed browser communication? How must allow_origins be configured when allow_credentials is enabled?",
+        "answer_key_points": [
+          "With wildcard `\"*\"`, credential-involving communication (cookies, auth headers) is excluded.",
+          "For `allow_credentials`, `allow_origins` cannot be `['*']`; origins must be explicit."
+        ],
+        "expected_evidence": [
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "But that will only allow certain types of communication, excluding everything that involves credentials: Cookies, Authorization headers like those used with Bearer Tokens, etc.",
+            "start_line": 37,
+            "end_line": 37
+          },
+          {
+            "source_file": "fastapi--en--docs--tutorial--cors.md",
+            "contains": "* `allow_credentials` - Indicate that cookies should be supported for cross-origin requests. Defaults to `False`. Also, `allow_origins` cannot be set to `['*']` for credentials to be allowed, origins must be specified.",
+            "start_line": 67,
+            "end_line": 67
+          }
+        ],
+        "expected_sufficiency": true,
+        "abstention_policy": "If the indexed corpus cannot support the requested conclusion, explicitly state that limitation and do not invent facts.",
+        "insufficiency_audit": null,
+        "provenance": {
+          "method": "ai_authored",
+          "model": "deepseek-flash",
+          "task_id": "real-v1-draft-fastapi-middleware-f9fe2e7c867d",
+          "ai_review": "checked"
+        },
+        "human_review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "notes": ""
+        }
+      }
+    }
+  ]
+}

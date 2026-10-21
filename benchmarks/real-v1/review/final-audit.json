@@ -1,0 +1,1888 @@
+{
+  "schema_version": "ai-reference-review-v1",
+  "review_kind": "ai_double_review",
+  "reviewed_at_utc": "2026-10-18T05:10:29.477725+00:00",
+  "reviewers": [
+    "DeepSeek Flash (fresh official CLI contexts)",
+    "Codex (source adjudication)"
+  ],
+  "corpus_manifest_sha256": "01cde9a62ab068e5f918aeebfa3ca2f59e8bf89863e00cf69f7f81e42150e4bd",
+  "dataset_sha256": {
+    "dev.jsonl": "f6f3e3544cbc7c2601ec63cdf137de19d0f381ebc910cd046c33e523d098a063",
+    "test.jsonl": "debd1716177707e77b59908f1a49048ffd050227ff61394b99c59e6ce387cd04"
+  },
+  "accepted_count": 60,
+  "corrected_count": 46,
+  "human_approved_count": 0,
+  "source_checks": {
+    "located_gold_units": 139,
+    "all_gold_units_reachable": true,
+    "chunk_size": 1200,
+    "chunk_overlap": 200
+  },
+  "scope": "Reference-only AI adjudication before any paid held-out workflow run. Codex checks the final reference hash; DeepSeek feedback retains its own reviewed hash and may precede final Codex corrections.",
+  "limitations": [
+    "AI authorship/review may retain correlated errors; no human approval or human judge calibration is claimed.",
+    "Negative questions currently emphasize absent deployment-performance measurements.",
+    "Reviewer suggestions can contain mistakes; rejected feedback and Codex dispositions are preserved.",
+    "This is not a workflow-quality result and does not establish admissions outcomes."
+  ],
+  "usage": {
+    "physical_requests": 42,
+    "prompt_tokens": 583225,
+    "completion_tokens": 23244,
+    "cached_input_tokens": 12544,
+    "total_cost_cny": null,
+    "monetary_cap_enforced": false
+  },
+  "tasks": [
+    {
+      "name": "family-pydantic-coercion",
+      "kind": "references",
+      "task_id": "ref-audit-family-pydantic-coercion-f4a56640ec33",
+      "prompt_sha256": "f4a56640ec330c49f88428fb9557503ff18484d74f46be882bb1844ef3c5cb95",
+      "response_path": "family-pydantic-coercion-f4a56640ec33.json",
+      "status": "validated",
+      "references": {
+        "REAL-DEV-001": "ea2633f00f55c2d0a029830b2504072d9ac2de7d7d9b5917e8bf2b93471b7015",
+        "REAL-DEV-002": "275c10fee471d5f953a4ee883dae970644320a90c0653b060fd93a4d9efbd686",
+        "REAL-DEV-003": "e4840001c996d15ace78a09130898fdd66ec2c97d1ee48d4b21def857bea7cdf",
+        "REAL-DEV-004": "b45adfc13ddc486186be55bb065ee73968d6c51e1b01d84f37520416aac560ef"
+      },
+      "documents": [
+        "pydantic-v2--concepts--strict_mode.md",
+        "pydantic-v2--concepts--unions.md"
+      ],
+      "input_sha256": "192768781153e403aff1907991d1fab827f2534ce2c38c2bc912b831234a6740",
+      "attempt_ids": [
+        "a664dff549ed4a538e05703d5b143525"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-DEV-001",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-DEV-002",
+          "verdict": "revise",
+          "issues": [
+            "The unions quote is a multi-line list; it is unclear whether the single quote string can be located exactly in the snapshot.",
+            "The answer key states that strict validation success ranks higher than lax-only success, but the selected quotes never explicitly state this ordering. The 'from highest to lowest' ordering appears in the list of exactness groups, but no selected quote pairs 'strict' against 'lax' as the tiers the answer key describes.",
+            "The question asks why it is necessary to distinguish input types and Python/JSON validation, but the answer key never explains the consequence of not doing so, beyond a call for caution."
+          ],
+          "recommendations": [
+            "Ensure each suggested evidence quote matches a single contiguous line in the snapshot.",
+            "Make the strict-vs-lax ordering explicit by quoting the exactness list, or paraphrase it so it aligns with the source.",
+            "Strengthen the second point with the concrete implication (an int field rejects str from Python but lax coercion differs from strict rejection), or narrow the question to what the sources actually answer."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "pydantic-v2--concepts--unions.md",
+              "quote": "- Validation would have succeeded in [`strict` mode](../concepts/strict_mode.md)\n    - Validation would have succeeded in lax mode"
+            },
+            {
+              "source_file": "pydantic-v2--concepts--strict_mode.md",
+              "quote": "For example, when validating an `int` field, only instances of `int` are accepted; passing instances of `float` or `str`\nwill result in raising a `ValidationError`."
+            }
+          ]
+        },
+        {
+          "id": "REAL-DEV-003",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-DEV-004",
+          "verdict": "revise",
+          "issues": [
+            "The expected evidence contains four quotes, which exceeds the review limit of three; the author should select the strongest subset.",
+            "The 'exact type match returned immediately' rule (line 146) applies only to 'All other data types' in smart mode, but the answer key generalizes it; it should state that scope explicitly.",
+            "The expected evidence quote 'print(User(id='456'))  # (2)\\n#> id=456' sits next to a numbered note that wrongly says the numeric string is '123', so the quote alone is misleading unless the surrounding code (Union[int, str]) is included.",
+            "The 'left_to_right returns int 456' point depends on the preceding code declaring Union[int, str]; the selected quotes do not include that declaration."
+          ],
+          "recommendations": [
+            "Limit the evidence to three quotes and include the Union[int, str] declaration instead of the output print block, or add a short explanatory note in the answer key.",
+            "Qualify the immediate-return behavior as applying to non-model, non-dataclass, non-TypedDict members.",
+            "Clarify in the answer that the source's own numbered note contains a typo ('123' vs '456'), because the observed output is id=456."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "pydantic-v2--concepts--unions.md",
+              "quote": "class User(BaseModel):\n    id: Union[int, str] = Field(union_mode='left_to_right')"
+            },
+            {
+              "source_file": "pydantic-v2--concepts--unions.md",
+              "quote": "With this approach, validation is attempted against each member of the union in their order they're defined, and the first successful validation is accepted as input."
+            },
+            {
+              "source_file": "pydantic-v2--concepts--unions.md",
+              "quote": "- If validation succeeds with an exact type match, that member is returned immediately and following members will not be attempted."
+            }
+          ]
+        }
+      ],
+      "response_text_sha256": "be99885726c92e4586c93bd63f8fe772b4dc6f646ea5355c824c2950831de67f"
+    },
+    {
+      "name": "family-pydantic-fields",
+      "kind": "references",
+      "task_id": "ref-audit-family-pydantic-fields-18b83e8db8d0",
+      "prompt_sha256": "18b83e8db8d0f9bae0551f803fc3a85ea5dba74a064f691ac11710b24ff859cc",
+      "response_path": "family-pydantic-fields-18b83e8db8d0.json",
+      "status": "invalid_review_output",
+      "references": {
+        "REAL-DEV-006": "d876254ea3bdb7418677d6f7732d4e6b5554f582de9e7f1e440d64b80d3f8ae3",
+        "REAL-DEV-007": "2226a8b1b633a3b837179b7c249cd60d9a65a90732ce7281531ecbc101c56f4e",
+        "REAL-DEV-008": "190dea5afbf692f967196a905d9bae8586dfbed4313b49d758498912edb73f10",
+        "REAL-DEV-009": "e0f5a9c47e4aade6399e336e78e2d8d282f79096bec2de3e2361c52d0a95bb43"
+      },
+      "documents": [
+        "pydantic-v2--concepts--fields.md",
+        "pydantic-v2--concepts--alias.md"
+      ],
+      "input_sha256": "029be7b8bc8e93cc2beb9e6a4be647dbc7620132c11d2b4d1d245453d035d0de",
+      "attempt_ids": [
+        "10e7f56269e14514a8a88ca9774daa05"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-DEV-006",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-DEV-007",
+          "verdict": "revise",
+          "issues": [
+            "Question says a cross-document synthesis, but both key points are fully supported by the fields.md source alone; alias.md only adds the AliasChoices example. The case does not genuinely need both sources.",
+            "The selected fields.md quote on VSCode initializer signature stops at line 219; the sentence confirming the workaround (alias plus serialization_alias) continues and is not included."
+          ],
+          "recommendations": [
+            "Either relabel the case as single_document_fact on fields.md, or add a required point the alias.md source alone can answer (for example, that validation_alias can take AliasChoices).",
+            "Extend the fields.md quote so it covers the full statement about VSCode not using validation_alias in the initializer."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "quote": "Even though Pydantic treats `alias` and `validation_alias` the same when creating model instances, VSCode will not use the `validation_alias` in the class initializer signature."
+            },
+            {
+              "source_file": "pydantic-v2--concepts--alias.md",
+              "quote": "`validation_alias` on the [`Field`][pydantic.fields.Field]\n    * can be an instance of `str`, [`AliasPath`][pydantic.aliases.AliasPath], or [`AliasChoices`][pydantic.aliases.AliasChoices]"
+            }
+          ]
+        },
+        {
+          "id": "REAL-DEV-008",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-DEV-009",
+          "verdict": "revise",
+          "issues": [
+            "Valid ambiguity: fields.md shows Field(..., alias='username') as the usage, while alias.md says the alias must be a str. Field(alias=...) without the positional value may be rejected at runtime. The sources do not settle this."
+          ],
+          "recommendations": [
+            "Rephrase the question to match the documented usage, such as Field(alias='...') combined with validation_alias/serialization_alias.",
+            "Alternatively, add a note to the answer key that, per alias.md, alias must be a str."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "pydantic-v2--concepts--fields.md",
+              "quote": "In case you use `alias` together with `validation_alias` or `serialization_alias` at the same time, the `validation_alias` will have priority over `alias` for validation"
+            },
+            {
+              "source_file": "pydantic-v2--concepts--alias.md",
+              "quote": "* `alias` on the [`Field`][pydantic.fields.Field]\n    * must be a `str`"
+            }
+          ]
+        }
+      ],
+      "response_text_sha256": "39715f07baa96d2aace0727490a6c1c2f1989d831071124f45185a7c08ab1dd2"
+    },
+    {
+      "name": "family-fastapi-dependencies",
+      "kind": "references",
+      "task_id": "ref-audit-family-fastapi-dependencies-b0de7d7e8af0",
+      "prompt_sha256": "b0de7d7e8af0ec029f9a9118d419993c04c52f43174b1ec6740490c38e8046fb",
+      "response_path": "family-fastapi-dependencies-b0de7d7e8af0.json",
+      "status": "invalid_review_output",
+      "references": {
+        "REAL-DEV-011": "31750a87a238ba67bd0a45bbfe512d3f22cd906c584581af218ca0ddf211056f",
+        "REAL-DEV-012": "a07b751669f03801f9f2829626b322e7c42bf17c6594a004c9d74db5304fd4bb",
+        "REAL-DEV-013": "e9312208ed7289985b2837832ff993caddc6f4f257129408840c6cb6bea061c5",
+        "REAL-DEV-014": "9700a7ad207a80acef60b74014d2a02dcb3395f9a04f7b17b30f48307ced2154"
+      },
+      "documents": [
+        "fastapi--en--docs--tutorial--dependencies--index.md",
+        "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md"
+      ],
+      "input_sha256": "3937d8ae6763eccb378ae97ad15837d785fa79b95a9747434968ee438b65c4d4",
+      "attempt_ids": [
+        "629315057fda451da533f4ea0e9a5d21"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-DEV-011",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-DEV-012",
+          "verdict": "revise",
+          "issues": [
+            "The index quote supports only 'a function taking same parameters'; the claim that it is declared via Depends and not called directly is in the same source but not in the selected quote.",
+            "The path-operation point (declare only the outermost dependency; nested levels handled automatically) is in sub-dependencies.md but the selected quote covers only one link of the chain."
+          ],
+          "recommendations": [
+            "Add a quote from index.md showing Depends is passed the function without parentheses.",
+            "Add a sub-dependencies quote showing only one dependency is declared in the path operation function."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+              "quote": "You **don't call it** directly (don't add the parenthesis at the end), you just pass it as a parameter to `Depends()`."
+            },
+            {
+              "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+              "quote": "Notice that we are only declaring one dependency in the *path operation function*, the `query_or_cookie_extractor`."
+            }
+          ]
+        },
+        {
+          "id": "REAL-DEV-013",
+          "verdict": "revise",
+          "issues": [
+            "The 'cached for all dependants' point is supported by line 217 ('And it will save the returned value in a ... cache ... and pass it to all the \"dependants\"'), but that quote is not selected.",
+            "The use_cache=False quote omits the snippet showing the setting syntax, which is only in the unexpanded include; the inline text is still enough for the point."
+          ],
+          "recommendations": [
+            "Add the cache-passing sentence as a third evidence quote."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+              "quote": "And it will save the returned value in a \"cache\" and pass it to all the \"dependants\" that need it in that specific request, instead of calling the dependency multiple times for the same request."
+            }
+          ]
+        },
+        {
+          "id": "REAL-DEV-014",
+          "verdict": "revise",
+          "issues": [
+            "The 0.95.0 info box says 0.95.0 added support, but also says to upgrade to 'at least 0.95.1' — a version inconsistency in the source that a careful answer should address; the key only says 0.95.0.",
+            "The sub-dependencies quote is a tab label ('Python 3.8+ non-Annotated'), which shows non-Annotated examples exist but is weak evidence for 'both styles are kept and are not conflicting'."
+          ],
+          "recommendations": [
+            "Mention the 0.95.1 minimum in the key or the answer so the version claim is exact.",
+            "Use an index.md quote showing both Annotated and non-Annotated tabs, or add a note that the tab heading alone is illustrative."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+              "quote": "Make sure you [Upgrade the FastAPI version](../../deployment/versions.md#upgrading-the-fastapi-versions){.internal-link target=_blank} to at least 0.95.1 before using `Annotated`."
+            },
+            {
+              "source_file": "fastapi--en--docs--tutorial--dependencies--index.md",
+              "quote": "FastAPI added support for `Annotated` (and started recommending it) in version 0.95.0."
+            }
+          ]
+        }
+      ],
+      "response_text_sha256": "134910fb41dc536147edabb335fa2067b7ed696b22f8b6bb68162eafc145cd10"
+    },
+    {
+      "name": "family-fastapi-errors",
+      "kind": "references",
+      "task_id": "ref-audit-family-fastapi-errors-bcf8b64c6329",
+      "prompt_sha256": "bcf8b64c63292b0a6f54b3b1f92026103ad895b986d37129fa89be86e2e2b4bc",
+      "response_path": "family-fastapi-errors-bcf8b64c6329.json",
+      "status": "validated",
+      "references": {
+        "REAL-DEV-016": "ee5f3bbec513439db0b482caff8195ecbc29d96c66c4d12ecc25f7045e3da5f1",
+        "REAL-DEV-017": "ecff377606b6141ecb80aeafff6bf3489e6202add3f26197dbf05470238cf151",
+        "REAL-DEV-018": "d9730009c908a4ea2f0ef547f3b8775d438f8c9a085e447507d28926a3737ae0",
+        "REAL-DEV-019": "39a915b4926e822679ff1e0ac35d98fc75ec490e83813a0e25f8d2b048bcc499"
+      },
+      "documents": [
+        "fastapi--en--docs--tutorial--handling-errors.md",
+        "fastapi--en--docs--tutorial--response-status-code.md"
+      ],
+      "input_sha256": "34d39c8a66663630979da475d617be171bb685377f55ff93bfea86949d65f875",
+      "attempt_ids": [
+        "ad51d8759378494f8c9254a5b1e80cef"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-DEV-016",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-DEV-017",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-DEV-018",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-DEV-019",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        }
+      ],
+      "response_text_sha256": "913fe1e84342f7e0662e6919fd7731c4436e345cba123481df5061b67c64bcec"
+    },
+    {
+      "name": "family-pydantic-models",
+      "kind": "references",
+      "task_id": "ref-audit-family-pydantic-models-4f2067cb15fc",
+      "prompt_sha256": "4f2067cb15fcb73b76cb18f49db2fd9b0a49e0ab528fc91268f63be6c22f2a81",
+      "response_path": "family-pydantic-models-4f2067cb15fc.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-001": "7315f0030c72783f0fbafbc5f3c4698d2f8fc9d7c08231de5c13378a0a587e34",
+        "REAL-TEST-002": "e6dbce92219fef7329b9c4a6b0a30f297e429ccf18f33c287738cfd83fb380c4",
+        "REAL-TEST-003": "76f1aed2735453a380efa8688142e086a9ff4f1c8b70443fa310ff0f1f223ded",
+        "REAL-TEST-004": "dfe75074744ae3695f1aa2e6cbfc63d315d37d406c404507bd0d584870690ecc"
+      },
+      "documents": [
+        "pydantic-v1--usage--models.md",
+        "pydantic-v2--concepts--models.md"
+      ],
+      "input_sha256": "228608cc1a7f25c7f647d00174e866d7e00d23310983256f14b6cedd62c80ab9",
+      "attempt_ids": [
+        "e6f1497b579d46a2808f590f7f5a500b"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-001",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-002",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-003",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-004",
+          "verdict": "revise",
+          "issues": [
+            "Key point 2 (the flat-model example returns the same field dict for both methods) is not directly supported by the selected quotes: the quoted source only asserts user.model_dump() == {'id': 123, 'name': 'Jane Doe'} and never evaluates dict(user) in that example.",
+            "The only selected quote containing dict(user) is the nested/recursive sentence, so the flat-model equivalence must be inferred from the separate statement 'Either .model_dump() or dict(user) will provide a dict of fields', which shows parity but not an explicit flat-example equality assertion.",
+            "Line range 106-110 is contiguous, so the chosen quote technically covers the needed text, but it is long (about 260 characters) and could exceed the quote length limit if enforced."
+          ],
+          "recommendations": [
+            "Add or prefer a quote that explicitly shows the flat-example field dict with both access paths, e.g. the model_dump assertion plus the adjacent 'Either .model_dump() or dict(user) will provide a dict of fields' sentence, split into two short quotes.",
+            "If a 180-character limit is enforced, split the nested-model sentence so the dict(user) non-recursion clause and the .model_dump() recursion clause are each captured in a short quote."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "pydantic-v2--concepts--models.md",
+              "quote": "Either `.model_dump()` or `dict(user)` will provide a dict of fields, but `.model_dump()` can take numerous other"
+            },
+            {
+              "source_file": "pydantic-v2--concepts--models.md",
+              "quote": "arguments. (Note that `dict(user)` will not recursively convert nested models into dicts, but `.model_dump()` will.)"
+            },
+            {
+              "source_file": "pydantic-v2--concepts--models.md",
+              "quote": "assert user.model_dump() == {'id': 123, 'name': 'Jane Doe'}"
+            }
+          ]
+        }
+      ],
+      "response_text_sha256": "de6e9d522d6a9ca0385b9cbb981eed9da6a06d745702733e164787c8ff12c7f5"
+    },
+    {
+      "name": "family-pydantic-validators",
+      "kind": "references",
+      "task_id": "ref-audit-family-pydantic-validators-e13089d1836d",
+      "prompt_sha256": "e13089d1836d7817e27e12db31aa907d102c53516b9af69180284471816b2267",
+      "response_path": "family-pydantic-validators-e13089d1836d.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-006": "597d2f7480fca6bc62f44941962e5daeafb45ccd187659923a1318b5745ee78e",
+        "REAL-TEST-007": "b87b6d3faa856911b743182fe64732bbb427ea3c07a057599a04ba242ec80209",
+        "REAL-TEST-008": "d24f56690cb6bc5f18726afeba0aa4aebef2b93a431ac9daf25e4d682e4bf140",
+        "REAL-TEST-009": "cc754b3242977c923e6805ed6f734ded9df0a99cd801c03dc780aa2c67f7fe2c"
+      },
+      "documents": [
+        "pydantic-v1--usage--validators.md",
+        "pydantic-v2--concepts--validators.md"
+      ],
+      "input_sha256": "6461775c0d837145af1e24c9df9cd4552df8f726cc4798f4bfad74a613a8f2c0",
+      "attempt_ids": [
+        "f7eb5f0d58e64aa6bcee1f2a6c27ae35"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-006",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-007",
+          "verdict": "revise",
+          "issues": [
+            "The v1 selected quotes do not name the `always=True` argument; that form appears only in the unquoted paragraph saying 'otherwise with `always=True` *pydantic* would try to validate the default `None`', so the key points on v1 and on the v2 'closest behavior to `always=True`' claim are not directly evidenced.",
+            "The second v1 quote ('You'll often want to use this together with `pre`...') is about the pre flag, not about default values, so it is weak support for this question."
+          ],
+          "recommendations": [
+            "Replace the second v1 quote with the full 'Validate Always' passage so that `always=True` itself is shown, or keep it and note that `always=True` is shown only there.",
+            "Shorten the v2 quote if needed to stay within the character limit; the key sentence on `Field(validate_default=True)` is the essential one."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "pydantic-v1--usage--validators.md",
+              "quote": "You'll often want to use this together with `pre`, since otherwise with `always=True`\n*pydantic* would try to validate the default `None` which would cause an error."
+            },
+            {
+              "source_file": "pydantic-v2--concepts--validators.md",
+              "quote": "You can force them to run with `Field(validate_default=True)`. Setting `validate_default` to `True` has the closest behavior to using `always=True` in `validator` in Pydantic v1."
+            },
+            {
+              "source_file": "pydantic-v2--concepts--validators.md",
+              "quote": "However, you are generally better off using a `@model_validator(mode='before')` where the function is called before the inner validator is called."
+            }
+          ]
+        },
+        {
+          "id": "REAL-TEST-008",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-009",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        }
+      ],
+      "response_text_sha256": "b4583a532b2e04e56147203ad61722b42a415c19141cfa86294c815d5525bca7"
+    },
+    {
+      "name": "family-pydantic-serialization",
+      "kind": "references",
+      "task_id": "ref-audit-family-pydantic-serialization-f1ddf798a726",
+      "prompt_sha256": "f1ddf798a726c14d64d9d6dfcbbb8065a51d1ea42ccb684e5f72c6abba93976e",
+      "response_path": "family-pydantic-serialization-f1ddf798a726.json",
+      "status": "invalid_review_output",
+      "references": {
+        "REAL-TEST-011": "0010ec4d241fdd2f37a7b022e7de22aa182a07273273d0d317d6bdc994f42219",
+        "REAL-TEST-012": "0204672d5e7d930a583518d10daa8781b4a46048c0d169c8736a5fc96a6bcf76",
+        "REAL-TEST-013": "489c6ddb3a2412b94001bdd618d54b6e1ca9149b0a4e1a94f8a6eada91eb573a",
+        "REAL-TEST-014": "7e77e5b9d5cd33bb79193a08a162ce6c8ef123676b43a77c9f9b0d0ca405a86b"
+      },
+      "documents": [
+        "pydantic-v1--usage--exporting_models.md",
+        "pydantic-v2--concepts--serialization.md"
+      ],
+      "input_sha256": "31b66c1ed4fd1062a7049b65f3cb111eb8fb84cb745d5cd71bc51b818b0f8f82",
+      "attempt_ids": [
+        "9343786f6ef646df953579d398970f73"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-011",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-012",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-013",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-014",
+          "verdict": "revise",
+          "issues": [
+            "Selected quote for model_dump RootModel (lines 32-33) is cut mid-sentence ('This is also' without 'done recursively').",
+            "Key point 1 about dict(model)/iteration returning raw values and not converting sub-models has a sentence in the full source (lines 149-150) but no selected supporting quote for this clause.",
+            "The two selected quotes alone do not connect the RootModel statement to the 'dict(model)' section, so the evidence is weak."
+          ],
+          "recommendations": [
+            "Extend the model_dump quote to include the full sentence ending with 'This is also done recursively.'",
+            "Add a quote from the dict(model) and iteration section that states raw field values are returned and sub-models are not converted.",
+            "Optionally clarify in the question that 'dict(model)' means Python dict() conversion, not model.dict()."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "pydantic-v2--concepts--serialization.md",
+              "quote": "With this approach the raw field values are returned, so\nsub-models will not be converted to dictionaries."
+            },
+            {
+              "source_file": "pydantic-v2--concepts--serialization.md",
+              "quote": "Note also that [`RootModel`](models.md#rootmodel-and-custom-root-types) _does_ get converted to a dictionary with the key `'root'`."
+            },
+            {
+              "source_file": "pydantic-v2--concepts--serialization.md",
+              "quote": "and its subclasses will have the `root` field value dumped directly, without a wrapping dictionary. This is also\ndone recursively."
+            }
+          ]
+        }
+      ],
+      "response_text_sha256": "a32b59288182d719b65b3e59a69ac50b4c12297ca60cb5cd54e95740c0a85e6f"
+    },
+    {
+      "name": "family-pydantic-dataclasses",
+      "kind": "references",
+      "task_id": "ref-audit-family-pydantic-dataclasses-300dc473d3cf",
+      "prompt_sha256": "300dc473d3cfffd2ff13c9a9968f630492b6f8d2af2e8993d498174161bdd18f",
+      "response_path": "family-pydantic-dataclasses-300dc473d3cf.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-016": "502137359930bc33db981a884a402629fadb04a333d997d52e73c4c2ea3a3685",
+        "REAL-TEST-017": "d15adaa27ffc3a6f2021ee9a54d9777b79088efefc74e4327c4219cbd212de54",
+        "REAL-TEST-018": "a69181d224fb0b0c2f2d29e90ea24e11f21464c322b602eee24d7ca347039642",
+        "REAL-TEST-019": "8261fc2ea948c77474abb523385077d91f98f0901195af3d20adad317e16f772"
+      },
+      "documents": [
+        "pydantic-v2--concepts--dataclasses.md",
+        "pydantic-v2--concepts--type_adapter.md"
+      ],
+      "input_sha256": "a81e767ab28c56b1e6bf64ce1ec2471dcafc1dac7d887541ea818371e8f5add8",
+      "attempt_ids": [
+        "e7ea0ef8ea5848b0b4f5fa17dd374f9e"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-016",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-017",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-018",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-019",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        }
+      ],
+      "response_text_sha256": "aab457cfd3de405dacb4b9fe77f5545245894a8111a846ddbd64d2e59de31fa8"
+    },
+    {
+      "name": "family-fastapi-response",
+      "kind": "references",
+      "task_id": "ref-audit-family-fastapi-response-23549be8e3ae",
+      "prompt_sha256": "23549be8e3aeb2401f4d4f8125b59d01aa094ab1a606fd4637ce3ba2e76b7ab9",
+      "response_path": "family-fastapi-response-23549be8e3ae.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-021": "0654ff260d279fe472d85e51d0374c0711cfa091da0a289de9c3a480416003cb",
+        "REAL-TEST-022": "31f79f069a2b3383f65144abc3861cd26ac932dfcadc8a8f511315dbe4595e63",
+        "REAL-TEST-023": "2c52bef21f9fb971944b68b6036c701a6006b117bb34df30551b60a187951f1f",
+        "REAL-TEST-024": "53787d54891988339a9000a74331fe1cbf7c6e3dc479c5eed20f689dad22a0d8"
+      },
+      "documents": [
+        "fastapi--en--docs--tutorial--response-model.md",
+        "fastapi--en--docs--advanced--response-directly.md"
+      ],
+      "input_sha256": "f45b68d7f919c8d8e86c8e2c038a4c3edfd34d75e9c33b27e2ec5f8db2c6017f",
+      "attempt_ids": [
+        "6c419ab24632469aaea55646a2279edc"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-021",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-022",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-023",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-024",
+          "verdict": "revise",
+          "issues": [
+            "Key point 1 says filtering by return type or response model, but no selected quote supports it; line 242 attributes filtering to the output model.",
+            "The 'server error' wording comes from a bullet spanning lines 40-41, but the provided quotes stop at 'missing a field' and split mid-sentence.",
+            "The 'app code is broken' premise supporting 'not a conflict' is in the source but absent from the selected quotes."
+          ],
+          "recommendations": [
+            "Add the output-model filtering quote from lines 234 and 242 as selected evidence.",
+            "Replace the two truncated line-40 quotes with one quote that includes both 'app code is broken' and 'server error instead of returning incorrect data' (truncate if longer than 180 chars)."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "fastapi--en--docs--tutorial--response-model.md",
+              "quote": "Here, even though our *path operation function* is returning the same input user that contains the password:"
+            },
+            {
+              "source_file": "fastapi--en--docs--tutorial--response-model.md",
+              "quote": "So, **FastAPI** will take care of filtering out all the data that is not declared in the output model (using Pydantic)."
+            },
+            {
+              "source_file": "fastapi--en--docs--tutorial--response-model.md",
+              "quote": "If the data is invalid (e.g. you are missing a field), it means that *your* app code is broken, not returning what it should, and it will return a server error"
+            }
+          ]
+        }
+      ],
+      "response_text_sha256": "7b7e22411e42236e34a2767e3afeeb4410c0ad74a08af7e4880beb455f518a02"
+    },
+    {
+      "name": "family-fastapi-background",
+      "kind": "references",
+      "task_id": "ref-audit-family-fastapi-background-f55a4884349b",
+      "prompt_sha256": "f55a4884349bb8a808b996b748cda7fd25d0648e391e659062f6f2c2820d3f44",
+      "response_path": "family-fastapi-background-f55a4884349b.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-026": "5b9bdc73ec357a6b59cd5be0ec0109c9f5c100f68fb797e04d28402d0da44345",
+        "REAL-TEST-027": "1027f263035c1638a926b1b625e56003a5d52cb666c8dc6a44e310e6fac29082",
+        "REAL-TEST-028": "759d003bff9595a906cfdaa1376193ba5f629c940d5378cbec5cb144bc33a724",
+        "REAL-TEST-029": "eb98a08fa3f28fea950ef9f5306dafd4f185b1dd83ac3635f85bcf1faaa2f0ac"
+      },
+      "documents": [
+        "fastapi--en--docs--tutorial--background-tasks.md",
+        "fastapi--en--docs--advanced--events.md"
+      ],
+      "input_sha256": "82a916f024f36f45ee75c0d0d11c188e5d96901ec8419782f649611fba020ec2",
+      "attempt_ids": [
+        "cb7e1a199a774414a5239033783c7794"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-026",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-027",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-028",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-029",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        }
+      ],
+      "response_text_sha256": "01fdb77bfda544a2af3356c2b569e02fc0e313227b335272f30a63b899daa47d"
+    },
+    {
+      "name": "family-fastapi-security",
+      "kind": "references",
+      "task_id": "ref-audit-family-fastapi-security-683956baded9",
+      "prompt_sha256": "683956baded93956f4eae4ac24ce58fa7c856d49526787dbde477cc3c218cffa",
+      "response_path": "family-fastapi-security-683956baded9.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-031": "eabc9f9f91da458015fbf95e19a234ede646beabc36bcc44700a93b1d68cdfba",
+        "REAL-TEST-032": "d3013083c540bd88843675d7816e374174c4f5b7e3d5648ef3b1e2b9461828b5",
+        "REAL-TEST-033": "e713d82e94c94381ade498711bbd7d828e67eda0eb21f930e813c2a07d1081e0",
+        "REAL-TEST-034": "d533dd300464cdbc12bcd4f8e92031bcd96dfd254effdbcd7db5dbb34a491e3b"
+      },
+      "documents": [
+        "fastapi--en--docs--tutorial--security--first-steps.md",
+        "fastapi--en--docs--tutorial--security--simple-oauth2.md"
+      ],
+      "input_sha256": "3bdd5800edaf1386c9f0e057348a247657e9f042b6a54ed4ea3457648c1158fd",
+      "attempt_ids": [
+        "e31271ef13874449aa9a2cd4359dbd8f"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-031",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-032",
+          "verdict": "revise",
+          "issues": [
+            "The first key point claims tokenUrl '声明' the URL for submitting username/password, but the selected quote only says the client 'will use' that URL; the clarifying sentence (line 193) that tokenUrl does not create the endpoint but declares it is not quoted.",
+            "Cross-document use is genuine (first-steps for tokenUrl/Bearer header, simple-oauth2 for form fields), but the tokenUrl 'declares' claim needs the missing line.",
+            "Answer key omits that the token endpoint response must be JSON with access_token and token_type bearer, which connects the form request to the Bearer header use."
+          ],
+          "recommendations": [
+            "Replace or supplement the first-steps tokenUrl quote with the line starting 'This parameter doesn't create that endpoint / path operation, but declares'.",
+            "Optionally add a key point that the token response is JSON with access_token and token_type 'bearer'."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "fastapi--en--docs--tutorial--security--first-steps.md",
+              "quote": "This parameter doesn't create that endpoint / *path operation*, but declares that the URL `/token` will be the one that the client should use to get the token."
+            },
+            {
+              "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+              "quote": "OAuth2 specifies that when using the \"password flow\" (that we are using) the client/user must send a `username` and `password` fields as form data."
+            }
+          ]
+        },
+        {
+          "id": "REAL-TEST-033",
+          "verdict": "revise",
+          "issues": [
+            "The key point says OAuth2PasswordRequestForm does not force grant_type to be 'password', and the quoted line 122 says this. However, the key point does not state that the question assumes a switch, and the source indeed says 'If you need to enforce it, use OAuth2PasswordRequestFormStrict' (line 124).",
+            "The source does not state what happens to the grant_type field value specifically when Strict is used beyond enforcement; the answer key says only '强制校验', which matches.",
+            "The source does not describe the effect on the grant_type field under Strict. It only recommends switching classes, so the question's '针对 grant_type 字段会发生什么变化' is not fully answered; the answer key says only '换成 Strict' without saying that Strict validates the fixed value password."
+          ],
+          "recommendations": [
+            "Rephrase the second key point to '用 OAuth2PasswordRequestFormStrict 才会强制 grant_type 为固定值 password'. The source supports the fixed value only as a spec requirement (line 122).",
+            "Rename the question emphasis to '如何强制 grant_type' so that it matches the evidence."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+              "quote": "The OAuth2 spec actually *requires* a field `grant_type` with a fixed value of `password`, but `OAuth2PasswordRequestForm` doesn't enforce it."
+            },
+            {
+              "source_file": "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+              "quote": "If you need to enforce it, use `OAuth2PasswordRequestFormStrict` instead of `OAuth2PasswordRequestForm`."
+            }
+          ]
+        },
+        {
+          "id": "REAL-TEST-034",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        }
+      ],
+      "response_text_sha256": "64a5b6e715db67427523d4cad925d3df971511c98e8b4f631ee9f0721d2befda"
+    },
+    {
+      "name": "family-fastapi-middleware",
+      "kind": "references",
+      "task_id": "ref-audit-family-fastapi-middleware-9ccae30f4190",
+      "prompt_sha256": "9ccae30f419095582eff6b7b4ec14c8b52a4de0b03618eb91b8678b09f26c6e2",
+      "response_path": "family-fastapi-middleware-9ccae30f4190.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-036": "33c99f18f37d76168cf09992c65b8e41b405212bf3b229e84aadea2e45e38e5e",
+        "REAL-TEST-037": "5a05536dd9a07f6b75fc4efb20eed623972564c30b70971e54f1946a3dd25b20",
+        "REAL-TEST-038": "a54d4c8f370d1a224e4136ab28bbac7fd199bdd8153887b6e60823f97069c143",
+        "REAL-TEST-039": "2ca858657a974c48439de5db4090cfe2943f77e9669c549882e6b9aff1847470"
+      },
+      "documents": [
+        "fastapi--en--docs--tutorial--middleware.md",
+        "fastapi--en--docs--tutorial--cors.md"
+      ],
+      "input_sha256": "c0f5a9b392a20827b6d164bb28b81c8d63e8123abef8b80a884b3aca5c14678a",
+      "attempt_ids": [
+        "9703a5f541e942ffbba025348159ea5a"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-036",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-037",
+          "verdict": "revise",
+          "issues": [
+            "The 'together' framing is loose: CORS registration steps come only from cors.md, and expose_headers comes only from middleware.md. The evidence is split across files, but the synthesis claim itself is true.",
+            "CORS guide lists 'Create a list of allowed origins' and 'Add it as middleware' as steps, but the selected quotes skip 'Create a list of allowed origins'.",
+            "The selected middleware quote ('using the parameter `expose_headers`') is a fragment that omits 'add them to your CORS configurations'."
+          ],
+          "recommendations": [
+            "Use a fuller quote from middleware.md that shows custom headers must be added to CORS configuration via expose_headers.",
+            "Add cors.md's guidance to create a list of allowed origins as part of the registration step."
+          ],
+          "suggested_evidence": [
+            {
+              "source_file": "fastapi--en--docs--tutorial--middleware.md",
+              "quote": "you need to add them to your CORS configurations"
+            },
+            {
+              "source_file": "fastapi--en--docs--tutorial--cors.md",
+              "quote": "* Create a list of allowed origins (as strings)."
+            },
+            {
+              "source_file": "fastapi--en--docs--tutorial--cors.md",
+              "quote": "* Add it as a \"middleware\" to your **FastAPI** application."
+            }
+          ]
+        },
+        {
+          "id": "REAL-TEST-038",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        },
+        {
+          "id": "REAL-TEST-039",
+          "verdict": "pass",
+          "issues": [],
+          "recommendations": [],
+          "suggested_evidence": []
+        }
+      ],
+      "response_text_sha256": "8215916d1c7282a4278f8e4a9a78c8272f15b06325748236e198815ea203e416"
+    },
+    {
+      "name": "absence-dev-0",
+      "kind": "absence",
+      "task_id": "ref-audit-absence-dev-0-e054e0b9d025",
+      "prompt_sha256": "e054e0b9d025c93f1881f0b5e3869b5101147ac428ed397d5a498de30de382b5",
+      "response_path": "absence-dev-0-e054e0b9d025.json",
+      "status": "validated",
+      "references": {
+        "REAL-DEV-005": "b7d932871fdef49a1082152507f612b1fb835ab109e9972ee3db3c6aedceb49a",
+        "REAL-DEV-010": "02939941f121bc5e7199aabe906b9b1680b01f0375981f5292e7906041859f03",
+        "REAL-DEV-015": "03705b21b3f99cabd65dd14a47e4900d28148c50f046117253e58a1d317f7fdf",
+        "REAL-DEV-020": "8bb65d64e42562b143cfd9625b5b731688fa2f3777943d995837b65815badd4c"
+      },
+      "documents": [
+        "pydantic-v2--concepts--strict_mode.md",
+        "pydantic-v2--concepts--unions.md",
+        "pydantic-v2--concepts--fields.md",
+        "pydantic-v2--concepts--alias.md",
+        "fastapi--en--docs--tutorial--dependencies--index.md",
+        "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+        "fastapi--en--docs--tutorial--handling-errors.md",
+        "fastapi--en--docs--tutorial--response-status-code.md"
+      ],
+      "input_sha256": "8fdff95fb45628fad6b3a6b566f41ba0cbef76ac82a65ece3bd61585d2f15043",
+      "attempt_ids": [
+        "282aac5992404c0593d2aee80b468983"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-DEV-005",
+          "found_answer": false,
+          "explanation": "The strict_mode doc explains strict behavior and how to enable it, but gives no throughput measurements, production or otherwise, and no percentage drop vs. default mode.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-DEV-010",
+          "found_answer": false,
+          "explanation": "alias.md and fields.md document alias mechanisms and precedence but contain no benchmark of per-call nanosecond cost on a ten-field model.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-DEV-015",
+          "found_answer": false,
+          "explanation": "The sub-dependencies doc says FastAPI caches a sub-dependency per request, but reports no production throughput or latency numbers.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-DEV-020",
+          "found_answer": false,
+          "explanation": "handling-errors.md describes raising and handling HTTPException but gives no production latency measurements.",
+          "evidence": []
+        }
+      ],
+      "response_text_sha256": "03f8ecdd712e0bc739e1b9d1d9e4395ad59b2e70343091787357160ee9e9944b"
+    },
+    {
+      "name": "absence-test-0",
+      "kind": "absence",
+      "task_id": "ref-audit-absence-test-0-8af26684231d",
+      "prompt_sha256": "8af26684231ddb56e7c7eb4dec172e19edf96b22eb7f537822d95384a1935f0b",
+      "response_path": "absence-test-0-8af26684231d.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-005": "16973b8d7b47e5bb1161980bac44ee8be725259d8939c9e49b74e8ddbc89ac49",
+        "REAL-TEST-010": "9507762dde58e6c419aa87a1c885428d84f9b9edae701cd67c3f4c04abf4f7bd",
+        "REAL-TEST-015": "40181d21139c3dc85b92f852a63577c8c6a5dcab6efd91762333caa4e0382a6e",
+        "REAL-TEST-020": "f234ff9704bbcc76185a82565be76cd1ceb3cca300e1ec381182686708ce9a5a",
+        "REAL-TEST-025": "138bd2bd1eda5c407d5eeae2dd9f4754f1a56d911ea59a7aa2359081b89e6f7d",
+        "REAL-TEST-030": "8b4e8b0c1189436648dc9266cb937828af53446c544056a1398e278a28002469",
+        "REAL-TEST-035": "41d411146151445084bd4e631c73f74dcf10eaff2cfcb14266bbd39c9d01f094",
+        "REAL-TEST-040": "4ff3dc7ae7eec19cd8fe1413f827bca94414a9db3fbba25143f4a965b705cb71"
+      },
+      "documents": [
+        "pydantic-v1--usage--models.md",
+        "pydantic-v2--concepts--models.md",
+        "pydantic-v1--usage--validators.md",
+        "pydantic-v2--concepts--validators.md"
+      ],
+      "input_sha256": "7b44e6b539979240e4d8ee2cb8cba03425f4f40301ea68a16d3b3346bac3a28c",
+      "attempt_ids": [
+        "b394cd77a86543518cc0652661556bbb"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-005",
+          "found_answer": false,
+          "explanation": "Sources are pydantic model/validator docs for v1.10.17 and v2.8.2. They describe API usage only and contain no benchmark of instantiation or model_dump()/dict() throughput or memory under production concurrency.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-010",
+          "found_answer": false,
+          "explanation": "The v2.8.2 validators doc explains wrap/plain validator behavior and ordering but gives no measured throughput or latency comparison. It lacks any benchmark on a production workload.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-015",
+          "found_answer": false,
+          "explanation": "The v2.8.2 models doc mentions model_dump_json() as a method but contains no speedup ratio vs json.dumps for datetime models and no peak memory figures.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-020",
+          "found_answer": false,
+          "explanation": "No source mentions TypeAdapter at all, so no measured effect of reusing an adapter vs creating one per call.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-025",
+          "found_answer": false,
+          "explanation": "No FastAPI source appears in this shard. The docs only mention FastAPI incidentally (e.g. 'libraries like FastAPI') and give no response_model vs Response latency/throughput measurements.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-030",
+          "found_answer": false,
+          "explanation": "No FastAPI source appears in this shard. BackgroundTasks, Celery and any production latency/throughput comparison are absent.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-035",
+          "found_answer": false,
+          "explanation": "No FastAPI source appears in this shard. OAuth2PasswordBearer and any RPS overhead measurement for authenticated endpoints are absent.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-040",
+          "found_answer": false,
+          "explanation": "No FastAPI source appears in this shard. HTTP middleware and any per-request latency overhead in milliseconds are absent.",
+          "evidence": []
+        }
+      ],
+      "response_text_sha256": "549060a61fc3df1bd47b8a537f865697889de64e66cb1dd594ef657380ea498a"
+    },
+    {
+      "name": "absence-test-1",
+      "kind": "absence",
+      "task_id": "ref-audit-absence-test-1-fded6ff1ca2a",
+      "prompt_sha256": "fded6ff1ca2aa9fa846448f01fc7eba6a5b7b9695fd5f88fe9110d7c376471ad",
+      "response_path": "absence-test-1-fded6ff1ca2a.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-005": "16973b8d7b47e5bb1161980bac44ee8be725259d8939c9e49b74e8ddbc89ac49",
+        "REAL-TEST-010": "9507762dde58e6c419aa87a1c885428d84f9b9edae701cd67c3f4c04abf4f7bd",
+        "REAL-TEST-015": "40181d21139c3dc85b92f852a63577c8c6a5dcab6efd91762333caa4e0382a6e",
+        "REAL-TEST-020": "f234ff9704bbcc76185a82565be76cd1ceb3cca300e1ec381182686708ce9a5a",
+        "REAL-TEST-025": "138bd2bd1eda5c407d5eeae2dd9f4754f1a56d911ea59a7aa2359081b89e6f7d",
+        "REAL-TEST-030": "8b4e8b0c1189436648dc9266cb937828af53446c544056a1398e278a28002469",
+        "REAL-TEST-035": "41d411146151445084bd4e631c73f74dcf10eaff2cfcb14266bbd39c9d01f094",
+        "REAL-TEST-040": "4ff3dc7ae7eec19cd8fe1413f827bca94414a9db3fbba25143f4a965b705cb71"
+      },
+      "documents": [
+        "pydantic-v1--usage--exporting_models.md",
+        "pydantic-v2--concepts--serialization.md",
+        "pydantic-v2--concepts--dataclasses.md",
+        "pydantic-v2--concepts--type_adapter.md",
+        "fastapi--en--docs--tutorial--response-model.md",
+        "fastapi--en--docs--advanced--response-directly.md",
+        "fastapi--en--docs--tutorial--background-tasks.md",
+        "fastapi--en--docs--advanced--events.md",
+        "fastapi--en--docs--tutorial--security--first-steps.md",
+        "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+        "fastapi--en--docs--tutorial--middleware.md"
+      ],
+      "input_sha256": "40b908d64bc05ce74b6326f451f7b1b199458fc4f1a3b001ea9750824382a70c",
+      "attempt_ids": [
+        "b6c2c1ccffa74e02aa2ae15b0b3271f5"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-005",
+          "found_answer": false,
+          "explanation": "Sources describe model_dump/dict APIs only; no throughput, concurrency, or memory benchmarks for v1.10.17 or v2.8.2.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-010",
+          "found_answer": false,
+          "explanation": "No wrap-vs-plain validator benchmark data in this shard; the serialization doc only covers WrapSerializer usage, not performance.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-015",
+          "found_answer": false,
+          "explanation": "The serialization doc shows model_dump_json output for datetime but gives no speedup factor, benchmark, or memory peak versus json.dumps.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-020",
+          "found_answer": false,
+          "explanation": "type_adapter.md only says TypeAdapter creation has 'non-trivial overhead' and recommends reuse; this is guidance, not a measured latency/throughput improvement.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-025",
+          "found_answer": false,
+          "explanation": "response-model.md and response-directly.md explain filtering and direct Response behavior but contain no latency or throughput measurements.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-030",
+          "found_answer": false,
+          "explanation": "Background-tasks doc only qualitatively caveats heavy computation vs. Celery; no measured latency or throughput comparison.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-035",
+          "found_answer": false,
+          "explanation": "Security docs describe OAuth2PasswordBearer usage and 401 behavior; no RPS benchmarks or auth overhead numbers.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-040",
+          "found_answer": false,
+          "explanation": "middleware.md shows a tutorial X-Process-Time example but provides no measured per-request latency overhead.",
+          "evidence": []
+        }
+      ],
+      "response_text_sha256": "2bcedf2b286e5922b8640146123c455f0e3208655391319bdbb398c4a37d419c"
+    },
+    {
+      "name": "absence-test-2",
+      "kind": "absence",
+      "task_id": "ref-audit-absence-test-2-01afba33eee0",
+      "prompt_sha256": "01afba33eee07366db786bd02fee5ff4d0b4f565ec1964314b5b5b000331afe1",
+      "response_path": "absence-test-2-01afba33eee0.json",
+      "status": "validated",
+      "references": {
+        "REAL-TEST-005": "16973b8d7b47e5bb1161980bac44ee8be725259d8939c9e49b74e8ddbc89ac49",
+        "REAL-TEST-010": "9507762dde58e6c419aa87a1c885428d84f9b9edae701cd67c3f4c04abf4f7bd",
+        "REAL-TEST-015": "40181d21139c3dc85b92f852a63577c8c6a5dcab6efd91762333caa4e0382a6e",
+        "REAL-TEST-020": "f234ff9704bbcc76185a82565be76cd1ceb3cca300e1ec381182686708ce9a5a",
+        "REAL-TEST-025": "138bd2bd1eda5c407d5eeae2dd9f4754f1a56d911ea59a7aa2359081b89e6f7d",
+        "REAL-TEST-030": "8b4e8b0c1189436648dc9266cb937828af53446c544056a1398e278a28002469",
+        "REAL-TEST-035": "41d411146151445084bd4e631c73f74dcf10eaff2cfcb14266bbd39c9d01f094",
+        "REAL-TEST-040": "4ff3dc7ae7eec19cd8fe1413f827bca94414a9db3fbba25143f4a965b705cb71"
+      },
+      "documents": [
+        "fastapi--en--docs--tutorial--cors.md"
+      ],
+      "input_sha256": "b84684d06824c5c3fd27cbbd235bc3eb211f70526655b16341ad46f7b0985e41",
+      "attempt_ids": [
+        "31abfe5dda054cab9e1347ecaa99881d"
+      ],
+      "feedback": [
+        {
+          "id": "REAL-TEST-005",
+          "found_answer": false,
+          "explanation": "This shard contains only a FastAPI CORS docs page. It gives no pydantic throughput or memory measurements for BaseModel instantiation, model_dump(), or dict().",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-010",
+          "found_answer": false,
+          "explanation": "No pydantic content or validator benchmarks appear in this shard. The only source is FastAPI CORS documentation.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-015",
+          "found_answer": false,
+          "explanation": "No model_dump_json or datetime serialization benchmarks appear in this shard. It also has no memory-peak data.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-020",
+          "found_answer": false,
+          "explanation": "TypeAdapter reuse is not discussed and no measurable throughput or latency data is provided.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-025",
+          "found_answer": false,
+          "explanation": "This shard has no benchmark comparing response_model filtering with direct Response returns.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-030",
+          "found_answer": false,
+          "explanation": "BackgroundTasks and Celery are not discussed, and there are no latency or throughput measurements.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-035",
+          "found_answer": false,
+          "explanation": "OAuth2PasswordBearer is not mentioned, and there are no RPS numbers for authenticated versus unauthenticated endpoints.",
+          "evidence": []
+        },
+        {
+          "id": "REAL-TEST-040",
+          "found_answer": false,
+          "explanation": "The CORS source covers CORSMiddleware configuration only. It gives no per-request latency measurements for adding HTTP middleware.",
+          "evidence": []
+        }
+      ],
+      "response_text_sha256": "ae9181503bbb274fd9ca834727016c4b068ecd5dd6e78dd8cb1ecd295e058b58"
+    }
+  ],
+  "absence_audit": {
+    "dev": {
+      "covered_sources": [
+        "pydantic-v2--concepts--strict_mode.md",
+        "pydantic-v2--concepts--unions.md",
+        "pydantic-v2--concepts--fields.md",
+        "pydantic-v2--concepts--alias.md",
+        "fastapi--en--docs--tutorial--dependencies--index.md",
+        "fastapi--en--docs--tutorial--dependencies--sub-dependencies.md",
+        "fastapi--en--docs--tutorial--handling-errors.md",
+        "fastapi--en--docs--tutorial--response-status-code.md"
+      ],
+      "task_ids": [
+        "ref-audit-absence-dev-0-e054e0b9d025"
+      ],
+      "conclusions": {
+        "REAL-DEV-005": false,
+        "REAL-DEV-010": false,
+        "REAL-DEV-015": false,
+        "REAL-DEV-020": false
+      }
+    },
+    "test": {
+      "covered_sources": [
+        "pydantic-v1--usage--models.md",
+        "pydantic-v2--concepts--models.md",
+        "pydantic-v1--usage--validators.md",
+        "pydantic-v2--concepts--validators.md",
+        "pydantic-v1--usage--exporting_models.md",
+        "pydantic-v2--concepts--serialization.md",
+        "pydantic-v2--concepts--dataclasses.md",
+        "pydantic-v2--concepts--type_adapter.md",
+        "fastapi--en--docs--tutorial--response-model.md",
+        "fastapi--en--docs--advanced--response-directly.md",
+        "fastapi--en--docs--tutorial--background-tasks.md",
+        "fastapi--en--docs--advanced--events.md",
+        "fastapi--en--docs--tutorial--security--first-steps.md",
+        "fastapi--en--docs--tutorial--security--simple-oauth2.md",
+        "fastapi--en--docs--tutorial--middleware.md",
+        "fastapi--en--docs--tutorial--cors.md"
+      ],
+      "task_ids": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "conclusions": {
+        "REAL-TEST-005": false,
+        "REAL-TEST-010": false,
+        "REAL-TEST-015": false,
+        "REAL-TEST-020": false,
+        "REAL-TEST-025": false,
+        "REAL-TEST-030": false,
+        "REAL-TEST-035": false,
+        "REAL-TEST-040": false
+      }
+    }
+  },
+  "reviews": [
+    {
+      "id": "REAL-DEV-001",
+      "reference_sha256": "ea2633f00f55c2d0a029830b2504072d9ac2de7d7d9b5917e8bf2b93471b7015",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-coercion-f4a56640ec33"
+      ],
+      "codex_adjudication": "Question scope, reference points and literal supporting passages were checked; no unresolved substantive issue was found."
+    },
+    {
+      "id": "REAL-DEV-002",
+      "reference_sha256": "275c10fee471d5f953a4ee883dae970644320a90c0653b060fd93a4d9efbd686",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-coercion-f4a56640ec33"
+      ],
+      "codex_adjudication": "The complete quoted exactness list explicitly says highest-to-lowest and places strict above lax. Multiline quotes are permitted and literal-validated. The question now explicitly requests input-type and Python/JSON distinctions."
+    },
+    {
+      "id": "REAL-DEV-003",
+      "reference_sha256": "e4840001c996d15ace78a09130898fdd66ec2c97d1ee48d4b21def857bea7cdf",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-coercion-f4a56640ec33"
+      ],
+      "codex_adjudication": "The quoted UUID type error establishes the required Python instance type; the neighboring UUID-specific sentence explicitly allows JSON strings. Source statements are interpreted semantically, not by identical wording."
+    },
+    {
+      "id": "REAL-DEV-004",
+      "reference_sha256": "e75dcccd39ed43caa253e5d1828dd2d682bde415292de89cacd19de0ab31d9a6",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-coercion-f4a56640ec33"
+      ],
+      "codex_adjudication": "Added the explicit Union[int,str] declaration. The selected code shows the left-to-right int result; the documented exact-type rule establishes the smart str result for these primitive types. The nearby prose has a 123/456 typo. The reviewer's three-quote limit applies to its suggestions, not dataset gold units."
+    },
+    {
+      "id": "REAL-DEV-005",
+      "reference_sha256": "b7d932871fdef49a1082152507f612b1fb835ab109e9972ee3db3c6aedceb49a",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-dev-0-e054e0b9d025"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-DEV-006",
+      "reference_sha256": "d876254ea3bdb7418677d6f7732d4e6b5554f582de9e7f1e440d64b80d3f8ae3",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-fields-18b83e8db8d0"
+      ],
+      "codex_adjudication": "Question scope, reference points and literal supporting passages were checked; no unresolved substantive issue was found."
+    },
+    {
+      "id": "REAL-DEV-007",
+      "reference_sha256": "2226a8b1b633a3b837179b7c249cd60d9a65a90732ce7281531ecbc101c56f4e",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-fields-18b83e8db8d0"
+      ],
+      "codex_adjudication": "Replaced the weak cross-document question: AliasChoices input alternatives come from alias.md; VSCode initializer-signature limitations come from fields.md. fields.md contains no AliasChoices example. The question does not request the editor-signature workaround."
+    },
+    {
+      "id": "REAL-DEV-008",
+      "reference_sha256": "190dea5afbf692f967196a905d9bae8586dfbed4313b49d758498912edb73f10",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-fields-18b83e8db8d0"
+      ],
+      "codex_adjudication": "Question scope, reference points and literal supporting passages were checked; no unresolved substantive issue was found."
+    },
+    {
+      "id": "REAL-DEV-009",
+      "reference_sha256": "e0f5a9c47e4aade6399e336e78e2d8d282f79096bec2de3e2361c52d0a95bb43",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-fields-18b83e8db8d0"
+      ],
+      "codex_adjudication": "Consolidated overlapping gold and made simultaneous-parameter conditions explicit. Field(alias=...) is schematic prose, not a claim that an ellipsis is a valid alias. The reviewer's alleged required positional argument is not a documented restriction."
+    },
+    {
+      "id": "REAL-DEV-010",
+      "reference_sha256": "02939941f121bc5e7199aabe906b9b1680b01f0375981f5292e7906041859f03",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-dev-0-e054e0b9d025"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-DEV-011",
+      "reference_sha256": "31750a87a238ba67bd0a45bbfe512d3f22cd906c584581af218ca0ddf211056f",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-dependencies-b0de7d7e8af0"
+      ],
+      "codex_adjudication": "The source only gives explicit numeric defaults for skip and limit. Narrowed the question to ask those defaults, rather than requiring an unshown default for q."
+    },
+    {
+      "id": "REAL-DEV-012",
+      "reference_sha256": "e42b42aadf77b7155bee0dd4a9a78e82fe4420124d53c810ab3dbb36b74201de",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-dependencies-b0de7d7e8af0"
+      ],
+      "codex_adjudication": "Added the Depends declaration and outermost-dependency passages, supplementing the function-parameter and sub-dependency resolution passages."
+    },
+    {
+      "id": "REAL-DEV-013",
+      "reference_sha256": "29ba43ccdf78e0bda309039bae341181983dbfece5ec300df8e44e1338ef5a62",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-dependencies-b0de7d7e8af0"
+      ],
+      "codex_adjudication": "Added the explicit per-request cache and passing-to-dependants sentence. The inline use_cache=False declaration is present without expanding external code includes."
+    },
+    {
+      "id": "REAL-DEV-014",
+      "reference_sha256": "d3b1eb6318144313f52af0e43afe636eb88d248ef59512be24455cd793e44846",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-dependencies-b0de7d7e8af0"
+      ],
+      "codex_adjudication": "The task concerns coexisting current forms, not a historical minimum-version requirement. Removed the unnecessary historical-version scoring point. A 0.95.0 introduction and 0.95.1 upgrade recommendation are different statements, not an API contradiction."
+    },
+    {
+      "id": "REAL-DEV-015",
+      "reference_sha256": "03705b21b3f99cabd65dd14a47e4900d28148c50f046117253e58a1d317f7fdf",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-dev-0-e054e0b9d025"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-DEV-016",
+      "reference_sha256": "ee5f3bbec513439db0b482caff8195ecbc29d96c66c4d12ecc25f7045e3da5f1",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-errors-bcf8b64c6329"
+      ],
+      "codex_adjudication": "Question scope, reference points and literal supporting passages were checked; no unresolved substantive issue was found."
+    },
+    {
+      "id": "REAL-DEV-017",
+      "reference_sha256": "ecff377606b6141ecb80aeafff6bf3489e6202add3f26197dbf05470238cf151",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-errors-bcf8b64c6329"
+      ],
+      "codex_adjudication": "Expanded the status_code documentation and utility-exception passages so the declared-status and immediate-error paths are both grounded."
+    },
+    {
+      "id": "REAL-DEV-018",
+      "reference_sha256": "d9730009c908a4ea2f0ef547f3b8775d438f8c9a085e447507d28926a3737ae0",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-errors-bcf8b64c6329"
+      ],
+      "codex_adjudication": "Added the logging statement, 500 client response and internal-information limitation as separate supported units."
+    },
+    {
+      "id": "REAL-DEV-019",
+      "reference_sha256": "39a915b4926e822679ff1e0ac35d98fc75ec490e83813a0e25f8d2b048bcc499",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-errors-bcf8b64c6329"
+      ],
+      "codex_adjudication": "Selected the complete JSON-able detail difference, Starlette handler recommendation, reason for catching internal exceptions and the renamed import."
+    },
+    {
+      "id": "REAL-DEV-020",
+      "reference_sha256": "8bb65d64e42562b143cfd9625b5b731688fa2f3777943d995837b65815badd4c",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-dev-0-e054e0b9d025"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-TEST-001",
+      "reference_sha256": "7315f0030c72783f0fbafbc5f3c4698d2f8fc9d7c08231de5c13378a0a587e34",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-models-4f2067cb15fc"
+      ],
+      "codex_adjudication": "Replaced the integer-coercion question, which was too similar to a dev question, with explicit-field tracking via __fields_set__. Type/language/family counts remain unchanged before any paid held-out run."
+    },
+    {
+      "id": "REAL-TEST-002",
+      "reference_sha256": "e6dbce92219fef7329b9c4a6b0a30f297e429ccf18f33c287738cfd83fb380c4",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-models-4f2067cb15fc"
+      ],
+      "codex_adjudication": "Added both versions' BaseModel inheritance statements and output-side guarantees. The output-model/output wording distinction does not change the shared claim."
+    },
+    {
+      "id": "REAL-TEST-003",
+      "reference_sha256": "983c7a29cbae9a6086bee2374fc96fa8a2c6585a4a5675c0cd9698d735265d2e",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-models-4f2067cb15fc"
+      ],
+      "codex_adjudication": "Made arbitrary-class/ORM scope explicit. Split the GetterDict source into reachable semantic units without losing the dictionary-interface or getter_dict configuration facts."
+    },
+    {
+      "id": "REAL-TEST-004",
+      "reference_sha256": "dfe75074744ae3695f1aa2e6cbfc63d315d37d406c404507bd0d584870690ecc",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-models-4f2067cb15fc"
+      ],
+      "codex_adjudication": "Corrected model.dump to model_dump. The assertion and the statement that either API provides a field dictionary jointly support flat-model parity. The 180-character limit constrains reviewer suggestions, not gold excerpts."
+    },
+    {
+      "id": "REAL-TEST-005",
+      "reference_sha256": "16973b8d7b47e5bb1161980bac44ee8be725259d8939c9e49b74e8ddbc89ac49",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-TEST-006",
+      "reference_sha256": "597d2f7480fca6bc62f44941962e5daeafb45ccd187659923a1318b5745ee78e",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-validators-e13089d1836d"
+      ],
+      "codex_adjudication": "Added the second-argument and signature-extra passages. The source explicitly says the second argument is always the field value, contrary to the initial reviewer's concern."
+    },
+    {
+      "id": "REAL-TEST-007",
+      "reference_sha256": "b87b6d3faa856911b743182fe64732bbb427ea3c07a057599a04ba242ec80209",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-validators-e13089d1836d"
+      ],
+      "codex_adjudication": "Selected the v1 default/always=True passages and the full v2 default-validation paragraph. always=True is literally present in the selected v1 text; the reviewer's claim that it is absent is rejected."
+    },
+    {
+      "id": "REAL-TEST-008",
+      "reference_sha256": "d24f56690cb6bc5f18726afeba0aa4aebef2b93a431ac9daf25e4d682e4bf140",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-validators-e13089d1836d"
+      ],
+      "codex_adjudication": "Selected the complete validator-order sentence and the single-PlainValidator condition; the shorter units fit the actual chunk boundaries."
+    },
+    {
+      "id": "REAL-TEST-009",
+      "reference_sha256": "cc754b3242977c923e6805ed6f734ded9df0a99cd801c03dc780aa2c67f7fe2c",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-validators-e13089d1836d"
+      ],
+      "codex_adjudication": "Added the v2 class-method statement and recommended decorator order for type checking, matching the requested comparison."
+    },
+    {
+      "id": "REAL-TEST-010",
+      "reference_sha256": "9507762dde58e6c419aa87a1c885428d84f9b9edae701cd67c3f4c04abf4f7bd",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-TEST-011",
+      "reference_sha256": "0010ec4d241fdd2f37a7b022e7de22aa182a07273273d0d317d6bdc994f42219",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-serialization-f1ddf798a726"
+      ],
+      "codex_adjudication": "Removed an unrequested dumps_kwargs point; the question only asks where encoder is passed."
+    },
+    {
+      "id": "REAL-TEST-012",
+      "reference_sha256": "0204672d5e7d930a583518d10daa8781b4a46048c0d169c8736a5fc96a6bcf76",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-serialization-f1ddf798a726"
+      ],
+      "codex_adjudication": "Selected both API headings, both recursive-dump statements and both raw dict(model) statements."
+    },
+    {
+      "id": "REAL-TEST-013",
+      "reference_sha256": "489c6ddb3a2412b94001bdd618d54b6e1ca9149b0a4e1a94f8a6eada91eb573a",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-serialization-f1ddf798a726"
+      ],
+      "codex_adjudication": "Clarified that the when_used default refers to PlainSerializer/WrapSerializer, separately from the all-fields field_serializer argument."
+    },
+    {
+      "id": "REAL-TEST-014",
+      "reference_sha256": "640f4b5a1cdff2010e37216e2d7c23d99ba68975939f7acb728b814d3acd6e9d",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-serialization-f1ddf798a726"
+      ],
+      "codex_adjudication": "Completed the RootModel recursive-dump statement and added the raw-value/non-recursive dict(model) passage."
+    },
+    {
+      "id": "REAL-TEST-015",
+      "reference_sha256": "40181d21139c3dc85b92f852a63577c8c6a5dcab6efd91762333caa4e0382a6e",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-TEST-016",
+      "reference_sha256": "502137359930bc33db981a884a402629fadb04a333d997d52e73c4c2ea3a3685",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-dataclasses-300dc473d3cf"
+      ],
+      "codex_adjudication": "Completed the config/model_config sentence instead of quoting fragments that stop before the comparison."
+    },
+    {
+      "id": "REAL-TEST-017",
+      "reference_sha256": "d15adaa27ffc3a6f2021ee9a54d9777b79088efefc74e4327c4219cbd212de54",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-dataclasses-300dc473d3cf"
+      ],
+      "codex_adjudication": "Reworked the cross-document question to require dataclass wrapping and the separate TypeAdapter reuse recommendation. No quantified performance improvement is inferred."
+    },
+    {
+      "id": "REAL-TEST-018",
+      "reference_sha256": "a69181d224fb0b0c2f2d29e90ea24e11f21464c322b602eee24d7ca347039642",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-dataclasses-300dc473d3cf"
+      ],
+      "codex_adjudication": "Selected the complete bytes/str return-type and backwards-compatibility explanation."
+    },
+    {
+      "id": "REAL-TEST-019",
+      "reference_sha256": "8261fc2ea948c77474abb523385077d91f98f0901195af3d20adad317e16f772",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-pydantic-dataclasses-300dc473d3cf"
+      ],
+      "codex_adjudication": "Narrowed direct adapter operations to validation and JSON-schema generation, the operations actually stated by the source."
+    },
+    {
+      "id": "REAL-TEST-020",
+      "reference_sha256": "f234ff9704bbcc76185a82565be76cd1ceb3cca300e1ec381182686708ce9a5a",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-TEST-021",
+      "reference_sha256": "0654ff260d279fe472d85e51d0374c0711cfa091da0a289de9c3a480416003cb",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-response-23549be8e3ae"
+      ],
+      "codex_adjudication": "Question scope, reference points and literal supporting passages were checked; no unresolved substantive issue was found."
+    },
+    {
+      "id": "REAL-TEST-022",
+      "reference_sha256": "31f79f069a2b3383f65144abc3861cd26ac932dfcadc8a8f511315dbe4595e63",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-response-23549be8e3ae"
+      ],
+      "codex_adjudication": "Clarified the question and selected default jsonable_encoder/JSONResponse processing, output-model filtering and direct Response pass-through."
+    },
+    {
+      "id": "REAL-TEST-023",
+      "reference_sha256": "2c52bef21f9fb971944b68b6036c701a6006b117bb34df30551b60a187951f1f",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-response-23549be8e3ae"
+      ],
+      "codex_adjudication": "Question scope, reference points and literal supporting passages were checked; no unresolved substantive issue was found."
+    },
+    {
+      "id": "REAL-TEST-024",
+      "reference_sha256": "27ac435c45c55e6d764d001a8438b5f9dea9a53127761372ccf45f77e43c4330",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-response-23549be8e3ae"
+      ],
+      "codex_adjudication": "Selected separate reachable units for invalid data, app-code error and server error, plus pass-through and no automatic validation for direct Response. The key concerns validation, not a claim that filtering causes the error."
+    },
+    {
+      "id": "REAL-TEST-025",
+      "reference_sha256": "138bd2bd1eda5c407d5eeae2dd9f4754f1a56d911ea59a7aa2359081b89e6f7d",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-TEST-026",
+      "reference_sha256": "5b9bdc73ec357a6b59cd5be0ec0109c9f5c100f68fb797e04d28402d0da44345",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-background-f55a4884349b"
+      ],
+      "codex_adjudication": "Completed the re-export origin and singular/plural BackgroundTask naming explanation."
+    },
+    {
+      "id": "REAL-TEST-027",
+      "reference_sha256": "1027f263035c1638a926b1b625e56003a5d52cb666c8dc6a44e310e6fac29082",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-background-f55a4884349b"
+      ],
+      "codex_adjudication": "Aligned cleanup wording with after request handling, immediately before shutdown. Background tasks run after returning a response."
+    },
+    {
+      "id": "REAL-TEST-028",
+      "reference_sha256": "759d003bff9595a906cfdaa1376193ba5f629c940d5378cbec5cb144bc33a724",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-background-f55a4884349b"
+      ],
+      "codex_adjudication": "Question scope, reference points and literal supporting passages were checked; no unresolved substantive issue was found."
+    },
+    {
+      "id": "REAL-TEST-029",
+      "reference_sha256": "eb98a08fa3f28fea950ef9f5306dafd4f185b1dd83ac3635f85bcf1faaa2f0ac",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-background-f55a4884349b"
+      ],
+      "codex_adjudication": "Selected the explicit deprecated-alternative heading and lifespan-or-events warning; removed an unnecessary registration-possibility claim."
+    },
+    {
+      "id": "REAL-TEST-030",
+      "reference_sha256": "8b4e8b0c1189436648dc9266cb937828af53446c544056a1398e278a28002469",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-TEST-031",
+      "reference_sha256": "eabc9f9f91da458015fbf95e19a234ede646beabc36bcc44700a93b1d68cdfba",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-security-683956baded9"
+      ],
+      "codex_adjudication": "Removed the unrequested extra guarantee about token parameter type; the question only asks the missing-header behavior."
+    },
+    {
+      "id": "REAL-TEST-032",
+      "reference_sha256": "f349e62eb3dcd30bc92c749a0c1ca39d6cac6d0376fde642724e16576164336a",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-security-683956baded9"
+      ],
+      "codex_adjudication": "Added the endpoint-declaration, fixed form names and Bearer-header passages. Endpoint creation is not attributed to tokenUrl; token-response field details are outside the question's stated scope."
+    },
+    {
+      "id": "REAL-TEST-033",
+      "reference_sha256": "883311409dc38eac2ce447ef585fabd4a6a8365f895a5e66606ed484658d0fe1",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-security-683956baded9"
+      ],
+      "codex_adjudication": "Made the enforced grant_type=password behavior explicit for OAuth2PasswordRequestFormStrict."
+    },
+    {
+      "id": "REAL-TEST-034",
+      "reference_sha256": "d533dd300464cdbc12bcd4f8e92031bcd96dfd254effdbcd7db5dbb34a491e3b",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-security-683956baded9"
+      ],
+      "codex_adjudication": "Made optional scope input and its parsed scopes output relationship explicit, with both full supporting sentences."
+    },
+    {
+      "id": "REAL-TEST-035",
+      "reference_sha256": "41d411146151445084bd4e631c73f74dcf10eaff2cfcb14266bbd39c9d01f094",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    },
+    {
+      "id": "REAL-TEST-036",
+      "reference_sha256": "33c99f18f37d76168cf09992c65b8e41b405212bf3b229e84aadea2e45e38e5e",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-middleware-9ccae30f4190"
+      ],
+      "codex_adjudication": "Selected both dependency-exit and background-task timing sentences."
+    },
+    {
+      "id": "REAL-TEST-037",
+      "reference_sha256": "1b7e25b7c0d170641252be9a48434a9131c43454ff5e92148a4057ce9c166153",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-middleware-9ccae30f4190"
+      ],
+      "codex_adjudication": "Added allowed-origin setup and explicit middleware registration. Used separate reachable expose_headers and CORS-configuration units instead of a long HTML-containing passage that crosses a chunk boundary."
+    },
+    {
+      "id": "REAL-TEST-038",
+      "reference_sha256": "a54d4c8f370d1a224e4136ab28bbac7fd199bdd8153887b6e60823f97069c143",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-middleware-9ccae30f4190"
+      ],
+      "codex_adjudication": "Selected API-labelled defaults for allow_methods, allow_headers and max_age rather than isolated numbers."
+    },
+    {
+      "id": "REAL-TEST-039",
+      "reference_sha256": "2ca858657a974c48439de5db4090cfe2943f77e9669c549882e6b9aff1847470",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": true,
+      "deepseek_tasks": [
+        "ref-audit-family-fastapi-middleware-9ccae30f4190"
+      ],
+      "codex_adjudication": "Selected the complete allow_credentials condition, including its restriction on wildcard origins."
+    },
+    {
+      "id": "REAL-TEST-040",
+      "reference_sha256": "4ff3dc7ae7eec19cd8fe1413f827bca94414a9db3fbba25143f4a965b705cb71",
+      "status": "accepted_for_ai_reviewed_pilot",
+      "corrected": false,
+      "deepseek_tasks": [
+        "ref-audit-absence-test-0-8af26684231d",
+        "ref-audit-absence-test-1-fded6ff1ca2a",
+        "ref-audit-absence-test-2-01afba33eee0"
+      ],
+      "codex_adjudication": "All complete candidate-pool shards reported no answer to the requested deployment-specific measurement. Codex checked every performance-related passage: qualitative advice, unrelated approximate speedups, configuration durations and timing-example code do not establish the requested benchmark."
+    }
+  ]
+}

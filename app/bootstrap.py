@@ -131,12 +131,12 @@ def build_container(settings: Settings | None = None) -> ApplicationContainer:
                 retriever,
                 top_k=active_settings.retrieval_top_k,
             ),
-            researcher=ResearcherAgent(chat),
+            researcher=ResearcherAgent(chat, max_citation_repairs=active_settings.max_researcher_citation_repairs),
             critic=CriticAgent(
                 chat,
                 max_iterations=active_settings.max_revision_iterations,
             ),
-            writer=WriterAgent(chat),
+            writer=WriterAgent(chat, max_citation_repairs=active_settings.max_writer_citation_repairs),
             citation_validator=CitationValidatorNode(),
             max_iterations=active_settings.max_revision_iterations,
             node_wrapper=lambda stage, handler: checkpointed_node(

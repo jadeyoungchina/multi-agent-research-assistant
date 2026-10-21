@@ -9,7 +9,9 @@ class ConfigurationError(DomainError):
 
 
 class ProviderError(DomainError):
-    pass
+    def __init__(self, code: str, message: str, *, metadata=None) -> None:
+        super().__init__(code, message)
+        self.metadata = metadata
 
 
 class DocumentError(DomainError):

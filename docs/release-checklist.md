@@ -27,7 +27,9 @@ possible private value or document disguised as source code.
 
 - [ ] If required for publication, run and record a DashScope `qwen3.7-flash` smoke check with local credentials and a non-sensitive corpus.
 - [ ] For any numerical real-model claim, preserve generated run reports, exact configuration, source/dataset digests, prompt version, and repeated trials.
-- [ ] Review outputs for private source text before sharing; never commit evaluation output or credentials.
+- [ ] Review outputs for private source text before sharing. Keep raw runtime
+  output and credentials untracked; only publish deliberately reviewed public
+  evidence packets such as `docs/evaluation/heldout-test/`.
 
 Offline CI intentionally cannot certify model availability, regional endpoint
 access, live answer quality, or billing behavior. Missing real-provider evidence
@@ -37,8 +39,11 @@ must be reported as unverified, not replaced by fake results.
 
 - [ ] Verify the final commit tree and run offline checks against it.
 - [ ] Review the current remote state before pushing.
-- [ ] Create/push the intended `v1.0.0` tag only after final release checks.
+- [ ] Match `pyproject.toml`, the API version and the latest changelog entry;
+  create a new `v<version>` tag only after final release checks, preserving existing tags.
 - [ ] Check remote CI and its uploaded fake-benchmark artifact, and record publication status separately.
+- [ ] Merge the reviewed candidate with its existing commits preserved, confirm
+  default-branch CI, and publish release notes linking to the versioned evidence.
 
 CI installs the two requirements layers, runs offline pytest, the repository
 verifier, and the fake gate, then attempts artifact upload even if an earlier

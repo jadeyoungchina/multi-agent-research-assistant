@@ -14,6 +14,52 @@ by Nir Diamant. The upstream custom [LICENSE](LICENSE) restricts commercial use;
 commercial permission must be obtained from the licensor in writing. Attribution,
 source cells, and file mappings are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
+## Project at a glance
+
+- **A working application:** document upload, six workflow stages, saved reports,
+  live progress and source inspection through a local browser interface.
+- **An inspectable comparison:** four workflows, 480 real-model executions,
+  original judgments, explicit AI source reviews and retained failures.
+- **Reproducible engineering:** request-level accounting, resumable experiments,
+  an executed analysis notebook and an isolated original-source reproduction path.
+
+![Inspecting a report citation in the local application](docs/portfolio/images/offline-demo-citation.png)
+
+The screenshot uses deterministic fake providers to demonstrate the interface.
+The real-model results below come from a separate recorded experiment.
+
+## Held-out results
+
+The frozen test covers **40 questions × four workflows × three fresh repeats**:
+**473 successful executions and seven failures**. Primary quality is mean
+AI-scored key-point correctness on a 0–1 scale, averaged within each question
+and then across questions; execution failures count as zero. Latency includes
+successful executions only.
+
+| Workflow | Primary quality | Successful / 120 | Median latency (s) |
+| --- | ---: | ---: | ---: |
+| Direct LLM | 0.643 | 120 | 5.96 |
+| Plain RAG | **0.919** | 119 | **3.97** |
+| Single-agent RAG | 0.821 | 119 | 8.65 |
+| Multi-agent RAG | 0.878 | 115 | 49.85 |
+
+Plain RAG scores highest in this dataset. Multi-agent RAG improves on the
+single-agent workflow by **5.69 percentage points**, with an exploratory
+eight-family-bootstrap 95% interval of **[+1.39, +9.72] pp**, while taking about
+**5.8 times** as long at the median. References and scoring are AI-assisted;
+independent human validation is **zero**. This small public-document study does
+not establish general architectural superiority.
+
+Review the [full results](docs/evaluation/heldout-test/RESULTS.md),
+[executed notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb),
+[seven selected failure cases](docs/evaluation/heldout-test/FAILURE-CASES.md) and
+[offline reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md).
+For implementation decisions and a short project tour, see the
+[English project brief](docs/portfolio/project-brief.md),
+[technical report](docs/technical-report.md),
+[local demo guide](docs/portfolio/demo-guide.md) and
+[three-minute presentation script](docs/portfolio/presentation.zh-CN.md).
+
 ## Features and boundaries
 
 - Local parsing, source-preserving chunks, embeddings, cosine search, and reciprocal rank fusion.
@@ -22,6 +68,7 @@ source cells, and file mappings are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTI
 - Upload/selection UI, report rendering, source excerpts, SSE progress, and polling fallback.
 - DashScope and OpenAI compatible providers; deterministic fake chat and embeddings for offline demonstration and CI.
 - A synthetic [30-case benchmark](benchmarks/cases.jsonl), four workflow variants, and JSON/CSV/Markdown reports.
+- [Per-request usage tracking and evaluation recovery](docs/evaluation/budget-control.md), with [DeepSeek CLI helper tasks](docs/evaluation/deepseek-cli.md).
 
 The application has no internet search, OCR, authentication, multi-tenant access
 control, or distributed queue. Citation validation checks source identity and
@@ -45,6 +92,19 @@ Activate with `source .venv/bin/activate` on Linux/macOS, or
 python -m pip install -r requirements/upstream-requirements.txt
 python -m pip install -r requirements/project-requirements.txt
 ```
+
+Launch a preloaded, isolated offline demo with one command:
+
+```bash
+python examples/run_demo.py
+```
+
+Open the printed loopback URL and select both documents. This launcher fixes
+both providers to fake, ignores local credential/environment configuration and
+uses a fresh database under `artifacts/demo/`. `--check` runs the upload, workflow,
+SSE, citation and persistence checks and exits. See the [demo guide](docs/portfolio/demo-guide.md).
+
+For a manually configured application session instead, use the commands below.
 
 In Bash:
 
@@ -153,6 +213,83 @@ other three variants are comparisons. Generated results stay untracked and CI
 uploads them as artifacts. See [experiments](docs/experiments.md) for exact metric
 definitions, thresholds, real-provider commands, and limitations. No real-model
 quality or speedup is claimed by the fake benchmark.
+
+A [five-question live development pilot](docs/evaluation/dev-pilot/README.md)
+now publishes real Qwen answers, evidence, blinded DeepSeek judgments, explicit
+Codex source adjudications, and physical request receipts. The final 20-unit
+matrix executes successfully after documented fixes; earlier failures are retained.
+These remain AI-reviewed development results, with no human scores; the separate
+held-out comparison is reported below. Recheck scores, hashes and costs without API calls:
+`python scripts/verify_dev_pilot.py`.
+
+The subsequent [complete development run](docs/evaluation/full-dev/README.md)
+covers 20 questions and 80 units: 77 executions succeeded, 3 failed. All successful
+answers have AI scores; 21 received explicit Codex source checks. The report
+separates execution reliability, conditional answer quality, citation-block
+support, latency and physical request usage. It also exposes previously uneven
+citation-format validation across workflows. This remains development evidence;
+it is kept separate from held-out results. Verify with `python scripts/verify_full_dev.py`.
+
+[Post-development repairs](docs/evaluation/post-dev-repairs.md) add uniform inline
+citation validation and request-specific evidence-ID schemas. Separate targeted
+confirmations retain v7's 3/4 outcome and v8's successful single-case check; they
+do not replace the original run. Full validation with the final rules precedes
+experiment freeze and held-out testing.
+
+The separate [final-rule development regression](docs/evaluation/final-dev/README.md)
+now completes **80/80 executions**, with **60/60 grounded answers** passing the
+shared citation structure checks. All 80 answers have AI scores after 21 source
+reviews; original judgments and 12 explicit corrections are retained. Mean
+key-point correctness is 0.892 for plain RAG, 0.854 for single-agent RAG and
+0.875 for multi-agent RAG; multi-agent median latency is 40.95 seconds. These
+reused development questions do not establish an architecture winner.
+[Findings and limitations](docs/evaluation/final-dev-observations.zh-CN.md)
+separate syntax, semantic support, missing usage and human review (still zero).
+The [test preparation](docs/evaluation/test-freeze-preparation.md) records the
+comparison and sampling choices made before held-out answers. The committed
+experiment identity now binds the runner and its prerequisites.
+
+The [frozen experiment runner](docs/evaluation/frozen-experiment.md) now implements
+repeat-specific identities, durable interruption handling, separate index/answer/
+judge ledgers and the prespecified paired family analysis. The
+[freeze record](benchmarks/real-v1/frozen-experiment.json) binds 257 input files;
+development-only test-schema calibration passed 19/20 judgments, retaining the
+one format error and all 21 requests. The [held-out results](docs/evaluation/heldout-test/RESULTS.md)
+now retain **480/480 executions: 473 successful, 7 failed**, with three fresh serial
+repeats of 40 questions and four workflows. The 80 prespecified source reviews
+and 17 additional error/failure reviews are complete; raw original judges,
+literal proofs and 37 explicit Codex follow-ups remain separate. All 473
+successful answers have AI scores; human reference/answer reviews remain **0**.
+Plain RAG has the highest observed primary quality (0.919), followed by multi-agent
+RAG (0.878), single-agent RAG (0.821) and the closed-book baseline (0.643).
+The prespecified multi-agent-minus-single-agent difference is +0.057 on 40 paired
+questions, with exploratory eight-family-bootstrap 95% interval [0.014, 0.097].
+Multi-agent median successful latency is 49.85 seconds versus 8.65 seconds for
+single-agent RAG. These AI-assisted results do not establish general superiority.
+[Chinese findings](docs/evaluation/heldout-observations.zh-CN.md) explain this tradeoff.
+Recompute public identities, original scores, reviewed scores, receipts and statistics:
+`python docs/evaluation/heldout-test/tools/reproduce_frozen.py`.
+The [analysis notebook](output/jupyter-notebook/real-evaluation-analysis.ipynb)
+executes seven cells from a fresh kernel, rebuilds the tables from saved decisions
+and traces, and exports [quality/latency/workload](docs/evaluation/heldout-test/figures/workflow-comparison.svg),
+[paired uncertainty](docs/evaluation/heldout-test/figures/paired-quality.svg) and
+[citations/failures](docs/evaluation/heldout-test/figures/citations-and-failures.svg).
+Follow the [reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md) to regenerate
+these figures without model calls. [Seven selected cases](docs/evaluation/heldout-test/FAILURE-CASES.md)
+explain unsupported claims, retrieval misses and unresolved execution failures.
+
+![Held-out quality, successful latency and physical answer attempts](docs/evaluation/heldout-test/figures/workflow-comparison.png)
+
+The [local supervisor](docs/evaluation/heldout-test/PROCESS.md) retains all three
+generation checkpoints and the initial analysis before source review.
+Historical analysis uses the original `7e0cf6c` source snapshot in an isolated
+worktree, allowing later product fixes to retain reproducible evidence. The
+original frozen-run guard remains strict; see the [reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md).
+
+The [post-experiment startup repair](docs/engineering/post-evaluation-maintenance.md)
+covers the ordinary configured Uvicorn entry as well as the isolated demo. Run
+`python docs/engineering/tools/check_default_startup.py` for its real-process,
+fake-provider HTTP acceptance check.
 
 ## Privacy and development
 

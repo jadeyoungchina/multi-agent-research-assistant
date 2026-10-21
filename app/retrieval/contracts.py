@@ -8,6 +8,7 @@ from app.domain.providers import ProviderMetadata
 
 class RetrievalBatch(BaseModel):
     evidence: list[EvidenceChunk]
+    queries: list[str] = Field(default_factory=list)
     provider_metrics: list[ProviderMetadata] = Field(default_factory=list)
 
 

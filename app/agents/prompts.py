@@ -30,7 +30,10 @@ def researcher_messages(
         ChatMessage(
             role="system",
             content=(
-                "Synthesize findings that answer the research question.\n\n"
+                "Synthesize findings that answer the research question. Copy Evidence IDs exactly "
+                "(for example ref_0001); omit the display label 'Evidence ID: '. "
+                "If no supplied passage answers the question, findings may be empty; explain the "
+                "missing evidence in unresolved_questions. Never invent placeholder IDs.\n\n"
                 f"{_GROUNDING_RULES}"
             ),
         ),
@@ -56,7 +59,10 @@ def critic_messages(
             role="system",
             content=(
                 "Assess whether the synthesis is sufficiently grounded and identify "
-                "gaps or follow-up queries.\n\n"
+                "gaps or follow-up queries. Check every plan completion criterion "
+                "for semantic coverage, accepting faithful paraphrases. If any required "
+                "criterion is unmet, set sufficient=false, name it in evidence_gaps, "
+                "and suggest focused follow_up_queries.\n\n"
                 f"{_GROUNDING_RULES}"
             ),
         ),
@@ -82,10 +88,18 @@ def writer_messages(
         ChatMessage(
             role="system",
             content=(
-                "Write the report in Markdown. Cite every evidence-backed statement "
+                "Return a concise JSON DraftReport, with Markdown only inside its markdown string. "
+                "Keep the entire JSON reply under 1200 tokens: at most three short findings, "
+                "a two-sentence summary and a compact Markdown answer. Do not repeat limitations. "
+                "The markdown field is the user-visible answer: citations located only in summary "
+                "or findings.narrative do not count. Put citations directly INSIDE markdown. "
+                "Each finding's evidence_ids must also appear as inline citation tokens in markdown. "
+                "Cite every evidence-backed statement in the summary and findings of markdown "
                 "with the exact token [[cite:{Evidence ID}]]. Do not include filenames, "
                 "page numbers, or invented reference labels; the deterministic validator "
-                "supplies source metadata.\n\n"
+                  "supplies source metadata. Describe missing document information in plain "
+                  "language. Do not expose internal agent names, critique reasons, completion "
+                  "criteria, scoring or revision bookkeeping in the report.\n\n"
                 f"{_GROUNDING_RULES}"
             ),
         ),
@@ -94,7 +108,7 @@ def writer_messages(
             content=(
                 f"Research question:\n{question}\n\n"
                 f"Synthesis:\n{synthesis.model_dump_json(indent=2)}\n\n"
-                f"Critique:\n{critique.model_dump_json(indent=2)}\n\n"
+                  f"Evidence sufficient: {critique.sufficient}\n\n"
                 f"Supplied evidence:\n{format_evidence(evidence)}"
             ),
         ),

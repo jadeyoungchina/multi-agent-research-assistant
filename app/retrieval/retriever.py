@@ -57,5 +57,6 @@ class EvidenceRetriever:
 
         return RetrievalBatch(
             evidence=reciprocal_rank_fuse(ranked, self.rrf_k, top_k),
+            queries=queries,
             provider_metrics=provider_metrics,
         )
