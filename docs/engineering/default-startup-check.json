@@ -1,0 +1,29 @@
+{
+  "kind": "post_freeze_default_entry_software_check",
+  "verified_at_utc": "2026-10-21T10:06:44.791489+00:00",
+  "product_commit": "ffb70693c51c0ac35b82d4f02b42558469f97f5c",
+  "entrypoint": "python -m uvicorn app.main:app --host 127.0.0.1 --port <ephemeral>",
+  "profile": "isolated fake chat and embeddings; empty model credentials",
+  "checks": {
+    "health_http": 200,
+    "ui_http": 200,
+    "content_security_policy_preserved": true,
+    "upload_http": 201,
+    "research_http": 202,
+    "terminal_status": "completed",
+    "sse_http": 200,
+    "workflow_stages": [
+      "citation_validator",
+      "critic",
+      "planner",
+      "researcher",
+      "retriever",
+      "writer"
+    ],
+    "citation_count": 1
+  },
+  "real_model_requests": 0,
+  "bootstrap_sha256_lf": "63ff09a236aac417739af6b7d7e2442d223c08c00a1d3e108eb9bf1e88f018d2",
+  "verification_tool_sha256_lf": "4c35f453ac6f00ca9d52a3695e3f65b54df678d6a5a4f064733b9163152382e0",
+  "interpretation": "Checks ordinary application startup and integration, not model quality or a new held-out experiment."
+}

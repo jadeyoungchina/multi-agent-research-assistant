@@ -106,6 +106,20 @@ documents dependencies and exact-byte checkout settings, while [seven selected
 cases](evaluation/heldout-test/FAILURE-CASES.md) explain unsupported claims,
 retrieval misses, partial answers and unresolved execution failures.
 
+## Product maintenance after the study
+
+The ordinary Uvicorn entry was subsequently found to read repair limits from a
+nullable settings argument after loading effective configuration. The
+[startup repair and regression](engineering/post-evaluation-maintenance.md)
+correct that composition path. A real-process HTTP check now verifies health,
+upload, all six workflow stages, the report, citations and SSE in an isolated
+fake-provider profile. This is software acceptance evidence, not a new model result.
+
+The original experiment and analysis use the pinned `7e0cf6c` source snapshot.
+The reproduction launcher compares current public result bytes with that snapshot
+and runs original code in a detached worktree. Current application changes are
+therefore separate from the published study, while its freeze guard stays strict.
+
 ## Contribution boundaries
 
 The [upstream audit](upstream-analysis.md) and [notices](../THIRD_PARTY_NOTICES.md)

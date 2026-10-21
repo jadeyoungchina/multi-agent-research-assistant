@@ -1,5 +1,13 @@
 # Frozen held-out experiment runner
 
+This page describes the original experiment protocol. Product maintenance after
+generation uses a later code revision. Reproduce the saved study at its pinned
+`7e0cf6c` snapshot with
+`python docs/evaluation/heldout-test/tools/reproduce_frozen.py`, or add `--notebook`.
+See the [current reproduction guide](heldout-test/REPRODUCE.md) and
+[startup maintenance note](../engineering/post-evaluation-maintenance.md).
+The original frozen-run guard continues to reject changed implementations.
+
 The runner, held-out judge and primary analysis are implemented and calibrated.
 The [freeze record](../../benchmarks/real-v1/frozen-experiment.json) has identity
 `0fc19f9d47679eaf55ebeddd7c6857b36779b632db6d5dd644cfda6c6aeb3270`.

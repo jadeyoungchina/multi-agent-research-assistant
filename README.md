@@ -252,6 +252,11 @@ Historical analysis uses the original `7e0cf6c` source snapshot in an isolated
 worktree, allowing later product fixes to retain reproducible evidence. The
 original frozen-run guard remains strict; see the [reproduction guide](docs/evaluation/heldout-test/REPRODUCE.md).
 
+The [post-experiment startup repair](docs/engineering/post-evaluation-maintenance.md)
+covers the ordinary configured Uvicorn entry as well as the isolated demo. Run
+`python docs/engineering/tools/check_default_startup.py` for its real-process,
+fake-provider HTTP acceptance check.
+
 ## Privacy and development
 
 Uploads default to `data/uploads`; SQLite defaults to `data/research_assistant.db`.
